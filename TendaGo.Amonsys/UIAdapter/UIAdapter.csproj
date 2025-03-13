@@ -1,0 +1,440 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!-- <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform> -->
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AA8BBA44-2776-432D-A039-71F6951CD970}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ER.UIAdapter</RootNamespace>
+    <AssemblyName>ER.UIAdapter</AssemblyName>
+    <TargetFramework>net8.0</TargetFramework>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <!-- <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'TendaGO|AnyCPU'">
+    <OutputPath>bin\TendaGO\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup> -->
+  <ItemGroup>
+    <Compile Include="DetalleMedioCobroCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>DetalleMedioCobroCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DetalleMedioCobroCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DetalleMedioCobroUIAdapter.amonsys.cs">
+      <DependentUpon>DetalleMedioCobroUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DetalleMedioCobroUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StockCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>StockCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StockCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StockUIAdapter.amonsys.cs">
+      <DependentUpon>StockUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StockUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TipoPaqueteCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>TipoPaqueteCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TipoPaqueteCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TipoPaqueteUIAdapter.amonsys.cs">
+      <DependentUpon>TipoPaqueteUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TipoPaqueteUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SectorCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>SectorCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SectorCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SectorUIAdapter.amonsys.cs">
+      <DependentUpon>SectorUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SectorUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProvinciaCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>ProvinciaCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProvinciaCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProvinciaUIAdapter.amonsys.cs">
+      <DependentUpon>ProvinciaUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProvinciaUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PaisCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>PaisCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PaisCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PaisUIAdapter.amonsys.cs">
+      <DependentUpon>PaisUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PaisUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CiudadCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>CiudadCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CiudadCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CiudadUIAdapter.amonsys.cs">
+      <DependentUpon>CiudadUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CiudadUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnidadMedidaCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>UnidadMedidaCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UnidadMedidaCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UnidadMedidaUIAdapter.amonsys.cs">
+      <DependentUpon>UnidadMedidaUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UnidadMedidaUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PagoCreditoCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>PagoCreditoCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PagoCreditoCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PagoCreditoUIAdapter.amonsys.cs">
+      <DependentUpon>PagoCreditoUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PagoCreditoUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LocalBodegaCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>LocalBodegaCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LocalBodegaCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LocalBodegaUIAdapter.amonsys.cs">
+      <DependentUpon>LocalBodegaUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LocalBodegaUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DetallePagoCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>DetallePagoCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DetallePagoCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DetallePagoUIAdapter.amonsys.cs">
+      <DependentUpon>DetallePagoUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DetallePagoUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DetalleCobroCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>DetalleCobroCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DetalleCobroCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DetalleCobroUIAdapter.amonsys.cs">
+      <DependentUpon>DetalleCobroUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DetalleCobroUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CobroDebitoCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>CobroDebitoCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CobroDebitoCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CobroDebitoUIAdapter.amonsys.cs">
+      <DependentUpon>CobroDebitoUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CobroDebitoUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <!-- <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" /> -->
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CuentaPorCobrarUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CuentaPorCobrarUIAdapter.amonsys.cs">
+      <DependentUpon>CuentaPorCobrarUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CuentaPorCobrarCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CuentaPorCobrarCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>CuentaPorCobrarCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CuentaPorPagarUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CuentaPorPagarUIAdapter.amonsys.cs">
+      <DependentUpon>CuentaPorPagarUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CuentaPorPagarCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CuentaPorPagarCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>CuentaPorPagarCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DetalleEntradaUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DetalleEntradaUIAdapter.amonsys.cs">
+      <DependentUpon>DetalleEntradaUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DetalleEntradaCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DetalleEntradaCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>DetalleEntradaCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DetalleSalidaUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DetalleSalidaUIAdapter.amonsys.cs">
+      <DependentUpon>DetalleSalidaUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DetalleSalidaCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DetalleSalidaCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>DetalleSalidaCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EmpaquetadoUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EmpaquetadoUIAdapter.amonsys.cs">
+      <DependentUpon>EmpaquetadoUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EmpaquetadoCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EmpaquetadoCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>EmpaquetadoCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EmpresaUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EmpresaUIAdapter.amonsys.cs">
+      <DependentUpon>EmpresaUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EmpresaCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EmpresaCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>EmpresaCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EntidadUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EntidadUIAdapter.amonsys.cs">
+      <DependentUpon>EntidadUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EntidadCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EntidadCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>EntidadCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EntradaUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EntradaUIAdapter.amonsys.cs">
+      <DependentUpon>EntradaUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EntradaCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="EntradaCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>EntradaCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PerfilUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PerfilUIAdapter.amonsys.cs">
+      <DependentUpon>PerfilUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PerfilCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PerfilCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>PerfilCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PrecioUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PrecioUIAdapter.amonsys.cs">
+      <DependentUpon>PrecioUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PrecioCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PrecioCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>PrecioCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PresupuestoFacturacionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PresupuestoFacturacionUIAdapter.amonsys.cs">
+      <DependentUpon>PresupuestoFacturacionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PresupuestoFacturacionCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PresupuestoFacturacionCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>PresupuestoFacturacionCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductoUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProductoUIAdapter.amonsys.cs">
+      <DependentUpon>ProductoUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductoCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ProductoCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>ProductoCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RucUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RucUIAdapter.amonsys.cs">
+      <DependentUpon>RucUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RucCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RucCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>RucCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalidaUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SalidaUIAdapter.amonsys.cs">
+      <DependentUpon>SalidaUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SalidaCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SalidaCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>SalidaCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TipoUnidadUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TipoUnidadUIAdapter.amonsys.cs">
+      <DependentUpon>TipoUnidadUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TipoUnidadCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TipoUnidadCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>TipoUnidadCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UsuarioLocalBodegaCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>UsuarioLocalBodegaCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UsuarioLocalBodegaCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UsuarioLocalBodegaUIAdapter.amonsys.cs">
+      <DependentUpon>UsuarioLocalBodegaUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UsuarioLocalBodegaUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UsuarioUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UsuarioUIAdapter.amonsys.cs">
+      <DependentUpon>UsuarioUIAdapter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UsuarioCollectionUIAdapter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UsuarioCollectionUIAdapter.amonsys.cs">
+      <DependentUpon>UsuarioCollectionUIAdapter.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessEntities\BusinessEntities.csproj">
+      <Project>{33F469FE-9634-42E9-9C79-DF2FA27C26E1}</Project>
+      <Name>BusinessEntities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BusinessAction\BusinessAction.csproj">
+      <Project>{523CDD26-E5E8-4D38-9E5E-EECF69687F03}</Project>
+      <Name>BusinessAction</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <!-- <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" /> -->
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.        Other similar extension points exist, see Microsoft.Common.targets.  <Target Name="BeforeBuild">  </Target>  <Target Name="AfterBuild">  </Target>  -->
+</Project>

@@ -1,0 +1,276 @@
+﻿@using TendaGo.Common
+@using TendaGo.Web.Models
+@using TendaGo.Web.Infraestructura
+
+@{
+    ViewBag.Title = "Consulta " + ViewBag.Tipo;
+}
+
+@Styles.Render("~/styles/datatables")
+@Styles.Render("~/styles/select2")
+
+<ol class="breadcrumb bc-3 small hidden-xs breadcrumb-no-padding">
+    <li>
+        <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home</a>
+    </li>
+    <li>
+        @ViewBag.Tipo
+    </li>
+</ol>
+
+
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="pull-left">
+            <h3>
+                @ViewBag.Tipo
+            </h3>
+        </div>
+
+        <div class="pull-right">
+            <button class="btn btn-info btn-icon icon-left" onclick="crear_persona()">
+                <i class="entypo-list-add"></i>  Nuevo
+            </button>
+        </div>
+
+    </div>
+</div>
+<br />
+
+<div class="tile-stats tile-gray">
+    <div class="row">
+        <div id="divBuscarCliente" class="col-md-12 col-xs-12">
+                <div class="input-group">
+                    <input type="text" class="form-control input-lg" name="textoBusqueda" id="textoBusqueda" placeholder="Escriba la Razón Social del Cliente..">
+
+                    <div class="input-group-btn">
+                        <button id="btnConsultarClientes" type="submit" class="btn btn-lg btn-primary" onclick="buscar_Personas();">
+                            <span class="hidden-xs">Buscar</span>
+                            <i class="entypo-search"></i>
+                        </button>                        
+                    </div>
+                </div>                
+        </div>
+    </div>
+</div>
+
+<table id="clientesTable" class="table datatable table-bordered table-striped table-hover">
+    <thead>
+        <tr class="small">
+            <th class="text-center bold"></th>
+            <th class="text-center bold">Identificacion</th>
+            <th class="text-center bold">Razon Social</th>
+            <th class="text-center bold">Correo</th>
+            <th class="text-center bold">Telefono</th>
+            <th class="text-center bold"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            foreach (var persona in Model)
+            {
+                <tr>
+                    <td class="text-center">
+
+                        <button type="button" class="btn btn-success btn-icon icon-left" title="Editar" onclick="editar_persona(@persona.Id)">
+                            <i class="entypo-pencil"></i> Editar
+                        </button>
+
+                    </td>
+
+                    <td class="text-center">
+                        @persona.Identificacion
+                    </td>
+
+                    <td>
+                        @persona.RazonSocial
+                    </td>
+
+                    <td class="text-right">
+                        @if (!string.IsNullOrEmpty(persona.Correo))
+                        {
+                            @persona.Correo.ToLower()
+                        }
+                    </td>
+
+                    <td class="text-right">
+                        @persona.Telefono
+                    </td>
+
+                    <td>
+
+                        <a href="#" onclick="eliminar_persona('@persona.Id');" class="btn btn-danger" title="Anular Pedido">
+                            <i class="fa fa-trash-o"></i>
+                        </a>
+
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<br />
+<div id="divloading" class="progress progress-striped active hidden">
+    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+        <span class="sr-only">40% Complete (success)</span>
+    </div>
+</div>
+
+
+@section Scripts {
+
+
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/wizard")
+    @Scripts.Render("~/bundles/maskmoney")
+    @Scripts.Render("~/bundles/datepicker")
+    @Scripts.Render("~/bundles/fileinput")
+    @Scripts.Render("~/bundles/select2")
+
+<script>
+    menu_settings.parentMenu = 'MnuCobros';
+    menu_settings.optionMenu = 'OpcLista';
+    SetActiveMenu();
+
+    var $url_crear_cliente = "@Url.Action("CrearCliente","NotaPedido")";
+    var $url_editar_cliente = "@Url.Action("EditarCliente", "NotaPedido")";
+    var $table;
+
+    $(document).ready(function () {
+        @*$table = $('#clientesTable').DataTable({
+            "ajax": '@ViewBag.Url',
+            "deferRender": true,
+            "responsive": true,
+            "language": {
+                "url": "/Content/dataTables.spanish.txt"
+            },
+            "columnDefs": [
+                {
+                    "render": function (data, type, row) {
+                        return `<button type="button" class="btn btn-success btn-icon icon-left" title="Editar"
+                            onclick="editar_persona(${row[0]})"> <i class="entypo-pencil"></i> Editar </button>`;
+                    },
+                    "targets": 0
+                },
+                {
+                    "targets": 5,
+                    "data": null,
+                    "render": function (data, type, row) {
+                        return `<a href="#" onclick="eliminar_persona('${row[0]}');" class="btn btn-danger" title="Anular "><i class="fa fa-trash-o"></i></a>`;
+                    }
+                }
+            ]
+        });*@
+    });
+
+    var $url_get_cliente = "@Url.Action("customers", "personas")";
+
+    function buscar_Personas() {
+        var id = $("#textoBusqueda").val();
+        
+        if (id.length > 3) {
+
+            //elimino el punto del final ya que da error al construir la url
+            if (id.endsWith(".")) {
+                id = id.replace(/\.$/, "");
+            }
+
+            $table = $('#clientesTable').DataTable({
+                "ajax": {
+                    'type': 'get',
+                    'url': $url_get_cliente + "/" + id
+                },
+                "destroy": true,
+                "deferRender": true,
+                "responsive": true,
+                "language": {
+                    "url": "/Content/dataTables.spanish.txt"
+                },
+                "columnDefs": [
+                    {
+                        "render": function (data, type, row) {
+                            return `<button type="button" class="btn btn-success btn-icon icon-left" title="Editar"
+                        onclick="editar_persona(${row[0]})"> <i class="entypo-pencil"></i> Editar </button>`;
+                        },
+                        "targets": 0
+                    },
+                    {
+                        "targets": 5,
+                        "data": null,
+                        "render": function (data, type, row) {
+                            return `<a href="#" onclick="eliminar_persona('${row[0]}');" class="btn btn-danger" title="Anular "><i class="fa fa-trash-o"></i></a>`;
+                        }
+                    }
+                ]
+            });
+        }        
+
+    }
+
+    function editar_persona(id) {
+        $('#divModal').empty();
+        $('#divModal').modal('show', { backdrop: 'static' });
+
+        $.ajax({
+            url: $url_editar_cliente + "/" + id,
+            type: 'get',
+            beforeSend: function () {
+            },
+            complete: function () {
+            }
+        }).done(function (respuesta) {
+            if (isValid(respuesta)) {
+                $('#divModal').html(respuesta);
+
+                /*console.log(respuesta);*/
+
+                if (respuesta.includes("crearClienteForm")) {
+                    $.validator.unobtrusive.parse($("#crearClienteForm"));
+                }
+
+            }
+        }).error(function (e) {
+            console.log(e);
+            toastr.warning("No se puede modificar este cliente", "", optionsToastr);
+            $('#divModal').modal('hide');
+        });
+    }
+
+
+    function crear_persona() {
+        $('#divModal').empty();
+        $('#divModal').modal('show', { backdrop: 'static' });
+
+        $.ajax({
+            url: $url_crear_cliente,
+            type: 'get',
+            beforeSend: function () {
+            },
+            complete: function () {
+            }
+        }).done(function (respuesta) {
+            if (isValid(respuesta)) {
+                $('#divModal').html(respuesta);
+
+                if (respuesta.includes("crearClienteForm")) {
+                    $.validator.unobtrusive.parse($("#crearClienteForm"));
+                }
+
+            }
+        });
+    }
+
+    function eliminar_persona(id) {
+        alert(id);
+    }
+
+    var setClientData = function (data) { };
+
+
+</script>
+
+}

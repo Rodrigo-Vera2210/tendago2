@@ -1,0 +1,148 @@
+﻿@using TendaGo.Web.ApplicationServices
+@model TendaGo.Web.Models.TransferenciaViewModel
+@{
+    ViewBag.Title = "Importar Productos Vendidos";    
+    string date = DateTime.Now.ToString("dd/MM/yyyy");
+}
+@Styles.Render("~/Styles/datatables")
+
+<link href="@Url.Content("~/Content/bootstrap-toggle.min.css")" rel="stylesheet" />
+
+<style>
+    .tile-title .title p {
+        padding-bottom: 5px;
+    }
+
+    #idProvider {
+        width: 0;
+        height: 0;
+        border: 0;
+    }
+</style>
+
+<ol class="breadcrumb bc-3 small hidden-xs breadcrumb-no-padding">
+    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home</a></li>
+    <li>Compras</li>
+    <li class="active"><strong>@ViewBag.Title</strong></li>
+</ol>
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left">
+            <h3>@ViewBag.Title</h3>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-primary">
+    <div class="panel-body">
+        @using (Html.BeginForm("Pedir", "inventario", FormMethod.Post, new { id = "formImpAjuste", @class = "form-wizard validate" }))
+        {
+            <div class="steps-progress">
+                <div class="progress-indicator"></div>
+            </div>
+
+            <ul>
+                <li class="active">
+                    <a href="#tab1" data-toggle="tab"><span>1</span>Importar archivo</a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab1">
+                    <form id="ExcelUpload">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <div class="panel-title">Importar archivo</div>
+                            </div>
+
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input id="ExcelFileUpload" type="file" class="form-control" required />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button id="btnImportButton" type="button" class="btn btn-info">
+                                            <i class="entypo-upload-cloud"></i>
+                                            <span class="hidden-xs">Importar</span>
+                                        </button>
+                                        <button id="btnResetButton" type="button" class="btn btn-default" title="Reset">
+                                            <i class="entypo-arrows-ccw"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <span class="label label-danger" style="font-size: 10px;" id="fileErrorMessage"></span>
+                                    </div>
+                                </div>
+                                <p>Seleccione el archivo excel, con el formato establecido para importar la compra.</p>
+                            </div>
+                        </div>
+                    </form>
+                    <br />
+                    <input type="hidden" id="hasUploadedFile" />
+                    <input type="hidden" id="hasSuccessFile" />
+                    <div id="divData"></div>
+                </div>
+
+                <ul class="pager wizard">
+                    <li class="previous">
+                        <a href="#">
+                            <i class="entypo-left-open"></i>
+                            <span class="hidden-xs">Anterior</span>
+                        </a>
+                    </li>
+                    <li class="next">
+                        <a href="#">
+                            <span class="hidden-xs">Siguiente</span>
+                            <i class="entypo-right-open"></i>
+                        </a>
+                    </li>
+
+                    <button type="submit" class="btn btn-success btn-sm">
+                        <i class="entypo-floppy"></i>
+                        <span class="hidden-xs">Importar</span>
+                    </button>
+
+                </ul>
+
+                @*@Html.("IdLocalDestino", Model.IdLocalDestino)
+                @Html.TextBox(Model.IdLocalDestino)*@
+
+            </div>
+        }
+    </div>
+</div>
+
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/wizard")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/maskmoney")
+
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/toggle")
+
+    @Scripts.Render("~/bundles/datepicker")
+
+    @Scripts.Render("~/bundles/inventario/importar")
+
+    <script>
+        var fileErrorMessage = $("#fileErrorMessage");
+        menu_settings.parentMenu = 'MnuPurchase';
+        menu_settings.optionMenu = 'OpcImport';
+        $(".sidebar-collapse-icon").click();
+         
+        $(function() {
+            SetActiveMenu();
+            $(".input-money").maskAsDecimal();
+            $("#Tasa").maskAsDecimal({ precision: 2 });
+            $("#FechaCompra").datepickercustom();
+            $("#FechaCompra").val('@date');
+        });
+        AjuImport.ImportExcelUrl = '@Url.Action("ReadExcelFilePedir")'
+        AjuImport.Init();
+    </script>
+}
+

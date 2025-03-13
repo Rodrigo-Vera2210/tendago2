@@ -1,0 +1,36 @@
+﻿@model System.Collections.Generic.IEnumerable<TendaGo.Common.DisplayDto>
+
+
+<div class="table-responsive">
+    <table id="displaysTable" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nombre)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Descripcion)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descripcion)
+                </td>
+                <td align="center">
+                    <button class="btn btn-default btn-sm btn-icon icon-left" onclick="">
+                        <i class="entypo-pencil"></i>Asignar a Perfil
+                    </button>
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

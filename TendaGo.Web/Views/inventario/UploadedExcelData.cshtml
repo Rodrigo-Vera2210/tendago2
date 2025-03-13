@@ -1,0 +1,69 @@
+﻿@model TendaGo.Web.Models.MermaViewModel
+@{
+    bool IsFileValid = ViewBag.IsFileValid;    
+}
+
+<input id="isFileValid" type="hidden" />
+<div class="table-responsive">
+    <table id="ajusteTable" class="display datatable table table-bordered table-hover" >
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(item => item.Detalle[0].DescripcionProducto)</th>
+                <th>@Html.DisplayNameFor(item => item.Detalle[0].IdLocal)</th>
+                <th>@Html.DisplayNameFor(item => item.Detalle[0].TipoUnidad)</th>
+                <th>@Html.DisplayNameFor(item => item.Detalle[0].Cantidad)</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Detalle.Count; i++)
+            {
+                //var item = Model.ItemsArchivo[i];
+            <tr>
+                @*<td class="text-center">
+                    @if (Model.Detalle[i].ItemValido)
+                    {
+                        <span class="label label-success" title="Ok">
+                            <i class="entypo-check"></i>
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="label label-danger" title="@Model.ItemsArchivo[i].Observacion">
+                            <i class="entypo-cancel"></i>
+                        </span>
+                    }
+                    @Html.HiddenFor(m => m.Detalle[i].ItemValido)
+                </td>*@
+                <td>
+                    @Html.HiddenFor(m => m.Detalle[i].CodigoInterno)
+                    @Html.HiddenFor(m => m.Detalle[i].IdProducto)
+                    @Html.HiddenFor(m => m.Detalle[i].DescripcionProducto)
+
+                    @Model.Detalle[i].DescripcionProducto <br />
+                    <b>@Model.Detalle[i].CodigoInterno</b> 
+                </td>
+                <td>                    
+                    @Html.HiddenFor(m => m.Detalle[i].IdLocal)
+                    Falta mostrar el local
+                </td>
+                <td>
+                    @Html.HiddenFor(m => m.Detalle[i].IdTipoUnidad)
+                    @Html.HiddenFor(m => m.Detalle[i].TipoUnidad)
+                    @Model.Detalle[i].TipoUnidad
+                </td>
+                <td class="text-right">
+                    @Html.HiddenFor(m => m.Detalle[i].Cantidad)
+                    @Model.Detalle[i].Cantidad.ToString("0.0000")
+                </td>                
+            </tr>
+            }
+        </tbody>        
+    </table>
+</div>
+
+<script>
+    $(function() {
+        $("#isFileValid").val('@IsFileValid');        
+    });
+</script>

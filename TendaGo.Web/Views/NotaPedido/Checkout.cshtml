@@ -1,0 +1,360 @@
+﻿@using TendaGo.Web.Models
+@model NotaPedidoViewModel
+@{
+    var listaFormaPago = (IEnumerable<SelectListItem>)ViewBag.ListaFormaPago;
+}
+
+<style type="text/css">
+    .hide {
+        display: none;
+    }
+
+    #IdCliente {
+        width: 0;
+        height: 0;
+        border: 0;
+    }
+</style>
+
+<div class="row">
+    @using (Html.BeginForm("CheckOut", "NotaPedido", FormMethod.Post, new { id = "checkoutForm", @class = "form-wizard validate" }))
+    {
+        <div class="steps-progress">
+            <div class="progress-indicator"></div>
+        </div>
+        <ul>
+            <li class="active">
+                <a href="#tab1" data-toggle="tab"><span>1</span>Datos Cliente</a>
+            </li>
+            <li>
+                <a href="#tab2" data-toggle="tab"><span>2</span>Detalle Nota Pedido</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab1">
+                <div class="row">
+                    <div class="col-md-4 col-xs-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <div class="panel-title">Cliente</div>
+                                <div class="panel-options" style="padding-top: 5px;">
+                                    <button type="button" class="btn btn-sm btn-white" onclick="crearCliente()" title="Agregar Cliente">
+                                        <i class="entypo-user-add"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-white" onclick="consultarClientes()" title="Buscar Cliente">
+                                        <i class="entypo-search"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-white" onclick="limpiarClientes()" title="Limpiar">
+                                        <i class="entypo-erase"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div id="clientResult" class="tile-title tile-gray hidden">
+                                    <div class="icon">
+                                        <i class="entypo-user"></i>
+                                    </div>
+                                    <div class="title">
+                                        <h3 id="identificacionCli"></h3>
+                                        <p id="razonSocialCli">.</p>
+                                        <p id="direccionCli">.</p>
+                                    </div>
+                                </div>
+                                @Html.TextBoxFor(model => model.IdCliente, new { id = "IdCliente" })
+                                @Html.ValidationMessageFor(model => model.IdCliente, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8 col-xs-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-body">
+                                <div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(x => x.Observaciones, new { @class = "col-sm-2 control-label" })
+                                        <div class="col-sm-10">
+                                            @Html.TextAreaFor(x => x.Observaciones, new { id = "Observaciones", @class = "form-control no-resize", rows = "3" })
+                                            @Html.ValidationMessageFor(x => x.Observaciones)
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 control-label">Fecha/Hora Estimada Entrega</label>
+                                        <div class="col-sm-4">
+                                            <div class="date-and-time">
+                                                @Html.TextBoxFor(x => x.FechaEntrega, new { id = "FechaEntrega", @class = "form-control datepicker", @data_format = "dd/mm/yyyy", @autocomplete = "off" })
+                                                @Html.TextBoxFor(x => x.HoraEntrega, new { id = "HoraEntrega", @class = "form-control timepicker", @data_template = "dropdown", @data_show_seconds = "false", @data_default_time = "current", @data_show_meridian = "false", @data_minute_step = "5", @data_second_step = "5", @autocomplete = "off" })
+                                                @Html.ValidationMessageFor(x => x.FechaEntrega)
+                                                @Html.ValidationMessageFor(x => x.HoraEntrega)
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 text-right form-inline">
+                        <label class="control-label"><strong>Subtotal: </strong></label>
+                        @Html.TextBox("Total", Model.Total.ToCustomFormatString(), new { @class = "form-control text-right", @readonly = "readonly" })
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="tab2">
+                <div class="row">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="panel-title"><strong>Detalle Nota de Pedido</strong></div>
+                        </div>
+                        <div class="panel-body with-table">
+
+                            <div class="table-responsive">
+                                <table id="tablaDetalleNotaPedido" class="table datatable table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="hide">IdProducto</th>
+                                            <th width="15%" class="text-center">No NP</th>
+                                            <th width="50%">Producto</th>
+                                            <th class="text-center">Cantidad</th>
+                                            <th class="text-center">Tipo Unidad</th>
+                                            <th class="text-center">Precio</th>
+                                            <th class="text-center">Subtotal</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var detalle in Model.DetalleNotaPedido)
+                                        {
+                                            <tr id='@detalle.IdProducto'>
+                                                <td class="hide">
+                                                    @Html.Hidden("IdProducto", detalle.IdProducto)
+                                                    @detalle.IdProducto
+                                                </td>
+                                                <td class="text-center">@detalle.IdNotaPedidoTemp</td>
+                                                <td>@detalle.NombreProducto</td>
+                                                <td class="text-right">@detalle.Cantidad</td>
+                                                <td class="text-right">@detalle.DesTipoUnidad</td>
+                                                <td class="text-right">@detalle.Precio</td>
+                                                <td class="text-right">@detalle.Subtotal</td>
+                                                <td class="text-center">
+                                                    @Html.AntiForgeryToken()
+                                                    @Html.Hidden("IdProducto", detalle.IdProducto)
+                                                    <a href="#" class="text-info btnElminarDetalle">
+                                                        <i class="entypo-trash"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="5" class="text-right">Total:</th>
+                                            <th class="text-right">@Model.Total.ToCustomFormatString()</th>
+                                            <th></th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <ul class="pager wizard">
+                <li class="previous">
+                    <a href="#">
+                        <i class="entypo-left-open"></i>
+                        <span class="hidden-xs">Anterior</span>
+                    </a>
+                </li>
+                <li class="add-producto">
+                    <button type="button" class="btn btn-info btn-sm btnAgregarMasDetalles">
+                        <i class="entypo-basket"></i>
+                        <span class="hidden-xs">Agregar Productos</span>
+                    </button>
+                </li>
+                <li class="clear-cart">
+                    <button type="button" class="btn btn-default btn-sm btnClearCart">
+                        <i class="entypo-minus-circled"></i>
+                        <span class="hidden-xs">Cancelar Nota Pedido</span>
+                    </button>
+                </li>
+                <li class="finish">
+                    <button type="submit" class="btn btn-success btn-sm">
+                        <i class="entypo-floppy"></i>
+                        <span class="hidden-xs">Guardar Nota Pedido</span>
+                    </button>
+                </li>
+                <li class="next">
+                    <a href="#">
+                        <span class="hidden-xs">Siguiente</span>
+                        <i class="entypo-right-open"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    }
+</div>
+
+<script>
+
+    $(function () {
+        getCheckoutDataFormLS();
+        $.validator.unobtrusive.parse($("#checkoutForm"));
+        $("#checkoutForm").formwizardcustom();
+        $("#FechaEntrega").datepickercustom();
+        $("#HoraEntrega").timepickercustom();
+        var tablaDetalle = $('#tablaDetalleNotaPedido').DataTable(opcionesDataTableNoSearching);
+        //var tablaDetalle = $('#tablaDetalleNotaPedido').basicDatatable();
+
+        $("#checkoutForm").submit(function (event) {
+            event.preventDefault();
+            var post_url = $(this).attr("action");
+            var request_method = $(this).attr("method");
+            var form_data = $(this).serialize();
+
+            $.ajax({
+                url: post_url,
+                type: request_method,
+                data: form_data,
+                beforeSend: function () {
+                    $("#divNotaPedido").append('<div id="divLoading" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+                },
+                complete: function () {
+                    $("#divLoading").remove();
+                }
+            }).done(function (respuesta) {
+                if (respuesta != "") {
+                    if (respuesta.success == true) {
+                        toastr.success(respuesta.mensaje, "", optionsToastr);
+                        actualizarCarritoCompras();
+                        mostrarConsultaProductos();
+                        clearCart();
+                    } else {
+                        toastr.error(respuesta.mensaje, "", optionsToastr);
+                    }
+                }
+                localStorage.removeItem("client");
+                localStorage.removeItem("checkoutData");
+            });
+        });
+
+        $(".btnElminarDetalle").click(function () {
+            var trId = $(this).closest('tr').attr('id');
+            var td = $(this).closest('td');
+            var idProducto = $(td).find('#IdProducto').val();
+            var verificationToken = $(td).find("input[name='__RequestVerificationToken']").val();
+            var post_url = '@Url.Action("EliminarDetalleNotaPedido", "NotaPedido")';
+            var request_method = 'post';
+            var form_data = { idProducto: idProducto, __RequestVerificationToken: verificationToken };
+
+            $.ajax({
+                url: post_url,
+                type: request_method,
+                data: form_data,
+                beforeSend: function () {
+                    $("#divNotaPedido").append('<div id="divLoading" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+                },
+                complete: function () {
+                    $("#divLoading").remove();
+                }
+            }).done(function (respuesta) {
+                if (respuesta != "") {
+                    if (respuesta.success == true) {
+                        tablaDetalle.row("#" + trId).remove().draw();
+                        actualizarCarritoCompras();
+                        $("#checkoutForm #Total").val(respuesta.valorTotal);
+                        $(tablaDetalle.column(3).footer()).html(respuesta.valorTotal);
+                        toastr.success("Detalle eliminado correctamente", "", optionsToastr);
+                    }
+                    else if (respuesta.success == false) {
+                        toastr.warning(respuesta.mensaje, "", optionsToastr);
+                    }
+                }
+            });
+        });
+
+        $(".btnAgregarMasDetalles").click(function () {
+            var obs = $("#Observaciones").val();
+            var hour = $("#HoraEntrega").val();
+            var date = $("#FechaEntrega").val();
+            var checkoutData = { obs, date, hour };
+            localStorage.setItem("checkoutData", JSON.stringify(checkoutData));
+            mostrarConsultaProductos();
+        });
+    });
+
+    var clearCartUrl = '@Url.Action("CancelarNotaPedido")';
+    $(".btnClearCart").on("click", function (e) {
+
+        var r = confirm("Esta seguro de cancelar la Nota de Pedido!");
+        if (r == true) {
+            clearCart();
+            setTimeout(function() {
+                actualizarCarritoCompras();
+                mostrarConsultaProductos();
+            }, 500);
+        }
+    });
+
+    function clearCart() {
+        localStorage.removeItem("checkoutData");
+        localStorage.removeItem("client");
+        $.ajax({
+            url: clearCartUrl,
+            type: "GET",
+            beforeSend: function () {
+                $("#divNotaPedido").append('<div id="divLoading" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+            },
+            complete: function () {
+                $("#divLoading").remove();
+            },
+            success: function (respuesta) {
+                console.log(respuesta);
+                if (respuesta.success) {
+                    toastr.success(respuesta.mensaje, "", optionsToastr);
+                } else {
+                    toastr.warning(respuesta.mensaje, "", optionsToastr);
+                }
+            }
+        });
+    }
+
+    function onSelectClient(clientItemJson) {
+        var client = JSON.parse(clientItemJson);
+        localStorage.setItem("client", clientItemJson);
+        setClientData(client);
+    }
+
+    function setClientData(client) {
+        $("#IdCliente").val(client.Id);
+        $("#IdCliente").removeClass('input-validation-error').addClass("valid").attr("aria-invalid", "false");
+        $("#IdCliente").next().empty();
+        $("#identificacionCli").text(client.Identificacion);
+        $("#razonSocialCli").text(client.RazonSocial);
+        var ciudad = (client.Ciudad != '' && client.Ciudad != null) ? client.Ciudad.Nombre : "No disponible";
+        var correo = (client.Correo) ? client.Correo : "No disponible";
+        $("#direccionCli").text(`Ciudad: ${ciudad} | Dirección: ${client.Direccion} | Correo: ${correo}`);
+        $("#clientResult").removeClass('hidden').fadeIn('fast');
+    }
+
+    function getCheckoutDataFormLS() {
+        var client = localStorage.getItem("client");
+        var checkoutData = localStorage.getItem("checkoutData");
+        if (client) {
+            setClientData(JSON.parse(client));
+            //toastr.success("Informacion del carrito recuperada correctamente. CLIENTE", "", optionsToastr);
+        }
+        if (checkoutData) {
+            setCheckoutData(JSON.parse(checkoutData));
+        }
+    }
+
+    function setCheckoutData(checkoutData)  {
+        $("#Observaciones").val(checkoutData.obs);
+        $("#HoraEntrega").val(checkoutData.hour);
+        $("#FechaEntrega").val(checkoutData.date);
+        //toastr.success("Informacion del carrito recuperada correctamente. OBSERV.", "", optionsToastr);
+    }
+    
+</script>

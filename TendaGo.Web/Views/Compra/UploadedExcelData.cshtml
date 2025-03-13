@@ -1,0 +1,117 @@
+﻿@model TendaGo.Web.Models.CompraModel
+@{
+    bool IsFileValid = ViewBag.IsFileValid;
+    decimal totalCompra = (decimal)ViewBag.Total;
+}
+
+<input id="isFileValid" type="hidden" />
+<div class="table-responsive">
+    <table id="compraTable" class="display datatable table table-bordered table-hover" >
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(item => item.ItemsArchivo[0].ItemValido)</th>
+                <th>@Html.DisplayNameFor(item => item.ItemsArchivo[0].CodigoProducto)</th>
+                <th>@Html.DisplayNameFor(item => item.ItemsArchivo[0].TipoUnidad)</th>
+                <th>@Html.DisplayNameFor(item => item.ItemsArchivo[0].Local)</th>
+                <th>@Html.DisplayNameFor(item => item.ItemsArchivo[0].ValorFob)</th>
+                <th>@Html.DisplayNameFor(item => item.ItemsArchivo[0].CostoUnitarioImportacion)</th>
+                <th>@Html.DisplayNameFor(item => item.ItemsArchivo[0].FactorDistribucion)</th>
+                <th>@Html.DisplayNameFor(item => item.ItemsArchivo[0].Cantidad)</th>
+                <th>@Html.DisplayNameFor(item => item.ItemsArchivo[0].CostoVenta)</th>
+                <th>Fecha Caducidad</th>
+                <th>Subtotal</th>
+                <th>Observacion</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.ItemsArchivo.Count; i++)
+            {
+                //var item = Model.ItemsArchivo[i];
+            <tr>
+                <td class="text-center">
+                    @if (Model.ItemsArchivo[i].ItemValido)
+                    {
+                        <span class="label label-success" title="Ok">
+                            <i class="entypo-check"></i>
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="label label-danger" title="@Model.ItemsArchivo[i].Observacion">
+                            <i class="entypo-cancel"></i>
+                        </span>
+                    }
+                    @Html.HiddenFor(m => m.ItemsArchivo[i].ItemValido)
+                </td>
+                <td>
+                    @Html.HiddenFor(m => m.ItemsArchivo[i].CodigoProducto)
+                    @Html.HiddenFor(m => m.ItemsArchivo[i].IdProducto)
+                    @Html.HiddenFor(m => m.ItemsArchivo[i].Producto)
+
+                    @Model.ItemsArchivo[i].Producto <br />
+                    <b>@Model.ItemsArchivo[i].CodigoProducto</b> 
+                </td> 
+                <td>
+                    @Html.HiddenFor(m => m.ItemsArchivo[i].IdTipoUnidad)
+                    @Html.HiddenFor(m => m.ItemsArchivo[i].TipoUnidad)
+                    @Model.ItemsArchivo[i].TipoUnidad
+                </td>
+                <td>
+                    @Html.HiddenFor(m => m.ItemsArchivo[i].Local)
+                    @Html.HiddenFor(m => m.ItemsArchivo[i].IdLocal)
+                    @Model.ItemsArchivo[i].Local
+                </td>
+                <td class="text-right">
+                    @Html.HiddenFor(m => m.ItemsArchivo[i].ValorFob)
+                    @Model.ItemsArchivo[i].ValorFob.ToString("0.00")
+                </td>
+                <td class="text-right">
+                    @Html.HiddenFor(m => m.ItemsArchivo[i].CostoUnitarioImportacion)
+                    @Model.ItemsArchivo[i].CostoUnitarioImportacion.ToString("0.00")
+                </td>
+                <td class="text-right">
+                    @Html.HiddenFor(m => m.ItemsArchivo[i].FactorDistribucion)
+                    @Model.ItemsArchivo[i].FactorDistribucion.ToString("0.0000")
+                </td>
+                <td class="text-right">
+                    @Html.HiddenFor(m => m.ItemsArchivo[i].Cantidad)
+                    @Model.ItemsArchivo[i].Cantidad.ToString("0.0000")
+                </td>
+                <td class="text-right">
+                    @Html.HiddenFor(m => m.ItemsArchivo[i].CostoVenta)
+                    @Model.ItemsArchivo[i].CostoVenta.ToString("0.0000")
+                </td>
+                <td>
+                    @Html.HiddenFor(m => m.ItemsArchivo[i].FechaCaducidad)
+                    @Model.ItemsArchivo[i].FechaCaducidad
+                </td>
+                <td class="text-right">
+                    @Html.HiddenFor(m => m.ItemsArchivo[i].Subtotal)
+                    @Model.ItemsArchivo[i].Subtotal
+                </td>
+                <td>
+                    @Html.HiddenFor(m => m.ItemsArchivo[i].Observacion)
+                    @Model.ItemsArchivo[i].Observacion
+                </td>
+            </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="10" style="text-align: right">Subtotal:</th>
+                <th class="text-right ">
+                    <span class="valor-subtotal ">0.00</span> 
+                </th>
+                <th colspan="1"></th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<script>
+    $(function() {
+        $("#isFileValid").val('@IsFileValid');
+        $("#Subtotal").val('@totalCompra');
+        $(".valor-subtotal").text('@totalCompra');
+    });
+</script>

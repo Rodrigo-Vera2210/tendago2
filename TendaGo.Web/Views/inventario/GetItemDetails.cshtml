@@ -1,0 +1,73 @@
+﻿@using TendaGo.Web.ApplicationServices
+@using TendaGo.Common
+@model List<LiteStockDto>
+@{
+    var product = Model.FirstOrDefault() ?? new LiteStockDto();
+    //var imageUrl = "~" + AppServiceBase.Empresa.RaizArchivo + product.PathArchivo ?? "";
+    var imageUrl = product.PathArchivo ?? "";
+    var image = Server.ImageToBase64String(imageUrl);
+
+}
+@Html.Hidden("image", imageUrl)
+
+<div class="col-xs-6 form-group">
+    <img class="image" width="150" src="@image" />
+</div>
+
+<div class="col-xs-6 form-group">
+    <h2><small>@product.Producto</small></h2>
+    <h3><small>@product.Descripcion</small></h3>
+    <h4><small>Codigo Interno: @product.CodigoInterno</small></h4>
+    <h4><small>Stock: @Model.Sum(x => x.StockInventario)</small></h4>
+</div>
+
+<div class="clearfix"></div>
+
+<div class="col-xs-12 form-group">
+    <table style="width:100%" class="table table-hover table-condensed">
+        <thead>
+            <tr>
+                <th> Local </th>
+                <th> Stock </th>
+                <th> Pedir </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Count > 0)
+            {
+                foreach (var item in Model)
+                {    
+            <tr>
+                @Html.Hidden("IdLocal", item.IdLocal)
+                @Html.Hidden("Local", item.Local)
+                @Html.Hidden("IdProducto", item.IdProducto)
+                @Html.Hidden("Producto", product.CodigoInterno + " " + product.Producto)
+                @Html.Hidden("Descripcion", product.Descripcion)
+                @Html.Hidden("Stock", item.StockInventario)
+                @Html.Hidden("IdTipoUnidad", product.IdTipoUnidad)
+
+                <td>@item.Local</td>
+                <td>@item.StockInventario</td>
+                <td>
+                    <div id="producto_cantidad" class="input-spinner input-spinner-stock input-spinner-sx">
+                        <button type="button" class="btn btn-default">-</button>
+                        <input class="form-control cantidad-detalle" data-min="1" data-val="true" data-val-number="El campo cantidad debe tener un valor numerico."
+                               data-val-required="El campo cantidad es campo requerido."
+                               id="Detalle_Cantidad" name="Cantidad" type="text" value="1">
+                        <button type="button" class="btn btn-default">+</button>
+                    </div>
+                </td>
+            </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="3">No hay stock disponible</td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>
+<div class="clearfix"></div>

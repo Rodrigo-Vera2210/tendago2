@@ -1,0 +1,248 @@
+﻿@using TendaGo.Web.Models
+@using TendaGo.Web.ApplicationServices
+@model ClienteViewModel
+@{
+    var listaPaises = (SelectList)ViewBag.ListaPaises;
+    var listaSectores = (SelectList)ViewBag.ListaSectores;
+
+    var listaProvincias = (SelectList)ViewBag.ListaProvincias ?? new SelectList(new SelectListItem[0]);
+    var listaCiudades = (SelectList)ViewBag.ListaCiudades ?? new SelectList(new SelectListItem[0]);
+
+
+    var tiposIdentidad = new[] {
+        new SelectListItem{ Text = "Cedula", Value = "C" },
+        new SelectListItem{ Text="RUC", Value="R" },
+        new SelectListItem{ Text="Pasaporte", Value="P" }
+    };
+
+    var listaIdentidad = new SelectList(tiposIdentidad, "Value", "Text");
+}
+
+@using (Html.BeginForm("CrearCliente", "NotaPedido", FormMethod.Post, new { id = "crearClienteForm", role = "form", @enctype = "multipart/form-data" }))
+{
+    if (Model.Id > 0)
+    {
+        @Html.Hidden("Id", Model.Id)
+    }
+
+    @Html.Hidden("IdEmpresa", User.Identity.GetIdEmpresa())
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header modal-header-inventory">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Nuevo Cliente</h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="divCliente">
+                    @Html.AntiForgeryToken()
+
+                    <ul class="nav nav-tabs nav-tabs-no-margin bordered">
+                        <li class="active">
+                            <a href="#tab_datos.tab-pane" data-toggle="tab">
+                                <span class="visible-xs"><i class="entypo-user"></i></span>
+                                <span class="hidden-xs">Datos Cliente</span>
+                            </a>
+                        </li>
+                        @*<li>
+                                <a href="#foto" data-toggle="tab">
+                                    <span class="visible-xs"><i class="entypo-picture"></i></span>
+                                    <span class="hidden-xs">Foto</span>
+                                </a>
+                            </li>*@
+                        <li>
+                            <a href="#tab_observaciones.tab-pane" data-toggle="tab">
+                                <span class="visible-xs"><i class="entypo-alert"></i></span>
+                                <span class="hidden-xs">Observaciones</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content tab-content-no-margin">
+                        <div class="tab-pane active" id="tab_datos">
+                            <div>
+
+                                <div class="form-group row">
+                                    @Html.LabelFor(x => x.TipoIdentificacion, new { @class = "col-sm-3 control-label" })
+                                    <div class="col-sm-9">
+                                        @Html.DropDownListFor(x => x.TipoIdentificacion, listaIdentidad, new { @class = "form-control tipo-identidad", })
+                                        @Html.ValidationMessageFor(x => x.TipoIdentificacion)
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    @Html.LabelFor(x => x.Identificacion, new { @class = "col-sm-3 control-label" })
+                                    <div class="col-sm-9">
+                                        @Html.TextBoxFor(x => x.Identificacion, new { @class = "form-control valor-identidad", @maxlength = "10", @minlength = "10", @type = "number" })
+                                        @Html.ValidationMessageFor(x => x.Identificacion)
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    @Html.LabelFor(x => x.RazonSocial, new { @class = "col-sm-3 control-label" })
+                                    <div class="col-sm-9">
+                                        @Html.TextBoxFor(x => x.RazonSocial, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(x => x.RazonSocial)
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    @Html.LabelFor(x => x.IdPais, new { @class = "col-sm-3 control-label" })
+                                    <div class="col-sm-9">
+                                        @Html.DropDownListFor(x => x.IdPais, listaPaises, "Seleccione un pais", new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(x => x.IdPais)
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    @Html.LabelFor(x => x.IdProvincia, new { @class = "col-sm-3 control-label" })
+                                    <div class="col-sm-9">
+                                        @Html.DropDownListFor(x => x.IdProvincia, listaProvincias, new { @class = "form-control", @disabled = "disabled" })
+                                        @Html.ValidationMessageFor(x => x.IdProvincia)
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    @Html.LabelFor(x => x.IdCiudad, new { @class = "col-sm-3 control-label" })
+                                    <div class="col-sm-9">
+                                        @Html.DropDownListFor(x => x.IdCiudad, listaCiudades, new { @class = "form-control", @disabled = "disabled" })
+                                        @Html.ValidationMessageFor(x => x.IdCiudad)
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    @Html.LabelFor(x => x.IdSector, new { @class = "col-sm-3 control-label" })
+                                    <div class="col-sm-9">
+                                        @Html.DropDownListFor(x => x.IdSector, listaSectores, "Seleccione un sector", new { @class = "form-control", @disabled = "disabled" })
+                                        @Html.ValidationMessageFor(x => x.IdSector)
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    @Html.LabelFor(x => x.Direccion, new { @class = "col-sm-3 control-label" })
+                                    <div class="col-sm-9">
+                                        @Html.TextBoxFor(x => x.Direccion, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(x => x.Direccion)
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    @Html.LabelFor(x => x.Telefono, new { @class = "col-sm-3 control-label" })
+                                    <div class="col-sm-9">
+                                        @Html.TextBoxFor(x => x.Telefono, new { @class = "form-control", @type = "number" })
+                                        @Html.ValidationMessageFor(x => x.Telefono)
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    @Html.LabelFor(x => x.Celular, new { @class = "col-sm-3 control-label" })
+                                    <div class="col-sm-9">
+                                        @Html.TextBoxFor(x => x.Celular, new { @class = "form-control" })
+                                        @*@Html.ValidationMessageFor(x => x.Celular)*@
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    @Html.LabelFor(x => x.Correo, new { @class = "col-sm-3 control-label" })
+                                    <div class="col-sm-9">
+                                        @Html.TextBoxFor(x => x.Correo, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(x => x.Correo)
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    @Html.LabelFor(x => x.EstadoCivil, new { @class = "col-sm-3 control-label" })
+                                    <div class="col-sm-9">
+                                        @Html.TextBoxFor(x => x.EstadoCivil, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(x => x.EstadoCivil)
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    @Html.LabelFor(x => x.NivelEstudio, new { @class = "col-sm-3 control-label" })
+                                    <div class="col-sm-9">
+                                        @Html.TextBoxFor(x => x.NivelEstudio, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(x => x.NivelEstudio)
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    @Html.LabelFor(x => x.Profesion, new { @class = "col-sm-3 control-label" })
+                                    <div class="col-sm-9">
+                                        @Html.TextBoxFor(x => x.Profesion, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(x => x.Profesion)
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    @Html.LabelFor(x => x.FechaNacimiento, new { @class = "col-sm-3 control-label" })
+                                    <div class="col-sm-9">
+                                        @Html.EditorFor(x => x.FechaNacimiento, new { @type = "date", @class = "form-control" })
+                                        @Html.ValidationMessageFor(x => x.FechaNacimiento)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @*<div class="tab-pane" id="foto">
+                                <div class="form-group row">
+                                        @Html.LabelFor(x => x.Foto, new { @class = "col-sm-3 control-label" })
+                                        <div class="col-sm-9">
+                                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;" data-trigger="fileinput">
+                                                </div>
+                                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px"></div>
+                                                <div>
+                                                    <span class="btn btn-white btn-file">
+                                                        <span class="fileinput-new">Seleccionar Imagen</span>
+                                                        <span class="fileinput-exists">Cambiar</span>
+                                                        <input type="file" name="file" id="file" accept="image/*">
+                                                    </span>
+                                                    <a href="#" class="btn btn-info fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>*@
+
+                        <div class="tab-pane" id="tab_observaciones">
+                            <div class="form-group row">
+                                @Html.LabelFor(x => x.Observaciones, new { @class = "col-sm-3 control-label" })
+                                <div class="col-sm-9">
+                                    @Html.TextAreaFor(x => x.Observaciones, new { @class = "form-control no-resize", rows = "3" })
+                                    @Html.ValidationMessageFor(x => x.Observaciones)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer modal-footer-inventory">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button id="btnCrearCliente" type="button" class="btn btn-blue btn-add-datail">Guardar</button>
+            </div>
+        </div>
+    </div>
+}
+
+<script src="~/Scripts/TendaGo.client.crear.js" type="text/javascript"></script>
+
+<script>
+
+
+    MantCliente.idPais = '@Model.IdPais';
+    MantCliente.idCiudad = '@Model.IdCiudad';
+    MantCliente.idProvincia = '@Model.IdProvincia';
+    MantCliente.idSector = '@Model.IdSector';
+    MantCliente.urlPais = '@Url.Action("ObtenerProvinciasPorPais", "NotaPedido")';
+    MantCliente.urlProvincia = '@Url.Action("ObtenerCiudadesPorProvincia", "NotaPedido")';
+    MantCliente.urlSector = '@Url.Action("ObtenerCiudadesPorProvincia", "NotaPedido")';
+    console.log(MantCliente);
+
+    MantCliente.init();
+
+</script>
+
+@{
+    var errorMsg = ViewData["ErrorMessage"];
+    if (errorMsg != null)
+    {
+        <script>
+            toastr.warning("@errorMsg")
+        </script>
+    }
+     
+}

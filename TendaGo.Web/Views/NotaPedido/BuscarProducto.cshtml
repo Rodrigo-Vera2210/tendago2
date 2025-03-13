@@ -1,0 +1,34 @@
+﻿@using TendaGo.Web.Models
+@model List<ProductoViewModel>
+
+<div class="row">
+    @foreach (var producto in Model)
+    {
+        <div class="col-md-3 col-xs-6">
+            <div class="tile-title tile-gray title-left">
+                <div class="icon">
+                    <i class="fa fa-picture-o"></i>
+                </div>
+                <div class="title title-left">
+                    <h4>@producto.NombreProducto</h4>
+                    <p>@producto.DescripcionProducto</p>
+                    <div class="title-buttons">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-sm btn-default btn-product-details">
+                                <span class="hidden-xs">Ver Detalles</span>
+                                <i class="entypo-eye"></i>
+                            </button>
+                        </div>
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-sm btn-default btn-add-product" onclick="mostrarProducto(@producto.Id)">
+                                <span class="hidden-xs">Agregar</span>
+                                <i class="entypo-basket"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }       
+
+</div>

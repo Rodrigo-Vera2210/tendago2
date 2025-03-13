@@ -1,0 +1,28 @@
+﻿@model TendaGo.Web.Models.ReportViewModel
+<ol class="breadcrumb bc-3 small hidden-xs breadcrumb-no-padding">
+    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home</a></li>
+    <li>Reportes</li>
+    <li class="active"><strong>Dashboard</strong></li>
+</ol>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left">
+            <h3>Dashboard</h3>
+        </div>
+    </div>
+</div>
+
+@Html.DisplayForModel()
+
+@section scripts{
+
+<script>
+    menu_settings.parentMenu = 'MnuDashboard';
+    menu_settings.optionMenu = 'OpcDashboard';
+
+    $(function () {
+        SetActiveMenu();
+    });
+</script>
+}

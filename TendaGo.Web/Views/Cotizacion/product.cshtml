@@ -1,0 +1,47 @@
+﻿@using TendaGo.Common
+@using TendaGo.Web.ApplicationServices
+
+@model LiteProductDto
+
+@if (Model != null)
+{ 
+    var color = string.Format("color0{0}", ((Model.IdDivision % 6) + 1));
+
+
+    <a href="javascript:void(0)" class="addPct" id="product-@Model.Id" onclick="add_posale('@Model.Id')">
+        <div class="product color00 flat-box waves-effect waves-block"
+             title="@Model.CodigoInterno   @Model.Producto
+@Model.Descripcion
+
+STOCK:  @Model.Stock
+MINIMO: @Model.StockMinimo ">
+            <img src="@Server.ImageToBase64String(Model.PathArchivo)" alt="@Model.Descripcion">
+            @*<img src="@Server.ImageToBase64String("~" + AppServiceBase.Empresa.RaizArchivo + Model.PathArchivo)" alt="@Model.Descripcion">*@
+            <br /><br />
+            <div class="mask">
+                <h3 style="color:black">
+                    <span class="stock">@Model.CodigoInterno</span>
+                    <br />
+                    <b>STOCK: @Model.Stock</b>
+                    <br />
+                    <b>MIN: @Model.StockMinimo</b>
+                </h3>
+
+            </div>
+
+            <div class="product-info">
+                <h3>
+                    @Model.Producto <br />
+                    <small style="color:white"> @((Model.Descripcion ?? "").Replace(Model.Producto, "").Replace(Model.CodigoInterno, ""))</small>
+                </h3>
+                <input type="hidden" id="idname-@Model.Id" name="name" value="@Model.Producto">
+                <input type="hidden" id="category" name="category" value="@Model.IdDivision">
+                <input type="hidden" id="tipo" name="tipo" value="@Model.TipoProducto">
+
+            </div>
+
+
+        </div>
+    </a>
+
+}

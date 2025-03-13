@@ -1,0 +1,154 @@
+﻿@using TendaGo.Web.Models
+@model NotaPedidoModel
+@{
+    var editarValores = (ViewBag.Accion == "Entregar");//(bool)ViewBag.EditarPagos;
+    var listaMediosPago = (IEnumerable<SelectListItem>)ViewBag.ListaMediosPago;
+}
+
+<table id="tablaDetalleCuentasCobrar" class="table datatable table-bordered table-hover">
+    <thead>
+        <tr class="text-sm">
+            <th><label>#Pago</label></th>
+            <th><label>Fecha Pago</label></th>
+            <th><label>V.Cuota</label></th>
+            <th><label>V.Pagado</label></th>
+            <th><label>Saldo</label></th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.CuentasPorCobrar.Count; i++)
+        {
+            var valorPagado = Model.CuentasPorCobrar[i].Valor - Model.CuentasPorCobrar[i].Saldo;
+            <tr>
+                <td>
+                    @Html.Hidden("CuentasPorCobrar.Index", i)
+                    @Html.HiddenFor(m => m.CuentasPorCobrar[i].Numero)
+                    @Model.CuentasPorCobrar[i].Numero
+
+                    @if (Model.CuentasPorCobrar[i].Id > 0)
+                    {
+                        @Html.HiddenFor(m => m.CuentasPorCobrar[i].Id)
+                    }
+                </td>
+                <td>
+                    @Html.HiddenFor(m => m.CuentasPorCobrar[i].ValorPendiente)  
+                    @Html.HiddenFor(m => m.CuentasPorCobrar[i].FechaVencimiento)
+                    @Model.CuentasPorCobrar[i].FechaVencimiento.ToCustomFormatString()
+                </td>
+                <td class="text-right">
+                    @Html.HiddenFor(m => m.CuentasPorCobrar[i].Valor)
+                    @Model.CuentasPorCobrar[i].Valor.ToCustomFormatString()
+                </td>
+                <td class="text-right">
+                    @*@if (editarValores)
+                    {
+                        @Html.TextBoxFor(m => m.CuentasPorCobrar[i].ValorPagado, new { @class = "form-control text-right text-valor-pagado input-money", @readonly = "readonly" })
+                    }
+                    else
+                    {
+                        @valorPagado.ToCustomFormatString()
+                        @Html.Hidden(string.Format("CuentasPorCobrar[{0}].ValorPagado", i), valorPagado)
+
+                    }*@
+                        @valorPagado.ToCustomFormatString()
+                        @Html.Hidden(string.Format("CuentasPorCobrar[{0}].ValorPagado", i), valorPagado)
+                </td> 
+                <td class="text-right">
+                    @if (editarValores)
+                    {
+                        @Html.TextBoxFor(m => m.CuentasPorCobrar[i].Saldo, new { @class = "form-control transparente readonly text-right ", @readonly = "readonly" })
+                    }
+                    else
+                    {
+                        @Html.HiddenFor(m => m.CuentasPorCobrar[i].Saldo)
+                        @Model.CuentasPorCobrar[i].Saldo.ToCustomFormatString()
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        @{
+            decimal total = Model.CuentasPorCobrar.Sum(x => x.Valor);
+            decimal totalPagado = Model.CuentasPorCobrar.Sum(x => x.ValorPagado);
+            decimal saldo = total - totalPagado;
+            decimal vuelto = 0M;
+            if (saldo < 0)
+            {
+                vuelto = -saldo;
+                saldo = 0M;
+            }
+        }
+
+        <tr>
+            <th colspan="4" style="text-align:right">Saldo Total:</th>
+            <th class="text-right total bold">
+                @Html.Hidden("TotalPagado", saldo)
+                $ @saldo.ToCustomFormatString()
+            </th>
+        </tr>
+
+        @if (vuelto > 0)
+        {
+            <tr class="bg-info">
+                <th class="bg-info" colspan="4" style="text-align:right" title="Devolución a favor del Cliente">Devoluci&oacute;n:</th>
+                <th class="bg-info text-right bold">
+                    @Html.Hidden("Vuelto", vuelto)
+                    $ @vuelto.ToCustomFormatString()
+                </th>
+            </tr>
+        }
+    </tfoot>
+</table>
+
+
+<script>
+    $(document).ready(function () {
+
+        var tableCuentasCobrar = $('#tablaDetalleCuentasCobrar').DataTable(opcionesDataTableNoSearching);
+
+        $(".input-money").maskMoney(optionsMaskMoney);
+        $(".input-money").maskMoney('mask');
+
+        $(".text-valor-pagado").on('change paste keyup', function (e) {
+            recalcularTotalesCuentasCobrar(this);
+        });
+
+        ////////////////////////////////
+      //  processing = true;
+      //var idFormaPago = $("#IdFormaPago").val();
+      //var valorTotal = "@total" * 1;
+      //var totalPagado = "@totalPagado" * 1;
+      //
+      //if (idFormaPago == "1" && valorTotal > totalPagado) {
+      //    $("#IdFormaPago").val(2);
+      //    $("#DesFormaPago").text("CREDITO");
+      //}
+      //else if (idFormaPago == "2" && valorTotal <= totalPagado) {
+      //    $("#IdFormaPago").val(1);
+      //    $("#DesFormaPago").text("CONTADO");
+      //}
+      //processing = false;
+      /////////////////////////////
+
+        function recalcularTotalesCuentasCobrar(element) {
+            var $tr = $(element).closest('tr');
+            var valorCuota = parseFloat($tr.find('td:eq(2) input').maskMoney('unmasked')[0]);
+            var valorPagado = parseFloat($tr.find('td:eq(3) input').maskMoney('unmasked')[0]);
+            var subtotalPagado = parseFloat((valorCuota - valorPagado).toFixed(2));
+            $tr.find('td:eq(5) input').maskMoney('mask', subtotalPagado);
+
+            var totalPagado = 0;
+            $.each($("#tablaDetalleCuentasCobrar tbody tr"), function () {
+                totalPagado += parseFloat($(this).find('td:eq(5) input').maskMoney('unmasked')[0]);
+            });
+            totalPagado = parseFloat(totalPagado.toFixed(2));
+            $("#TotalPagado").maskMoney('mask', totalPagado);
+        }
+
+    });
+
+
+
+
+</script>

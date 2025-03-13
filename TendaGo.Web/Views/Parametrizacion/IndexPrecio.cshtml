@@ -1,0 +1,161 @@
+﻿@{
+    ViewBag.Title = "Precios";
+    var filtrosBusqueda = (IEnumerable<SelectListItem>)ViewBag.FiltrosBusqueda;
+}
+
+@Styles.Render("~/Styles/datatables"))
+
+<ol class="breadcrumb bc-3 small hidden-xs breadcrumb-no-padding">
+    <li>
+        <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home</a>
+    </li>
+    <li>
+        Parametrizaciones
+    </li>
+    <li class="active">
+        <strong>Producto</strong>
+    </li>
+</ol>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left">
+            <h3>Precios</h3>
+        </div>
+    </div>
+</div>
+<br />
+<div id="divBuscarProducto" class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm("ConsultaProducto", "Parametrizacion", FormMethod.Post, new { id = "consultaProductoForm" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="input-group">
+                <div class="input-group-btn">
+                    @Html.DropDownList("filtroBusqueda", filtrosBusqueda, new { @class = "btn btn-blue" })
+                </div>
+
+                @Html.TextBox("textoBusqueda", "", new { @class = "form-control" })
+
+                <span class="input-group-btn">
+                    <button type="button" id="btnConsultaProducto" class="btn btn-blue">
+                        <span class="hidden-xs">Buscar</span>
+                        <i class="entypo-search"></i>
+                    </button>
+                </span>
+            </div>
+        }
+    </div>
+</div>
+<br />
+<div class="panel panel-primary panel-shadow">
+    <div class="panel-heading">
+        <div class="panel-title">.</div>
+        <div class="panel-options">
+            <a href="#" class="bg-info" id="btnEditarPrecios">
+                <span>Editar Precios</span>
+                <i class="entypo-pencil"></i>
+            </a>
+        </div>
+    </div>
+    <div id="divProducto" class="panel-body with-table">
+        <div class="row">
+            <table id="tablaProductos" class="table datatable table-bordered table-hover">
+                <thead>
+                    <tr class="text-sm">
+                        <th></th>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th width="40%">Descripcion</th>
+                        <th>Codigo Interno</th>
+                        <th>Stock</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/wizard")
+    @Scripts.Render("~/bundles/maskmoney")
+    @Scripts.Render("~/bundles/fileinput")
+
+    <script>
+
+    $(function () {
+        var tablaProductos = $("#tablaProductos").DataTable(opcionesDataTableSingleSelect);;
+
+        $("#btnConsultaProducto").click(function () {
+            $("#consultaProductoForm").submit();
+        });
+
+        $("#consultaProductoForm").submit(function (event) {
+            event.preventDefault();
+            var $div = $(this).closest('div');
+            var request_url = $(this).attr("action");
+            var request_method = $(this).attr("method");
+            var form_data = $(this).serialize();
+            $.ajax({
+                url: request_url,
+                type: request_method,
+                data: form_data,
+                beforeSend: function () {
+                    $("#divProducto").empty();
+                    blockUI($div)
+                    $div.addClass('loading');
+                },
+                complete: function () {
+                    unblockUI($div)
+                    $div.removeClass('loading');
+                }
+            }).done(function (respuesta) {
+                if (respuesta != "") {
+                    $("#divProducto").html(respuesta);
+                    tablaProductos = $("#tablaProductos").DataTable(opcionesDataTableSingleSelect);
+                }
+            });
+        });
+
+        $("#btnEditarPrecios").click(function () {
+            var row = tablaProductos.row('.selected');
+            if (row.length) {
+                var oData = row.data();
+                var idProducto = oData[1];
+
+                $('#divModal').empty();
+                $('#divModal').modal('show', { backdrop: 'static' });
+
+                $.ajax({
+                    url: '@Url.Action("ConsultaPrecio", "Parametrizacion")',
+                        type: 'post',
+                        data: { idProducto: idProducto },
+                        beforeSend: function () {
+                        },
+                        complete: function () {
+                        }
+                    }).done(function (respuesta) {
+                        if (respuesta != "") {
+                            $('#divModal').html(respuesta);
+                        }
+                    });
+                }
+            });
+
+        
+        });
+
+    </script>
+}
+
+
+
+
+
+
+
+

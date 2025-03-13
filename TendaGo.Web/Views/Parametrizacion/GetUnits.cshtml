@@ -1,0 +1,36 @@
+﻿@model IEnumerable<TendaGo.Common.MeasurementUnitDto>
+
+<div class="table-responsive">
+    <table id="unitsTable" class="table datatable table-bordered table-hover">
+        <thead>
+            <tr>
+                <th width="35%">Unidad</th>
+                <th>Estado</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.UnidadMedida)</td>
+                <td>
+                    @if (item.IdEstado == 1)
+                    {
+                        <span class="label label-outline label-success">Activo</span>
+                    }
+                    else
+                    {
+                        <span class="label label-outline label-danger">Inactivo</span>
+                    }
+                </td>
+                <td>
+                    <button class="btn btn-default btn-sm btn-icon icon-left" onclick="LoadFormMant('@item.Id');">
+                        <i class="entypo-pencil"></i>Editar
+                    </button>
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

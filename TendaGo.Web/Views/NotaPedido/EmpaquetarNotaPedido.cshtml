@@ -1,0 +1,150 @@
+﻿@using TendaGo.Web.Models
+@model EmpaquetadoNotaPedidoViewModel
+@{
+    var jsonTiposPaquete = (string)ViewBag.JsonTiposPaquete;
+}
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header modal-header-inventory ">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Nota Pedido: @Model.Id</h4>
+            <h5 class="modal-title">Cliente: @Model.RazonSocial</h5>
+        </div>
+        <div class="modal-body">
+            <div>
+                @using (Html.BeginForm("Empaquetar", "NotaPedido", FormMethod.Post, new { id = "empaquetarNotaPedidoForm", @class = "form-wizard" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(x => x.Id)
+
+                    <h4>Detalle Nota Pedido</h4>
+                    <div class="table-responsive">
+                        <table id="tablaDetalleNotasPedido" class="table datatable table-bordered table-hover">
+                            <thead>
+                                <tr class="text-sm">
+                                    <th class="text-center">Seleccionar</th>
+                                    <th>Código</th>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Tipo Unidad</th>
+                                    <th>Precio</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int i = 0; i < Model.DetalleNotaPedido.Count; i++)
+                                {
+                                    <tr>
+                                        <td class="text-center">
+                                            <div class="checkbox checkbox-replace color-blue">
+                                                <input type="checkbox">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            @Model.DetalleNotaPedido[i].CodigoInterno
+                                        </td>
+                                        <td>
+                                            @Html.HiddenFor(m => m.DetalleNotaPedido[i].Id)
+                                            @Html.HiddenFor(m => m.DetalleNotaPedido[i].IdProducto)
+                                            @Model.DetalleNotaPedido[i].NombreProducto
+                                        </td>
+                                        <td class="text-right">
+                                            @Html.HiddenFor(m => m.DetalleNotaPedido[i].Cantidad)
+                                            @Model.DetalleNotaPedido[i].Cantidad
+                                        </td>
+                                        <td class="text-right">
+                                            @Html.HiddenFor(m => m.DetalleNotaPedido[i].IdTipoUnidad)
+                                            @Model.DetalleNotaPedido[i].DesTipoUnidad
+                                        </td>
+                                        <td class="text-right">
+                                            @Html.HiddenFor(m => m.DetalleNotaPedido[i].Precio)
+                                            @Model.DetalleNotaPedido[i].Precio.ToCustomFormatString()
+                                        </td>
+                                        <td class="text-right">@Model.DetalleNotaPedido[i].Subtotal.ToCustomFormatString()</td>
+                                    </tr>
+                                }
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="6" style="text-align:right">Total:</th>
+                                    <th class="text-right">@Model.Total.ToCustomFormatString()</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                }
+            </div>
+        </div>
+        <div class="modal-footer modal-footer-inventory ">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="button" id="btnEmpaquetarNotaPedido" class="btn btn-blue btn-add-datail">Empaquetar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(function () {
+
+        //document.getElementById("btnEmpaquetarNotaPedido").disabled = true;
+        //$.validator.unobtrusive.parse($("#empaquetarNotaPedidoForm"));
+        //$("#empaquetarNotaPedidoForm").formwizardcustom();
+        //var tableDetalleNotaPedido = $('#tablaDetalleNotasPedido').DataTable(opcionesDataTable);
+        //var tableEmpaquetado = $('#tablaDetalleEmpaquetado').DataTable(opcionesDataTable);
+        var tableDetalleNotaPedido = $("#tablaDetalleNotasPedido").basicDatatable();
+        var tableEmpaquetado = $("#tablaDetalleEmpaquetado").basicDatatable();
+
+        $("#btnEmpaquetarNotaPedido").click(function () {
+            var cantidad = 0;
+            var validar = false;
+            $.each($("#tablaDetalleEmpaquetado tbody tr"), function () {
+                cantidad = parseFloat($(this).find('td:eq(1) input').val());
+                if (cantidad <= 0) {
+                    validar = true;
+                    return false;
+                }
+            });
+
+            if (validar) {
+                toastr.error("Existe un Paquete con cantida 0", "", optionsToastr);
+                return;
+            }
+
+            var formEmpaquetarNotaPedido = $("#empaquetarNotaPedidoForm");
+            var $div = $(formEmpaquetarNotaPedido).closest('div');
+            var action_url = formEmpaquetarNotaPedido.attr("action");
+            var request_method = formEmpaquetarNotaPedido.attr("method");
+            var form_data = formEmpaquetarNotaPedido.serialize();
+
+            $.ajax({
+                url: action_url,
+                type: request_method,
+                data: form_data,
+                beforeSend: function () {
+                    blockUI($div)
+                    $div.addClass('loading');
+                },
+                complete: function () {
+                    unblockUI($div)
+                    $div.removeClass('loading');
+                }
+            }).done(function (respuesta) {
+                if (respuesta != "") {
+                    if (respuesta.success == true) {
+                        toastr.success(respuesta.mensaje, "", optionsToastr);
+                        actualizarConsultaNotaPedido();
+                        $("#divModal").modal('hide');
+                    }
+                    else {
+                        toastr.warning(respuesta.mensaje, "", optionsToastr);
+                    }
+                }
+            });
+        });
+
+    });
+
+
+</script>

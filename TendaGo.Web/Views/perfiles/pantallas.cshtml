@@ -1,0 +1,131 @@
+﻿
+@{
+    ViewBag.Title = "Pantallas por Perfil";
+}
+@Styles.Render("~/Styles/datatables")
+@Styles.Render("~/Styles/select2")
+
+
+<ol class="breadcrumb bc-3 small hidden-xs breadcrumb-no-padding">
+    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home</a></li>
+    <li>Parametrizaciones</li>
+    <li class="active"><strong>@ViewBag.Title</strong></li>
+</ol>
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left">
+            <h3>@ViewBag.Title</h3>
+        </div>
+        @*<div class="pull-right">
+                <button class="btn btn-info btn-icon icon-left" onclick="">
+                    <i class="entypo-list-add"></i>Nuevo
+                </button>
+            </div>*@
+    </div>
+</div>
+<div class="row">
+    <div id="divPerfiles" class="col-lg-3 col-md-5"></div>
+    <div id="divMant" class="col-lg-9 col-md-7">
+        <div id="divModulos">
+            @Html.Label("Módulos")
+            <select id="cmbModulos" class="form-control input-sm"></select>
+        </div>
+        <input type="hidden" id="idPerfil" />
+        <br />
+        <p><h3 id="selectedProfile"></h3><h3 id="selectedModule"></h3></p>
+        <div id="divDatatable"></div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/select2")
+
+    <script>
+        menu_settings.parentMenu = 'MnuParam';
+        menu_settings.optionMenu = 'OpcPantallas';
+        $(function() {
+            SetActiveMenu();
+            getProfiles();
+            loadModulos();
+        });
+
+        var getProfilesUrl = '@Url.Action("GetProfilesForDisplays", "perfiles")';
+
+        function getProfiles() {
+            $.ajax({
+                url: getProfilesUrl,
+                type: "GET",
+                beforeSend: function() {
+                    $("#divPerfiles")
+                        .append('<div id="divLoading" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+                },
+                complete: function() {
+                    $("#divLoading").remove();
+                }
+            }).done(function(dataResponse) {
+                if (dataResponse != "") {
+                    $("#divPerfiles").html(dataResponse);
+                    $("#profilesTable").basicDatatable();
+                }
+            });
+        }
+
+        var getModulosUrl = '@Url.Action("GetModulos", "perfiles")';
+
+        function loadModulos() {
+            $.ajax({
+                url: getModulosUrl,
+                type: "GET",
+                beforeSend: function() {
+                    $("#divModulos")
+                        .append('<div id="divLoading" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+                },
+                complete: function() {
+                    $("#divLoading").remove();
+                }
+            }).done(function(dataResponse) {
+                if (dataResponse != "") {
+                    $("#cmbModulos").append('<option value=""> Seleccione Módulo</option>');
+                    $.each(dataResponse,
+                        function(i, modu) {
+                            $("#cmbModulos").append(`<option value="${modu.Id}">${modu.Modulo}</option>`);
+                        });
+                    $("#cmbModulos").select2();
+                }
+            });
+        }
+
+        function selectProfile(idPerfil, perfil) {
+            $("#selectedProfile").text('Perfil ['+perfil+"]");
+            $("#idPerfil").val(idPerfil);
+        }
+
+        $("#cmbModulos").on("change",function(e) {
+            var idModulo = $("#cmbModulos option:selected").val();
+            var modulo = $("#cmbModulos option:selected").text();
+            if (idModulo !== "") {
+                //cargar las paginas de ese modulo
+                getDisplaysByModule(idModulo);
+                $("#selectedModule").text("Pantallas Módulo ["+modulo+"]");
+            }
+        });
+
+        var getDisplaysUrl = '@Url.Action("GetDisplaysByModule", "perfiles")';
+
+        function getDisplaysByModule(idModulo) {
+            $.ajax({
+                url: getDisplaysUrl,
+                data: { idModule: idModulo },
+                type: "GET"
+            }).done(function(dataResponse) {
+                if (dataResponse != "") {
+                    $("#divDatatable").html(dataResponse);
+                    $("#displaysTable").datatableNoSortColumn({ column_no_sort:2});
+                }
+            });
+        }
+
+    </script>
+}

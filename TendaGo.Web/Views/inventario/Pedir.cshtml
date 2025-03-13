@@ -1,0 +1,480 @@
+﻿@using TendaGo.Common
+@using TendaGo.Web.Models
+@using TendaGo.Web.ApplicationServices
+
+@model TransferenciaViewModel
+@{
+    ViewBag.Title = "Pedir a Bodega";
+
+    var locales = InventarioAppService
+        .ObtenerLocales()
+        .Select(x => new { x.Id, x.Local }).ToList();
+
+    var localesOrigen = locales
+        .Where(x => x.Id != Model.IdLocalDestino)
+        .ToList();
+
+    Model.Fecha = DateTime.Today;
+    Model.IdLocalDestino = Session.GetIdLocal() ?? 0;
+    var pedir_vendidos = (ViewData["PedirVendidos"] != null);
+
+    //    Model.Detalle = new List<DetalleTransferenciaViewModel>
+    //{
+    //        new DetalleTransferenciaViewModel{ Cantidad=1, CodigoInterno="NC1500", DescripcionProducto="COTONETES MATIAS", Id="TRSA-12dsfsd", IdLocal=1, IdProducto=1, IdTipoUnidad=1 }
+    //    };
+
+    var desde = Request["desde"] ?? DateTime.Today.ToString("yyyy-MM-dd");
+    var hasta = Request["hasta"] ?? DateTime.Today.ToString("yyyy-MM-dd");
+    var stockBodegaSelect = 0;
+}
+@section styles{
+    <style>
+        span.select2 {
+            width: 100% !important;
+        }
+
+        .tile-title .title p {
+            padding-bottom: 5px;
+        }
+
+        #idProvider {
+            width: 0;
+            height: 0;
+        }
+    </style>
+
+    @Styles.Render("~/Styles/datatables")
+    @Styles.Render("~/Styles/toggle")
+    @Styles.Render("~/Styles/select2")
+
+}
+
+<ol class="breadcrumb bc-3 small hidden-xs breadcrumb-no-padding">
+    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Inicio</a></li>
+    <li>Inventario</li>
+    <li class="active"><strong>Pedir a Bodega</strong></li>
+</ol>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left">
+            <h3>Pedir a Bodega</h3>
+        </div>
+    </div>
+</div>
+<br />
+<div class="row">
+    @using (Html.BeginForm("Pedir", "Inventario", FormMethod.Post, new { id = "transferForm", @class = "form-wizard validate" }))
+    {
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.IdVendedor)
+        @Html.HiddenFor(m => m.EstadoActual) 
+        @Html.AntiForgeryToken()
+        <div class="steps-progress">
+            <div class="progress-indicator"></div>
+        </div>
+
+        <ul>
+            <li class="active"> <a href="#tab1" data-toggle="tab"><span>1</span>Detalle de Productos</a> </li>
+            <li> <a href="#tab2" data-toggle="tab"><span>2</span>Datos del Pedido</a> </li>
+
+        </ul>
+
+
+
+        <div class="tab-content">
+
+
+            <div class="tab-pane active" id="tab1">
+                @if (pedir_vendidos)
+                {
+                <div class="row">
+                    <div class="col-sm-offset-4 col-sm-6 ">
+                        <div class="col-sm-4">
+                            @Html.Label("desde", "Fecha Inicio:", new { @class = "control-label" })
+                            <input type="date" class="fecha-desde form-control" style="max-width:150px;" value="@desde" />
+                        </div>
+
+                        <div class="col-sm-4">
+                            @Html.Label("hasta", "Fecha Fin:", new { @class = "control-label" })
+                            <input type="date" class="fecha-hasta form-control" style="max-width:150px;" value="@hasta" />
+                        </div>
+
+                        <div class="col-sm-4">
+                            <br />
+                            <button style="margin-top:10px;" type="button" class="btn btn-warning btn-icon icon-left" onclick="set_date()">
+                                <i class="entypo-export"></i> <span>Cargar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                }
+
+                <div class="row">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+
+                            <div class="row">
+
+
+                                <div class='col-sm-4'>
+                                    <button type="button" class="btn btn-primary btn-icon icon-left" id="btnNuevoDetalle">
+                                        Agregar
+                                        <i class="entypo-plus"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="panel-body with-table">
+
+                            <div class="table-responsive">
+
+
+
+                                <table id="tablaDetalle" class="table datatable table-bordered table-hover">
+                                    <thead>
+                                        <tr class="text-center">
+                                            <th>Producto</th>
+                                            @if (pedir_vendidos)
+                                            {
+                                                <th>Cantidad<br />Vendida</th>
+                                            }
+                                            <th>Stock<br />Actual</th>
+                                            <th>Local</th>
+                                            <th>Cantidad</th>
+                                            <th>Unidad</th>
+                                            <th class="text-center"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @if (Model.Detalle != null && Model.Detalle.Count > 0)
+                                        {
+                                            for (int i = 0; i < Model.Detalle.Count; i++)
+                                            {
+
+                                                //var stockLocales = ProductosAppService.ObtenerStockProductoLocales(Model.Detalle[i].IdProducto);
+                                                //var producto = stockLocales.OrderByDescending(x => x.StockInventario).FirstOrDefault();
+                                                var idProducto = Model.Detalle[i].IdProducto;
+                                                //var listaunidades = GetTipoUnidad(Model.Detalle[i].IdTipoUnidad);
+                                                //var max_stock = (producto != null ? producto.StockInventario : 0);
+                                                //var unidades = TipoUnidadAppService.ObtenerTiposUnidadPorProducto(idProducto, UnitTypeStatusEnum.Active); ;
+                                                //var unidad = unidades.FirstOrDefault();
+                                                //var localSelected = Model.Detalle[i].StockLocales.OrderByDescending(x => x.StockInventario).FirstOrDefault();
+                                                var localSelected = Model.Detalle[i].StockLocales.Where(x => x.IdLocal==15).FirstOrDefault();
+
+                                                var stock = localSelected != null ? localSelected.StockInventario : 0;
+                                                var stockClass = (Model.Detalle[i].StockLocales.Count > 0) ? "" : "bg-danger";
+
+                                                <tr class="@stockClass" data-uid="detalle_@i" >
+                                                    <td>
+                                                        <div class='input-group' style='width:100%;'>
+                                                            <input class='IdProducto' id='Detalle_@(i)__IdProducto' name='Detalle[@(i)].IdProducto' type='hidden' value="@idProducto">
+                                                            <input class='form-control Producto' id='Detalle_@(i)__Producto' name='Detalle[@(i)].Producto' readonly='readonly' type='text' value="@Model.Detalle[i].CodigoInterno |  @Model.Detalle[i].DescripcionProducto">
+                                                            <div class='input-group-btn'>
+                                                                <button type='button' class='btn btn-blue btn-add-product'>
+                                                                    <i class='entypo-search'></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        @Html.Hidden("Detalle.Index", i, new { @id = string.Format("Detalle_{0}__Index", i) })
+                                                    </td>
+                                                    @if (pedir_vendidos)
+                                                    {
+                                                        <td class="text-center">@Model.Detalle[i].Cantidad</td>
+                                                    }
+                                                    
+                                                    
+                                                    <td>
+                                                        <div class="input-group Stock-control text-center">
+                                                            <input type="hidden" name="Detalle[@(i)].Stock" value="@Model.Detalle[i].Stock">
+                                                            <span>@Model.Detalle[i].Stock</span>
+                                                        </div>
+                                                    </td>
+                                                    
+                                                    
+                                                    <td>
+                                                        <select id="Detalle_@(i)__IdLocal" name="Detalle[@(i)].IdLocal" class="form-control IdLocal-control" style="width:100%">
+                                                            @{
+                                                                if (Model.Detalle[i].StockLocales.Count > 0)
+                                                                {
+                                                                    foreach (var local in Model.Detalle[i].StockLocales)
+                                                                    {
+                                                                        var selected = "";
+                                                                        if (local == localSelected)
+                                                                        {
+                                                                            selected = "selected";
+                                                                            stockBodegaSelect= (int)local.StockInventario;
+                                                                        }
+                                                                        <option @selected value="@local.IdLocal" data-stock="@local.StockInventario">
+                                                                            @local.Local | Stock: @local.StockInventario |  @local.NombreUnidadMedida
+                                                                        </option>                                                                        
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option selected value="" data-stock="0">No hay stock en otros locales</option>
+                                                                }
+                                                            }
+                                                        </select>
+                                                    </td>
+
+
+                                                    <td data-value="">
+                                                            @if (stockBodegaSelect <= Model.Detalle[i].Cantidad)
+                                                            {
+                                                                Model.Detalle[i].Cantidad = stockBodegaSelect;
+                                                            }
+
+                                                           @Html.TextBoxFor(model => Model.Detalle[i].Cantidad, new
+                                                            {
+                                                                @class = "Cantidad-control form-control cantidad-entero",
+                                                                @data_val = "true",
+                                                                @data_val_number = "El campo cantidad debe tener un valor numerico.",
+                                                                @data_val_required = "El campo cantidad es campo requerido.",
+                                                                @min = 0,
+                                                                @max = stock,
+                                                                @min_value = 0,
+                                                                @max_value = stock,
+                                                                @type = "number",
+                                                                @style = "width:100%"
+                                                            })
+                                                    </td>
+
+                                                    <td>
+                                                        <select id="Detalle_@(i)__IdTipoUnidad" name="Detalle[@(i)].IdTipoUnidad" class="form-control IdTipoUnidad-control" style="width:100%">
+                                                            @if (Model.Detalle[i].Unidades != null && Model.Detalle[i].Unidades.Count > 0)
+                                                            {
+                                                                foreach (var unidad in Model.Detalle[i].Unidades)
+                                                                {
+                                                                    if (unidad.IdEstado == 1)
+                                                                    {
+
+                                                                        var idx = Model.Detalle[i].Unidades.IndexOf(unidad);
+
+                                                                        var selected = "";
+                                                                        //if (Model.Detalle[i].IdTipoUnidad == unidad.Id)
+                                                                        //{
+                                                                        //    selected = "selected";
+                                                                        //}
+                                                                        
+                                                                        if (idx == 0)
+                                                                        {
+                                                                            selected = "selected";
+                                                                        }
+
+                                                                        <option value="@unidad.Id" @selected data-cantidad="@unidad.CantidadMinima">
+                                                                            @unidad.TipoUnidad | Min: @unidad.CantidadMinima
+                                                                        </option>
+                                                                    }
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <option selected data-cantidad="0">
+                                                                    No Disponible
+                                                                </option>
+                                                            }
+
+                                                        </select>
+                                                    </td>
+
+                                                    <td class="text-center"><a href="javascript:;" class="btn delete-button"><i class="fa fa-trash"></i></a></td>
+
+
+                                                </tr>
+
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane" id="tab2">
+                <div class="row">
+
+
+                    <div class="col-md-offset-2 col-md-8">
+                        <div class="panel panel-primary">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+
+                                        <div class="row col-md-12">
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.Fecha, new { @class = "control-label" })
+                                                @Html.TextBoxFor(model => model.Fecha, "{0:yyyy-MM-dd}", new { @class = "form-control text-center", @type = "date-local", @data_format = "yyyy-mm-dd", @autocomplete = "off" })
+                                                @Html.ValidationMessageFor(model => model.Fecha, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="row col-md-12">
+                                            <div class="form-group">
+                                                @{
+                                                    object destinoConfig;
+
+                                                    if (Model.IdLocalDestino > 0)
+                                                    {
+                                                        destinoConfig = new { @class = "form-control readonly", @disabled = "disabled", @readonly = "readonly" };
+                                                        @Html.Hidden("IdLocalDestino", Model.IdLocalDestino)
+                                                    }
+                                                    else
+                                                    {
+                                                        destinoConfig = new { @class = "form-control" };
+                                                        @Html.LabelFor(model => model.IdLocalDestino, new { @class = "control-label" })
+                                                        @Html.DropDownListFor(model => model.IdLocalDestino, new SelectList(locales, "Id", "Local", Model.IdLocalDestino), destinoConfig)
+                                                        @Html.ValidationMessageFor(model => model.IdLocalDestino, "", new { @class = "text-danger" })
+                                                    }
+                                                }
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+
+                                        <div class="row col-md-12">
+                                            <div class="form-group">
+                                                @Html.Label("Observaciones", new { @class = "form-label" })
+                                                @Html.TextAreaFor(m => m.Observaciones, new { @class = "form-control", @rows = "5" })
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <ul class="pager wizard">
+                <li class="previous">
+                    <a href="#">
+                        <i class="entypo-left-open"></i>
+                        <span class="hidden-xs">Anterior</span>
+                    </a>
+                </li>
+                <li class="finish">
+                    <button type="submit" class="btn btn-success btn-icon icon-left btn-sm">
+                        <i class="entypo-floppy"></i>
+                        <span class="">Guardar</span>
+                    </button>
+                </li>
+                <li class="next">
+                    <a href="#">
+                        <span class="hidden-xs">Siguiente</span>
+                        <i class="entypo-right-open"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    }
+</div>
+
+<form action="@Request.Url" method="get" id="frmPedir">
+    @Html.HiddenFor(x => desde)
+    @Html.HiddenFor(x => hasta)
+</form>
+
+
+@section Scripts {
+    
+    @Scripts.Render("~/bundles/wizard")
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/datepicker")
+    @Scripts.Render("~/bundles/timepicker")
+    @Scripts.Render("~/bundles/fileinput")
+    @Scripts.Render("~/bundles/maskmoney")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/select2")
+    @Scripts.Render("~/bundles/toggle")
+    @Scripts.Render("~/bundles/inventory/transfer")
+    @Scripts.Render("~/bundles/productos/index")
+
+    <script>
+        
+        var jsonLocales = @Html.Raw(Json.Encode(locales));
+        var idDestino = @Model.IdLocalDestino;
+
+        searchModalSettings.url = "@Url.Action("BuscarParaModal", "productos")";
+        searchModalSettings.resultContainer = "divConsultaProductosModal";
+
+        menu_settings.parentMenu = 'MnuInventory';
+        menu_settings.optionMenu = 'OpcPedir';
+
+        $(function () {
+            blockUI(document.body), show_loading_bar(60);
+
+            SetActiveMenu();
+
+            if (idDestino == 0) {
+                selectLocal();
+            }
+
+            Transfer.Locales = @Html.Raw(Json.Encode(localesOrigen));
+            Transfer.Fecha = '@Model.Fecha.ToString("yyyy-MM-dd")';
+            Transfer.UnitTypeServiceUrl = '@Url.Action("SearchUnitTypes", "Productos")';
+            Transfer.GetItemStocksUrl = '@Url.Action("GetItemDetails")';
+            Transfer.ProductServiceUrl = '@Url.Action("SearchProducts", "Productos")';
+            Transfer.PhotoUrl = '@Url.Action("Photo", "Productos")';
+            Transfer.Init(@(Convert.ToInt32(pedir_vendidos)));
+
+            show_loading_bar(100);
+            unblockUI(document.body);
+        });
+
+        function set_date() {
+            blockUI(document.body);
+            show_loading_bar(25);
+            $("#frmPedir > input[name='desde']").val($(".fecha-desde").val());
+            $("#frmPedir > input[name='hasta']").val($(".fecha-hasta").val());
+            $("#frmPedir").submit();
+            show_loading_bar(50);
+        }
+
+        $(document).ready(function () {
+            $('.cantidad-entero').keypress(function (event) {
+                return isNumber(event, this)
+            });
+        });
+
+        
+    </script>
+
+
+
+}
+
+@functions{
+
+    List<UnitTypeDto> unidadList = new List<UnitTypeDto>();
+
+    List<SelectListItem> GetTipoUnidad(int idProducto)
+    {
+        var unidades = new List<UnitTypeDto>();
+
+        try
+        {
+            unidades = TipoUnidadAppService.ObtenerTiposUnidadPorProducto(idProducto, UnitTypeStatusEnum.Active); ;
+        }
+        catch (Exception) { }
+        unidadList = unidades;
+        return unidades.Select(m => new SelectListItem { Text = m.TipoUnidad, Value = m.Id.ToString() }).ToList();
+    }
+
+
+}
+

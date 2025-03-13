@@ -1,0 +1,107 @@
+﻿
+@{
+    var filtrosBusqueda = (IEnumerable<SelectListItem>)ViewBag.FiltrosBusqueda;
+}
+
+<div class="modal-dialog">
+    <div class="modal-content">
+
+        <div class="modal-header modal-header-inventory">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Buscar Productos</h4>
+        </div>
+
+        <div class="modal-body">
+            <div id="divBuscarProductos" class="row">
+                <div class="col-md-12">
+                    @using (Html.BeginForm("ConsultarProductos", "Compra", FormMethod.Post, new { id = "consultarProductosForm" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                @Html.DropDownList("filtroBusqueda", filtrosBusqueda, new { @class = "btn btn-blue" })
+                            </div>
+
+                            @Html.TextBox("textoBusqueda", "", new { @class = "form-control" })
+
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-blue">
+                                    <span class="hidden-xs">Buscar</span>
+                                    <i class="entypo-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                    }
+                </div>
+            </div>
+            <br />
+            <div id="divResultadoProductos">
+                <div class="table-responsive">
+                    <table id="tablaProductos" class="table datatable table-bordered table-hover">
+                        <thead>
+                            <tr class="text-sm">
+                                <th></th>
+                                <th>Id</th>
+                                <th>Nombre</th>
+                                <th>Codigo&nbsp;Interno</th>
+                                <th>Stock</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-footer modal-footer-inventory">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button id="btnSeleccionarProducto" type="button" class="btn btn-blue btn-add-datail">Seleccionar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+
+        var tablaProductos = $("#tablaProductos").DataTable(opcionesDataTableSingleSelect);
+
+        $("#consultarProductosForm").submit(function (event) {
+            event.preventDefault();
+            var $div = $(this).closest('div');
+            var post_url = $(this).attr("action");
+            var request_method = $(this).attr("method");
+            var form_data = $(this).serialize();
+            $.ajax({
+                url: post_url,
+                type: request_method,
+                data: form_data,
+                beforeSend: function () {
+                    $("#divResultadoProductos").empty();
+                    blockUI($div)
+                    $div.addClass('loading');
+                },
+                complete: function () {
+                    unblockUI($div)
+                    $div.removeClass('loading');
+                }
+            }).done(function (respuesta) {
+                if (respuesta != "") {
+                    $("#divResultadoProductos").html(respuesta);
+                    tablaProductos = $("#tablaProductos").DataTable(opcionesDataTableSingleSelect);
+                }
+            });
+        });
+
+        $("#btnSeleccionarProducto").click(function () {
+            var row = tablaProductos.row('.selected');
+            if (row.length) {
+                $("#divConsultaProductosModal").modal('hide');
+            }
+            else {
+                toastr.warning("Debe seleccionar un producto", "", optionsToastr);
+            }
+        });
+
+    });
+</script>

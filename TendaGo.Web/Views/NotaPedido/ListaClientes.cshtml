@@ -1,0 +1,42 @@
+﻿@using TendaGo.Web.Models
+@model List<ClienteViewModel>
+
+<div class="row">
+    <table id="tablaClientes" class="table datatable table-bordered table-hover">
+        <thead>
+            <tr class="text-sm">
+                <th>Identificacion</th>
+                <th>RazonSocial</th>
+                <td>Ciudad</td>
+                <th>Direccion</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cliente in Model)
+            {
+                <tr>
+                    <td>@cliente.Identificacion</td>
+                    <td>@cliente.RazonSocial</td>
+                    <td>
+                        @if (cliente.Ciudad != null)
+                        {
+                            @cliente.Ciudad.Nombre
+                        }
+                    </td>
+                    <td>@cliente.Direccion</td>
+                    <td>
+                        @{
+                            var itemJson = Newtonsoft.Json.JsonConvert.SerializeObject(cliente);
+                        }
+                        <button class="btn btn-default btn-icon icon-left" data-dismiss="modal" onclick="onSelectClient('@itemJson');">
+                            <i class="entypo-check"></i>Seleccionar
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@*data-dismiss="modal"*@ 

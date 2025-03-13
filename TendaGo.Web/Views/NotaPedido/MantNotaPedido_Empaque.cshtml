@@ -1,0 +1,84 @@
+﻿@using TendaGo.Web.ApplicationServices;
+@using TendaGo.Web.Models
+@model NotaPedidoModel
+
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="panel-title">Paquetes</div>
+
+        @if (ViewBag.Accion == "Revisar")
+        {
+            <div class="panel-options">
+                <a href="javascript:;" class="btn" title="Agregar Paquete" id="linkAgregarEmpaquetado">
+                    <i class="entypo-plus"></i> Agregar &nbsp;&nbsp;
+                </a>
+            </div>
+        }
+
+    </div>
+    <div class="panel-body  with-table" id="detalleEmpaquetado">
+        
+            <table id="tablaDetalleEmpaquetado" class="table datatable table-bordered table-hover" style="width:100%">
+                <thead>
+                    <tr class="text-sm">
+                        <th>TipoPaquete</th>
+                        <th>Cantidad</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ 
+                        var i = 0;
+                        var tiposPaquetes = CatalogosAppService.ObtenerTiposPaquete();
+                    }
+
+                    @foreach (var item in Model.DetalleEmpaquetado.Distinct())
+                    {
+                        var paquete = tiposPaquetes.FirstOrDefault(m => m.Id == item.IdTipoPaquete);
+                        if (ViewBag.Accion == "Revisar")
+                        {
+                            <tr id="@item.Id">
+                                <td>
+                                    @Html.Hidden("DetalleEmpaquetado.Index", i)
+                                    @Html.DropDownList("DetalleEmpaquetado[" + i + "].IdTipoPaquete",
+                                            new SelectList(tiposPaquetes, "Id", "TipoPaquete", paquete),
+                                            new { @class = "form-control", @style = "width:100%" })
+
+                                    @Html.Hidden("DetalleEmpaquetado[" + i + "].IdTipoPaquete", item.Id)
+                                </td>
+                                <td>
+                                    <div id='@string.Format("spinnerCantidad{0}",i)' class='spinner-custom input-spinner input-spinner-sx'>
+                                        <button type='button' class='btn btn-default'>-</button>
+                                        <input type='text' name='DetalleEmpaquetado[@i].Cantidad' value='@item.Cantidad' class='form-control' />
+                                        <button type='button' class='btn btn-default'>+</button> 
+                                    </div>  
+                                </td>
+                                <td class='text-center btneliminadetalleEmp'>
+                                    @if (ViewBag.Accion == "Empaquetar" || ViewBag.Accion == "Revisar")
+                                    {
+                                        <a href='#' class='text-info btneliminadetalleEmp'><i class='entypo-trash'></i> </a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr id="@item.Id">
+                                <td>@item.TipoPaquete</td>
+                                <td>@item.Cantidad</td>
+                                <td class='text-center btneliminadetalleEmp'>
+                                    @if (ViewBag.Accion == "Empaquetar" || ViewBag.Accion == "Revisar")
+                                    {
+                                        <a href='#' class='text-info btneliminadetalleEmp'><i class='entypo-trash'></i> </a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        
+    </div>
+</div>

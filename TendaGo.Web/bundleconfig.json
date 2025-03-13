@@ -1,0 +1,14 @@
+[
+  {
+    "outputFileName": "Scripts/jquery.maskMoney.min.js",
+    "inputFiles": [
+      "Scripts/jquery.maskMoney.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/datatables/jquery.cmodev.datatables.min.js",
+    "inputFiles": [
+      "Scripts/datatables/jquery.cmodev.datatables.js"
+    ]
+  }
+]

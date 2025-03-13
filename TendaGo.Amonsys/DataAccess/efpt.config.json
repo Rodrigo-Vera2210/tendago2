@@ -1,0 +1,2302 @@
+﻿{
+   "CodeGenerationMode": 4,
+   "ContextClassName": "TendaGOContext",
+   "ContextNamespace": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": "Repositories",
+   "OutputPath": "Models",
+   "PreserveCasingWithRegex": true,
+   "ProjectRootNamespace": "ER.DA",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 2,
+   "SelectedToBeGenerated": 0,
+   "T4TemplatePath": null,
+   "Tables": [
+      {
+         "Name": "[dbo].[Categoria]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Chofer]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CierreCaja]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Ciudad]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Ciudad2temp]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CobroDebito]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CostoPromedio]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CuentaPorCobrar]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CuentaPorPagar]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Descuento]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[DetalleCobro]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[DetalleDocumento]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[DetalleEntrada]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[DetalleMedioCobro]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[DetallePago]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[DetalleSalida]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Division]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Documento]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Empaquetado]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Empresa]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Entidad]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Entrada]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[EstadoEntrada]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[EstadoSalida]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Fan]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[FanId]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[FanIdOld]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[FormaPagoSri]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[GuiaRemision]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[InformacionAdicional]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Linea]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[LocalBodega]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Marca]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[MedioPago]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Modulo]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Moneda]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PagoCredito]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Pais]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Pantalla]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PantallaXPerfil]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Perfil]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Precio]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PresupuestoFacturacion]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Producto]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Provincia]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Ruc]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Ruta]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[RutaDetalle]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[RutaImagenes]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Salida]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SalidaFormaPagoSri]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Sector]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Secuencial]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SerieEntrada]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SerieSalida]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Stock]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TarifaImpuesto]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TipoDescuento]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TipoDocumento]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TipoPaquete]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TipoUnidad]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TransferenciaLocal]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[UnidadMedida]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Usuario]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[UsuarioLocalBodega]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Vehiculo]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Categoria_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Categoria_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Categoria_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Categoria_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Categoria_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Categoria_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Categoria_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Categoria_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Categoria_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CierreCaja_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CierreCaja_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CierreCaja_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CierreCaja_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CierreCaja_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CierreCaja_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CierreCaja_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CierreCaja_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CierreCaja_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Ciudad_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Ciudad_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Ciudad_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Ciudad_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Ciudad_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Ciudad_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Ciudad_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Ciudad_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Ciudad_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CobroDebito_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CobroDebito_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CobroDebito_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CobroDebito_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CobroDebito_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CobroDebito_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CobroDebito_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CobroDebito_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CobroDebito_Reverse]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CobroDebito_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CuentaPorCobrar_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CuentaPorCobrar_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CuentaPorCobrar_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CuentaPorCobrar_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CuentaPorCobrar_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CuentaPorCobrar_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CuentaPorCobrar_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CuentaPorCobrar_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CuentaPorCobrar_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CuentaPorPagar_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CuentaPorPagar_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CuentaPorPagar_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CuentaPorPagar_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CuentaPorPagar_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CuentaPorPagar_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CuentaPorPagar_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CuentaPorPagar_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CuentaPorPagar_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_CierreCaja_Consulta]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_CierreCaja_Consulta2]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_CierreCaja_Consulta3]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_CierreCaja_Consulta4]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_CierreCaja_Consulta5]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_CierreCaja_Consultaold]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_CierreCaja_Detalle]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_ClientesDeep_Consulta]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Cobro_SearchCobro]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_CodigoBarra]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_CuentaPorCobrar_ReporteSalida]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Empaquetado_ReporteEntrada]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Empaquetado_ReporteSalida]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Entrada_ReporteEntrada]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Entrada_SearchEntrada]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Entrada_ValidarCompra]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Estadisticas_Cobros]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Estadisticas_CobrosByUser]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Estadisticas_Resumidas]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Estadisticas_ResumidasByUser]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Estadisticas_Ventas_Mensual]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Estadisticas_VentasMensualByUser]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Estadisticas_VentasXMes]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Estado_Cuenta]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Estado_ReporteEntrada]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Estado_ReporteSalida]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Exportacion]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_FacturasEmitidas]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_FormaPago_BySalida]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Inventario_ReporteAjuste]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Inventario_ReporteAjuste2]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Inventario_Valorizado]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Inventario_Valorizado2]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Load_Division]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Load_LineaByDivision]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Load_Marca]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_MovimientoInventario_Report]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_NotaCreditoValor_ByCliente]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Obtener_Secuencial]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Pantalla_ObtenerPantallasPerfil]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_PlantillaSalida]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Productos_SearchProductsByLocal]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Productos_SearchProductsByLocalLite]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Productos_SearchProductsByLocalLitePrueba]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Productos_SearchProductsByLocalLitePrueba2]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Productos_SearchProductsByLocalPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_ProductosDeep_Consulta]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Ruc_Factura_Compras]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Ruc_Factura_Ventas]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Ruc_Ventas]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Salida_Change]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Salida_ReporteSalida]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Salida_ReporteSalidaBodega]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Salida_ReporteSalidas]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Salida_SearchSalida]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Salida_SearchSalida2]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Stock_CostoPromedioPonderado]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Stock_CostoPromedioPonderadoBU]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Stock_CostoPromedioPonderadoPrueba]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Stock_CostoPromedioPonderadoXX]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Stock_KardexReport]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Stock_RecrearCarrito]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Stock_RecrearCarrito2]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Stock_SaldoInventario]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Stock_SaldoInventario2]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Stock_SaldoInventarioReport]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Stock_SaldoInventarioReport2]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Stock_SaldoInventarioReportBodGO]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Stock_SaldoInventarioReportCliGO]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Stock_SaldoInventarioReportGO]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Stock_SaldoInventarioReportProdGO]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Stock_SaldoInventarioReportRespaldoR]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_TopSellers]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Transfer_Search]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Usuario_LoadByToken]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_Usuario_SearchAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_VentasByProducto]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Custom_VentasGenerales_Report]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleCobro_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleCobro_DeepFindByAll2]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleCobro_DeepFindByAll3]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleCobro_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleCobro_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleCobro_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleCobro_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleCobro_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleCobro_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleCobro_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleCobro_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleDocumento_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleDocumento_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleDocumento_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleDocumento_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleDocumento_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleDocumento_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleDocumento_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleDocumento_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleDocumento_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleEntrada_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleEntrada_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleEntrada_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleEntrada_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleEntrada_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleEntrada_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleEntrada_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleEntrada_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleEntrada_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleMedioCobro_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleMedioCobro_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleMedioCobro_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleMedioCobro_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleMedioCobro_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleMedioCobro_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleMedioCobro_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleMedioCobro_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleMedioCobro_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetallePago_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetallePago_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetallePago_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetallePago_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetallePago_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetallePago_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetallePago_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetallePago_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetallePago_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleSalida_Check]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleSalida_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleSalida_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleSalida_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleSalida_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleSalida_FindByAll2]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleSalida_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleSalida_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleSalida_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleSalida_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[DetalleSalida_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Division_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Division_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Division_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Division_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Division_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Division_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Division_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Division_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Division_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Documento_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Documento_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Documento_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Documento_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Documento_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Documento_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Documento_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Documento_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Documento_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Empaquetado_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Empaquetado_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Empaquetado_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Empaquetado_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Empaquetado_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Empaquetado_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Empaquetado_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Empaquetado_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Empaquetado_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Empresa_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Empresa_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Empresa_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Empresa_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Empresa_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Empresa_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Empresa_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Empresa_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Empresa_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Entidad_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Entidad_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Entidad_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Entidad_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Entidad_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Entidad_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Entidad_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Entidad_LoadByCellPhone]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Entidad_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Entidad_LoadByTermDriverPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Entidad_LoadByTermPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Entidad_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Entrada_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Entrada_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Entrada_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Entrada_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Entrada_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Entrada_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Entrada_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Entrada_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Entrada_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Guia_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[InformacionAdicional_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[InformacionAdicional_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[InsertOrUpdateCuentaPorCobrarAsXml]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Linea_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Linea_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Linea_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Linea_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Linea_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Linea_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Linea_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Linea_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Linea_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[LocalBodega_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[LocalBodega_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[LocalBodega_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[LocalBodega_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[LocalBodega_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[LocalBodega_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[LocalBodega_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[LocalBodega_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[LocalBodega_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Marca_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Marca_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Marca_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Marca_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Marca_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Marca_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Marca_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Marca_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Marca_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[MedioPago_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[MedioPago_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[MedioPago_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[MedioPago_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[MedioPago_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[MedioPago_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[MedioPago_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[MedioPago_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[MedioPago_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Modulo_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Modulo_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Modulo_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Modulo_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Modulo_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Modulo_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Modulo_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Modulo_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Modulo_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Moneda_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Moneda_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Moneda_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Moneda_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Moneda_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Moneda_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Moneda_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Moneda_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Moneda_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PagoCredito_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PagoCredito_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PagoCredito_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PagoCredito_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PagoCredito_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PagoCredito_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PagoCredito_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PagoCredito_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PagoCredito_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Pais_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Pais_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Pais_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Pais_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Pais_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Pais_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Pais_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Pais_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Pais_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Pantalla_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Pantalla_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Pantalla_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Pantalla_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Pantalla_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Pantalla_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Pantalla_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Pantalla_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Pantalla_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PantallaXPerfil_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PantallaXPerfil_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PantallaXPerfil_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PantallaXPerfil_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PantallaXPerfil_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PantallaXPerfil_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PantallaXPerfil_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PantallaXPerfil_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PantallaXPerfil_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Perfil_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Perfil_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Perfil_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Perfil_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Perfil_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Perfil_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Perfil_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Perfil_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Perfil_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PR_CuentaPorCobrar_ByIdCliente]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Precio_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Precio_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Precio_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Precio_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Precio_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Precio_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Precio_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Precio_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Precio_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PresupuestoFacturacion_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PresupuestoFacturacion_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PresupuestoFacturacion_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PresupuestoFacturacion_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PresupuestoFacturacion_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PresupuestoFacturacion_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PresupuestoFacturacion_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PresupuestoFacturacion_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[PresupuestoFacturacion_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Producto_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Producto_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Producto_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Producto_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Producto_FindByCodigoInterno]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Producto_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Producto_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Producto_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Producto_SearchProducts]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Producto_SearchProductsPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Producto_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Provincia_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Provincia_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Provincia_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Provincia_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Provincia_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Provincia_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Provincia_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Provincia_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Provincia_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Ruc_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Ruc_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Ruc_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Ruc_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Ruc_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Ruc_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Ruc_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Ruc_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Ruc_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Ruta_Faltante]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Ruta_FaltanteAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Ruta_GetLogisticoDisponible]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Ruta_LoadByTermPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[RutaDetalle_LoadByIdRutaPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Salida_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Salida_DeepFindByAllNew]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Salida_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Salida_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Salida_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Salida_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Salida_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Salida_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Salida_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Salida_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SalidaAllFanId]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SalidaFormaPagoSri_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SalidaFormaPagoSri_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Sector_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Sector_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Sector_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Sector_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Sector_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Sector_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Sector_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Sector_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Sector_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SerieEntrada_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SerieEntrada_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SerieEntrada_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SerieEntrada_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SerieEntrada_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SerieEntrada_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SerieSalida_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SerieSalida_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SerieSalida_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SerieSalida_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SerieSalida_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SerieSalida_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Stock_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Stock_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Stock_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Stock_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Stock_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Stock_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Stock_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Stock_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[TipoDocumento_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[TipoDocumento_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[TipoDocumento_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[TipoDocumento_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[TipoDocumento_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[TipoDocumento_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[TipoDocumento_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[TipoDocumento_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[TipoDocumento_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[TipoPaquete_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[TipoPaquete_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[TipoPaquete_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[TipoPaquete_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[TipoPaquete_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[TipoPaquete_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[TipoPaquete_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[TipoPaquete_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[TipoPaquete_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[TipoUnidad_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[TipoUnidad_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[TipoUnidad_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[TipoUnidad_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[TipoUnidad_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[TipoUnidad_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[TipoUnidad_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[TipoUnidad_LoadByIdProducto]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[TipoUnidad_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[TipoUnidad_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[UnidadMedida_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[UnidadMedida_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[UnidadMedida_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[UnidadMedida_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[UnidadMedida_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[UnidadMedida_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[UnidadMedida_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[UnidadMedida_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[UnidadMedida_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Usuario_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Usuario_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Usuario_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Usuario_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Usuario_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Usuario_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Usuario_Update]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[UsuarioLocalBodega_DeepFindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[UsuarioLocalBodega_DeepFindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[UsuarioLocalBodega_Delete]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[UsuarioLocalBodega_FindByAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[UsuarioLocalBodega_FindByAllPaged]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[UsuarioLocalBodega_Insert]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[UsuarioLocalBodega_LoadAll]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[UsuarioLocalBodega_LoadByPK]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[UsuarioLocalBodega_Update]",
+         "ObjectType": 1
+      }
+   ],
+   "UiHint": null,
+   "UncountableWords": null,
+   "UseAsyncStoredProcedureCalls": true,
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDateOnlyTimeOnly": false,
+   "UseDbContextSplitting": true,
+   "UseDecimalDataAnnotationForSprocResult": true,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseHierarchyId": false,
+   "UseInflector": false,
+   "UseLegacyPluralizer": false,
+   "UseManyToManyEntity": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UsePrefixNavigationNaming": false,
+   "UseSchemaFolders": false,
+   "UseSchemaNamespaces": false,
+   "UseSpatial": false,
+   "UseT4": false
+}

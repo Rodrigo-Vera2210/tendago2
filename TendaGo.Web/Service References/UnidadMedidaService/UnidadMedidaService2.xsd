@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/TendaGo.Core.Dtos" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/TendaGo.Core.Dtos" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:51670/UnidadMedidaService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="ArrayOfFiltroBusquedaDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="FiltroBusquedaDto" nillable="true" type="tns:FiltroBusquedaDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfFiltroBusquedaDto" nillable="true" type="tns:ArrayOfFiltroBusquedaDto" />
+  <xs:complexType name="FiltroBusquedaDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Descripcion" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Id" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FiltroBusquedaDto" nillable="true" type="tns:FiltroBusquedaDto" />
+  <xs:simpleType name="EstadoDto">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="TODOS">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">-1</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="INACTIVO">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">0</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ACTIVO">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="EstadoDto" nillable="true" type="tns:EstadoDto" />
+  <xs:complexType name="ArrayOfUnidadMedidaDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UnidadMedidaDto" nillable="true" type="tns:UnidadMedidaDto" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUnidadMedidaDto" nillable="true" type="tns:ArrayOfUnidadMedidaDto" />
+  <xs:complexType name="UnidadMedidaDto">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="IdEstado" type="xs:short" />
+      <xs:element minOccurs="0" name="Nombre" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UnidadMedidaDto" nillable="true" type="tns:UnidadMedidaDto" />
+</xs:schema>

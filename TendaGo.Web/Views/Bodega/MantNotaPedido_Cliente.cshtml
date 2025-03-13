@@ -1,0 +1,21 @@
+﻿@using TendaGo.Web.Models
+@model NotaPedidoModel
+@{
+    var listaRuc = (IEnumerable<SelectListItem>)ViewBag.ListaRuc;
+} 
+
+<div class="row">
+    @Html.HiddenFor(x => x.IdCliente)
+    
+    <div class="col-md-7 col-xs-12" style="padding-left: 0;">
+        <div class="panel panel-primary">
+            <div class="panel-body">
+
+                <div class="form-group">
+                    @Html.Label("Observaciones", new { @class = "form-label" })
+                    @Html.TextAreaFor(m => m.Observaciones, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

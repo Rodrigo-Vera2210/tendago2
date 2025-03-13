@@ -1,0 +1,43 @@
+﻿@model IEnumerable<TendaGo.Common.ProviderDto>
+
+@if (Model.Any())
+{
+    <div class="table-responsive">
+        <table id="tablaProveedores" class="table datatable table-bordered table-hover" width="100%">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Identificacion)</th>
+                    <th>@Html.DisplayNameFor(model => model.RazonSocial)</th>
+                    <th>@Html.DisplayNameFor(model => model.Ciudad)</th>
+                    <th>@Html.DisplayNameFor(model => model.Direccion)</th>
+                    <th></th>
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Identificacion)</td>
+                    <td>@Html.DisplayFor(modelItem => item.RazonSocial)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Ciudad)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Direccion)</td>
+                    <td>
+                        @{
+                            var itemJson = Newtonsoft.Json.JsonConvert.SerializeObject(item);
+                        }
+                        <button class="btn btn-default btn-icon icon-left" data-dismiss="modal" onclick="onSelectProvider('@itemJson');">
+                            <i class="entypo-check"></i>Seleccionar
+                        </button>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+else
+{
+    <div class="tile-stats tile-white-orange">
+        <div class="icon"><i class="entypo-docs"></i></div>
+        <div class="num">0</div>
+        <h3>La búsqueda solicitada no obtuvo resultados</h3>
+    </div>
+}

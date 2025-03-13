@@ -1,0 +1,175 @@
+﻿@{
+    int origen = (int)ViewBag.Origen;
+}
+
+
+<div class="tile-stats tile-gray">
+    <div class="row">
+        <div id="divBuscarProducto" class="col-md-12 col-xs-12">
+            @using (Html.BeginForm("Buscar", "productos", FormMethod.Post, new { id = "searchProductsForm", @class = "search-bar" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="input-group">
+                    <input type="text" class="form-control input-lg" name="textoBusqueda" id="textoBusqueda" placeholder="Escriba descripción del producto..">
+
+                    <div class="input-group-btn">
+                        <button id="btnConsultarProductos" type="submit" class="btn btn-lg btn-primary">
+                            <span class="hidden-xs">Buscar</span>
+                            <i class="entypo-search"></i>
+                        </button>
+                        <button id="btnConsultarProductosQr" type="button" class="btn btn-lg btn-primary hidden">
+                                <span class="hidden-xs">QR</span>
+                                <i class="fa fa-qrcode"></i>
+                            </button>
+                    </div>
+                </div>
+                <input type="hidden" id="idOrigen" name="idOrigen" value="@origen" />
+            }
+        </div>
+        <div id="divBuscarProductoQr" class="col-md-6 col-xs-12 hidden">
+            <div class="input-group">
+                <input id="inputQrCode" type="file" class="form-control input-lg" />
+                <div class="input-group-btn">
+
+                    <button id="btnSearchQr" type="button" class="btn btn-lg btn-primary">
+                        <span class="hidden-xs">Buscar</span>
+                        <i class="entypo-search"></i>
+                    </button>
+                    <button id="btnQrBackToSearch" type="button" class="btn btn-lg btn-primary">
+                        <span class="hidden-xs">Regresar</span>
+                        <i class="entypo-reply"></i>
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<p><strong style="color: red;" id="imageTextEncoded"></strong></p>
+
+<br />
+<div id="divResults" class="search-results-panes"></div>
+
+<script>
+    var divBusqueda;
+    var divBusquedaQr;
+
+    $(function () {
+        divBusqueda = $("#divBuscarProducto");
+        divBusquedaQr = $("#divBuscarProductoQr");
+
+        $("#searchProductsForm").submit(function (event) {
+            event.preventDefault();
+            var searchTerm = $("#textoBusqueda").val();
+            if (searchTerm.length > 1) {
+                var $div = $(this).closest('div');
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr("method"),
+                    data: $(this).serialize(),
+                    beforeSend: function () {
+                        $("#divResults").empty();
+                        blockUI($div);
+                        $div.addClass('loading');
+                    },
+                    complete: function () {
+                        unblockUI($div);
+                        $div.removeClass('loading');
+                    },
+                    success: function (dataReceived) {
+                        if (dataReceived) {
+                            if (dataReceived.Success != undefined) {
+                                var errorMsg = `success: ${dataReceived.Success}, message: ${dataReceived.Message}`;
+                                console.log(errorMsg);
+                                toastr.error(dataReceived.Message);
+                            } else {
+                                $("#divResults").html(dataReceived);
+                            }
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        var errorMsg = `error: ${error}, status: ${status}`;
+                        toastr.error(errorMsg);
+                        console.log(errorMsg);
+                        console.log(xhr);
+                    }
+                }).done(function (respuesta) {
+
+                });
+            } else {
+                toastr.warning("Ingrese una descripción para realizar la búsqueda.", "Buscar Productos", optionsToastr);
+            }
+        });
+    });
+
+    var postImgUrl = '@Url.Action("BuscarPorQrCode")';
+    function ReadQrCodeImage() {
+        var fileInput = document.getElementById('inputQrCode');
+        if (fileInput.files.length !== 0) {
+            var formdata = new FormData(); //FormData object
+            for (var i = 0; i < fileInput.files.length; i++) {
+                formdata.append(fileInput.files[i].name, fileInput.files[i]);
+            }
+            var $div = $("#formImpCompra");
+            $.ajax({
+                url: postImgUrl,
+                type: 'POST',
+                data: formdata,
+                //async: false,
+                async: true,
+                beforeSend: function() {
+                    blockUI($div);
+                    $div.addClass('loading');
+                },
+                complete: function (dataReceived) {
+                    unblockUI($div);
+                    $div.removeClass('loading');
+                },
+                success: function (data) {
+                    if (data != '') {
+                        $("#imageTextEncoded").text(data.text);
+                        if (data.text && data.text != '') {
+                            $("#textoBusqueda").val(data.text);
+                            console.log(data.text);
+                            divBusqueda.removeClass('hidden').fadeIn('fast');
+                            divBusquedaQr.addClass('hidden').fadeOut('fast');
+                            $("#searchProductsForm").submit();
+                            $("#inputQrCode").val('');
+                        } else {
+                            toastr.error('El codigo QR seleccionado es inválido, intente nuevamente.');
+                        }
+                    } else {
+                        toastr.error(dataReceived.Message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log(JSON.stringify(xhr));
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        }
+    }
+
+    $("#btnConsultarProductosQr").on("click", function (e) {
+        divBusqueda.addClass('hidden').fadeOut('fast');
+        divBusquedaQr.removeClass('hidden').fadeIn('fast');
+    });
+
+    $("#btnQrBackToSearch").on("click", function(e) {
+        divBusqueda.removeClass('hidden').fadeIn('fast');
+        divBusquedaQr.addClass('hidden').fadeOut('fast');
+    });
+
+    $("#btnSearchQr").on("click", function(e) {
+        ReadQrCodeImage();
+    });
+
+
+    $("#textoBusqueda").focusin();
+    $("#textoBusqueda").focus();
+
+</script>

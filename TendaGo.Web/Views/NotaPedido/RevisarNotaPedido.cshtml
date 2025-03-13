@@ -1,0 +1,245 @@
+﻿@using TendaGo.Web.Models
+@model EmpaquetadoNotaPedidoViewModel
+@{
+    var jsonTiposPaquete = (string)ViewBag.JsonTiposPaquete;
+}
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header modal-header-inventory ">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Nota Pedido: @Model.Id</h4>
+            <h5 class="modal-title">Cliente: @Model.RazonSocial</h5>
+        </div>
+        <div class="modal-body">
+            <div>
+                @using (Html.BeginForm("Revisar", "NotaPedido", FormMethod.Post, new { id = "empaquetarNotaPedidoForm", @class = "form-wizard" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(x => x.Id)
+
+                    <div class="steps-progress">
+                        <div class="progress-indicator"></div>
+                    </div>
+                    <ul>
+                        <li class="active">
+                            <a href="#tab1" data-toggle="tab"><span>1</span>Detalle Nota Pedido</a>
+                        </li>
+                        <li>
+                            <a href="#tab2" data-toggle="tab"><span>2</span>Empaquetado</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab1">
+                            <div class="table-responsive">
+                                <table id="tablaDetalleNotasPedido" class="table datatable table-bordered table-hover">
+                                    <thead>
+                                        <tr class="text-sm">
+                                            <th class="text-center">Seleccionar</th>
+                                            <th>Producto</th>
+                                            <th>Cantidad</th>
+                                            <th>Tipo Unidad</th>
+                                            <th>Precio</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (int i = 0; i < Model.DetalleNotaPedido.Count; i++)
+                                        {
+                                        <tr>
+                                            <td class="text-center">
+                                                <div class="checkbox checkbox-replace color-blue">
+                                                    <input type="checkbox">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                @Html.HiddenFor(m => m.DetalleNotaPedido[i].Id)
+                                                @Html.HiddenFor(m => m.DetalleNotaPedido[i].IdProducto)
+                                                @Model.DetalleNotaPedido[i].NombreProducto
+                                            </td>
+                                            <td class="text-right">
+                                                @Html.HiddenFor(m => m.DetalleNotaPedido[i].Cantidad)
+                                                @Model.DetalleNotaPedido[i].Cantidad
+                                            </td>
+                                            <td class="text-right">
+                                                @Html.HiddenFor(m => m.DetalleNotaPedido[i].IdTipoUnidad)
+                                                @Model.DetalleNotaPedido[i].DesTipoUnidad
+                                            </td>
+                                            <td class="text-right">
+                                                @Html.HiddenFor(m => m.DetalleNotaPedido[i].Precio)
+                                                @Model.DetalleNotaPedido[i].Precio.ToCustomFormatString()
+                                            </td>
+                                            <td class="text-right">@Model.DetalleNotaPedido[i].Subtotal.ToCustomFormatString()</td>
+                                        </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="5" style="text-align:right">Total:</th>
+                                            <th class="text-right">@Model.Total.ToCustomFormatString()</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane" id="tab2">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="pull-right">
+                                        <button type="button" class="btn btn-sm btn-info" title="Agregar Paquete" id="linkAgregarEmpaquetado">
+                                            <i class="entypo-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-primary">
+                                <div class="panel-body">
+                                    <div class="row" id="detallePagos">
+                                        <table id="tablaDetalleEmpaquetado" class="table datatable table-bordered table-hover">
+                                            <thead>
+                                                <tr class="text-sm">
+                                                    <th>TipoPaquete</th>
+                                                    <th>Cantidad</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <ul class="pager wizard">
+                            <li class="previous">
+                                <a href="#"><i class="entypo-left-open"></i> Anterior</a>
+                            </li>
+                            <li class="next">
+                                <a href="#">Siguiente <i class="entypo-right-open"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="modal-footer modal-footer-inventory ">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="button" id="btnEmpaquetarNotaPedido" class="btn btn-blue btn-add-datail">Revisado</button>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(function () {
+
+        document.getElementById("btnEmpaquetarNotaPedido").disabled = true;
+        $.validator.unobtrusive.parse($("#empaquetarNotaPedidoForm"));
+        $("#empaquetarNotaPedidoForm").formwizardcustom();
+
+
+        var tableDetalleNotaPedido = $("#tablaDetalleNotasPedido").basicDatatable();
+        var tableEmpaquetado = $("#tablaDetalleEmpaquetado").basicDatatable();
+
+        $("#btnEmpaquetarNotaPedido").click(function () {
+
+            var cantidad = 0;
+            var validar = false;
+            $.each($("#tablaDetalleEmpaquetado tbody tr"), function () {
+                cantidad = parseFloat($(this).find('td:eq(1) input').val());
+                if (cantidad <=0 )
+                {
+                    validar = true;
+                     return false;
+                }
+            });
+
+            if (validar) {
+                toastr.error("Existe un Paquete con cantidad 0", "", optionsToastr);
+                return;
+            }
+
+            var formEmpaquetarNotaPedido = $("#empaquetarNotaPedidoForm");
+            var $div = $(formEmpaquetarNotaPedido).closest('div');
+            var action_url = formEmpaquetarNotaPedido.attr("action");
+            var request_method = formEmpaquetarNotaPedido.attr("method");
+            var form_data = formEmpaquetarNotaPedido.serialize();
+
+            $.ajax({
+                url: action_url,
+                type: request_method,
+                data: form_data,
+                beforeSend: function () {
+                    blockUI($div)
+                    $div.addClass('loading');
+                },
+                complete: function () {
+                    unblockUI($div)
+                    $div.removeClass('loading');
+                }
+            }).done(function (respuesta) {
+                if (respuesta != "") {
+                    if (respuesta.success == true) {
+                        toastr.success(respuesta.mensaje, "", optionsToastr);
+                        actualizarConsultaNotaPedido();
+                        $("#divModal").modal('hide');
+                    }
+                    else {
+                        toastr.warning(respuesta.mensaje, "", optionsToastr);
+                    }
+                }
+            });
+        });
+
+        $("#linkAgregarEmpaquetado").click(function () {
+            var index = tableEmpaquetado.rows().count();
+            var selectTipoPaquete = crearSelectTipoPaquete(index);
+            var spinnerCantidad = crearSpinnerCantidad(index);
+            var IconoEliminar = CrearIconoEliminar();
+            tableEmpaquetado.row.add($("<tr id=" + "'" + index + "'" + "><td>" + selectTipoPaquete + "</td><td>" + spinnerCantidad + "</td>" + "<td " + IconoEliminar + "</td>" + "</tr>")[0]).draw();
+            if (document.getElementById("tablaDetalleEmpaquetado").rows.length - 1 > 0) {
+                document.getElementById("btnEmpaquetarNotaPedido").disabled = false
+            }
+            //$(".input-spinner").spinner();
+        });
+
+
+        function crearSelectTipoPaquete(id) {
+            var select = "<select name='DetalleEmpaquetado[" + id + "].IdTipoPaquete' class='form-control'>";
+            $.each(JSON.parse('@Html.Raw(jsonTiposPaquete)'), function (index, item) {
+                select += '<option value="' + item.Id + '">' + item.Nombre + '</option>';
+            });
+            select += '</select>';
+            return select;
+        }
+
+        function crearSpinnerCantidad(id) {
+            var spinner = "<div id='spinnerCantidad" + id + "' class='input-spinner input-spinner-sx'>";
+            spinner += "<button type='button' class='btn btn-default'>-</button>";
+            spinner += "<input type='text' name='DetalleEmpaquetado[" + id + "].Cantidad' value='1' class='form-control' />";
+            spinner += "<button type='button' class='btn btn-default'>+</button>";
+            spinner += "</div>";
+            return spinner;
+        }
+
+        function CrearIconoEliminar(id) {
+            var eliminar = "class='text-center btneliminadetalleEmp'>";
+            eliminar += " <a href='#' class='text-info btnElminarDetalle'>";
+            eliminar += "<i class='entypo-trash'></i> </a>";
+            return eliminar;
+        }
+
+        $(document).on('click', '.btneliminadetalleEmp', function (event) {
+            event.preventDefault();
+            var trId = $(this).closest('tr').attr('id');
+            var td = $(this).closest('td');
+            tableEmpaquetado.row("#" + trId).remove().draw();
+            if (document.getElementById("tablaDetalleEmpaquetado").rows.length - 1 <= 1) {
+                document.getElementById("btnEmpaquetarNotaPedido").disabled = true;
+            }
+        });
+    });
+
+
+</script>

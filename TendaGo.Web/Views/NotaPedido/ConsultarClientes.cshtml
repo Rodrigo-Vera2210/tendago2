@@ -1,0 +1,110 @@
+﻿@{
+    var filtrosBusqueda = new List<SelectListItem>
+            {
+                new SelectListItem{ Text="Razon Social", Value="2"  },
+                new SelectListItem{ Text="Identificacion", Value="1"  }
+            };
+}
+
+    <div class="row">
+        <div class="col-md-12">
+            @using (Html.BeginForm("ConsultarClientes", "NotaPedido", FormMethod.Post, new { id = "consultarClientesForm" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        @Html.DropDownList("filtroBusqueda", filtrosBusqueda, new { @class = "btn btn-blue" })
+                    </div>
+
+                    @Html.TextBox("textoBusqueda", "", new { @class = "form-control" })
+
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-blue">
+                            <span class="hidden-xs">Buscar</span>
+                            <i class="entypo-search"></i>
+                        </button>
+                    </span>
+                </div>
+            }
+        </div>
+        <br />
+        <div class="col-md-12">
+            <div id="divResultadoClientes"></div>
+        </div>
+    </div>
+
+@*
+        id="divBuscarClientes"<div class="modal-dialog">
+        <div class="modal-content">
+
+
+            <div class="modal-footer modal-footer-inventory">
+                    <button type="button" id="btnSalir" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button id="btnSeleccionarCliente" type="button" class="btn btn-blue btn-add-datail">Selecionar</button>
+                </div>
+        </div>
+    </div>*@
+
+<script>
+    $(function () {
+
+        //var tablaClientes = $("#tablaClientes").DataTable(opcionesDataTableSingleSelect);
+
+        $("#consultarClientesForm").submit(function (event) {
+            event.preventDefault();
+            var $div = $(this).closest('div');
+            var post_url = $(this).attr("action");
+            var request_method = $(this).attr("method");
+            var form_data = $(this).serialize();
+            $.ajax({
+                url: post_url,
+                type: request_method,
+                data: form_data,
+                beforeSend: function () {
+                    $("#divResultadoClientes").empty();
+                    blockUI($div);
+                    $div.addClass('loading');
+                },
+                complete: function () {
+                    unblockUI($div);
+                    $div.removeClass('loading');
+                }
+            }).done(function (respuesta) {
+                if (respuesta != "") {
+                    $("#divResultadoClientes").html(respuesta);
+                    $("#tablaClientes").basicDatatable();
+                }
+            });
+        });
+
+        $("#btnSeleccionarCliente").click(function () {
+            var row = tablaClientes.row('.selected');
+            if (row.length) {
+                var oData = row.data();
+                $("#checkoutForm #IdCliente").val(oData[1]);
+                $("#checkoutForm #divRazonSocial").empty().append('<span>' + oData[2] + '</span>');
+                $("#checkoutForm #divIdentificacion").empty().append('<span>' + oData[3] + '</span>');
+                $("#checkoutForm #divCiudad").empty().append('<span>' + oData[4] + '</span>');
+                $("#checkoutForm #divDireccion").empty().append('<span>' + oData[5] + '</span>');
+            }
+            $("#divModal").modal('hide');
+            $("#divConsultaClienteModal").modal('hide');
+        });
+
+
+        $("#btnSalir").click(function () {
+            $("#divModal").modal('hide');
+            $("#divConsultaClienteModal").modal('hide');
+        });
+
+        $("#btnClose").click(function () {
+            $("#divModal").modal('hide');
+            $("#divConsultaClienteModal").modal('hide');
+        });
+
+
+    });
+
+</script>
+
+

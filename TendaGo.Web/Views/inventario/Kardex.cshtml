@@ -1,0 +1,113 @@
+﻿@using TendaGo.Web.Models
+@using TendaGo.Web.ApplicationServices
+@using TendaGo.Common
+
+@Styles.Render("~/Styles/datatables")
+@Styles.Render("~/Styles/select2")
+
+@model ProductoViewModel
+@{
+    ViewBag.Title = "Kardex";
+    Model.IdEmpresa = User.Identity.GetIdEmpresa();
+    var filtrosBusqueda = (IEnumerable<SelectListItem>)ViewBag.FiltrosBusqueda;
+
+    //string urlBase = ViewBag.UrlBase;
+    //var app_user = User.Identity.Name;
+    //var productos = new List<SelectListItem>();
+
+    var lines = Model.IdDivision > 0 ? LineasAppService.ObtenerLineasActivas(Model.IdDivision.Value) : new List<LineDto>();
+    var lineList = new SelectList(lines.Where(x => x.IdEstado == 1), "Id", "Linea", Model.IdLinea);
+
+    //var producto = ProductosAppService.GetProductByInternalCode(CodigoInterno);
+}
+
+<ol class="breadcrumb bc-3 small hidden-xs breadcrumb-no-padding">
+    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home</a></li>
+    <li>Parametrizaciones</li>
+    <li class="active"><strong>@ViewBag.Title</strong></li>
+</ol>
+
+@using (Html.BeginForm("Kardex", "inventario", FormMethod.Post, new { id = "getReportInventoryForm", @class = "form-wizard validate", @enctype = "multipart/form-data", autocomplete = "off", target = "_blank" }))
+{
+    @Html.HiddenFor(model => model.IdEmpresa)
+    @Html.Hidden("format","Excel")
+    @Html.AntiForgeryToken()
+
+
+    <div class="form-group row">
+        <div class="col-sm-3">
+            @Html.LabelFor(x => x.FechaDesde, new { @class = "control-label" })
+            @*@Html.TextBox("fechaInicio", Model.FechaDesde, new { @class = "form-control datepicker-custom", @placeholder = "Fecha de Inicio" })*@
+
+            @Html.TextBoxFor(model => Model.FechaDesde, new{@class = "form-control datepicker-custom",@placeholder = "Fecha de Inicio"})
+
+        </div>
+
+        <div class="col-sm-3">
+            @Html.LabelFor(x => x.FechaHasta, new { @class = "control-label" })
+            @*@Html.TextBox("fechaFin", Model.FechaHasta, new { @class = "form-control datepicker-custom", @placeholder = "Fecha Fin" })*@
+
+            @Html.TextBoxFor(model => Model.FechaHasta, new { @class = "form-control datepicker-custom", @placeholder = "Fecha Fin" })
+        </div>
+
+        <!--<div class="col-sm-6">
+            @Html.LabelFor(x => x.Producto, new { @class = "control-label" })
+            @Html.DropDownListFor(m => m.Producto, lineList, "Seleccione Producto", new { @class = "form-control", @id = "customerSelect" })-->
+
+            @*<select class="form-control " id="customerSelect" style="width:100%" placeholder="Por favor seleccione un cliente"></select>*@
+        <!--</div>-->
+    </div>
+
+}
+
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="btn-group text-right">
+            <button type="button" class="btn btn-success  download-pdf "><i class="entypo-print"></i> Imprimir </button>
+            <button type="button" class="btn btn-green dropdown-toggle" data-toggle="dropdown" aria-expanded="true" style="background: #00582b;"> <i class="entypo-down"></i> </button>
+            <ul class="dropdown-menu dropdown-danger" role="menu">
+                <li><a class="text-danger download-pdf" href="javascript:;"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;Descargar PDF</a> </li>
+                <li><a class="text-info download-word" href="javascript:;"><i class="fa fa-file-word-o"></i>&nbsp;&nbsp;Descargar Word</a> </li>
+                <li><a class="text-success download-excel" href="javascript:;"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp;Descargar Excel</a> </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/wizard")
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/datepicker")
+    @Scripts.Render("~/bundles/timepicker")
+    @Scripts.Render("~/bundles/select2")
+    @Scripts.Render("~/bundles/toggle")
+
+
+    <script>
+        menu_settings.parentMenu = 'MnuInventory';
+        menu_settings.optionMenu = 'OpcInvReporte';
+
+    $(document).ready(function () {
+        $(".datepicker-custom").datepickercustom();
+
+        $(".download-word").on("click", function (event) {
+            $("input[name='format']").val("WORD");
+            $("#getReportInventoryForm").submit();
+        });
+
+        $(".download-excel").on("click", function (event) {
+            $("input[name='format']").val("EXCEL");
+            $("#getReportInventoryForm").submit();
+        });
+
+        $(".download-pdf").on("click", function (event) {
+            $("input[name='format']").val("PDF");
+            $("#getReportInventoryForm").submit();
+
+        });
+    });
+
+    </script>
+}

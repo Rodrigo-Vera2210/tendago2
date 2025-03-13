@@ -1,0 +1,303 @@
+﻿@using TendaGo.Web.ApplicationServices
+@using TendaGo.Web.Models
+@model EntradaViewModel
+@{
+
+    var jsonTiposPaquete = CatalogosAppService.ObtenerTiposPaquete().Select(x => new { x.Id, Nombre = x.TipoPaquete, Paquete = x });
+
+    // DEFINIMOS LA ACCION A REALIZAR EN LOS DISTINTOS CASOS
+    // EN PROCESO U OTROS NO RECONOCIDOS DEBE PASAR A APROBAR:
+    var factura = "";
+    if (Model.EstadoActual == "APROBADA")
+    {
+        ViewBag.Accion = "Recibir";
+    }
+    else
+    {
+        ViewBag.Accion = "Consultar";
+    }
+
+    ViewBag.Title = string.Format("{0} Pedidos a Bodega", ViewBag.Accion);
+
+    var LocalOrigen = "NO DISPONIBLE";
+    var LocalDestino = "NO DISPONIBLE";
+
+    if (Model.Salida != null)
+    {
+        var destino = UserAppService.ObtenerLocal(Model.Salida.IdLocal);
+        if (destino != null)
+        {
+            LocalOrigen = destino.Local;
+        }
+
+    }
+
+    if (Model.IdLocal > 0)
+    {
+        var origen = UserAppService.ObtenerLocal(Model.IdLocal);
+        if (origen != null)
+        {
+            LocalDestino = origen.Local;
+        }
+    }
+
+}
+
+@section styles{
+    @Styles.Render("~/Styles/NotaPedido")
+}
+
+<ol class="breadcrumb bc-3 small hidden-xs breadcrumb-no-padding">
+    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home</a></li>
+    <li>Pedido de Bodega</li>
+    <li class="active"><strong>@ViewBag.Accion</strong></li>
+</ol>
+
+
+<div class="row">
+
+    @using (Html.BeginForm("Aprobar", "Bodega", FormMethod.Post, new { id = "NotaPedidoForm", @class = "form-wizard validate" }))
+    {
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="pull-left">
+                    <h3>@(ViewBag.Accion.ToUpper())</h3>
+
+                </div>
+
+                <div id="divCarritoCompras" class="pull-right text-right">
+                    <h3><b>PEDIDO A BODEGA</b> <br /><span>No. @Model.Id</span></h3>
+                    <h4> <small><b> @(Model.TransaccionPadre ?? "NO DISPONIBLE")</b></small> </h4>
+
+                </div>
+            </div>
+            <hr />
+
+
+            <div class="col-md-12">
+
+                <div class="col-lg-3">
+                    <div class="pull-left">
+                        <span><b>Fecha:</b> @Model.Fecha.ToCustomFormatString()</span>
+
+                        <h5><b>ORIGEN:</b> @LocalOrigen</h5>
+                        <h5><b>DESTINO:</b> @LocalDestino</h5>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="pull-left">
+                        @*<textarea class="form-control" cols="50" id="Observaciones" name="Observaciones" rows="3"></textarea>*@
+                        @Html.TextAreaFor(model => model.Observaciones, new { @class = "form-control", @rows = "3", @cols = "100" })
+                    </div>
+                </div>
+
+                <div class="col-lg-3">
+                    <div id="divCarritoCompras" class="pull-right text-right">
+                        <h4>
+                            ESTADO ACTUAL:
+                            @if (ViewBag.Accion == "Aprobar")
+                            {
+                                <span class="label label-warning">@Model.EstadoActual</span>
+                            }
+                            else if (ViewBag.Accion == "Empaquetar")
+                            {
+                                <span class="label label-info">@Model.EstadoActual</span>
+                            }
+                            else if (ViewBag.Accion == "Revisar")
+                            {
+                                <span class="label label-default">@Model.EstadoActual</span>
+                            }
+                            else
+                            {
+                                <span class="label label-success">@Model.EstadoActual</span>
+                            }
+                        </h4>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+        </div>
+
+
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.IdLocal)
+        @Html.HiddenFor(model => model.IdProveedor)
+        @Html.HiddenFor(model => model.Total)
+        @Html.HiddenFor(model => model.Fecha)
+        @Html.Hidden("IdFormaPago", Model.IdFormaPago > 0 ? Model.IdFormaPago : 1)
+        var index = 1;
+
+        <div class="steps-progress">
+            <div class="progress-indicator"></div>
+        </div>
+        <ul class="hidden-print">
+
+            <li class="active">
+                <a href="#tab1" data-toggle="tab"><span>1</span>Detalle del Pedido</a>
+            </li>
+
+        </ul>
+
+        <div class="tab-content">
+
+            <div class="tab-pane  active" id="tab1">
+                @{ Html.RenderPartial("MantNotaPedido_Detalle", Model, ViewData); }
+
+
+
+                @if (ViewBag.Accion == "Recibir")
+                {
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <div class="panel-title">Paquetes</div>
+
+                            <div class="panel-options">
+                                @*<a href="javascript:;" class="btn" title="Agregar Paquete" id="linkAgregarEmpaquetado">
+                                        <i class="entypo-plus"></i> Agregar &nbsp;&nbsp;
+                                    </a>*@
+                            </div>
+
+
+                        </div>
+
+
+
+                        <div class="panel-body with-table" id="detalleEmpaquetado">
+
+                            <table id="tablaDetalleEmpaquetado" class="table datatable table-bordered table-hover" style="width:100%">
+                                <thead>
+                                    <tr class="text-sm">
+                                        <th>TipoPaquete</th>
+                                        <th>Cantidad</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach (var item in Model.DetalleEmpaquetado)
+                                    {
+
+                                        <tr id="@item.Id">
+                                            <td>@item.TipoPaquete</td>
+                                            <td>@item.Cantidad</td>
+                                            <td class='text-center btneliminadetalleEmp'>
+                                                @*@if (ViewBag.Accion == "Empaquetar" || ViewBag.Accion == "Revisar")
+                                                    {
+                                                        <a href='#' class='text-info btneliminadetalleEmp'><i class='entypo-trash'></i> </a>
+                                                    }*@
+                                            </td>
+                                        </tr>
+
+                                    }
+
+                                </tbody>
+                            </table>
+
+                        </div>
+
+
+
+
+
+
+                    </div>
+                }
+
+
+            </div>
+
+            <ul class="pager wizard hidden-print">
+                <li class="previous"> <a href="javascript:;"><i class="entypo-left-open"></i> Anterior</a> </li>
+
+                @if (ViewBag.Accion != "Consultar")
+                {
+                    <li class="finish"> <a href="javascript:;" class="save-button"><i class="entypo-check"></i> @ViewBag.Accion &nbsp; </a> </li>
+
+                }
+                else if (ViewBag.Mantenimiento != null)
+                {
+                    <li class="finish"> <a href="javascript:;" class="save-button"><i class="entypo-check"></i> Guardar &nbsp; </a> </li>
+                }
+                else
+                {
+                    <li class="print"> <a href="javascript:;" class="print-button"><i class="entypo-print"></i> Vista Preliminar &nbsp; </a> </li>
+                }
+                <li class="next"> <a href="javascript:;" id="idsiguiente">  <i class="entypo-right-open"></i> Siguiente</a> </li>
+            </ul>
+        </div>
+    }
+</div>
+
+<div class="modal fade" id="divModalClientes">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header modal-header-inventory">
+                <button type="button" class="close" id="btnClose" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Buscar Clientes</h4>
+            </div>
+            <div id="divModalClientesBody" class="modal-body">
+
+            </div>
+            <button data-dismiss="modal" class="close" type="button">
+                <span aria-hidden="true">&times;</span>
+                <span class="sr-only">Close</span>
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="divModalTransferencia">
+
+</div>
+
+<form id="resumenForm" method="post" action="@Url.Action("Resumen", new { id =  Model.Id})">
+    <input type="hidden" name="Action" value="@ViewBag.Accion" />
+</form>
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/wizard")
+    @Scripts.Render("~/bundles/datepicker")
+    @Scripts.Render("~/bundles/timepicker")
+    @Scripts.Render("~/bundles/fileinput")
+    @Scripts.Render("~/bundles/maskmoney")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/paginate")
+    @Scripts.Render("~/bundles/notaPedido")
+    @Scripts.Render("~/bundles/productos/index")
+
+    <script>
+        menu_settings.parentMenu = 'MnuInventory';
+        menu_settings.optionMenu = 'OpcCrear';
+
+        searchProductsControl.url = "@Url.Action("Buscar", "productos")";
+        searchProductsControl.resultContainer = "searchControl";
+
+        NotaPedidoMant.accion = "@ViewBag.Accion";
+        NotaPedidoMant.creaCantidadUrl = '@Url.Action("CreaCantidadNotasPedido")';
+        NotaPedidoMant.consultaStockUrl = '@Url.Action("ObtenerStock")';
+        NotaPedidoMant.existenciaUrl = '@Url.Action("ExistenciaProducto")';
+        NotaPedidoMant.mostrarProductoUrl = '@Url.Action("MostrarProducto")';
+        NotaPedidoMant.accionUrl = '@Url.Action(ViewBag.Accion ?? "")';
+        NotaPedidoMant.crearClienteUrl = '@Url.Action("CrearCliente")';
+        NotaPedidoMant.consultaClientesUrl = '@Url.Action("ConsultarClientes")';
+        NotaPedidoMant.generarCuentasPagarUrl = '@Url.Action("GenerarCuentasPorCobrar")';
+        NotaPedidoMant.generarFacturaUrl = '@Url.Action("GenerarFactura")';
+        NotaPedidoMant.transferenciaUrl = '@Url.Action("GenerarTransferencia")';
+        NotaPedidoMant.descargarUrl = '@Url.Action("Descargar")';
+        NotaPedidoMant.tiposPaquete = @Html.Raw(Json.Encode(jsonTiposPaquete));
+
+        NotaPedidoMant.init();
+
+    </script>
+
+
+}

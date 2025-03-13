@@ -1,0 +1,181 @@
+﻿@using TendaGo.Web.Models
+@using TendaGo.Web.ApplicationServices
+@using TendaGo.Common
+
+@Styles.Render("~/Styles/datatables")
+@Styles.Render("~/Styles/select2")
+
+@model ProductoViewModel
+@{
+    ViewBag.Title = "Reporte";
+    Model.IdEmpresa = User.Identity.GetIdEmpresa();
+    var filtrosBusqueda = (IEnumerable<SelectListItem>)ViewBag.FiltrosBusqueda;
+
+    var unidadesMedida = UnidadMedidaAppService.ObtenerUnidadesDeMedidaActivas();
+    var divisions = DivisionesAppService.ObtenerDivisionesActivas();
+
+    var lines = Model.IdDivision > 0 ? LineasAppService.ObtenerLineasActivas(Model.IdDivision.Value) : new List<LineDto>();
+    var cats = Model.IdLinea > 0 ? CategoriasAppService.ObtenerCategoriasActivas(Model.IdLinea.Value) : new List<CategoryDto>();
+    var brands = MarcasAppService.ObtenerMarcas();
+
+    var listaUnidadesMedida = new SelectList(unidadesMedida.Where(x => x.IdEstado == 1), "Id", "UnidadMedida", Model.UnidadMedida);
+    var divisionList = new SelectList(divisions.Where(x => x.IdEstado == 1), "Id", "Division", Model.IdDivision);
+    var lineList = new SelectList(lines.Where(x => x.IdEstado == 1), "Id", "Linea", Model.IdLinea);
+    var categoryList = new SelectList(cats.Where(x => x.IdEstado == 1), "Id", "Categoria", Model.IdCategoria);
+    var brandList = new SelectList(brands.Where(x => x.IdEstado == 1), "Id", "Marca", Model.IdMarca);
+
+    string urlBase = ViewBag.UrlBase;
+    var app_user = User.Identity.Name;
+    var productos = new List<SelectListItem>();
+
+}
+
+<ol class="breadcrumb bc-3 small hidden-xs breadcrumb-no-padding">
+    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home</a></li>
+    <li>Parametrizaciones</li>
+    <li class="active"><strong>@ViewBag.Title</strong></li>
+</ol>
+
+@using (Html.BeginForm("Resumido", "inventario", FormMethod.Post, new { id = "getReportInventoryForm", @class = "form-wizard validate", @enctype = "multipart/form-data", autocomplete = "off", target = "_blank" }))
+{
+    @Html.HiddenFor(model => model.IdEmpresa)
+    @Html.Hidden("format","Excel")
+    @Html.AntiForgeryToken()
+
+
+    <div class="form-group row">Resumido
+        <div class="col-sm-6">
+            @Html.LabelFor(x => x.IdMarca, new { @class = "control-label" })
+            @Html.DropDownListFor(m => m.IdMarca, brandList, "Seleccione Marca", new { @class = "form-control" })
+        </div>
+
+        <div class="col-sm-6">
+            @Html.LabelFor(x => x.IdDivision, new { @class = "control-label" })
+            @Html.DropDownListFor(m => m.IdDivision, divisionList, "Seleccione División", new { @class = "form-control", id = "IdDivision" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-sm-6">
+            @Html.LabelFor(x => x.IdLinea, new { @class = "control-label" })
+            @Html.DropDownListFor(m => m.IdLinea, lineList, "Seleccione Línea", new { @class = "form-control", id = "IdLinea" })
+        </div>
+
+        <div class="col-sm-6">
+            @Html.LabelFor(x => x.IdCategoria, new { @class = "control-label" })
+            @Html.DropDownListFor(m => m.IdCategoria, categoryList, "Seleccione Categoría", new { @class = "form-control", id = "IdCategoria" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-sm-6">
+            @Html.LabelFor(x => x.UnidadMedida, new { @class = "control-label" })
+            @Html.DropDownListFor(m => m.UnidadMedida, listaUnidadesMedida, "Seleccione Unidad Medida", new { @class = "form-control" })
+        </div>
+    </div>
+
+}
+
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="btn-group text-right">
+            <button type="button" class="btn btn-success  download-pdf "><i class="entypo-print"></i> Imprimir </button>
+            <button type="button" class="btn btn-green dropdown-toggle" data-toggle="dropdown" aria-expanded="true" style="background: #00582b;"> <i class="entypo-down"></i> </button>
+            <ul class="dropdown-menu dropdown-danger" role="menu">
+                <li><a class="text-danger download-pdf" href="javascript:;"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;Descargar PDF</a> </li>
+                <li><a class="text-info download-word" href="javascript:;"><i class="fa fa-file-word-o"></i>&nbsp;&nbsp;Descargar Word</a> </li>
+                <li><a class="text-success download-excel" href="javascript:;"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp;Descargar Excel</a> </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/wizard")
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/datepicker")
+    @Scripts.Render("~/bundles/timepicker")
+    @Scripts.Render("~/bundles/select2")
+    @Scripts.Render("~/bundles/toggle")
+
+
+    <script>
+        menu_settings.parentMenu = 'MnuInventory';
+        menu_settings.optionMenu = 'OpcInvReporte';
+
+        @*function printInventory(format) {
+            console.log(format);
+
+             var imprimirinv = function (format) {
+                 window.open('@Url.Action("Resumido")/?format=' + format, "_blank");
+            }
+            $(".download-pdf").on("click", function () { imprimirinv("PDF"); });
+            $(".download-excel").on("click", function () { imprimirinv("Excel"); });
+            $(".download-word").on("click", function () { imprimirinv("Word"); });
+
+        }*@
+
+    $(document).ready(function () {
+
+        $(".download-word").on("click", function (event) {
+            $("input[name='format']").val("WORD");
+            $("#getReportInventoryForm").submit();
+        });
+
+        $(".download-excel").on("click", function (event) {
+            $("input[name='format']").val("EXCEL");
+            $("#getReportInventoryForm").submit();
+        });
+
+        $(".download-pdf").on("click", function (event) {
+            $("input[name='format']").val("PDF");
+            $("#getReportInventoryForm").submit();
+
+
+            //var $div = $($form).closest('div');
+            //var post_url = '@Url.Action("Resumido")/?format=' + format;
+            //var request_method = $($form).attr("method");
+            //var form_data = $form.serializeArray();
+
+
+
+            //$.ajax({
+            //    url: post_url,
+            //    type: request_method,
+            //    data: form_data,
+            //    beforeSend: function () {
+            //        blockUI($div)
+            //        $div.addClass('loading');
+            //    },
+            //    complete: function () {
+            //        unblockUI($div)
+            //        $div.removeClass('loading');
+            //    }
+            //}).done(function (respuesta) {
+            //    console.log(respuesta)
+
+            //    var wv = window.open("about:blank", "_blank");
+
+            //    wv.document.write(respuesta);
+            //    //if (respuesta != "") {
+            //    //    if (respuesta.success == true) {
+            //    //        console.log("OK");
+            //    //        window.open(respuesta, "_blank");
+            //    //    }
+            //    //    else {
+            //    //        console.log("falso");
+            //    //        toastr.error(respuesta.mensaje, "", optionsToastr);
+            //    //    }
+            //    //}
+            //}).fail(function (e) {
+            //    debugger;
+            //});
+
+
+        });
+    });
+
+    </script>
+}

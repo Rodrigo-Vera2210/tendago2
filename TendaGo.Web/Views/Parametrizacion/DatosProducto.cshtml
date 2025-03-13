@@ -1,0 +1,344 @@
+﻿@using TendaGo.Web.Models
+@model ProductoViewModel
+@{
+    var listaUnidadesMedida = (IEnumerable<SelectListItem>)ViewBag.ListaUnidadesMedida;
+    var divisionList = (IEnumerable<SelectListItem>)ViewBag.DivisionList;
+    var lineList = (IEnumerable<SelectListItem>)ViewBag.LineList;
+    var categoryList = (IEnumerable<SelectListItem>)ViewBag.CategoryList;
+    var brandList = (IEnumerable<SelectListItem>)ViewBag.BrandList;
+    string urlBase = ViewBag.UrlBase;
+}
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header modal-header-inventory">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Datos Producto</h4>
+        </div>
+        <div class="modal-body">
+            <div>
+                @using (Html.BeginForm("GuardarProducto", "Parametrizacion", FormMethod.Post, new { id = "guardarProductoForm", @class = "form-wizard validate", @enctype = "multipart/form-data", autocomplete = "off" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="steps-progress">
+                        <div class="progress-indicator"></div>
+                    </div>
+                    <ul>
+                        <li class="active">
+                            <a href="#tab1" data-toggle="tab"><span>1</span>Datos Producto</a>
+                        </li>
+                        <li>
+                            <a href="#tab2" data-toggle="tab"><span>2</span>Datos Producto</a>
+                        </li>
+                        <li>
+                            <a href="#tab3" data-toggle="tab"><span>3</span>Imagen</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+
+                        <div class="tab-pane active" id="tab1">
+                            <div>
+                                <div class="form-group row">
+                                    <div class="col-sm-4">
+                                        @Html.LabelFor(x => x.CodigoProveedor, new { @class = "control-label" })
+                                        @if (Model != null && Model.Id > 0)
+                                        {
+                                            @Html.HiddenFor(x => x.Id)
+                                        }
+                                        @Html.TextBoxFor(x => x.CodigoProveedor, new { @class = "form-control", @autocomplete = "off" })
+                                    </div>
+                                    <div class="col-sm-4">
+                                        @Html.LabelFor(x => x.CodigoInterno, new { @class = "control-label" })
+                                        @Html.TextBoxFor(x => x.CodigoInterno, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-sm-4">
+                                        @Html.LabelFor(x => x.TipoProducto, new { @class = "control-label" })
+                                        @Html.TextBoxFor(x => x.TipoProducto, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    @Html.LabelFor(x => x.Producto, new { @class = "col-sm-3 control-label" })
+                                    <div class="col-sm-9">
+                                        @Html.TextBoxFor(x => x.Producto, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    @Html.LabelFor(x => x.Descripcion, new { @class = "col-sm-3 control-label" })
+                                    <div class="col-sm-9">
+                                        @Html.TextAreaFor(x => x.Descripcion, new { @class = "form-control no-resize", rows = "3" })
+                                    </div>
+                                </div>
+                                @*<div class="form-group row">
+                                        @Html.LabelFor(x => x.DescripcionBusqueda, new { @class = "col-sm-3 control-label" })
+                                        <div class="col-sm-9">
+                                            @Html.TextBoxFor(x => x.DescripcionBusqueda, new { @class = "form-control" })
+                                        </div>
+                                    </div>*@
+                                <div class="form-group row">
+                                    <div class="col-sm-4">
+                                        @Html.LabelFor(x => x.IdMarca, new { @class = "control-label" })
+
+                                        @Html.DropDownListFor(m => m.IdMarca, brandList, "Seleccione Marca", new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-sm-4">
+                                        @Html.LabelFor(x => x.UnidadMedida, new { @class = "control-label" })
+                                        @Html.DropDownListFor(m => m.UnidadMedida, listaUnidadesMedida, "Seleccione Unidad Medida", new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-sm-4">
+                                        @Html.LabelFor(x => x.IdDivision, new { @class = "control-label" })
+                                        @Html.DropDownListFor(m => m.IdDivision, divisionList, "Seleccione División", new { @class = "form-control", id = "IdDivision" })
+                                    </div>
+                                    <div class="col-sm-4">
+                                        @Html.LabelFor(x => x.IdLinea, new { @class = "control-label" })
+                                        @Html.DropDownListFor(m => m.IdLinea, lineList, "Seleccione Línea", new { @class = "form-control", id = "IdLinea" })
+                                    </div>
+                                    <div class="col-sm-4">
+                                        @Html.LabelFor(x => x.IdCategoria, new { @class = "control-label" })
+                                        @Html.DropDownListFor(m => m.IdCategoria, categoryList, "Seleccione Categoría", new { @class = "form-control", id = "IdCategoria" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tab2">
+                            <div>
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        @Html.LabelFor(x => x.RegistroSanitario, new { @class = "control-label" })
+                                        @Html.TextBoxFor(x => x.RegistroSanitario, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6">
+                                        @Html.LabelFor(x => x.Peso, new { @class = "control-label" })
+                                        @Html.TextBoxFor(x => x.Peso, new { @class = "form-control input4Decimal" })
+                                    </div>
+                                    <div class="col-sm-6">
+                                        @Html.LabelFor(x => x.Volumen, new { @class = "control-label" })
+                                        @Html.TextBoxFor(x => x.Volumen, new { @class = "form-control input4Decimal" })
+                                    </div>
+                                </div>
+                                @*<div class="form-group row">
+                                        @Html.LabelFor(x => x.Stock, new { @class = "col-sm-3 control-label" })
+                                        <div class="col-sm-9">
+                                            @Html.TextBoxFor(x => x.Stock, new { @class = "form-control", @value = "1", @readonly = "readonly" })
+                                        </div>
+                                    </div>*@
+                                <div class="form-group row">
+                                    @Html.LabelFor(x => x.StockMinimo, new { @class = "col-sm-3 control-label" })
+                                    <div class="col-sm-9">
+                                        <div id="spinnerStockMinimo" class="input-spinner">
+                                            <button type="button" class="btn btn-default">-</button>
+                                            @Html.TextBoxFor(x => x.StockMinimo, new { @class = "form-control", @value = "0", @data_min = "0" })
+                                            <button type="button" class="btn btn-default">+</button>
+                                        </div>
+                                        @*@Html.ValidationMessageFor(x => x.StockMinimo)*@
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    @Html.LabelFor(x => x.Costo, new { @class = "col-sm-3 control-label " })
+                                    <div class="col-sm-9">
+                                        @Html.TextBoxFor(x => x.Costo, new { @class = "form-control input-money" })
+                                        @*@Html.ValidationMessageFor(x => x.Costo)*@
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    @Html.LabelFor(x => x.Descuento, new { @class = "col-sm-3 control-label" })
+                                    <div class="col-sm-9">
+                                        @Html.TextBoxFor(x => x.Descuento, new { @class = "form-control input-money" })
+                                        @*@Html.ValidationMessageFor(x => x.Descuento)*@
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-3">
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <div class="checkbox checkbox-replace color-blue">
+                                            @Html.CheckBoxFor(m => m.CobraIva)
+                                            <label><strong>Cobra Iva</strong></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane" id="tab3">
+                            <div class="form-group row">
+                                @Html.LabelFor(x => x.FotoDataUrl, new { @class = "col-sm-3 control-label" })
+                                @Html.HiddenFor(model => model.HasfotoChanges,htmlAttributes: new {id= "HasfotoChanges" })
+                                @Html.HiddenFor(model => model.PathArchivo)
+                                <div class="col-sm-9">
+
+                                    @if (Model != null && Model.FotoDataUrl != null)
+                                    {
+                                    <div class="fileinput fileinput-exists" data-provides="fileinput">
+                                        <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;" data-trigger="fileinput">
+                                        </div>
+                                        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px">
+                                            <img class="cover-parent" src="@Model.FotoDataUrl" />
+                                            @if (Model.FotoDataUrl == null)
+                                            {
+                                                <i class="fa fa-picture-o"></i>
+                                            }
+                                        </div>
+                                        <div>
+                                            <span class="btn btn-white btn-file" style="width:100%">
+                                                <span class="fileinput-new">Seleccionar Imagen</span>
+                                                <span class="fileinput-exists">Cambiar</span>
+                                                <input type="file" name="file" id="file" accept="image/*">
+                                            </span>
+                                        </div>
+                                        @*<a href="#" class="btn btn-info fileinput-exists" data-dismiss="fileinput">Eliminar</a>*@
+                                        <button type="button" id="btnDeleteFoto" class="btn btn-info fileinput-exists" data-dismiss="fileinput">Eliminar</button>
+                                    </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;" data-trigger="fileinput">
+                                            </div>
+                                            <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px">
+
+                                            </div>
+                                            <div>
+                                                <span class="btn btn-white btn-file" style="width:100%;">
+                                                    <span class="fileinput-new">Seleccionar Imagen</span>
+                                                    <span class="fileinput-exists">Cambiar</span>
+                                                    <input type="file" name="file" id="file" accept="image/*">
+                                                </span>
+                                                <a href="#" class="btn btn-info fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                                            </div>
+                                        </div>
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <ul class="pager wizard">
+                            <li class="previous">
+                                <a href="#"><i class="entypo-left-open"></i> Anterior</a>
+                            </li>
+                            <li class="next">
+                                <a href="#">Siguiente <i class="entypo-right-open"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="modal-footer modal-footer-inventory ">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="button" id="btnGuardarProducto" class="btn btn-blue btn-add-datail">Guardar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(function () {
+
+        $.validator.unobtrusive.parse($("#guardarProductoForm"));
+        $("#guardarProductoForm").formwizardcustom();
+        //$(".input-spinner").spinner();
+        $(".input-money").maskAsDecimal();
+        $(".input4Decimal").maskAsDecimal({precision:4});
+        $(".fileinput").fileinput();
+        replaceCheckboxes();
+
+        $("#btnGuardarProducto").click(function () {
+            $("#guardarProductoForm").submit();
+        });
+
+        $("#guardarProductoForm").submit(function (event) {
+            event.preventDefault();
+
+            var $div = $(this).closest('div');
+            var post_url = $(this).attr("action");
+            var request_method = $(this).attr("method");
+            var form_data = new FormData(this);
+
+            $.ajax({
+                url: post_url,
+                type: request_method,
+                data: form_data,
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    blockUI($div)
+                    $div.addClass('loading');
+                },
+                complete: function () {
+                    unblockUI($div)
+                    $div.removeClass('loading');
+                }
+            }).done(function (respuesta) {
+                if (respuesta != "") {
+                    if (respuesta.Success == true) {
+                        toastr.success(respuesta.Mensaje, "", optionsToastr);
+                        $("#divModal").modal('hide');
+                        //$("#searchProductsForm").submit();
+                    }
+                    else {
+                        toastr.warning(respuesta.Mensaje, "", optionsToastr);
+                    }
+                }
+            });
+        });
+    });
+
+    $("#IdDivision").on("change", function() {
+        getLinesbyDivision();
+    });
+    $("#IdLinea").on("change", function () {
+        getCategoriesByLine();
+    });
+
+    $("#btnDeleteFoto").on("click", function () {
+        var HasfotoChanges = $("#HasfotoChanges").val(true);
+        //console.log("HasfotoChanges: " + HasfotoChanges);
+    });
+
+    function getLinesbyDivision() {
+        var idDivision = $("#IdDivision").val();
+
+        $("#IdLinea").empty();
+        $("#IdLinea").append('<option value=""> Seleccione Línea</option>');
+        $("#IdCategoria").empty();
+        $("#IdCategoria").append('<option value=""> Seleccione Categoría</option>');
+
+        if (idDivision !== "") {
+            $.ajax({
+                url: '@urlBase/divisions/'+idDivision+'/lines',
+                type: 'GET',
+                success: function (lines) {
+                    $.each(lines, function(i, line) {
+                        $("#IdLinea").append(`<option value="${line.Id}">${line.Linea}</option>`);
+                    });
+                }
+            });
+        }
+    }
+
+    function getCategoriesByLine() {
+        var idLine = $("#IdLinea").val();
+        if (idLine !== "") {
+            $("#IdCategoria").empty();
+            $.ajax({
+                url: '@urlBase/lines/' + idLine +'/categories',
+                type: 'GET',
+                success: function (lines) {
+                    $("#IdCategoria").append('<option value=""> Seleccione Categoría</option>');
+                    $.each(lines, function(i, line) {
+                        $("#IdCategoria").append(`<option value="${line.Id}">${line.Categoria}</option>`);
+                    });
+                }
+            });
+        }
+    }
+
+</script>

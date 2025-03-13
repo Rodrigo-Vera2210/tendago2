@@ -1,0 +1,46 @@
+﻿@using TendaGo.Web.Models
+@model List<UnidadMedidaViewModel>
+
+<div class="panel panel-primary panel-shadow">
+    <div class="panel-heading">
+        <div class="panel-title">.</div>
+        <div class="panel-options">
+            <a href="#" class="bg-success">
+                <span>Nueva</span>
+                <i class="entypo-plus"></i>
+            </a>
+            <a href="#" class="bg-info">
+                <span>Editar</span>
+                <i class="entypo-pencil"></i>
+            </a>
+            <a href="#" class="bg-warning">
+                <span>Elminar</span>
+                <i class="entypo-trash"></i>
+            </a>
+        </div>
+    </div>
+    <div class="panel-body with-table">
+        <div class="table-responsive">
+            <table id="tablaUnidadesMedida" class="table datatable table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th width="70%">Nombre</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.Nombre</td>
+                            <td>@item.Estado</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

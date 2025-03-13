@@ -1,0 +1,78 @@
+﻿@model TendaGo.Web.Models.UnidadMedidaModel
+@{
+    bool isEdit = ViewBag.IsEdit ?? false;
+    ViewBag.PanelTitle = isEdit ? "Editar" : "Nuevo";
+}
+
+@using (Html.BeginForm("MantUnit", "Parametrizacion", FormMethod.Post, new { id = "formMantUnit" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="panel panel-primary">
+        <div class="panel-body">
+            <h4>@ViewBag.PanelTitle</h4>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.UnidadMedida, htmlAttributes: new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.UnidadMedida, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.UnidadMedida, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IdEstado, htmlAttributes: new { @class = "control-label" })
+                <div class="checkbox">
+                    <label>
+                        @Html.CheckBoxFor(model => model.IdEstado, new { id= "IdEstado" })
+                    </label>
+                    @Html.ValidationMessageFor(model => model.IdEstado, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <button type="button" id="btnCancelUnit" class="btn btn-sm btn-default">Cancelar</button>
+            <input type="submit" value="Guardar" class="btn btn-sm btn-success" />
+        </div>
+    </div>
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+<script>
+    
+    $("#btnCancelUnit").on("click", function () {
+        LoadFormMant();
+    });
+
+    $('#formMantUnit').submit(function () {
+        if ($('#formMantUnit').validate().valid()) {
+            $.ajax({
+                url: $('#formMantUnit').attr('action'),
+                type: 'POST',
+                data: $('#formMantUnit').serialize(),
+                beforeSend: function () {
+                    $("#divMant").empty();
+                    $("#divMant").append('<div id="divLoading" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+                },
+                complete: function () {
+                    $("#divLoading").remove();
+                },
+                success: function (dataReceived) {
+                    if (dataReceived && dataReceived.Success) {
+                        toastr.success(dataReceived.Mensaje, "", optionsToastr);
+                        getUnits();
+                    }
+                    if (dataReceived && !dataReceived.Success) {
+                        toastr.error(dataReceived.Error.UserMessage);
+                        console.error("dataReceived:" + JSON.stringify(dataReceived.Error));
+                    }
+                }
+            }).done(function (doneReceived) {
+                console.info("done:" + JSON.stringify(doneReceived));
+                LoadFormMant(0);
+            });
+        }
+        return false;
+    });
+
+</script>

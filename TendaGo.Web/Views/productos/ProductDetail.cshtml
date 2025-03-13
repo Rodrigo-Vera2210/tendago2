@@ -1,0 +1,28 @@
+﻿@model TendaGo.Web.Models.ProductoViewModel
+@{ 
+    var descripcion = Model.Descripcion ?? Model.Producto;
+}
+<h4>Producto</h4>
+<div class="tile-title tile-gray">
+    <div class="icon">
+        <img class="cover-parent-tile" src="@Model.FotoDataUrl">
+    </div>
+
+    <div class="title">
+        <h4>@Model.Producto</h4>
+        <pre>
+@Html.Encode(descripcion.Trim())
+ID: @Model.Id
+Código Proveedor: @Model.CodigoProveedor
+Código Interno: @Model.CodigoInterno
+</pre>
+        <div class="title-buttons">
+            <div class="input-group-btn">
+                <button type="button" class="btn btn-default btn-product-details" onclick="CancelSetProductPrice()">
+                    <span class="hidden-xs">Cancelar</span>
+                    <i class="entypo-cancel"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

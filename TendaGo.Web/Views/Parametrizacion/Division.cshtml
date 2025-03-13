@@ -1,0 +1,97 @@
+﻿@{
+    ViewBag.Title = "Divisiones";
+}
+@Styles.Render("~/Styles/datatables")
+@Styles.Render("~/Styles/toggle")
+
+<ol class="breadcrumb bc-3 small hidden-xs breadcrumb-no-padding">
+    <li>
+        <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home</a>
+    </li>
+    <li>Parametrizaciones</li>
+    <li class="active"><strong>@ViewBag.Title</strong></li>
+</ol>
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left">
+            <h3>@ViewBag.Title</h3>
+        </div>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div id="divMant" class="col-lg-3 col-md-4"></div>
+    <div id="divDatatable" class="col-lg-9 col-md-8"></div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/toggle")
+
+    <script>
+        menu_settings.parentMenu = 'MnuProducts';
+        menu_settings.optionMenu = 'OpcDivisions';
+
+        $(function() {
+            getDivisions();
+            SetActiveMenu();
+        });
+
+        function getDivisions() {
+            $.ajax({
+                url: "@Url.Action("GetDivisions")",
+                type: "GET",
+                beforeSend: function() {
+                    $("#divDatatable").empty();
+                    $("#divDatatable")
+                        .append('<div id="divLoading" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+                },
+                complete: function() {
+                    $("#divLoading").remove();
+                    LoadFormMant();
+                }
+            }).done(function(dataResponse) {
+                if (dataResponse != "") {
+                    $("#divDatatable").html(dataResponse);
+                    $("#divisionsTable").datatableNoSortColumn({ column_no_sort: 2});
+                }
+            });
+        }
+
+        function LoadFormMant(idDivision) {
+            if (!idDivision) {
+                idDivision = 0;
+            }
+            $.ajax({
+                url: "@Url.Action("MantDivision")",
+                type: "GET",
+                data: { id: idDivision },
+                beforeSend: function() {
+                    $("#divMant").empty();
+                    $("#divMant")
+                        .append('<div id="divLoading" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+                },
+                complete: function() {
+                    $("#divLoading").remove();
+                }
+            }).done(function(respuesta) {
+                if (respuesta != "") {
+                    $("#divMant").html(respuesta);
+                    $('#IdEstado').cmodevCheckToogle();
+                }
+            });
+        }
+
+        $("#agregar").on("click",function() {
+            showMant();
+        });
+
+        function showMant() {
+            $("#divDatatable").fadeOut('fast');
+            $("#divDatatable").removeClass('col-lg-12').addClass('col-lg-10');
+            $("#divMant").fadeIn('fast');
+            $("#divDatatable").fadeIn('fast');
+        }
+
+    </script>
+}

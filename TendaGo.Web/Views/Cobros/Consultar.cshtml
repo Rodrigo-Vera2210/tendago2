@@ -1,0 +1,211 @@
+﻿@using TendaGo.Common
+@using TendaGo.Web.Models
+@using TendaGo.Web.ApplicationServices
+@model List<CobroDebitoViewModel>
+
+@{
+    ViewBag.Title = "Consulta de Recibos";
+    var locales = Session.GetLocales();
+    var mediosPago = CatalogosAppService.ObtenerMediosPago();
+
+    var searchModel = new ReciboSearchModel
+    {
+        fechaInicio = DateTime.Today.ToString("dd/MM/yyyy"),
+        fechaFin = DateTime.Today.ToString("dd/MM/yyyy")
+    };
+}
+
+@Styles.Render("~/Styles/datatables")
+
+<ol class="breadcrumb bc-3 small hidden-xs breadcrumb-no-padding">
+    <li>
+        <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home</a>
+    </li>
+    <li>
+        Cobros
+    </li>
+    <li class="active">
+        <strong>@ViewBag.Accion Recibos de Cobros</strong>
+    </li>
+</ol>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left">
+            <h3>@ViewBag.Accion Recibos de Cobros</h3>
+        </div>
+    </div>
+</div>
+<br />
+
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="panel-title"><b>BUSCAR RECIBOS</b></div>
+        <div class="panel-options">
+            <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+        </div>
+    </div>
+    <div class="panel-body">
+        <form id="searchForm" role="form" lang="en-US" action="@Url.Action("Consultar")" method="post" class="validate" novalidate="novalidate">
+
+            <div class="form-group col-md-3">
+                <label class="control-label">Fecha Inicio</label>
+                @Html.TextBox("fechaInicio", searchModel.fechaInicio, new { @class = "form-control datepicker-custom", @placeholder = "Fecha de Inicio" })
+            </div>
+
+            <div class="form-group col-md-3">
+                <label class="control-label">Fecha Fin</label>
+                @Html.TextBox("fechaFin", searchModel.fechaFin, new { @class = "form-control datepicker-custom", @placeholder = "Fecha Fin" })
+            </div>
+
+            <div class="form-group col-md-6">
+                <label class="control-label">Buscar</label>
+                @Html.TextBox("term", searchModel.term, new { @class = "form-control", @placeholder = "Filtro de Busqueda" })
+            </div>
+
+            <div class="form-group col-md-offset-8 col-md-4">
+                <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-search"></i>&nbsp;&nbsp; Buscar</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+<div id="divConsultasRecibo" class="row">
+    <table id="tablaRecibo" class="table datatable table-bordered table-striped table-hover">
+        <thead>
+            <tr class="small">
+                <th class="text-center bold">Numero</th>
+                <th class="text-center bold">Identificacion</th>
+                <th class="text-center bold">Razon Social</th>
+                <th class="text-center bold">Fecha</th>
+                <th class="text-center bold">Total</th>
+                <th class="text-center bold"></th>
+                <th class="text-center bold"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var recibo in Model)
+            {
+                
+                <tr>
+
+                    <td class="text-center">@recibo.Id</td>
+                    <td>@recibo.Identificacion</td>
+                    <td>@recibo.RazonSocial</td>
+                    <td class="text-center">@recibo.FechaEmision.ToString("dd/MM/yyyy")</td>
+                    <td class="text-right">@recibo.Total.ToCustomFormatString()</td>
+                    <td class="text-center">
+                        <button class="btn btn-default btn-icon icon-left" onclick="mostrarDetalle('@recibo.Id', '@ViewBag.Accion');">
+                            <i class="entypo-check"></i> Consultar
+                        </button>
+                    </td>
+
+                    @if (recibo.Total > 0 && string.IsNullOrEmpty(recibo.IdReversa))
+                    {
+                        <td class="text-center">
+                            <button class="btn btn-danger btn-icon icon-left" onclick="anularPago('@recibo.Id', '@ViewBag.Accion');">
+                                <i class="fa fa-trash-o"></i> Anular
+                            </button>
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="text-center">
+                            <p class="btn btn-danger-outline">
+                                Anulado
+                            </p>
+                        </td>
+                    }
+                </tr>
+             }
+        </tbody>
+    </table>
+</div>
+<br />
+
+<div id="divloading" class="progress progress-striped active hidden">
+    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+        <span class="sr-only">40% Complete (success)</span>
+    </div>
+</div>
+
+<div class="modal" id="modalDetalle">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Recibo
+            </div>
+            <div class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/wizard")
+    @Scripts.Render("~/bundles/maskmoney")
+    @Scripts.Render("~/bundles/fileinput")
+    @Scripts.Render("~/scripts/TendaGo.cobros.index.js")
+
+    <script>
+
+        var clienteData = {};
+
+        menu_settings.parentMenu = 'MnuCobro';
+        menu_settings.optionMenu = 'OpcConsulta';
+
+
+        function mostrarDetalle($id) {
+
+            $.get('@Url.Action("ReciboVistaPreliminar")/'+$id, {})
+                .done(function (respuesta) {
+                    var $div = $("#modalDetalle");
+                    var $body = $div.find("div.modal-body")
+
+                    $body.empty().html(respuesta);
+
+                    $div.modal("show");
+
+            });
+        }
+
+
+        $(document).ready(function () {
+            $("#tablaRecibo").dataTable();
+        });
+
+        function anularPago($id) {
+
+            swal({
+            title: "Anular Recibo",
+            text: "¿Esta usted seguro? Una vez anulado el recibo, el estado no se puede revertir!",
+            type: "warning",
+            buttons: true,
+            showCancelButton: true,
+            dangerMode: true,
+            confirmButtonColor: "#cc2424",
+            confirmButtonText: "Anular",
+            cancelButtonText: "Cancelar",
+            closeOnConfirm: true
+
+        }, function (eliminar) {
+
+                if (eliminar) {
+                    $.post('@Url.Action("ReciboReversar")/'+$id, {})
+                        .done(function (respuesta) {
+                            location.reload();
+                        });
+                }
+            });
+        }
+    </script>
+}

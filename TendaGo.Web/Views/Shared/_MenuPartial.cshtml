@@ -1,0 +1,173 @@
+﻿@{
+    var modules = Session.GetModules();
+    var pantallas = Session.GetPantallas();
+}
+
+
+@if (modules != null && pantallas != null)
+{
+    <ul id="main-menu" class="main-menu">
+        <!-- add class "multiple-expanded" to allow multiple submenus to open -->
+        <!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
+        @foreach (var module in modules)
+        {
+            var pantallasModulo = pantallas
+                .Where(x => x.IdModulo == module.Id && x.IdEstado==1)
+                .ToList();
+
+            if (pantallasModulo.Any())
+            {
+                var menuMeta = module.Icono.Split(':');
+                string elementId = menuMeta[0];
+                string moduleIcon = menuMeta[1];
+
+                <li id="@elementId" class="has-sub">
+                    <a href="#">
+                        <i class="@moduleIcon"></i>
+                        <span class="title">@module.Modulo</span>
+                    </a>
+                    <ul>
+                        @foreach (var pantalla in pantallasModulo.OrderBy(m => m.Orden))
+                        {
+                            var pantallaMeta = pantalla.NombreAssembly.Split(':');
+                            string action = (pantallaMeta[0] ?? "").ToLower();
+                            string controller = (pantallaMeta[1] ?? "").ToLower();
+                            <li id="@pantalla.Icono" data-uid="@(elementId)_@(pantalla.Id)">
+                                <a href="@Url.Action(action, controller)">
+                                    <span class="title">@pantalla.Nombre</span>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </li>
+            }
+        }
+         
+    </ul>
+}
+else
+{
+    <script>
+       // location.href = "/auth";
+    </script>
+}
+
+
+@*<li id="MnuParam" class="has-sub">
+        <a href="#">
+            <i class="entypo-cog"></i>
+            <span class="title">Parametrizaciones</span>
+        </a>
+        <ul>
+            <li id="OpcUnits">
+                <a href="@Url.Action("Unidades", "Parametrizacion")">
+                    <span class="title">Unidad de Medida</span>
+                </a>
+            </li>
+            <li id="OpcDivisions">
+                <a href="@Url.Action("Division", "Parametrizacion")">
+                    <span class="title">Divisiones</span>
+                </a>
+            </li>
+            <li id="OpcLines">
+                <a href="@Url.Action("Lineas", "Parametrizacion")">
+                    <span class="title">Líneas</span>
+                </a>
+            </li>
+            <li id="OpcCats">
+                <a href="@Url.Action("Categorias", "Parametrizacion")">
+                    <span class="title">Categorías</span>
+                </a>
+            </li>
+            <li id="OpcBrands">
+                <a href="@Url.Action("Marcas", "Parametrizacion")">
+                    <span class="title">Marcas</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+
+    <li id="MnuProducts" class="has-sub">
+        <a href="#">
+            <i class="entypo-shuffle"></i>
+            <span class="title">Productos</span>
+        </a>
+        <ul>
+            <li id="OpcProd">
+                <a href="@Url.Action("Index", "productos")">
+                    <span class="title">Producto</span>
+                </a>
+            </li>
+            <li id="OpcPrec">
+                <a href="@Url.Action("precios", "productos")">
+                    <span class="title">Precios</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+
+    <li id="MnuNotaPedido" class="has-sub">
+        <a href="#">
+            <i class="entypo-gauge"></i>
+            <span class="title">Nota de Pedido</span>
+        </a>
+        <ul>
+            <li id="OpcCrear">
+                <a href="@Url.Action("Index", "NotaPedido")">
+                    <span class="title">Crear</span>
+                </a>
+            </li>
+            <li id="OpcAprobar">
+                <a href="@Url.Action("Aprobar", "NotaPedido")">
+                    <span class="title">Aprobar</span>
+                </a>
+            </li>
+            <li id="OpcEmpaq">
+                <a href="@Url.Action("Empaquetar", "NotaPedido")">
+                    <span class="title">Empaquetar</span>
+                </a>
+            </li>
+            <li id="OpcRev">
+                <a href="@Url.Action("Revisar", "NotaPedido")">
+                    <span class="title">Revisar</span>
+                </a>
+            </li>
+            <li id="OpcEntreg">
+                <a href="@Url.Action("Entregar", "NotaPedido")">
+                    <span class="title">Entregar</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+
+    <li id="MnuPurchase" class="has-sub">
+        <a href="#">
+            <i class="entypo-gauge"></i>
+            <span class="title">Compras</span>
+        </a>
+        <ul>
+            <li id="OpcPurchaseSimple">
+                <a href="@Url.Action("Index", "Compra")">
+                    <span class="title">Ingresar Compra</span>
+                </a>
+            </li>
+            <li id="OpcImport">
+                <a href="@Url.Action("Importar", "Compra")">
+                    <span class="title">Importar</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li class="has-sub">
+        <a href="#">
+            <i class="entypo-gauge"></i>
+            <span class="title">Cobros</span>
+        </a>
+        <ul>
+            <li>
+                <a href="@Url.Action("Index", "Cobros")">
+                    <span class="title">Registrar Cobros</span>
+                </a>
+            </li>
+        </ul>
+    </li>*@

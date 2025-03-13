@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="8dbb224e-f820-4922-b82e-fb05c5d63428" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>false</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:51670/PrecioService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="PrecioService.wsdl" MetadataType="Wsdl" ID="aba94b69-5d92-4671-be2e-2d492bc5063b" SourceId="1" SourceUrl="http://localhost:51670/PrecioService.svc?wsdl" />
+    <MetadataFile FileName="PrecioService.xsd" MetadataType="Schema" ID="446af162-ca05-40fa-9ed6-7d5de43c04ad" SourceId="1" SourceUrl="http://localhost:51670/PrecioService.svc?xsd=xsd2" />
+    <MetadataFile FileName="PrecioService1.xsd" MetadataType="Schema" ID="f2e02a81-04fe-48f7-8e69-4174eaad8e90" SourceId="1" SourceUrl="http://localhost:51670/PrecioService.svc?xsd=xsd0" />
+    <MetadataFile FileName="PrecioService.disco" MetadataType="Disco" ID="a283aecc-b0e4-4fc9-a5e9-a5b38e838c63" SourceId="1" SourceUrl="http://localhost:51670/PrecioService.svc?disco" />
+    <MetadataFile FileName="PrecioService2.xsd" MetadataType="Schema" ID="aff59087-71c7-4577-9634-00772df0a1f0" SourceId="1" SourceUrl="http://localhost:51670/PrecioService.svc?xsd=xsd1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

@@ -1,0 +1,89 @@
+﻿@using TendaGo.Web.Models
+@using TendaGo.Web.ApplicationServices
+@using TendaGo.Common
+@model NotaPedidoModel
+
+@{
+
+    <h4>Detalle Nota de Crédito</h4>
+    <div class="row">
+        <table id="tablaDetalleNotasPedido" class="table datatable table-bordered table-hover">
+            <thead>
+                <tr class="text-sm">
+                    <th>Código</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Tipo Unidad</th>
+                    <th>Precio</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.DetalleNotaPedido.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            @Model.DetalleNotaPedido[i].CodigoInterno
+                            @Html.Hidden("DetalleNotaPedido.Index", i, new { @id = string.Format("DetalleNotaPedido_Index_{0}", i) })
+                        </td>
+                        <td>
+                            @Html.HiddenFor(m => Model.DetalleNotaPedido[i].Id)
+                            @Html.HiddenFor(m => Model.DetalleNotaPedido[i].IdProducto)
+                            @Model.DetalleNotaPedido[i].NombreProducto
+                        </td>
+                        <td class="text-right">
+                            @Html.HiddenFor(m => Model.DetalleNotaPedido[i].Cantidad)
+                            @Model.DetalleNotaPedido[i].Cantidad
+                        </td>
+                        <td class="text-right">
+                            @Html.HiddenFor(m => Model.DetalleNotaPedido[i].IdTipoUnidad)
+                            @Model.DetalleNotaPedido[i].DesTipoUnidad
+                        </td>
+                        <td class="text-right">
+                            @Html.HiddenFor(m => Model.DetalleNotaPedido[i].Precio)
+                            @Model.DetalleNotaPedido[i].Precio.ToString("#,##0.0000")
+                        </td>
+                        <td class="text-right">@Model.DetalleNotaPedido[i].Subtotal.ToCustomFormatString()</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="5" style="text-align:right">Valor Adicional:</th>
+                    <th class="text-right">
+                        @Html.HiddenFor(model => model.ValorAdicional, new { id = "ValorAdicional", @class = "form-control text-right" })
+                        @Model.ValorAdicional.ToCustomFormatString()
+                    </th>
+                </tr>
+                <tr>
+                    <th colspan="5" style="text-align:right">Total:</th>
+                    <th class="text-right">
+
+                        @Model.Total.ToCustomFormatString()
+                    </th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+}
+
+
+@functions{
+
+    List<UnitTypeDto> unidadList = new List<UnitTypeDto>();
+
+    List<SelectListItem> GetTipoUnidad(int idProducto)
+    {
+        var unidades = new List<UnitTypeDto>();
+        
+        try
+        {
+            unidades = TipoUnidadAppService.ObtenerTiposUnidadPorProducto(idProducto, UnitTypeStatusEnum.Active); ;
+        }
+        catch (Exception) { }
+        unidadList = unidades;
+        return unidades.Select(m=>new SelectListItem { Text = m.TipoUnidad, Value = m.Id.ToString() }).ToList();
+    }
+
+
+}

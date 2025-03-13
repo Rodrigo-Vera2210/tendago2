@@ -1,0 +1,166 @@
+﻿
+@using TendaGo.Web.Models
+@using TendaGo.Web.ApplicationServices
+@model CierreCajaViewModel
+@{
+    ViewBag.Title = string.Format("Cierre de Caja al {0}", DateTime.Today);
+
+    var LocalDestino = "NO DISPONIBLE";
+    var idLocal = 0;
+
+    if (Model != null)
+    {
+        idLocal = Model.IdLocal;
+    }
+    else
+    {
+        idLocal = Session.GetIdLocal() ?? 0;
+    }
+
+    var destino = UserAppService.ObtenerLocal(idLocal);
+
+    if (destino != null)
+    {
+        LocalDestino = destino.Local;
+    }
+}
+
+<div class="invoice">
+
+    <div class="row">
+        <div class="col-xs-6 invoice-left">
+            <h3><b>CIERRE DE CAJA</b> <br /></h3>
+            <h3><span class="text-cierreid"></span> <br /></h3>
+            <h4>
+                CAJERO: <span class="label label-success">@Model.IdCajero</span>
+            </h4>
+        </div>
+
+        <div class="col-xs-6 invoice-right">
+            <img src="@AppServiceBase.Empresa.Logo" width="300" alt=""><br />
+            <h4>
+                &nbsp;&nbsp;@AppServiceBase.Empresa.NombreEmpresa  <br />
+                <small>&nbsp;&nbsp;Dir.: @AppServiceBase.Empresa.Direccion</small>  <br />
+                <small>&nbsp;&nbsp;Telefono: @AppServiceBase.Empresa.Telefono</small>
+            </h4>
+        </div>
+    </div>
+    <div class="divider"><hr /></div>
+
+    <div class="row">
+
+        <div class="col-sm-6 invoice-left">
+            <span><b>Fecha y Hora de Apertura: </b> @Model.FechaApertura.ToCustomFormatString() @Model.HoraApertura</span>
+            <h5><b>Local:</b> @LocalDestino</h5>
+        </div>
+         
+        <div class="col-md-6 invoice-right">
+            
+        </div>
+    </div>
+    <div class="margin"></div>
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                <th   class="text-center bold">Detalle</th>
+                
+                <th class="text-center bold">Valor</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td class="text-left bold"><i class="fa fa-plus-square"></i> Saldo Inicial</td>
+                <td class="text-right bold">$&nbsp;@Model.SaldoInicial.ToCustomFormatString()</td>
+            </tr>
+            @if (Model.Pagos != null)
+            {
+                foreach (var item in Model.Pagos)
+                {
+                    <tr>
+                        <td class="text-left" style="margin-left:15px;"> &bull;&nbsp;&nbsp;@item.MedioPago</td>
+                        <td class="text-right">$&nbsp;@item.Valor.ToCustomFormatString()</td>
+                    </tr>
+                }
+            }
+
+            <tr>
+                <td class="text-left bold"><i class="fa fa-plus-square"></i> Total Ingresos de Caja</td>
+                <td class="text-right bold">$&nbsp;@Model.TotalIngresos.ToCustomFormatString()</td>
+            </tr>
+
+            <tr>
+                <td class="text-left" style="margin-left:15px;"> &bull;&nbsp;&nbsp;Gastos e Imprevistos</td>
+                <td class="text-right">$&nbsp;@Model.TotalEgresos.ToCustomFormatString()</td>
+            </tr>
+            <tr>
+                <td class="text-left bold"><i class="fa fa-minus-square"></i> Total Egresos de Caja</td>
+                <td class="text-right bold">$&nbsp;@Model.TotalEgresos.ToCustomFormatString()</td>
+            </tr>
+
+        </tbody>
+        <tfoot>
+            <tr>
+                <th class="text-left bold"><i class="fa fa-check-square-o"></i> Saldo Total</th>
+                <th class="text-right bold">$&nbsp;@Model.SaldoFinal.ToCustomFormatString()</th>
+            </tr>
+
+        </tfoot>
+    </table>
+
+
+    <div class="margin"></div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="invoice-left">
+
+
+                @if (!string.IsNullOrEmpty(Model.Observaciones))
+                {
+                    <table class="table table-bordered margin-5-5" width="100%" border="1">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Observaciones: <br />
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@Model.Observaciones </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+
+    </div>
+    <div class="margin"></div>
+ </div>
+
+<form id="downloadForm" action="@Url.Action("Descargar")/@Model.Id" method="post" target="_download_@Model.Id">
+    <input name="format" id="downloadFormat" type="hidden" value="PDF" />
+</form>
+
+@section scripts{
+    <script>
+        (function () {
+            menu_settings.parentMenu = 'MnuStore';
+            menu_settings.optionMenu = 'OpcCrear';
+            SetActiveMenu();
+
+            var descargarNotaPedido = function (format) {
+                $("#downloadFormat").val(format);
+                $("#downloadForm").submit();
+            }
+
+            $(".download-pdf").on("click", function () { descargarNotaPedido("PDF"); });
+            $(".download-excel").on("click", function () { descargarNotaPedido("Excel"); });
+            $(".download-word").on("click", function () { descargarNotaPedido("Word"); });
+
+        })();
+
+    </script>
+}
+ 

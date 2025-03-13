@@ -1,0 +1,268 @@
+﻿@using TendaGo.Web.Models
+@using TendaGo.Web.ApplicationServices
+@using TendaGo.Common
+@model NotaPedidoModel
+
+@if (ViewBag.Accion == "Aprobar" || ViewBag.Accion == "Revisar" || ViewBag.Accion == "Entregar")
+{
+<style type="text/css">
+    .transfer-button {
+        display: none;
+    }
+
+    div.input-spinner-cantidad:hover + .transfer-button, .transfer-button:hover {
+        display: inline-block;
+    }
+</style>
+
+    <div class="row ">
+        <table id="tablaDetalleNotasPedido" class="table datatable table-bordered table-hover">
+            <thead>
+                <tr class="text-sm">
+                    @if (ViewBag.Accion == "Revisar")
+                    {
+                        <th>Revisado</th>
+                    }
+                    <th>Código</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th class="text-center">Tipo Unidad</th>
+                    <th>Precio</th>
+                    <th>Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.DetalleNotaPedido.Count; i++)
+                {
+                    var tipoUnidad = GetTipoUnidad(Model.DetalleNotaPedido[i].IdProducto);
+                    
+                    <tr id='@Model.DetalleNotaPedido[i].IdProducto'>
+                        @if (ViewBag.Accion == "Revisar")
+                        {
+                        <td class="text-center">
+                            @Html.HiddenFor(m => Model.DetalleNotaPedido[i].Empaquetado)
+                            <div class="checkbox checkbox-replace color-blue">
+                                @Html.CheckBoxFor(m => Model.DetalleNotaPedido[i].Revisado, new { @class = "control-revisado" })
+                            </div>
+                        </td>
+                        }
+                            
+                        <td>
+                            @Model.DetalleNotaPedido[i].CodigoInterno
+                            @**** NO ELIMINAR: ESTE CAMPO PERMITE CONTROLAR LA IDENTIDAD DE LOS ITEMS ****@
+                            @Html.Hidden("DetalleNotaPedido.Index", i, new { @id= string.Format("DetalleNotaPedido_Index_{0}",i) })
+                        </td>
+                        <td>
+                            @Html.HiddenFor(m => Model.DetalleNotaPedido[i].Id)
+                            @Html.HiddenFor(m => Model.DetalleNotaPedido[i].CantidadTotalDisponible, new { @class = "cantidad-disponible" })
+                            @Html.HiddenFor(m => Model.DetalleNotaPedido[i].IdProducto)
+                            @Html.HiddenFor(m => Model.DetalleNotaPedido[i].DescripcionProducto)
+                            @Html.HiddenFor(m => Model.DetalleNotaPedido[i].NombreProducto)
+                            @Html.HiddenFor(m => Model.DetalleNotaPedido[i].CodigoInterno)
+                            @Model.DetalleNotaPedido[i].NombreProducto
+                        </td>
+                        <td>
+                            <center>
+                                <div id="@("spinnerCantidadProductos" + i)" class="input-spinner input-spinner-cantidad input-spinner-sx">
+                                    <button type="button" class="btn btn-default">-</button>
+                                    @Html.TextBoxFor(m => Model.DetalleNotaPedido[i].Cantidad, new { @class = "form-control cantidad-detalle", @data_min = "1" })
+                                    <button type="button" class="btn btn-default">+</button>
+                                </div>
+                                <!--
+                                    <a href="javascript:;" class="btn btn-primary transfer-button "><i class="entypo-box"></i> Pedir desde otro local...</a>
+                                -->
+                            </center>
+                        </td>
+                        <td class="text-center">
+                            @Html.HiddenFor(m => Model.DetalleNotaPedido[i].DesTipoUnidad)
+                            
+                            @Html.DropDownListFor(m => Model.DetalleNotaPedido[i].IdTipoUnidad, new SelectList(tipoUnidad, "Value", "Text", Model.DetalleNotaPedido[i].IdTipoUnidad), "Seleccione una unidad", new { @class = "form-control unidad-detalle" })
+                        </td>
+                        <td class="text-right">
+                            @if (ViewBag.Accion == "Entregar")
+                            {
+                                @Html.HiddenFor(m => Model.DetalleNotaPedido[i].Precio, new { @class="precio-detalle" })
+                                @Model.DetalleNotaPedido[i].Precio.ToCustomFormatString()
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(m => Model.DetalleNotaPedido[i].Precio, new { @class = "form-control text-right text-pre input-money4 precio-detalle" })
+                            }
+                        </td>
+                        <td class="text-right">
+                            @Html.TextBoxFor(m => Model.DetalleNotaPedido[i].Subtotal, new { @class = "form-control readonly transparente text-right input-money subtotal-detalle", @readonly = "readonly", @disabled="disabled" })
+                        </td>
+                        <td class="text-center"> 
+                            <a href="#" class="text-info btnElminarDetalle">
+                                <i class="entypo-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+
+                <tr>
+                    @if (ViewBag.Accion == "Revisar")
+                    {
+                        <th></th>
+                    }
+                    <th colspan="5" style="text-align:right">Valor Adicional:</th>
+                    <th class="text-right total">
+                        @Html.TextBoxFor(model => model.ValorAdicional, new { id = "ValorAdicional", @class = "form-control text-right text-adic input-money subtotal-detalle" })
+                    </th>
+                    <th></th>
+                </tr>
+
+                <tr>
+                    @if (ViewBag.Accion == "Revisar")
+                    {
+                        <th></th>
+                    }
+                    <th colspan="5" style="text-align:right">Total:</th>
+                    <th class="text-right total">
+                        $ <span class="text-total">@Model.Total.ToCustomFormatString()</span>
+                    </th>
+                    <th></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+}
+else
+{
+    string selectColumn = "Seleccionado";
+    if (ViewBag.Accion == "Empaquetar")
+    {
+        selectColumn = "Empaquetado";
+    }
+    else if (ViewBag.Accion == "Entregar")
+    {
+        selectColumn = "Entregado";
+    } 
+
+
+    <h4>Detalle Nota Pedido</h4>
+    <div class="row">
+        <table id="tablaDetalleNotasPedido" class="table datatable table-bordered table-hover">
+            <thead>
+                <tr class="text-sm">
+                    <th class="text-center">@(selectColumn)</th>
+                    <th>Código</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Tipo Unidad</th>
+                    <th>Precio</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.DetalleNotaPedido.Count; i++)
+                {
+                    <tr>
+                        <td class="text-center">
+                            @if (ViewBag.Accion == "Empaquetar")
+                            {
+                                @Html.HiddenFor(m => Model.DetalleNotaPedido[i].Revisado)
+
+                                <div class="checkbox checkbox-replace color-blue">
+                                    @Html.CheckBoxFor(m => Model.DetalleNotaPedido[i].Empaquetado, new { @class = "control-empaquetado" })
+                                </div>
+                            }
+                            else if (ViewBag.Accion == "Consultar" || ViewBag.Accion == "Entregar")
+                            {
+                                if (Model.DetalleNotaPedido[i].Empaquetado)
+                                {
+                                    <i class="entypo-bag" title="Empaquetado"></i>
+                                }
+                                if (Model.DetalleNotaPedido[i].Revisado)
+                                {
+                                    <i class="entypo-check" title="Revisado"></i>
+                                }
+                                if (Model.DetalleNotaPedido[i].Entregado)
+                                {
+                                    <i class="entypo-basket" title="Entregado"></i>
+                                }
+                            }
+                        </td>
+                        <td>
+                            @Model.DetalleNotaPedido[i].CodigoInterno
+                            @Html.Hidden("DetalleNotaPedido.Index", i, new { @id = string.Format("DetalleNotaPedido_Index_{0}", i) })
+                        </td>
+                        <td>
+                            @Html.HiddenFor(m => Model.DetalleNotaPedido[i].Id)
+                            @Html.HiddenFor(m => Model.DetalleNotaPedido[i].IdProducto)
+                            @Model.DetalleNotaPedido[i].NombreProducto
+                        </td>
+                        <td class="text-right">
+                            @Html.HiddenFor(m => Model.DetalleNotaPedido[i].Cantidad)
+                            @Model.DetalleNotaPedido[i].Cantidad
+                        </td>
+                        <td class="text-right">
+                            @Html.HiddenFor(m => Model.DetalleNotaPedido[i].IdTipoUnidad)
+                            @Model.DetalleNotaPedido[i].DesTipoUnidad
+                        </td>
+                        <td class="text-right">
+                            @Html.HiddenFor(m => Model.DetalleNotaPedido[i].Precio)
+                            @Model.DetalleNotaPedido[i].Precio.ToString("#,##0.0000")
+                        </td>
+                        <td class="text-right">@Model.DetalleNotaPedido[i].Subtotal.ToCustomFormatString()</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="6" style="text-align:right">Valor Adicional:</th>
+                    <th class="text-right">
+                        @Html.HiddenFor(model => model.ValorAdicional, new { id = "ValorAdicional", @class = "form-control text-right" })
+                        @Model.ValorAdicional.ToCustomFormatString()
+                    </th>
+                </tr>
+                <tr>
+                    <th colspan="6" style="text-align:right">Total:</th>
+                    <th class="text-right">
+
+                        @Model.Total.ToCustomFormatString()
+                    </th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+}
+
+
+@*<script>
+    function adicional() { 
+        var $detalles = $(".subtotal-detalle")
+        var $total = 0;
+        for (var i = 0; i < $detalles.length; i++) {
+            var valor = $($detalles[i]).val() * 1;
+
+            if (valor != NaN) 
+                $total += valor;
+        }
+
+        $(".text-total").text($total.toFixed(2));
+    }
+</script>*@
+
+@functions{
+
+    List<UnitTypeDto> unidadList = new List<UnitTypeDto>();
+
+    List<SelectListItem> GetTipoUnidad(int idProducto)
+    {
+        var unidades = new List<UnitTypeDto>();
+        
+        try
+        {
+            unidades = TipoUnidadAppService.ObtenerTiposUnidadPorProducto(idProducto, UnitTypeStatusEnum.Active); ;
+        }
+        catch (Exception) { }
+        unidadList = unidades;
+        return unidades.Select(m=>new SelectListItem { Text = m.TipoUnidad, Value = m.Id.ToString() }).ToList();
+    }
+
+
+}

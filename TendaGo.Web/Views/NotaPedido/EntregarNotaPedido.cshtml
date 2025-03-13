@@ -1,0 +1,295 @@
+﻿@using TendaGo.Web.Models
+@model EntregaNotaPedidoViewModel
+@{
+    var listaMediosPago = (IEnumerable<SelectListItem>)ViewBag.ListaMediosPago;
+}
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header modal-header-inventory ">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Nota Pedido: @Model.Id</h4>
+            <h5 class="modal-title">Cliente: @Model.RazonSocial</h5>
+        </div>
+        <div class="modal-body">
+            <div>
+                @using (Html.BeginForm("Entregar", "NotaPedido", FormMethod.Post, new { id = "entregarNotaPedidoForm", @class = "form-wizard validate" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(x => x.Id)
+                    @Html.HiddenFor(x => x.GeneraNc)
+
+                    <div class="steps-progress">
+                        <div class="progress-indicator"></div>
+                    </div>
+                    <ul>
+                        <li class="active">
+                            <a href="#tab1" data-toggle="tab"><span>1</span>Detalles</a>
+                        </li>
+                        <li>
+                            <a href="#tab2" data-toggle="tab"><span>2</span>Pagos</a>
+                        </li>
+                        @*<li>
+                    <a href="#tab3" data-toggle="tab"><span>3</span>Observaciones</a>
+                </li>*@
+                    </ul>
+                    <div class="tab-content">
+
+                        <div class="tab-pane active" id="tab1">
+                            <h4>Items</h4>
+                            <div class="table-responsive">
+                                <table id="tablaDetalleNotasPedido" class="table datatable table-bordered table-hover">
+                                    <thead>
+                                        <tr class="text-sm">
+                                            <th>Producto</th>
+                                            <th>Cantidad</th>
+                                            <th>Tipo Unidad</th>
+                                            <th>Precio</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (int i = 0; i < Model.DetalleNotaPedido.Count; i++)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.HiddenFor(m => m.DetalleNotaPedido[i].Id)
+                                                    @Html.HiddenFor(m => m.DetalleNotaPedido[i].IdProducto)
+                                                    @Model.DetalleNotaPedido[i].NombreProducto
+                                                </td>
+                                                <td class="text-right">
+                                                    @Html.HiddenFor(m => m.DetalleNotaPedido[i].Cantidad)
+                                                    @Model.DetalleNotaPedido[i].Cantidad
+                                                </td>
+                                                <td class="text-right">
+                                                    @Html.HiddenFor(m => m.DetalleNotaPedido[i].IdTipoUnidad)
+                                                    @Model.DetalleNotaPedido[i].DesTipoUnidad
+                                                </td>
+                                                <td class="text-right">
+                                                    @Html.HiddenFor(m => m.DetalleNotaPedido[i].Precio)
+                                                    @Model.DetalleNotaPedido[i].Precio.ToCustomFormatString()
+                                                </td>
+                                                <td class="text-right">@Model.DetalleNotaPedido[i].Subtotal.ToCustomFormatString()</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="4" style="text-align: right">Total:</th>
+                                            <th class="text-right">@Model.Total.ToCustomFormatString()</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 col-xs-12">
+                                    <h4>Paquetes</h4>
+                                    <div class="table-responsive">
+                                        <table id="tablaDetallePaquetes" class="table datatable table-bordered table-hover">
+                                            <thead>
+                                                <tr class="text-sm">
+                                                    <th>Cantidad</th>
+                                                    <th>Tipo Paq.</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @for (int i = 0; i < Model.DetalleEmpaquetado.Count; i++)
+                                                {
+                                                    <tr>
+                                                        <td class="text-center">
+                                                            @Html.HiddenFor(m => m.DetalleEmpaquetado[i].Id)
+                                                            @Html.HiddenFor(m => m.DetalleEmpaquetado[i].Cantidad)
+                                                            @Model.DetalleEmpaquetado[i].Cantidad
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @Html.HiddenFor(m => m.DetalleEmpaquetado[i].IdTipoPaquete)
+                                                            @Model.DetalleEmpaquetado[i].TipoPaquete
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-xs-12">
+                                    <div class="form-group">
+                                        <h4>Observaciones</h4>
+                                        @Html.TextAreaFor(m => m.Observaciones, new { @class = "form-control no-resize", @rows = "4", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane" id="tab2">
+
+                            <h4>Pagos</h4>
+                            <div class="table-responsive">
+                                <table id="tablaDetalleCuentasCobrar" class="table datatable table-bordered table-hover">
+                                    <thead>
+                                        <tr class="text-sm">
+                                            <th><label>#Pago</label></th>
+                                            <th><label>Fecha Pago</label></th>
+                                            <th><label>Cuota</label></th>
+                                            <th><label>Pendiente</label></th>
+                                            <th><label>Pagado</label></th>
+                                            <th><label>Saldo</label></th>
+                                            <th>Medio Pago</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (int i = 0; i < Model.CuentasPorCobrar.Count; i++)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.HiddenFor(m => m.CuentasPorCobrar[i].Id)
+                                                    @Html.HiddenFor(m => m.CuentasPorCobrar[i].Numero)
+                                                    @Model.CuentasPorCobrar[i].Numero
+                                                </td>
+                                                <td>
+                                                    @Html.HiddenFor(m => m.CuentasPorCobrar[i].FechaVencimiento)
+                                                    @Model.CuentasPorCobrar[i].FechaVencimiento.ToCustomFormatString()
+                                                </td>
+                                                <td class="text-right">
+                                                    @Html.TextBoxFor(m => m.CuentasPorCobrar[i].Valor, new { @class = "form-control transparente text-right input-money", @readonly = "readonly" })
+                                                </td>
+                                                <td class="text-right">
+                                                    @Html.TextBoxFor(m => m.CuentasPorCobrar[i].ValorPendiente, new { @class = "form-control transparente text-right input-money", @readonly = "readonly" })
+                                                </td>
+                                                <td class="text-right">
+                                                    @if (Model.CuentasPorCobrar[i].ValorPendiente > 0)
+                                                    {
+                                                        @Html.TextBoxFor(m => m.CuentasPorCobrar[i].ValorPagado, new { @class = "form-control text-right text-valor-pagado input-money" })
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.TextBoxFor(m => m.CuentasPorCobrar[i].ValorPagado, new { @class = "form-control text-right transparente input-money", @readonly = "readonly" })
+                                                    }
+                                                </td>
+                                                <td class="text-right">
+                                                    @Html.TextBoxFor(m => m.CuentasPorCobrar[i].Saldo, new { @class = "form-control transparente text-right input-money", @readonly = "readonly" })
+                                                </td>
+                                                <td>
+                                                    @if (Model.CuentasPorCobrar[i].ValorPendiente > 0)
+                                                    {
+                                                        @Html.DropDownListFor(m => m.CuentasPorCobrar[i].IdMedioPago, listaMediosPago, new { @class = "form-control" })
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>Pagado</span>
+                                                        @Html.HiddenFor(m => m.CuentasPorCobrar[i].IdMedioPago)
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="6" style="text-align: right">Saldo Total:</th>
+                                            @{
+                                                var totalPagado = Model.CuentasPorCobrar.Sum(x => x.Saldo);
+                                            }
+                                            <th class="text-right total">@Html.TextBox("TotalPagado", totalPagado, new { @class = "form-control transparente text-right input-money", @readonly = "readonly" })</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+
+                        </div>
+
+                        @*<div class="tab-pane" id="tab3">
+                    <div class="panel panel-primary">
+                        <div class="panel-body">
+
+                        </div>
+                    </div>
+                </div>*@
+
+                        <ul class="pager wizard">
+                            <li class="previous">
+                                <a href="#"><i class="entypo-left-open"></i> Anterior</a>
+                            </li>
+                            <li class="next">
+                                <a href="#">Siguiente <i class="entypo-right-open"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="modal-footer modal-footer-inventory ">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="button" id="btnEntregarNotaPedido" class="btn btn-blue btn-add-datail">Entregar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(function () {
+        $.validator.unobtrusive.parse($("#entregarNotaPedidoForm"));
+        $("#entregarNotaPedidoForm").formwizardcustom();
+        //var tableDetalleNotaPedido = $('#tablaDetalleNotasPedido').DataTable(opcionesDataTable);
+        //var tableCuentasCobrar = $('#tablaDetalleCuentasCobrar').DataTable(opcionesDataTable);
+        var tableDetalleNotaPedido = $("#tablaDetalleNotasPedido").basicDatatable();
+        var tableCuentasCobrar = $("#tablaDetalleCuentasCobrar").basicDatatable();
+        $("#tablaDetallePaquetes").basicDatatable();
+
+        $(".input-money").maskMoney(optionsMaskMoney);
+        $(".input-money").maskMoney('mask');
+
+        $(".text-valor-pagado").on('change paste keyup', function (e) {
+            recalcularTotalesCuentasCobrar(this);
+        });
+
+        $("#btnEntregarNotaPedido").click(function () {
+            var formEntregarNotaPedido = $("#entregarNotaPedidoForm");
+            var $div = $(formEntregarNotaPedido).closest('div');
+            var action_url = formEntregarNotaPedido.attr("action");
+            var request_method = formEntregarNotaPedido.attr("method");
+            var form_data = formEntregarNotaPedido.serialize();
+
+            $.ajax({
+                url: action_url,
+                type: request_method,
+                data: form_data,
+                beforeSend: function () {
+                    blockUI($div)
+                    $div.addClass('loading');
+                },
+                complete: function () {
+                    unblockUI($div)
+                    $div.removeClass('loading');
+                }
+            }).done(function (respuesta) {
+                if (respuesta != "") {
+                    if (respuesta.success == true) {
+                        toastr.success(respuesta.mensaje, "", optionsToastr);
+                        actualizarConsultaNotaPedido();
+                        $("#divModal").modal('hide');
+                    }
+                    else {
+                        toastr.warning(respuesta.mensaje, "", optionsToastr);
+                    }
+                }
+            });
+        });
+
+        function recalcularTotalesCuentasCobrar(element) {
+            var $tr = $(element).closest('tr');
+            var valorPendiente = parseFloat($tr.find('td:eq(3) input').maskMoney('unmasked')[0]);
+            var valorPagado = parseFloat($tr.find('td:eq(4) input').maskMoney('unmasked')[0]);
+            var subtotalPagado = parseFloat((valorPendiente - valorPagado).toFixed(2));
+            $tr.find('td:eq(5) input').maskMoney('mask', subtotalPagado);
+
+            var totalPagado = 0;
+            $.each($("#tablaDetalleCuentasCobrar tbody tr"), function () {
+                totalPagado += parseFloat($(this).find('td:eq(5) input').maskMoney('unmasked')[0]);
+            });
+            totalPagado = parseFloat(totalPagado.toFixed(2));
+            $("#TotalPagado").maskMoney('mask', totalPagado);
+        }
+
+    });
+
+</script>

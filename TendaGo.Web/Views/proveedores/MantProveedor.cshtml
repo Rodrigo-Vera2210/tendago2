@@ -1,0 +1,120 @@
+﻿@model TendaGo.Web.Models.ProveedorModel
+@{
+    bool isEdit = ViewBag.IsEdit ?? false;
+    ViewBag.PanelTitle = isEdit ? "Editar" : "Nuevo Proveedor";
+
+    var tiposIdentidad = new[] {
+        new SelectListItem{ Text="RUC", Value="R" },
+        new SelectListItem{ Text = "Cedula", Value = "C" },
+        new SelectListItem{ Text="Pasaporte", Value="P" }
+    };
+
+    var listaIdentidad = new SelectList(tiposIdentidad, "Value", "Text", tiposIdentidad.FirstOrDefault());
+}
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        @using (Html.BeginForm("MantProveedor", "proveedores", FormMethod.Post, new { id = "formMantProveedor" }))
+        {
+            <div class="modal-header modal-header-inventory">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">@ViewBag.PanelTitle</h4>
+            </div>
+            <div class="modal-body">
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Id)
+
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        @Html.LabelFor(model => model.TipoIdentificacion, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(x => x.TipoIdentificacion, listaIdentidad, new { @class = "form-control", })
+                        @Html.ValidationMessageFor(model => model.TipoIdentificacion, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-md-8">
+                        @Html.LabelFor(model => model.Identificacion, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.Identificacion, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Identificacion, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        @Html.LabelFor(model => model.RazonSocial, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.RazonSocial, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.RazonSocial, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Direccion, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextBoxFor(model => model.Direccion, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Direccion, "", new { @class = "text-danger" })
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        @Html.LabelFor(model => model.Celular, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.Celular, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Celular, "", new { @class = "text-danger" })
+
+                    </div>
+                    <div class="form-group col-md-5">
+                        @Html.LabelFor(model => model.Correo, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.Correo, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Correo, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            @Html.LabelFor(model => model.IdEstado, htmlAttributes: new { @class = "control-label" })
+                            <div class="checkbox" style="margin: 0">
+                                <label>
+                                    @Html.CheckBoxFor(model => model.IdEstado, new { id = "IdEstado" })
+                                </label>
+                                @Html.ValidationMessageFor(model => model.IdEstado, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Cancelar</button>
+                <input type="submit" value="Guardar" class="btn btn-sm btn-success" />
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+
+    $("#formMantProveedor").on("submit",function (event) {
+        event.preventDefault();
+        var $div = $(this).closest('div');
+        $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr("method"),
+            data: $(this).serialize(),
+            beforeSend: function () {
+                $("#divResults").empty();
+                blockUI($div);
+                $div.addClass('loading');
+            },
+            complete: function () {
+                unblockUI($div);
+                $div.removeClass('loading');
+            },
+            success: function (dataReceived) {
+                if (dataReceived && dataReceived !== "") {
+                    if (dataReceived.Error) {
+                        console.error("ERROR:" + JSON.stringify(dataReceived.Error));
+                        toastr.error(dataReceived.Error.TechnicalMessage);
+                    } else {
+                        $("#divResults").html(dataReceived);
+                    }
+                }
+            }
+        }).done(function (respuesta) {
+                
+        });
+    });
+</script>

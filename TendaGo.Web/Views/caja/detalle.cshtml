@@ -1,0 +1,107 @@
+﻿@using TendaGo.Common
+@using TendaGo.Web.Models
+@using TendaGo.Web.ApplicationServices
+
+@model CierreCajaViewModel
+@{
+    var mediosPago = CatalogosAppService.ObtenerMediosPago();
+}
+
+@Styles.Render("~/Styles/datatables")
+
+
+<div class="panel panel-primary">
+
+    <div class="panel-body with-table">
+        <table class="table datatable table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th class="text-center bold">No. Pedido</th>
+                    <th class="text-center bold">Cuenta</th>
+                    <th class="text-center bold">Fecha</th>
+                    <th class="text-center bold">Identificacion</th>
+                    <th class="text-center bold">Cliente</th>
+                    <th class="text-center bold" style="max-width: 150px;">Valor</th>
+                    @{
+                        if (Model.IdEmpresa == 1)
+                        {
+                            <th class="text-center bold">Cajero</th>
+                        }
+                        else
+                        {
+                            <th class="text-center bold">Vendedor</th>
+                        }
+                    }
+                    <th class="text-center bold"></th>
+                </tr>
+
+            </thead>
+            <tbody>
+
+                @foreach (var medioPago in Model.Pagos)
+                {
+                    <tr class="light-grey">
+                        <td colspan="8" class="bold">FORMA DE PAGO: @medioPago.MedioPago</td>
+                    </tr>
+                    var detalles = Model.Detalles.Where(m => m.IdMedioPago == medioPago.IdMedioPago).ToList();
+
+
+                    foreach (var item in detalles)
+                    {
+                        var i = Model.Detalles.IndexOf(item);
+                        <tr>
+                            <td class="text-center">
+                                @item.IdCobroDebito
+                                @Html.Hidden(string.Format("Detalles[{0}].Index", i), i, new { @id = string.Format("Detalles_{0}_Index", i) });
+                                @Html.HiddenFor(x => Model.Detalles[i].IdCobroDebito)
+                                @Html.HiddenFor(x => Model.Detalles[i].Valor)
+                            </td>
+                            <td class="text-center">
+                                @item.IdSalida
+                            </td>
+                            <td class="text-center">@item.Fecha</td>
+                            <td class="text-center">@item.Identificacion</td>
+                            <td class="text-center">@item.Cliente</td>
+                            <td class="text-center">$&nbsp;@item.Valor.ToCustomFormatString()</td>
+                            <td class="text-center">@item.IdVendedor</td>
+                            <td class="text-center">
+                                @*<button class="btn btn-default btn-icon icon-left" onclick="mostrarDetalle('@recibo.Id', '@ViewBag.Accion');">*@
+                                <button type="button" class="btn btn-default btn-icon icon-left btn-consulta-detalle" onclick="mostrarDetalleRecibo('@item.IdCobroDebito','@ViewBag.Accion');">
+                                    <i class="entypo-check"></i> Consultar
+                                </button>
+                            </td>
+                        </tr>
+                    }
+
+                    <tr class="bg-success">
+                        <td colspan="5" class="text-right bold">TOTAL @medioPago.MedioPago</td>
+                        <td class="text-center bold">$&nbsp;@medioPago.Valor.ToCustomFormatString()</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                }
+
+            </tbody>
+            <tfoot>
+
+                <tr>
+                    <th colspan="5" class="bold text-center">
+                        TOTAL INGRESOS
+                    </th>
+
+                    <th class="bold text-center">
+                        @Html.HiddenFor(x => x.TotalIngresos)
+                        $&nbsp; <span class="total-ingresos"> @Model.TotalIngresos.ToCustomFormatString() </span>
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+
+
+            </tfoot>
+        </table>
+
+
+
+    </div>
+</div>

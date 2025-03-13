@@ -1,0 +1,82 @@
+﻿@model TendaGo.Web.Models.MarcaModel
+@{
+    bool isEdit = ViewBag.IsEdit ?? false;
+    ViewBag.PanelTitle = isEdit ? "Editar" : "Nuevo";
+}
+
+@using (Html.BeginForm("MantBrand", "Parametrizacion", FormMethod.Post, new { id = "formMantBrand" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">@ViewBag.PanelTitle</div>
+        </div>
+
+        <div class="panel-body">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+          
+            <div class="form-group">
+                @Html.LabelFor(model => model.Marca, htmlAttributes: new { @class = "control-label" })
+                @Html.EditorFor(model => model.Marca, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Marca, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IdEstado, htmlAttributes: new { @class = "control-label" })
+
+                <div class="checkbox">
+                    <label>
+                        @Html.CheckBoxFor(model => model.IdEstado, new { id = "IdEstado" })
+                    </label>
+                </div>
+                @Html.ValidationMessageFor(model => model.IdEstado, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="panel-footer">
+            <button type="button" id="btnCancelCat" class="btn btn-sm btn-default">Cancelar</button>
+            <input type="submit" value="Guardar" class="btn btn-sm btn-success" />
+        </div>
+    </div>
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+<script>
+    $("#btnCancelCat").on("click", function () {
+        LoadFormMant(0);
+    });
+
+    $('#formMantBrand').submit(function () {
+        if ($('#formMantBrand').validate().valid()) {
+            $.ajax({
+                url: $('#formMantBrand').attr('action'),
+                type: 'POST',
+                data: $('#formMantBrand').serialize(),
+                beforeSend: function () {
+                    $("#divMant").empty();
+                    $("#divMant").append('<div id="divLoading" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+                },
+                complete: function () {
+                    $("#divLoading").remove();
+                },
+                success: function (dataReceived) {
+                    if (dataReceived && dataReceived.Success) {
+                        toastr.success(dataReceived.Mensaje, "", optionsToastr);
+                        getBrands();
+                    }
+                    if (dataReceived && !dataReceived.Success) {
+                        toastr.error(dataReceived.Error.UserMessage);
+                        console.error("dataReceived:" + JSON.stringify(dataReceived.Error));
+                    }
+                }
+            }).done(function (doneReceived) {
+                //console.log("doneReceived: " + JSON.stringify(doneReceived));
+                //console.log("doneReceived: " + JSON.stringify(doneReceived.Error));
+                LoadFormMant(0);
+            });
+        }
+        return false;
+    });
+</script>

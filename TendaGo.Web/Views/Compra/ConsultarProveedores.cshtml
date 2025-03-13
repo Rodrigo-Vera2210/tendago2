@@ -1,0 +1,115 @@
+﻿@{
+    var filtrosBusqueda = new List<SelectListItem>
+            {
+                new SelectListItem{ Text="Razon Social", Value="2"  },
+                new SelectListItem{ Text="Identificacion", Value="1"  }
+            };
+}
+
+<div class="modal-dialog">
+    <div class="modal-content">
+
+        <div class="modal-header modal-header-inventory">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Buscar Proveedores</h4>
+        </div>
+
+        <div class="modal-body">
+            <div id="divBuscarProveedores" class="row">
+                <div class="col-md-12">
+                    @using (Html.BeginForm("ConsultarProveedores", "Compra", FormMethod.Post, new { id = "consultarProveedoresForm" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="input-group">
+                            <div class="input-group-btn">
+                                @Html.DropDownList("filtroBusqueda", filtrosBusqueda, new { @class = "btn btn-blue" })
+                            </div>
+
+                            @Html.TextBox("textoBusqueda", "", new { @class = "form-control" })
+
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-blue">
+                                    <span class="hidden-xs">Buscar</span>
+                                    <i class="entypo-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                    }
+                </div>
+            </div>
+            <br />
+            <div id="divResultadoProveedores">
+                <div class="table-responsive">
+                    <table id="tablaProveedores" class="table datatable table-bordered table-hover">
+                        <thead>
+                            <tr class="text-sm">
+                                <th></th>
+                                <th>Id</th>
+                                <th>RazonSocial</th>
+                                <th>Identificacion</th>
+                                <th>Ciudad</th>
+                                <th>Direccion</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+
+
+        </div>
+
+        <div class="modal-footer modal-footer-inventory">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button id="btnSeleccionarProveedores" type="button" class="btn btn-blue btn-add-datail">Seleccionar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+
+        var tablaProveedores = $("#tablaProveedores").DataTable(opcionesDataTableSingleSelect);
+
+        $("#consultarProveedoresForm").submit(function (event) {
+            event.preventDefault();
+            var $div = $(this).closest('div');
+            var post_url = $(this).attr("action");
+            var request_method = $(this).attr("method");
+            var form_data = $(this).serialize();
+            $.ajax({
+                url: post_url,
+                type: request_method,
+                data: form_data,
+                beforeSend: function () {
+                    $("#divResultadoProveedores").empty();
+                    blockUI($div)
+                    $div.addClass('loading');
+                },
+                complete: function () {
+                    unblockUI($div)
+                    $div.removeClass('loading');
+                }
+            }).done(function (respuesta) {
+                if (respuesta != "") {
+                    $("#divResultadoProveedores").html(respuesta);
+                    tablaProveedores = $("#tablaProveedores").DataTable(opcionesDataTableSingleSelect);
+                }
+            });
+        });
+
+        $("#btnSeleccionarProveedores").click(function () {
+            var row = tablaProveedores.row('.selected');
+            if (row.length) {
+                $("#divConsultaProveedoresModal").modal('hide');
+            }
+            else {
+                toastr.warning("Debe seleccionar un proveedor", "", optionsToastr);
+            }
+        });
+
+
+    });
+
+</script>

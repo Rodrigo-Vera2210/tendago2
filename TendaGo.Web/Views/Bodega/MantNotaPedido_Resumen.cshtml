@@ -1,0 +1,231 @@
+﻿@using TendaGo.Web.Models
+@using TendaGo.Web.ApplicationServices
+@model NotaPedidoModel
+@{
+    ViewBag.Title = string.Format("Orden de Bodega No. # {0}", Model.Id);
+
+    var LocalOrigen = "NO DISPONIBLE";
+    if (Model.IdLocal>0)
+    {
+        var origen =  UserAppService.ObtenerLocal(Model.IdLocal);
+        if (origen != null)
+        {
+            LocalOrigen = origen.Local;
+        }
+    }
+
+    var LocalDestino = "NO DISPONIBLE"; 
+    if (Model.Entrada != null)
+    {
+        var destino = UserAppService.ObtenerLocal(Model.Entrada.IdLocal);
+
+        if (destino != null)
+        {
+            LocalDestino = destino.Local;
+        }
+
+    }
+}
+
+<div class="invoice">
+
+    <div class="row">
+        <div class="col-xs-6 invoice-left">
+            <img src="~@AppServiceBase.Empresa.Logo" width="300" alt=""><br />
+            <small>&nbsp;&nbsp;Dir.: @AppServiceBase.Empresa.Direccion</small>  <br />
+            <small>&nbsp;&nbsp;Telefono: @AppServiceBase.Empresa.Telefono</small>
+
+        </div>
+        <div class="col-xs-6 invoice-right">
+            <h3><b>PEDIDO A BODEGA</b> <br /><span>No. @Model.Id</span></h3>
+            <h4> <small><b> @(Model.TransaccionPadre ?? "NO DISPONIBLE")</b></small> </h4>
+            
+        </div>
+    </div>
+    <div class="divider"><hr /></div>
+
+    <div class="row">
+         
+        <div class="col-sm-6 invoice-left">
+            <span><b>Fecha:</b> @Model.Fecha.ToCustomFormatString()</span>
+            <h5><b>ORIGEN:</b> @LocalOrigen</h5>
+            <h5><b>DESTINO:</b> @LocalDestino</h5>
+
+            
+        </div>
+         
+
+        <div class="col-md-6 invoice-right">
+            <h4>
+                ESTADO: <span class="label label-success">@Model.EstadoActual</span>
+            </h4>
+            <br />
+            <a href="@Url.Action("Editar", new { id=Model.Id })" class="btn btn-primary btn-icon icon-left hidden-print ">
+                @getAction()
+                <i class="entypo-bookmark"></i>
+            </a>
+             
+        </div>
+    </div>
+    <div class="margin"></div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="text-center">Codigo</th>
+                <th width="40%">Producto</th>
+                <th class="text-center">Cantidad</th>
+                <th class="text-center">Tipo de Unidad</th> 
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.DetalleNotaPedido != null)
+            {
+                foreach (var item in Model.DetalleNotaPedido)
+                {
+                    <tr>
+                        <td class="text-center">@item.CodigoInterno</td>
+                        <td>@item.NombreProducto </td>
+                        <td class="text-center">@item.Cantidad</td>
+                        <td class="text-center">@item.DesTipoUnidad</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+
+    <div class="margin"></div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="invoice-left">
+
+
+                @if (Model.DetalleEmpaquetado != null && Model.DetalleEmpaquetado.Count > 0)
+                {
+                    <strong>Empaquetado</strong>
+                    <ul>
+                        @foreach (var item in Model.DetalleEmpaquetado.GroupBy(x => x.TipoPaquete).Select(s => new { TipoPaquete = s.Key, Cantidad = s.Sum(x => x.Cantidad) }))
+                        {
+                            <li>@item.Cantidad  - @item.TipoPaquete</li>
+                        }
+                    </ul>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.Observaciones))
+                {
+                    <table class="table table-bordered margin-5-5" width="100%" border="1">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Observaciones: <br />
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@Model.Observaciones </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+         
+    </div>
+    <div class="margin"></div>
+    <div class="row hidden-print">
+        <div class="col-sm-6 invoice-left">
+
+            <a href="@ViewBag.ActionUrl" class="btn btn-default btn-icon icon-left hidden-print">
+                Regresar
+                <i class="entypo-fast-backward"></i>
+            </a>
+
+        </div>
+        <div class="col-sm-6 invoice-right">
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-success  download-pdf "><i class="entypo-print"></i> Imprimir </button>
+                <button type="button" class="btn btn-green dropdown-toggle" data-toggle="dropdown" aria-expanded="true" style="background: #00582b;"> <i class="entypo-down"></i> </button>
+                <ul class="dropdown-menu dropdown-danger" role="menu">
+                    <li><a class="text-danger download-pdf" href="javascript:;"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;Descargar PDF</a> </li>
+                    <li><a class="text-info download-word" href="javascript:;"><i class="fa fa-file-word-o"></i>&nbsp;&nbsp;Descargar Word</a> </li>
+                    <li><a class="text-success download-excel" href="javascript:;"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp;Descargar Excel</a> </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        (function () {
+            menu_settings.parentMenu = 'MnuStore';
+            menu_settings.optionMenu = 'OpcCrear';
+            SetActiveMenu();
+        
+            var descargarNotaPedido = function (format) {
+                window.open('@Url.Action("Descargar")/@Model.Id?format='+format, "_blank");
+            }
+
+            $(".download-pdf").on("click", function () { descargarNotaPedido("PDF"); });
+            $(".download-excel").on("click", function () { descargarNotaPedido("Excel"); });
+            $(".download-word").on("click", function () { descargarNotaPedido("Word"); });
+
+        })();
+
+    </script>
+}
+
+@functions{
+    string getAction()
+    {
+        if (Model.EstadoActual == "APROBADA")
+        {
+            return "Empaquetar";
+        }
+        else if (Model.EstadoActual == "EMPAQUETADA")
+        {
+            return "Revisar";
+        }
+        else if (Model.EstadoActual == "REVISADA")
+        {
+            return "Entregar";
+        }
+        else if (Model.EstadoActual == "EN PROCESO")
+        {
+            return "Aprobar";
+        }
+        else
+        {
+            return "Consultar";
+        }
+    }
+
+
+    string getTiempo(int plazo)
+    {
+        string tiempo = "dias";
+        //Función que cambia a meses si pasa de 29 días o a años si pasa de 364, pero no cambia el valor del plazo
+        //if (plazo > 29)
+        //{
+        //    if (plazo % 29 > 0)
+        //    {
+        //        if (plazo > 364)
+        //        {
+        //            tiempo = "año(s)";
+        //        }
+        //        else
+        //        {
+        //            tiempo = "meses";
+        //        }
+        //    }
+        //    else
+        //    {
+        //        tiempo = "mes";
+        //    }
+        //}
+        return tiempo;
+    }
+}

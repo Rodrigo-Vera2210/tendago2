@@ -1,0 +1,534 @@
+﻿@using TendaGo.Web.Models
+@model AprobacionNotaPedidoViewModel
+@{
+    var listaRuc = (IEnumerable<SelectListItem>)ViewBag.ListaRuc;
+    var listaFormaPago = (IEnumerable<SelectListItem>)ViewBag.ListaFormaPago;
+}
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header modal-header-inventory ">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Nota Pedido: @Model.Id</h4>
+            <h5 class="modal-title">Cliente: @Model.RazonSocial</h5>
+        </div>
+        <div class="modal-body">
+            <div>
+                @using (Html.BeginForm("Aprobar", "NotaPedido", FormMethod.Post, new { id = "aprobarNotaPedidoForm", @class = "form-wizard validate" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(x => x.Id)
+
+                    <div class="steps-progress">
+                        <div class="progress-indicator"></div>
+                    </div>
+                    <ul>
+                        <li class="active">
+                            <a href="#tab1" data-toggle="tab"><span>1</span>Detalle Nota Pedido</a>
+                        </li>
+                        <li>
+                            <a href="#tab2" data-toggle="tab"><span>2</span>Datos Facturacion</a>
+                        </li>
+                        <li>
+                            <a href="#tab3" data-toggle="tab"><span>3</span>Detalle Cobros</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+
+                        <div class="tab-pane active" id="tab1">
+                            <div class="table-responsive">
+                                <table id="tablaDetalleNotasPedido" class="table datatable table-bordered table-hover">
+                                    <thead>
+                                        <tr class="text-sm">
+                                            <th>Código</th>
+                                            <th>Producto</th>
+                                            <th>Cantidad</th>
+                                            <th class="text-center">Tipo Unidad</th>
+                                            <th>Precio</th>
+                                            <th>Total</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (int i = 0; i < Model.DetalleNotaPedido.Count(); i++)
+                                        {
+                                            <tr id='@Model.DetalleNotaPedido[i].IdProducto'>
+                                                <td>
+                                                    @Model.DetalleNotaPedido[i].CodigoInterno
+                                                </td>
+                                                <td>
+                                                    @Html.HiddenFor(m => m.DetalleNotaPedido[i].Id)
+                                                    @Html.HiddenFor(m => m.DetalleNotaPedido[i].IdProducto)
+                                                    @Model.DetalleNotaPedido[i].NombreProducto
+                                                </td>
+                                                <td class="text-right">
+                                                    <div id="@("spinnerCantidadProductos" + i)" class="input-spinner input-spinner-cantidad input-spinner-sx">
+                                                        <button type="button" class="btn btn-default">-</button>
+                                                        @Html.TextBoxFor(m => m.DetalleNotaPedido[i].Cantidad, new { @class = "form-control", @data_min = "1" })
+                                                        <button type="button" class="btn btn-default">+</button>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    @Model.DetalleNotaPedido[i].DesTipoUnidad
+                                                </td>
+                                                <td class="text-right">
+                                                    @Html.TextBoxFor(m => m.DetalleNotaPedido[i].Precio, new { @class = "form-control text-right text-pre input-money" })
+                                                </td>
+                                                <td class="text-right">
+                                                    @Html.TextBoxFor(m => m.DetalleNotaPedido[i].Subtotal, new { @class = "form-control transparente text-right input-money", @readonly = "readonly" })
+                                                </td>
+                                                <td class="text-center">
+                                                    @*@Html.AntiForgeryToken()
+                                                        @Html.Hidden("IdProducto", @Model.DetalleNotaPedido[i].IdProducto)*@
+                                                    <a href="#" class="text-info btnElminarDetalle">
+                                                        <i class="entypo-trash"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="5" style="text-align:right">Total:</th>
+                                            <th class="text-right total">@Html.TextBoxFor(m => m.Total, new { @id = "Total", @class = "form-control transparente text-right input-money", @readonly = "readonly" })</th>
+                                            <th></th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane" id="tab2">
+                            <div class="row">
+                                <div class="col-md-5 col-xs-12">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading">
+                                            <div class="panel-title">Cliente</div>
+                                            <div class="panel-options" style="padding-top: 5px;">
+                                                <button type="button" class="btn btn-sm btn-white" id="btnBuscarCliente" title="Buscar Cliente">
+                                                    <i class="entypo-search"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-white" onclick="limpiarCliente()" title="Limpiar">
+                                                    <i class="entypo-erase"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div id="clientResult" class="tile-title tile-gray">
+                                                <div class="icon" style="padding-top: 2px; padding-bottom: 0;">
+                                                    <i class="entypo-user" style="font-size: 35px;"></i>
+                                                </div>
+                                                <div class="title">
+                                                    <h3 id="identificacionCli"></h3>
+                                                    <p id="razonSocialCli">.@Html.Raw(Model.RazonSocial)</p>
+                                                </div>
+                                            </div>
+                                            @Html.HiddenFor(x => x.IdCliente)
+                                            @Html.ValidationMessageFor(model => model.IdCliente, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-7 col-xs-12" style="padding-left: 0;">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                @Html.Label("Forma pago", new { @class = "control-label" })
+                                                @Html.DropDownListFor(m => m.IdFormaPago, listaFormaPago, "Seleccione una forma de pago", new { @class = "form-control" })
+                                                @*<div class="col-sm-9">
+
+                                                </div>*@
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <div class="col-sm-6">
+                                                    <label><strong>Generar Factura</strong></label>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <div class="checkbox checkbox-replace color-blue">
+                                                        @Html.CheckBoxFor(m => m.Facturar)
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.Label("RUC Facturacion", new { @class = "form-label" })
+                                                @Html.DropDownListFor(m => m.Ruc, listaRuc, new { @class = "form-control" })
+                                            </div>
+                                            
+                                            <div class="form-group row no-margin-bottom ">
+                                                @Html.Label("Valor Facturado", new { @class = "col-sm-5 control-label" })
+                                                <div class="col-sm-7">
+                                                    <strong id="strTotal">$ @Model.Total</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*<div class="panel panel-primary">
+                                    <div class="panel-body">
+                                        <div class="form-group row">
+                                            @Html.Label("Cliente", new { @class = "col-sm-3 control-label" })
+                                            <div class="col-sm-9">
+                                                <div class="input-group">
+                                                    <div id="divRazonSocial" class="col-sm-10 text-dark"></div>
+                                                    @Html.TextBoxFor(x => x.RazonSocial, new { @class = "form-control", @readonly = "readonly" })
+                                                    <div class="input-group-btn">
+                                                        <button type="button" id="btnBuscarCliente" class="btn btn-blue">
+                                                            <i class="entypo-search"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>*@
+
+                            @*<div id="datosRucFacturacion" class="panel panel-primary">
+                                <div class="panel-body">
+                                </div>
+                            </div>*@
+                        </div>
+
+                        <div class="tab-pane" id="tab3">
+                            <div class="panel panel-primary">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-7 row">
+                                            <div class="col-xs-6">
+                                                <div class="form-group row margin-5-5">
+                                                    <label class="col-xs-4 control-label">N° Pagos</label>
+                                                    <div class="col-xs-8">
+                                                        <div id="spinnerNumeroPagos" class="input-spinner input-spinner-sx">
+                                                            <button type="button" class="btn btn-default">-</button>
+                                                            <input type="text" id="numeroPagos" value="1" class="form-control" data-min="1" />
+                                                            <button type="button" class="btn btn-default">+</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <div class="form-group row margin-5-5">
+                                                    <label class="col-xs-3 control-label">Días</label>
+                                                    <div class="col-xs-9">
+                                                        <div id="spinnerPlazoDias" class="input-spinner input-spinner-sx">
+                                                            <button type="button" class="btn btn-default">-</button>
+                                                            <input type="text" id="numeroPlazoDias" value="0" class="form-control" data-min="0" />
+                                                            <button type="button" class="btn btn-default">+</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-5 row">
+                                            <div class="col-xs-10">
+                                                <div class="form-group row margin-5-5">
+                                                    <label class="col-xs-4 control-label">Valor Pagado</label>
+                                                    <div class="col-xs-8">
+                                                        <input type="text" id="ValorPagado" class="form-control text-right input-money" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-2 row margin-5-5 text-center">
+                                                <button type="button" id="btnCuentasCobrar" class="btn btn-blue">
+                                                    <i class="entypo-right-dir"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="detallePagos" class="table-responsive">
+
+                            </div>
+                        </div>
+
+                        <ul class="pager wizard">
+                            <li class="previous">
+                                <a href="#"><i class="entypo-left-open"></i> Anterior</a>
+                            </li>
+                            <li class="next" id="idsiguiente">
+                                <a href="#">  <i class="entypo-right-open"></i> Siguiente</a>
+                            </li>
+                        </ul>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="modal-footer modal-footer-inventory ">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="button" id="btnAprobarNotaPedido" class="btn btn-blue btn-add-datail">Aprobar</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalClientes">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header modal-header-inventory">
+                <button type="button" class="close" id="btnClose" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Buscar Clientes</h4>
+            </div>
+            <div id="divModalClientesBody" class="modal-body">
+
+            </div>
+            <button data-dismiss="modal" class="close" type="button">
+                <span aria-hidden="true">×</span>
+                <span class="sr-only">Close</span>
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    var consultaClientesUrl = '@Url.Action("ConsultarClientes", "NotaPedido")';
+
+    $(function () {
+        var contador = 0;
+        var efpago = $("#IdFormaPago").val();
+        document.getElementById("btnAprobarNotaPedido").disabled = true;
+
+        $("#idsiguiente").click(function () {
+            contador = contador + 1;
+           if (contador >= 2 && efpago != '')
+            {
+                document.getElementById("btnAprobarNotaPedido").disabled = false;
+
+            }
+        });
+
+        $.validator.unobtrusive.parse($("#aprobarNotaPedidoForm"));
+        $("#aprobarNotaPedidoForm").formwizardcustom();
+
+        //var tableDetalles = $('#tablaDetalleNotasPedido').DataTable(opcionesDataTable);
+        var tableDetalles = $('#tablaDetalleNotasPedido').basicDatatable();
+
+        //$(".input-spinner").spinner();
+        $(".input-money").maskMoney(optionsMaskMoney);
+
+
+        $(".input-spinner-cantidad button").on('click', function (e) {
+            recalcularTotales(this);
+        });
+
+        $(".input-spinner-cantidad input").on('change paste keyup', function (e) {
+            recalcularTotales(this);
+        });
+
+        $(".text-cantidad").on('change paste keyup', function (e) {
+            recalcularTotales(this);
+        });
+
+        $(".text-pre").on('change paste keyup', function (e) {
+            recalcularTotales(this);
+        });
+
+        $("#IdFormaPago").change(function () {
+            inicializarCuentasCobrar();
+            efpago = $("#IdFormaPago").val();
+        });
+
+        $("#btnCuentasCobrar").click(function () {
+            var formaPago = $("#IdFormaPago").val();
+            var numeroPagos = $("#numeroPagos").val();
+            var plazoDias = $("#numeroPlazoDias").val();
+            var valorPagado = parseFloat(($("#ValorPagado").maskMoney('unmasked')[0]).toFixed(2));
+            var valorTotal = parseFloat(($("#Total").maskMoney('unmasked')[0]).toFixed(2));
+            generarCuentasCobrar(formaPago, numeroPagos, plazoDias, valorTotal, valorPagado);
+        });
+
+        $("#btnAprobarNotaPedido").click(function () {
+            //removing maskmoney
+            $(".input-money").each(function () {
+                var valorUnmasked = parseFloat(($(this).maskMoney('unmasked')[0]));
+                $(this).val(valorUnmasked);
+            });
+
+            var formAceptarNotaPedido = $("#aprobarNotaPedidoForm");
+            var $div = $(formAceptarNotaPedido).closest('div');
+            var action_url = formAceptarNotaPedido.attr("action");
+            var request_method = formAceptarNotaPedido.attr("method");
+            var form_data = formAceptarNotaPedido.serialize();
+
+            $.ajax({
+                url: action_url,
+                type: request_method,
+                data: form_data,
+                beforeSend: function () {
+                    blockUI($div)
+                    $div.addClass('loading');
+                },
+                complete: function () {
+                    unblockUI($div)
+                    $div.removeClass('loading');
+                }
+            }).done(function (respuesta) {
+                if (respuesta != "") {
+                    if (respuesta.success == true) {
+                        toastr.success(respuesta.mensaje, "", optionsToastr);
+                        actualizarConsultaNotaPedido();
+                        $("#divModal").modal('hide');
+                    }
+                    else {
+                        toastr.warning(respuesta.mensaje, "", optionsToastr);
+                        $(".input-money").maskMoney('mask');
+                    }
+                }
+            });
+        });
+
+        $(".btnElminarDetalle").click(function () {
+           console.log("BorroDetalle")
+           var trId = $(this).closest('tr').attr('id');
+            var td = $(this).closest('td');
+            tableDetalles.row("#" + trId).remove().draw();
+            var total = 0;
+            $.each($("#tablaDetalleNotasPedido tbody tr"), function () {
+                total += parseFloat($(this).find('td:eq(4) input').maskMoney('unmasked')[0]);
+            });
+            total = parseFloat(total.toFixed(2));
+            $("#Total").maskMoney('mask', total);
+
+            inicializarCuentasCobrar();
+
+        });
+
+        var generarCuentasPagarUrl = '@Url.Action("GenerarCuentasPorCobrar", "NotaPedido")';
+        function generarCuentasCobrar(formaPago, numeroPagos, plazodias, valorNotaPedido, valorPagado) {
+            $('#detallePagos').empty();
+
+            $.ajax({
+                url: generarCuentasPagarUrl,
+                data: { formaPago: formaPago, numeroPagos: numeroPagos, plazoDias: plazodias, valorNotaPedido: valorNotaPedido, valorPagado: valorPagado },
+                type: 'post',
+                beforeSend: function () {
+                },
+                complete: function () {
+                }
+            }).done(function (respuesta) {
+                if (respuesta != "") {
+                    $('#detallePagos').html(respuesta);
+                }
+            });
+        }
+
+        function recalcularTotales(element) {
+            var $tr = $(element).closest('tr');
+            var cantidad = parseInt($tr.find('td:eq(2) input').val());
+            var precio = parseFloat($tr.find('td:eq(4) input').maskMoney('unmasked')[0]);
+            var subtotal = parseFloat((cantidad * precio).toFixed(2));
+            $tr.find('td:eq(5) input').maskMoney('mask', subtotal);
+
+            var total = 0;
+            $.each($("#tablaDetalleNotasPedido tbody tr"), function () {
+                total += parseFloat($(this).find('td:eq(5) input').maskMoney('unmasked')[0]);
+            });
+            total = parseFloat(total.toFixed(2));
+            $("#Total").maskMoney('mask', total);
+            //$("#Total").val(total);
+            $("#strTotal").text(total.toFixed(2));
+            inicializarCuentasCobrar();
+        }
+
+        function inicializarCuentasCobrar() {
+            $("#numeroPagos").val("1");
+            $("#numeroPlazoDias").val("0");
+            $("#ValorPagado").maskMoney('mask', 0.00);
+
+            if ($("#IdFormaPago").val()) {
+                var formaPago = $("#IdFormaPago").val();
+                if (formaPago == "1") {
+                    var valorTotal = parseFloat(($("#Total").maskMoney('unmasked')[0]).toFixed(2));
+                    $("#ValorPagado").val(valorTotal);
+                    $("#ValorPagado").maskMoney('mask');
+                    $("#spinnerNumeroPagos").find(":input").prop("disabled", true);
+                    $("#spinnerPlazoDias").find(":input").prop("disabled", true);
+                    $("#ValorPagado").prop("disabled", true);
+                    $("#btnCuentasCobrar").prop("disabled", true);
+                    generarCuentasCobrar(formaPago, 1, 0, valorTotal, valorTotal);
+                }
+                else {
+                    $("#spinnerNumeroPagos").find(":input").prop("disabled", false);
+                    $("#spinnerPlazoDias").find(":input").prop("disabled", false);
+                    $("#ValorPagado").prop("disabled", false);
+                    $("#btnCuentasCobrar").prop("disabled", false);
+                    $('#detallePagos').empty();
+                }
+            }
+        }
+
+
+        $("#btnBuscarCliente").click(function () {
+            //$('#divConsultaClienteModal').empty();
+            $('#divModalClientes .close').css('display', 'none');
+            $('#divModalClientes').modal('show');
+
+            $.ajax({
+                url: consultaClientesUrl,
+                type: 'GET',
+                beforeSend: function () {
+                },
+                complete: function () {
+                }
+            }).done(function (respuesta) {
+                if (respuesta !== "") {
+                    $('#divModalClientesBody').html(respuesta);
+                }
+            });
+        });
+
+        $('#divModalClientes').on('hidden.bs.modal', function () {
+            $('#divModal').modal('show');
+            //var tablaClientes = $("#tablaClientes").DataTable();
+            //var row = tablaClientes.row('.selected');
+            //console.log(row);
+            //console.log(row.data());
+            //if (row.length) {
+            //    var oData = row.data();
+            //    $("#aprobarNotaPedidoForm #IdCliente").val(oData[1]);
+            //    //$("#aprobarNotaPedidoForm #RazonSocial").val(oData[2]);
+            //    $("#razonSocialCli").text('').text(oData[2]);
+            //}
+        });
+
+    });
+
+    function onSelectClient(clientItemJson) {
+        //$('#divModalClientesBody').empty();
+        $('#divModalClientes').modal('hide', { backdrop: 'static' });
+        $('#divModal').modal('show');
+        var client = JSON.parse(clientItemJson);
+        localStorage.setItem("client", clientItemJson);
+        setClientData(client);
+        $("#clientResult").removeClass('hidden').fadeIn('fast');
+    }
+    function setClientData(client) {
+        //console.log(client);
+        $("#IdCliente").val(client.Id);
+        $("#identificacionCli").text(client.Identificacion);
+        $("#razonSocialCli").text('').text(client.RazonSocial);
+    }
+
+    function limpiarCliente() {
+        localStorage.removeItem("client");
+        $("#clientResult").addClass('hidden').fadeIn('fast');
+    }
+
+    function consultarCliente() {
+        $.ajax({
+            url: consultaClientesUrl,
+            type: 'get',
+            beforeSend: function () {
+            },
+            complete: function () {
+            }
+        }).done(function (respuesta) {
+            if (respuesta !== "") {
+                $('#divSearchClient').html(respuesta);
+            }
+        });
+    }
+
+</script>

@@ -1,0 +1,122 @@
+﻿@{
+    ViewBag.Title = "Unidad de Medida";
+    var filtrosBusqueda = (IEnumerable<SelectListItem>)ViewBag.FiltrosBusqueda;
+}
+
+@Styles.Render("~/Styles/datatables")
+
+<ol class="breadcrumb bc-3 small hidden-xs breadcrumb-no-padding">
+    <li>
+        <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home</a>
+    </li>
+    <li>
+        Parametrizaciones
+    </li>
+    <li class="active">
+        <strong>Unidad de Medida</strong>
+    </li>
+</ol>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left">
+            <h3>Unidad de Medida</h3>
+        </div>
+    </div>
+</div>
+<br />
+@*<div id="divBusquedaUnidadMedida" class="panel panel-primary">
+    <div class="panel-body">*@
+        <div id="divBuscarUnidadMedida" class="row">
+            <div class="col-md-12">
+                @using (Html.BeginForm("ConsultaUnidadMedida", "Parametrizacion", FormMethod.Post, new { id = "consultaUnidadMedidaForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            @Html.DropDownList("filtroBusqueda", filtrosBusqueda, new { @class = "btn btn-blue" })
+                        </div>
+
+                        @Html.TextBox("textoBusqueda", "", new { @class = "form-control" })
+
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-blue">
+                                <span class="hidden-xs">Buscar</span>
+                                <i class="entypo-search"></i>
+                            </button>
+                        </span>
+                    </div>
+                }
+            </div>
+        </div>
+    @*</div>
+</div>*@
+<br />
+<div id="divUnidadMedida">
+</div>
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/datatables")
+
+    <script>
+        $(function () {
+            consultarUnidadesMedida();            
+        });
+
+        function consultarUnidadesMedida() {
+            $("#consultaUnidadMedidaForm").submit(function (event) {
+                event.preventDefault();
+                var request_url = $(this).attr("action");
+                var request_method = $(this).attr("method");
+                var form_data = $(this).serialize();
+                $.ajax({
+                    url: request_url,
+                    type: request_method,
+                    data: form_data,
+                    beforeSend: function () {
+                        $("#divUnidadMedida").empty();
+                        $("#divBusquedaUnidadMedida").append('<div id="divLoading" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+                    },
+                    complete: function () {
+                        $("#divLoading").remove();
+                    }
+                }).done(function (respuesta) {
+                    if (respuesta != "") {
+                        $("#divUnidadMedida").html(respuesta);
+                        $("#tablaUnidadesMedida").DataTable(opcionesDataTable);
+                    }
+                });
+            });
+        }
+
+        function nuevaUnidadMedida() {
+            var request_url = '@Url.Action("IngresoUnidadMedida", "Parametrizacion")';
+            var request_method = 'get';
+            $.ajax({
+                url: request_url,
+                type: request_method,
+                beforeSend: function () {
+                    $("#divUnidadMedida").empty();
+                    $("#divBusquedaUnidadMedida").append('<div id="divLoading" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+                },
+                complete: function () {
+                    $("#divLoading").remove();
+                }
+            }).done(function (respuesta) {
+                if (respuesta != "") {
+                    $("#divUnidadMedida").html(respuesta);
+                }
+            });
+        }
+
+    </script>
+}
+
+
+
+
+
+
+
+

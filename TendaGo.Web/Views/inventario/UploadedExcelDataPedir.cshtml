@@ -1,0 +1,227 @@
+﻿@using TendaGo.Common
+@using TendaGo.Web.Models
+@using TendaGo.Web.ApplicationServices
+
+@model TendaGo.Web.Models.TransferenciaViewModel
+@{
+    bool IsFileValid = ViewBag.IsFileValid;
+
+    var locales = InventarioAppService
+    .ObtenerLocales()
+    .Select(x => new { x.Id, x.Local }).ToList();
+
+    var localesOrigen = locales
+        .Where(x => x.Id != Model.IdLocalDestino)
+        .ToList();
+
+    Model.Fecha = DateTime.Today;
+    Model.IdLocalDestino = Session.GetIdLocal() ?? 0;
+    var pedir_vendidos = (ViewData["PedirVendidos"] != null);
+
+    var desde = Request["desde"] ?? DateTime.Today.ToString("yyyy-MM-dd");
+    var hasta = Request["hasta"] ?? DateTime.Today.ToString("yyyy-MM-dd");
+    var stockBodegaSelect = 0;
+}
+
+<input id="isFileValid" type="hidden" />
+
+<div class="table-responsive">
+
+    <table id="tablaDetalle" class="table datatable table-bordered table-hover">
+        <thead>
+            <tr class="text-center">
+                <th>Estado</th>
+                <th>Producto</th>
+                <th>Cantidad<br />Solicitada</th>
+                <th>Stock<br />Actual</th>
+                <th>Local</th>
+                <th>Cantidad</th>
+                <th>Unidad</th>
+                <th>Observación</th>
+                <th class="text-center"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Detalle != null && Model.Detalle.Count > 0)
+            {
+                @Html.HiddenFor(m => m.Id)
+                @Html.HiddenFor(m => m.IdVendedor)
+                @Html.HiddenFor(m => m.EstadoActual)
+                @Html.HiddenFor(m => m.IdLocalDestino)
+
+
+                <div class="row col-md-12">
+                    <br>
+                    <div class="form-group" style="display: flex;
+                    flex-wrap: wrap;
+                    align-items: center;
+                    justify-content: space-evenly;
+                    flex-direction: row;">
+
+                        @Html.LabelFor(model => model.Fecha, new { @class = "control-label", @style = "font-size:18px" })
+                        @Html.TextBoxFor(model => model.Fecha, "{0:yyyy-MM-dd}", new
+                        {
+                                @class = "form-control text-center",
+                                @type = "date-local",
+                                @data_format = "yyyy-mm-dd",
+                                @autocomplete = "off",
+                                @style = "width:25%"
+                        })
+                        @Html.ValidationMessageFor(model => model.Fecha, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.Label("Observaciones", new { @class = "form-label", @style = "font-size:18px" })
+                            @Html.TextAreaFor(m => m.Observaciones, new { @class = "form-control", @rows = "5", @style = "width: 526px;" })
+                        </div>
+                    </div>
+                </div>
+                
+
+                for (int i = 0; i < Model.Detalle.Count; i++)
+                {
+                    var idProducto = Model.Detalle[i].IdProducto;
+                    var localSelected = Model.Detalle[i].StockLocales.Where(x => x.IdLocal == Model.Detalle[i].IdLocal).FirstOrDefault();
+                    var stock = localSelected != null ? localSelected.StockInventario : 0;
+                    var stockClass = (Model.Detalle[i].StockLocales.Count > 0) ? "" : "bg-danger";
+
+                    <tr class="@stockClass" data-uid="detalle_@i" id="detalle_@i">
+
+                        <td class="text-center">                            
+                            @if (Model.Detalle[i].ItemValido)
+                            {
+                                <span class="label label-success" title="Ok">
+                                    <i class="entypo-check"></i>
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="label label-danger" title="@Model.Detalle[i].Observacion">
+                                    <i class="entypo-cancel"></i>
+                                </span>
+                            }
+                            @Html.HiddenFor(m => m.Detalle[i].ItemValido)
+                        </td>
+
+                        <td>
+                            <div class='input-group' style='width:100%;'>
+                                <input class='IdProducto' id='Detalle_@(i)__IdProducto' name='Detalle[@(i)].IdProducto' type='hidden' value="@idProducto">
+                                <input class='form-control Producto' id='Detalle_@(i)__Producto' name='Detalle[@(i)].Producto' readonly='readonly' type='text' value="@Model.Detalle[i].CodigoInterno |  @Model.Detalle[i].DescripcionProducto">
+                                <div class='input-group-btn'>
+                                    <button type='button' class='btn btn-blue btn-add-product'>
+                                        <i class='entypo-search'></i>
+                                    </button>
+                                </div>
+                            </div>
+                            @Html.Hidden("Detalle.Index", i, new { @id = string.Format("Detalle_{0}__Index", i) })
+                        </td>
+
+                        <td class="text-center">@Model.Detalle[i].Cantidad</td>
+
+                        <td>
+                            <div class="input-group Stock-control text-center">
+                                <input type="hidden" name="Detalle[@(i)].Stock" value="@Model.Detalle[i].Stock">
+                                <span>@Model.Detalle[i].Stock</span>
+                            </div>
+                        </td>
+
+                        <td>
+                            <select id="Detalle_@(i)__IdLocal" name="Detalle[@(i)].IdLocal" class="form-control IdLocal-control" style="width:100%">
+                                @{
+                                    if (Model.Detalle[i].StockLocales.Count > 0)
+                                    {
+                                        foreach (var local in Model.Detalle[i].StockLocales)
+                                        {
+                                            var selected = "";
+                                            if (local == localSelected)
+                                            {
+                                                selected = "selected";
+                                                stockBodegaSelect = (int)local.StockInventario;
+                                            }
+                                            <option @selected value="@local.IdLocal" data-stock="@local.StockInventario">
+                                                @local.Local | Stock: @local.StockInventario  |  @Model.Detalle[i].Unidad
+                                            </option>
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <option selected value="" data-stock="0">No hay stock en otros locales</option>
+                                    }
+                                }
+
+
+                            </select>
+                        </td>
+
+
+                        <td data-value="">
+                            @*@if (stockBodegaSelect <= Model.Detalle[i].Cantidad)*@
+                            @if (stockBodegaSelect <= Model.Detalle[i].Cantidad)
+                            {
+                                Model.Detalle[i].Cantidad = stockBodegaSelect;
+                            }
+
+                            @Html.TextBoxFor(model => Model.Detalle[i].Cantidad, new
+                             {
+                                 @class = "Cantidad-control form-control cantidad-entero",
+                                 @data_val = "true",
+                                 @data_val_number = "El campo cantidad debe tener un valor numerico.",
+                                 @data_val_required = "El campo cantidad es campo requerido.",
+                                 @min = 0,
+                                 @max = stock,
+                                 @min_value = 0,
+                                 @max_value = stock,
+                                 @type = "number",
+                                 @style = "width:100%"
+                             })
+                        </td>
+
+                        <td>
+                            <select id="Detalle_@(i)__IdTipoUnidad" name="Detalle[@(i)].IdTipoUnidad" class="form-control IdTipoUnidad-control" style="width:100%">
+                                @if (Model.Detalle[i].Unidades != null && Model.Detalle[i].Unidades.Count > 0)
+                                {
+                                    foreach (var unidad in Model.Detalle[i].Unidades)
+                                    {
+                                        //if (unidad.IdEstado == 1)
+                                        //{
+
+                                        var idx = Model.Detalle[i].TipoUnidad;
+                                        var selected = "";
+                                        if (idx == unidad.TipoUnidad)
+                                        {
+                                            selected = "selected";
+                                        }
+                                        <option value="@unidad.Id" @selected data-cantidad="@unidad.CantidadMinima">
+                                            @unidad.TipoUnidad | Min: @unidad.CantidadMinima
+                                        </option>
+                                        //}
+                                    }
+                                }
+                                else
+                                {
+                                    <option selected data-cantidad="0">
+                                        No Disponible
+                                    </option>
+                                }
+
+                            </select>
+                        </td>
+                        <td class="text-center">@Model.Detalle[i].Observacion</td>
+                        <td class="text-center"><a href="javascript:;" class="btn delete-button" onclick="deleteRow(detalle_@i)"><i class="fa fa-trash"></i></a></td>
+                    </tr>
+
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(function() {
+        $("#isFileValid").val('@IsFileValid');        
+    });
+    
+    function deleteRow(id) {
+        document.getElementById(id.id).remove();
+    }
+
+</script>

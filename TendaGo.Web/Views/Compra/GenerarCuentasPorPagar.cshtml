@@ -1,0 +1,113 @@
+﻿@using TendaGo.Web.Models
+@model CompraViewModel
+@{
+    var editarValores = (bool)ViewBag.EditarPagos;
+}
+
+<table id="tablaDetalleCuentasPagar" class="table datatable table-bordered table-hover">
+    <thead>
+        <tr class="text-sm">
+            <th>NumeroPago</th>
+            <th>FechaPago</th>
+            <th>ValorCuota</th>
+            <th>ValorPagado</th>
+            <th>Saldo</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.CuentasPorPagar.Count; i++)
+        {
+            <tr>
+                <td>
+                    @Html.HiddenFor(m => m.CuentasPorPagar[i].Numero)
+                    @Model.CuentasPorPagar[i].Numero
+                </td>
+                <td>
+                    @Html.HiddenFor(m => m.CuentasPorPagar[i].ValorPendiente)
+                    @Html.HiddenFor(m => m.CuentasPorPagar[i].FechaVencimiento)
+                    @Model.CuentasPorPagar[i].FechaVencimiento.ToCustomFormatString()
+                </td>
+                <td class="text-right">
+                    @if (editarValores)
+                    {
+                        @Html.TextBoxFor(m => m.CuentasPorPagar[i].Valor, new { @class = "form-control transparente text-right input-money", @readonly = "readonly" })
+                    }
+                    else
+                    {
+                        @Html.HiddenFor(m => m.CuentasPorPagar[i].Valor)
+                        @Model.CuentasPorPagar[i].Valor.ToCustomFormatString()
+                    }
+                </td>
+                <td class="text-right">
+                    @if (editarValores)
+                    {
+                        @Html.TextBoxFor(m => m.CuentasPorPagar[i].ValorPagado, new { @class = "form-control text-right text-valor-pagado input-money-2", @max=Model.CuentasPorPagar[i].Valor })
+                    }
+                    else
+                    {
+                        @Html.HiddenFor(m => m.CuentasPorPagar[i].ValorPagado)
+                        @Model.CuentasPorPagar[i].ValorPagado.ToCustomFormatString()
+                    }
+                </td>
+                <td class="text-right">
+                    @if (editarValores)
+                    {
+                        @Html.TextBoxFor(m => m.CuentasPorPagar[i].Saldo, new { @class = "form-control transparente text-right input-money", @readonly = "readonly" })
+                    }
+                    else
+                    {
+                        @Model.CuentasPorPagar[i].Saldo.ToCustomFormatString()
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="4" style="text-align:right">Saldo Total:</th>
+            @{
+                var totalPagado = Model.CuentasPorPagar.Sum(x => x.Saldo);
+            }
+            <th class="text-right total">@Html.TextBox("TotalPagado", totalPagado, new { @class = "form-control transparente text-right input-money", @readonly = "readonly" })</th>
+        </tr>
+    </tfoot>
+</table>
+
+
+<script>
+    $(function () {
+
+        var tableCuentasCobrar = $('#tablaDetalleCuentasPagar').DataTable(opcionesDataTableNoSearching);
+        var maskOptions4decimals = {
+            thousands: ',',
+            decimal: '.',
+            allowZero: true,
+            precision: 4
+        };
+        $(".input-money").maskMoney(maskOptions4decimals);
+        $(".input-money-2").maskMoney(optionsMaskMoney);
+        $(".input-money").maskMoney('mask');
+        
+
+        $(".text-valor-pagado").on('change paste keyup', function (e) {
+            recalcularTotalesCuentasPagar(this);
+        });
+
+        function recalcularTotalesCuentasPagar(element) {
+            var $tr = $(element).closest('tr');
+            var valorCuota = parseFloat($tr.find('td:eq(2) input').maskMoney('unmasked')[0]);
+            var valorPagado = parseFloat($tr.find('td:eq(3) input').maskMoney('unmasked')[0]);
+            var subtotalPagado = parseFloat((valorCuota - valorPagado).toFixed(2));
+            $tr.find('td:eq(4) input').maskMoney('mask', subtotalPagado);
+
+            var totalPagado = 0;
+            $.each($("#tablaDetalleCuentasPagar tbody tr"), function () {
+                totalPagado += parseFloat($(this).find('td:eq(4) input').maskMoney('unmasked')[0]);
+            });
+            totalPagado = parseFloat(totalPagado.toFixed(2));
+            $("#TotalPagado").maskMoney('mask', totalPagado);
+        }
+
+    });
+
+</script>

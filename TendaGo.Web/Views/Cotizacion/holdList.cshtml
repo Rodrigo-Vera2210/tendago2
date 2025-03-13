@@ -1,0 +1,18 @@
+﻿@using TendaGo.Web.Models
+@model List<PedidoViewModel>
+
+@for (int i = 0; i < Model.Count; i++)
+{
+    var item = Model[i];
+    var selectedHold = item.Actual ? "selectedHold" : "";
+    
+    <span class="Hold @selectedHold" id="@i" onclick="SelectHold(@i)">
+        <span>
+            @(i + 1) &nbsp;
+        </span>
+        <span id="Time"> 
+            @item.Fecha.ToShortTimeString() 
+        </span>
+    </span>
+}
+ 

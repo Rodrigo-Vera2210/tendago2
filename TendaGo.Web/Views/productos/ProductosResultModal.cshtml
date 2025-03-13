@@ -1,0 +1,62 @@
+﻿@using TendaGo.Web.Models
+@model IEnumerable<ProductoViewModel>
+@{
+    // la funcion onSelectProduct(product) debe ser implementada en la vista donde se esta llamando
+    // a esta busqueda
+    int idOrigen = (int)ViewBag.Origen;
+    OrigenesBusquedaProductos origen = (OrigenesBusquedaProductos)idOrigen;
+}
+@if (Model.Any())
+{
+    <div class="panel">
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table id="productsTable" class="table datatable table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th width="5%">Cod.Interno</th>
+                            <th width="5%">Cod.Proveedor</th>
+                            <th>Nombre</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var producto in Model)
+                        {
+                            <tr>
+                                <td>@producto.CodigoInterno</td>
+                                <td>@producto.CodigoProveedor</td>
+                                <td>@producto.Producto</td>
+                                @*<td>@producto.Descripcion.PadRight(25).Substring(0, 25).Trim() ...</td>*@
+                                <td class="text-center">
+                                    @{
+                                        var itemJson = Newtonsoft.Json.JsonConvert.SerializeObject(new {Id= producto.Id, CodigoInterno=producto.CodigoInterno, CodigoProveedor = producto.CodigoProveedor, Nombre = HttpUtility.JavaScriptStringEncode(producto.Producto), TipoProducto = producto.TipoProducto});
+                                    }
+                                    
+                                    @switch (origen)
+                                    {
+                                        case OrigenesBusquedaProductos.Compra:
+                                            <button class="btn btn-success btn-icon icon-left" data-dismiss="modal" onclick="onSelectProduct(`@(itemJson)`);">
+                                                <i class="entypo-check"></i>Seleccionar
+                                            </button>
+                                            break;
+                                        default:
+                                            throw new ArgumentOutOfRangeException();
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="tile-stats tile-white-orange">
+        <div class="icon"><i class="entypo-docs"></i></div>
+        <div class="num">0</div>
+        <h3>La búsqueda solicitada no obtuvo resultados</h3>
+    </div>
+}

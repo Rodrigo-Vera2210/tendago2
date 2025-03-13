@@ -1,0 +1,408 @@
+﻿@using TendaGo.Web.Models
+@model DetalleNotaPedidoViewModel
+
+@{
+    var listaTipoUnidades = (IEnumerable<SelectListItem>)ViewBag.ListaTipoUnidades;
+    var jsonTipoUnidadesNoEditables = (string)ViewBag.JsonTipoUnidadesNoEditables;
+    var jsonPrecios = (string)ViewBag.JsonPrecios;
+    string jsonTiposUnidad = (string)ViewBag.TiposUnidad;
+    //bool notasPedidoMultiples = (bool)ViewBag.NotasPedidoMultiples;
+    //var listaNotasPedido = ViewBag.ListaNotasPedidoTemp as List<NotaPedidoTempModel>;
+}
+
+
+
+<div class="modal-dialog">
+    <div class="modal-content">
+
+        <div class="modal-header modal-header-inventory ">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Agregar al Carrito</h4>
+            @*<h5 class="modal-title">@Model.Categoria</h5>*@
+        </div>
+
+        <div class="modal-body">
+            <h4 class="modal-title">@Model.NombreProducto</h4>
+            <div class="row">
+                @using (Html.BeginForm("AgregarDetalle", "NotaPedido", FormMethod.Post, new { id = "detalleNotaPedidoForm" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="col-md-5">
+                        <div class="icon" style="font-size: 150px; text-align: center;">
+                            <img class="cover-parent" src="@Model.FotoDataUrl">
+                        </div>
+                        <p class="text-success text-center"><strong>Disponible</strong></p>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.DescripcionProducto, new { @class = "control-label" })
+                            <p>@Html.Raw("<pre>" + Html.Encode(Model.DescripcionProducto.PadRight(200).Substring(0, 200).Trim()) + "</pre>")</p>
+                            @if (Model.CantidadTotalDisponible == 0)
+                            {
+                                <strong style='color:red;'> Producto no cuenta con Stock Disponible para la Localidad </strong>
+                            }
+                            @Html.HiddenFor(m => m.IdProducto)
+                            @Html.HiddenFor(m => m.NombreProducto)
+                        </div>
+                    </div>
+
+                    <div class="col-md-7">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.IdTipoUnidad, new { @class = "control-label" })
+                            @if (Model.IdTipoUnidad == -1)
+                            {
+                                <p class="text-justify">
+                                    <strong style='color:red;'> Producto no tiene Tipo de Unidad Ingresada. </strong>
+                                </p>
+                            }
+                            else
+                            {
+                                @Html.DropDownListFor(m => m.IdTipoUnidad, listaTipoUnidades, new { @class = "form-control" })
+                                @Html.HiddenFor(m => m.DesTipoUnidad)
+                            }
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.PrecioSugerido, new { @class = "control-label" })
+                                    @Html.TextBoxFor(m => m.PrecioSugerido, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.Precio, new { @class = "control-label" })
+                                    @Html.TextBoxFor(m => m.Precio, new { @class = "form-control input-money" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(m => m.CantidadTotalDisponible, new { @class = "control-label" })
+                                    @Html.TextBoxFor(m => m.CantidadTotalDisponible, new { @class = "form-control", @readonly = "readonly" })
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                @Html.Label("Unidades", new { @class = "control-label" })
+                                @*@Html.TextBox("txtCantidad", null,new { @class = "form-control", @readonly = "readonly" })*@
+                                <input type="text" class="form-control" readonly="readonly" id="txtCantidad" />
+                            </div>
+                            <div class="col-md-3">
+                                @Html.LabelFor(m => m.CantidadMinima, new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.CantidadMinima, new { @class = "form-control", @readonly = "readonly" })
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table id="tablaDetalleNotas" class="table datatable table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>No Pedido</th>
+                                                <th>Cantidad</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        @*<div class="form-group">
+                                @Html.LabelFor(m => m.Cantidad, new { @class = "control-label" })
+                                <div id="spinnerCantidad" class="input-spinner">
+                                    <button type="button" class="btn btn-default btn-minus">-</button>
+                                    @Html.TextBoxFor(m => m.Cantidad, new { @class = "form-control size-1", @data_min = "1" })
+                                    <button type="button" class="btn btn-default btn-plus">+</button>
+                                </div>
+                            </div>*@
+                        <div class="form-group">
+                            @*@Html.LabelFor(m => m.Cantidad, new { @class = "control-label" })*@
+                            <label class="control-label">Cantidad Total</label>
+                            @Html.TextBoxFor(m => m.Cantidad, new { @class = "form-control size-1", @readonly = "readonly" })
+                        </div>
+
+                        <div class="form-group">
+                            <p class="text-justify">
+                                Esta solicitando
+                                <strong id="textCantidad" style='color:blue;'></strong>
+                                <strong style='color:blue;' id="textTipoUnidad"></strong>
+                                para agregar al carrito.
+                            </p>
+                            <p class="text-justify">
+                                <strong style='color:red;' id="stockValidationMessage"></strong>
+                            </p>
+                            <p class="text-justify">
+                                <strong style='color:red;' id="minimumValidationMessage"></strong>
+                            </p>
+                        </div>
+
+
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="modal-footer modal-footer-inventory ">
+            @if (Model.CantidadTotalDisponible != 0 && Model.IdTipoUnidad != -1)
+            {
+                <button type="button" class="btn btn-blue btn-add-datail">Agregar Producto</button>
+            }
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    var preciosJsonString = '@jsonPrecios';
+    var tiposUnidadJsonString = '@Html.Raw(jsonTiposUnidad)';
+    var selectedTipoUnidadObj;
+    var tablaDetalleNotas;
+
+    $(function () {
+        setTiposUnidadData();
+
+        $(".input-money").maskMoney(optionsMaskMoney);
+
+        $("#DesTipoUnidad").val($("#IdTipoUnidad option:selected").text());
+
+        //$("#spinnerCantidad").spinnercustom();
+
+
+        tablaDetalleNotas = $("#tablaDetalleNotas").basicDatatable();
+        setTimeout(function() {
+            setNotasTemp();
+        }, 1200);
+    });
+
+    function setTiposUnidadData() {
+        if (tiposUnidadJsonString && tiposUnidadJsonString !== '') {
+            var tiposUnidad = JSON.parse(tiposUnidadJsonString);
+            //console.table(tiposUnidad);
+            var tipoUnidadSelected = $("#IdTipoUnidad option:selected");
+            //console.log("tipoUni: " + tipoUnidadSelected.val() + " text: " + tipoUnidadSelected.text());
+            obtenerPrecioPorTipoUnidad(tipoUnidadSelected.val());
+        }
+    }
+
+    $("#IdTipoUnidad").change(function () {
+        if ($("#IdTipoUnidad").val()) {
+            obtenerPrecioPorTipoUnidad($("#IdTipoUnidad").val());
+            $("#DesTipoUnidad").val($("#IdTipoUnidad option:selected").text());
+        }
+    });
+
+    var jsonTip = '@Html.Raw(jsonTipoUnidadesNoEditables)';
+    function obtenerPrecioPorTipoUnidad(idTipoUnidadSelecionada) {
+        //console.info("idTipoUnidadSelecionada: " + idTipoUnidadSelecionada);
+        $("#IdPrecio").empty();
+        var tiposUnidadesNoEditables = jQuery.parseJSON('@Html.Raw(jsonTipoUnidadesNoEditables)');
+        var permiteEdicion = false;
+
+        $.each(tiposUnidadesNoEditables, function (i, tipoUnidadNoEditable) {
+            if (tipoUnidadNoEditable.Id == idTipoUnidadSelecionada) {
+                permiteEdicion = true;
+                return false;
+            }
+        });
+        var tiposUnidad = JSON.parse(tiposUnidadJsonString);
+        $.each(tiposUnidad, function (i, tipoUnidad) {
+            if (tipoUnidad.Id == idTipoUnidadSelecionada) {
+                selectedTipoUnidadObj = tipoUnidad;
+            }
+        });
+        console.info(selectedTipoUnidadObj);
+        var precioFormatted = selectedTipoUnidadObj.Precio.toFixed(2);
+        $("#PrecioSugerido").val(precioFormatted);
+        $("#Precio").val(precioFormatted);
+        $("#CantidadMinima").val(selectedTipoUnidadObj.CantidadMinima);
+        $("#txtCantidad").val(selectedTipoUnidadObj.Cantidad);
+        updateCantidadText();
+        validarCantidadContraStock();
+        validarCantidadContraCantidadMinima();
+
+        if (permiteEdicion === false) {
+            $("#Precio").prop("readonly", true);
+        }
+        else {
+            $("#Precio").prop("readonly", false);
+        }
+    }
+
+    $(".btn-plus").click(function () {
+        console.log(".btn-plus");
+        calcularCantidadTotal();
+        validarCantidadContraStock();
+        validarCantidadContraCantidadMinima();
+        updateCantidadText();
+    });
+    $(".btn-minus").click(function () {
+        console.log(".btn-minus");
+        calcularCantidadTotal();
+        validarCantidadContraStock();
+        validarCantidadContraCantidadMinima();
+        updateCantidadText();
+    });
+
+    $("#Cantidad").change(function () {
+        validarCantidadContraStock();
+        validarCantidadContraCantidadMinima();
+        updateCantidadText();
+    });
+
+    function validarCantidadContraStock() {
+        var stock = $("#CantidadTotalDisponible").val();
+        var cantidad = $("#Cantidad").val();
+        var cantidadTipoUnidad = selectedTipoUnidadObj.Cantidad;
+        var cantidadTotal = cantidad * cantidadTipoUnidad;
+        if (cantidadTotal > stock) {
+            $("#stockValidationMessage").text('').text('La cantidad solicitada supera el stock del producto.');
+        }
+        else
+            $("#stockValidationMessage").text('');
+    }
+
+    function validarCantidadContraCantidadMinima() {
+        var cantidad = $("#Cantidad").val();
+        var cantidadTipoUnidad = selectedTipoUnidadObj.Cantidad;
+        var cantidadMinima = selectedTipoUnidadObj.CantidadMinima;
+        var cantidadTotal = cantidad * cantidadTipoUnidad;
+        if (cantidadTotal < (cantidadMinima * cantidadTipoUnidad))
+            $("#minimumValidationMessage").text('').text('La cantidad solicitada, no supera la cantidad minima requerida para el precio seleccionado.');
+        else
+            $("#minimumValidationMessage").text('');
+
+    }
+
+    function updateCantidadText() {
+        var cantidad = $("#Cantidad").val();
+        $("#textCantidad").text(cantidad);
+        var tipoUnidad = selectedTipoUnidadObj.TipoUnidad;
+        $("#textTipoUnidad").text(tipoUnidad);
+    }
+
+    var listaNotas;
+    var urlGetCantidadNotas = '@Url.Action("GetNotasPedidoTemp", "NotaPedido")';
+    function setNotasTemp() {
+        $.ajax({
+            url: urlGetCantidadNotas,
+            type: 'GET',
+            beforeSend: function() {},
+            complete: function () { },
+            success: function(respuesta) {
+                if (respuesta !== "") {
+                    listaNotas = respuesta.notas;
+                    var esNotasMultiples = respuesta.notasPedidoMultiples;
+                    
+                    //console.log(listaNotas);
+                    //console.log(esNotasMultiples);
+                    //var rowCont = 0;
+                    $.each(listaNotas, function (i, nota) {
+                        var colId = creaColId(i, nota.Id);
+                        var colCantSpinner = crearSpinnerCantidad(i);
+                        tablaDetalleNotas.row.add($(`<tr id='${i}'><td>${colId}</td><td>${colCantSpinner}</td></tr>`)).draw();
+                        //rowCont++;
+                    });
+                    calcularCantidadTotal();
+                    //$(".input-spinner-cantidad").spinnercustom();
+                    $(".btn-plus1").click(function () {
+                        calcularCantidadTotal();
+                        validarCantidadContraStock();
+                        validarCantidadContraCantidadMinima();
+                        updateCantidadText();
+                    });
+                    $(".btn-minus1").click(function () {
+                        calcularCantidadTotal();
+                        validarCantidadContraStock();
+                        validarCantidadContraCantidadMinima();
+                        updateCantidadText();
+                    });
+                }
+            }
+        }).done(function(respuesta) {
+        });
+    }
+
+    function creaColId(i, id) {
+        //i = i + 1;
+        var idProducto = $("#IdProducto").val();
+        var displayId = i + 1;
+        //var colId = $`<div>${id}<input type='hidden' value='id' id='${i}' /></div>`;
+        var colId = "<div>" + displayId + "<input type='hidden' value='" + id + "'name='NotasTemp[" + i + "].IdNotaPedidoTemp' /><input type='hidden' value='" + idProducto + "'name='NotasTemp[" + i +"].IdProducto' /></div>";
+        return colId+'';
+    }
+    function crearSpinnerCantidad(id) {
+        //id = id + 1;
+        var spinner = "<div id='spinnerCantidad" + id + "' class='input-spinner input-spinner-cantidad input-spinner-sx'>";
+        spinner += "<button type='button' class='btn btn-default btn-minus1'>-</button>";
+        spinner += "<input type='text' name='NotasTemp[" + id + "].Cantidad' value='1' data-min='0' class='form-control text-cantidad' />";
+        spinner += "<button type='button' class='btn btn-default btn-plus1'>+</button>";
+        spinner += "</div>";
+        return spinner;
+    }
+
+    function calcularCantidadTotal() {
+        //var $tr = $(element).closest('tr');
+        //var cantidad = parseInt($tr.find('.text-cantidad:first').val());
+        var total = 0;
+        $.each($("#tablaDetalleNotas tbody tr"), function() {
+            total += parseInt($(this).find('.text-cantidad:first').val());
+        });
+        $("#Cantidad").val(total);
+        console.log("TOTAL: "+total);
+    }
+
+    //$('#detalleNotaPedidoForm').on('change paste keyup','.text-cantidad', function() {
+    //    calcularCantidadTotal();
+    //});
+
+    $(".btn-add-datail").on("click",function () {
+        if ($("#stockValidationMessage").text() != '') {
+            toastr.error($("#stockValidationMessage").text(), "", optionsToastr);
+            return false;
+        }
+        if ($("#minimumValidationMessage").text() != '') {
+            toastr.error($("#minimumValidationMessage").text(), "", optionsToastr);
+            return false;
+        }
+
+        //console.table(listaNotas);
+
+        var formDetalle = $("#detalleNotaPedidoForm");
+        var $div = $(formDetalle).closest('div');
+        var post_url = formDetalle.attr("action");
+        var request_method = formDetalle.attr("method");
+        var form_data = formDetalle.serialize();
+        $.ajax({
+            url: post_url,
+            type: request_method,
+            data: form_data,
+            beforeSend: function () {
+                blockUI($div)
+                $div.addClass('loading');
+            },
+            complete: function () {
+                unblockUI($div)
+                $div.removeClass('loading');
+            }
+        }).done(function (respuesta) {
+            if (respuesta != "") {
+                if (respuesta.Success == true) {
+                    actualizarCarritoCompras();
+                    toastr.success(respuesta.Mensaje, "", optionsToastr);
+                    $("#divModal").modal('hide');
+                }
+                else {
+                    toastr.warning(respuesta.Mensaje, "", optionsToastr);
+                }
+            }
+            else {
+                toastr.error("Se ha producido un error", "", optionsToastr);
+            }
+            });
+    });
+
+</script>

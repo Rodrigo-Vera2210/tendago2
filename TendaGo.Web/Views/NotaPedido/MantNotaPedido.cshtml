@@ -1,0 +1,278 @@
+﻿@using TendaGo.Web
+@using TendaGo.Web.Models
+@model NotaPedidoModel
+@{
+
+    var jsonTiposPaquete = (string)ViewBag.JsonTiposPaquete;
+
+    // DEFINIMOS LA ACCION A REALIZAR EN LOS DISTINTOS CASOS
+    // EN PROCESO U OTROS NO RECONOCIDOS DEBE PASAR A APROBAR:
+    var factura = "";
+    if (Model.EstadoActual == "APROBADA")
+    {
+        ViewBag.Accion = "Empaquetar";
+    }
+    else if (Model.EstadoActual == "EMPAQUETADA")
+    {
+        ViewBag.Accion = "Revisar";
+    }
+    else if (Model.EstadoActual == "REVISADA")
+    {
+        ViewBag.Accion = "Entregar";
+    }
+    else if (Model.EstadoActual == "EN PROCESO" || Model.EstadoActual == "COTIZACION")
+    {
+        ViewBag.Accion = "Aprobar";
+    }
+    else if (Model.EstadoActual == "ENTREGADA")
+    {
+        factura = "active";
+        ViewBag.Accion = "Facturar";
+    }
+    else
+    {
+        ViewBag.Accion = "Consultar";
+    }
+
+    ViewBag.Title = string.Format("{0} Nota de Pedido", ViewBag.Accion);
+}
+
+@section styles{
+    @Styles.Render("~/Styles/NotaPedido")
+}
+
+<ol class="breadcrumb bc-3 small hidden-xs breadcrumb-no-padding">
+    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home</a></li>
+    <li>Nota de Pedido</li>
+    <li class="active">
+    <strong>
+    @if (ViewBag.Accion == "Empaquetar")
+    {
+        <span>Alistar</span>
+    }
+    else
+    {
+        @ViewBag.Accion
+    } 
+    </strong>
+    </li>
+</ol>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left">
+            <h3>
+                @if (ViewBag.Accion == "Empaquetar")
+                {
+                    <span>ALISTAR</span>
+                }
+                else
+                {
+                    @ViewBag.Accion.ToUpper()
+                } <br />
+                
+                <small> NOTA DE PEDIDO # <b>@Model.Id</b></small>
+            </h3>
+            <h4>CLIENTE: @Model.RazonSocial</h4>
+            <h5>LOCAL: @Model.LocalSeleccionado</h5>
+        </div>
+
+        <div id="divCarritoCompras" class="pull-right">
+            <h4>
+                ESTADO ACTUAL:
+                @if (ViewBag.Accion == "Aprobar")
+                {
+                    <span class="label label-warning">@Model.EstadoActual</span>
+                }
+                else if (ViewBag.Accion == "Empaquetar")
+                {
+                    <span class="label label-info">@Model.EstadoActual</span>
+                }
+                else if (ViewBag.Accion == "Revisar")
+                {
+                    <span class="label label-default">ALISTADO</span>
+                }
+                else if (ViewBag.Accion == "Facturar")
+                {
+                    <span class="label label-danger">@Model.EstadoActual</span>
+                }
+                else
+                {
+                    <span class="label label-success">@Model.EstadoActual</span>
+                }
+            </h4>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+
+    @using (Html.BeginForm("Aprobar", "NotaPedido", FormMethod.Post, new { @id = "NotaPedidoForm", @class = "form-wizard validate", @enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.IdLocal)
+        @Html.HiddenFor(model => model.Total)
+        @Html.HiddenFor(model => model.Fecha)
+
+        var index = 1;
+
+        <div class="steps-progress">
+            <div class="progress-indicator"></div>
+        </div>
+        <ul class="hidden-print">
+            @if (ViewBag.Accion != "Facturar")
+            {
+                <li class="active">
+                    <a href="#tab1" data-toggle="tab"><span>@(index++)</span>Detalle del Pedido</a>
+                </li>
+            }
+            @if (ViewBag.Accion == "Revisar" || ViewBag.Accion == "Entregar")
+            {
+                <li>
+                    <a href="#tab2" data-toggle="tab"><span>@(index++)</span>Empacado</a>
+                </li>
+            }
+            <li class="@factura">
+                <a href="#tab3" data-toggle="tab"><span>@(index++)</span>Datos de Facturaci&oacute;n</a>
+            </li>
+
+            @if (ViewBag.Accion == "Aprobar" || ViewBag.Accion == "Entregar" || ViewBag.Accion == "Revisar" || ViewBag.Accion == "Consultar")
+            {
+                <li>
+                    <a href="#tab4" data-toggle="tab"><span>@(index++)</span>Pagos</a>
+                </li>
+            }
+            @if (ViewBag.Accion == "Facturar")
+            {
+                <li>
+                    <a href="#facturaDiv" data-toggle="tab"><span>@(index++)</span>Factura Preliminar</a>
+                </li>
+            }
+        </ul>
+        <div class="tab-content">
+            @if (ViewBag.Accion != "Facturar")
+            {
+                <div class="tab-pane  active" id="tab1">
+                    @{ Html.RenderPartial("MantNotaPedido_Detalle", Model, ViewData); }
+                </div>
+            }
+            @if (ViewBag.Accion == "Revisar" || ViewBag.Accion == "Entregar")
+            {
+                <div class="tab-pane" id="tab2">
+                    @{ Html.RenderPartial("MantNotaPedido_Empaque", Model, ViewData); }
+                </div>
+            }
+
+            <div class="tab-pane @factura" id="tab3">
+                @{ Html.RenderPartial("MantNotaPedido_Cliente", Model, ViewData); }
+            </div>
+
+            @if (ViewBag.Accion == "Entregar" || ViewBag.Accion == "Aprobar" || ViewBag.Accion == "Revisar" || ViewBag.Accion == "Consultar")
+            {
+                <div class="tab-pane" id="tab4">
+                    @{ Html.RenderPartial("MantNotaPedido_Pagos", Model, ViewData); }
+                </div>
+            }
+            @if (ViewBag.Accion == "Facturar")
+            {
+                <div class="tab-pane" id="facturaDiv">
+                    @{ Html.RenderPartial("MantNotaPedido_Factura", Model.ToFactura(), ViewData); }
+                </div>
+            }
+
+            <ul class="pager wizard hidden-print">
+                <li class="previous"> <a href="javascript:;"><i class="entypo-left-open"></i> Anterior</a> </li>
+
+                @if (ViewBag.Accion != "Consultar")
+                {
+                    var boton = ViewBag.Accion;
+                    if (boton == "Empaquetar")
+                    {
+                        boton = "Alistar";
+                    }
+                    <li class="finish"> <a href="javascript:;" class="save-button"><i class="entypo-check"></i> @boton &nbsp; </a> </li>
+                }
+                else if (ViewBag.Mantenimiento != null)
+                {
+                    <li class="finish"> <a href="javascript:;" class="save-button"><i class="entypo-check"></i> Guardar &nbsp; </a> </li>
+                }
+                else
+                {
+                    <li class="print"> <a href="javascript:;" class="print-button"><i class="entypo-print"></i> Vista Preliminar &nbsp; </a> </li>
+                }
+                <li class="next"> <a href="javascript:;" id="idsiguiente">  <i class="entypo-right-open"></i> Siguiente</a> </li>
+            </ul>
+        </div>
+    }
+</div>
+
+<div class="modal fade" id="divModalClientes">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header modal-header-inventory">
+                <button type="button" class="close" id="btnClose" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Buscar Clientes</h4>
+            </div>
+            <div id="divModalClientesBody" class="modal-body">
+
+            </div>
+            <button data-dismiss="modal" class="close" type="button">
+                <span aria-hidden="true">&times;</span>
+                <span class="sr-only">Close</span>
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="divModalTransferencia">
+
+</div>
+
+<form id="resumenForm" method="post" action="@Url.Action("Resumen", "NotaPedido", new { id =  Model.Id})">
+    <input type="hidden" name="Action" value="@ViewBag.Accion" />
+</form>
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/wizard")
+    @Scripts.Render("~/bundles/datepicker")
+    @Scripts.Render("~/bundles/timepicker")
+    @Scripts.Render("~/bundles/fileinput")
+    @Scripts.Render("~/bundles/maskmoney")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/paginate")
+    @Scripts.Render("~/bundles/notaPedido")
+    @Scripts.Render("~/bundles/productos/index")
+
+
+<script>
+        menu_settings.parentMenu = 'MnuNotaPedido';
+        menu_settings.optionMenu = 'OpcCrear';
+
+        searchProductsControl.url = "@Url.Action("Buscar", "productos")";
+        searchProductsControl.resultContainer = "searchControl";
+
+        NotaPedidoMant.creaCantidadUrl = '@Url.Action("CreaCantidadNotasPedido", "NotaPedido")';
+        NotaPedidoMant.consultaStockUrl = '@Url.Action("ObtenerStock", "NotaPedido")';
+        NotaPedidoMant.existenciaUrl = '@Url.Action("ExistenciaProducto", "NotaPedido")';
+        NotaPedidoMant.mostrarProductoUrl = '@Url.Action("MostrarProducto", "NotaPedido")';
+        NotaPedidoMant.accionUrl = '@Url.Action(ViewBag.Accion ?? "", "NotaPedido")';
+        NotaPedidoMant.crearClienteUrl = '@Url.Action("CrearCliente", "NotaPedido")';
+        NotaPedidoMant.consultaClientesUrl = '@Url.Action("ConsultarClientes", "NotaPedido")';
+        NotaPedidoMant.generarCuentasCobrarUrl = '@Url.Action("GenerarCuentasPorCobrar", "NotaPedido")';
+        NotaPedidoMant.generarFacturaUrl = '@Url.Action("GenerarFactura", "NotaPedido")';
+        NotaPedidoMant.transferenciaUrl = '@Url.Action("GenerarTransferencia", "NotaPedido")';
+        NotaPedidoMant.descargarUrl = '@Url.Action("Descargar", "NotaPedido")';
+        NotaPedidoMant.tiposPaquete = @Html.Raw(jsonTiposPaquete);
+        NotaPedidoMant.detalleUrl = '@Url.Action("SetDetalle", "NotaPedido")';
+        NotaPedidoMant.reversarCobrosUrl = '@Url.Action("ReciboReversar", "Cobros")';
+        NotaPedidoMant.init("@ViewBag.Accion");
+
+</script>
+
+
+}

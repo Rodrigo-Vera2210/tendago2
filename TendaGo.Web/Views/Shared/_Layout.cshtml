@@ -1,0 +1,210 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tenda Go!" />
+    <meta name="author" content="Binasystem" />
+    <title>@ViewBag.Title :: Tenda Go!</title>
+    <link rel="icon" href="@Url.Content("~/favicon.ico")">
+    <link rel="manifest" href="@Url.Content("~/manifest.webmanifest")">
+    <link rel="apple-touch-icon" href="images/touch/homescreen72.png">
+    <link rel="apple-touch-icon-precomposed" href="images/touch/homescreen72.png">
+
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic" rel="stylesheet" />
+    @*<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">*@
+
+    @Styles.Render("~/Content/bootstrap.min.css")
+    @Styles.Render("~/Styles/jqueryui")
+    @Styles.Render("~/Styles/entypo")
+    @Styles.Render("~/Styles/fontawesome")
+
+    @Styles.Render("~/Styles/css")
+    @Styles.Render("~/Styles/neon")
+
+    @Scripts.Render("~/bundles/responsive")
+    @Scripts.Render("~/bundles/jquery")
+
+    <!--[if lt IE 9]><script src="assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    @RenderSection("styles", required: false)
+
+</head>
+<body class="page-body">
+    <div class="page-container">
+        <!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
+
+        <div class="sidebar-menu">
+            <div class="sidebar-menu-inner">
+                <header class="logo-env">
+                    <div class="logo">
+                        <a href="@Url.Action("Index","Home")">
+                            <img src="~/Images/TendaGO-vertical.png" width="100" alt="" />
+                        </a>
+                    </div>
+                    <div class="sidebar-collapse">
+                        <a href="#" class="sidebar-collapse-icon">
+                            <!-- add class "with-animation" if you want sidebar to have animation during expanding/collapsing transition -->
+                            <i class="entypo-menu"></i>
+                        </a>
+                    </div>
+
+                    <!-- open/close menu icon (do not remove if you want to enable menu on mobile devices) -->
+                    <div class="sidebar-mobile-menu visible-xs">
+                        <a href="#" class="with-animation">
+                            <!-- add class "with-animation" to support animation -->
+                            <i class="entypo-menu"></i>
+                        </a>
+                    </div>
+                </header>
+                @Html.Partial("_MenuPartial")
+            </div>
+        </div>
+
+        <div class="main-content">
+            @Html.Partial("_LoginPartial")
+            <hr class="margin-5-10 hidden-print" />
+            @RenderBody()
+            <br />
+            <!-- Footer -->
+            <footer class="main">
+                <strong>Copyright &copy; @DateTime.Now.Year <a href="#">Binasystem</a>.</strong> All rights reserved.
+            </footer>
+        </div>
+    </div>
+
+    <div class="modal fade" id="divModal" data-backdrop='static'>
+    </div>
+
+    <div class="modal fade" id="divConsultaClienteModal" data-backdrop='static'>
+    </div>
+
+    <div class="modal fade" id="divConsultaProductosModal" data-backdrop='static'>
+    </div>
+
+    <div class="modal fade" id="divConsultaProveedoresModal" data-backdrop='static'>
+    </div>
+
+
+
+    <!-- Bottom scripts (common) -->
+    @Scripts.Render("~/bundles/bootstrap")
+
+    @Scripts.Render("~/bundles/tweenmax")
+    @Scripts.Render("~/bundles/tweenmax")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/toastr")
+    @Scripts.Render("~/bundles/site")
+
+    <!-- Custom Settings -->
+    @Scripts.Render("~/bundles/neon-main")
+    @Scripts.Render("~/bundles/neon-custom")
+
+
+    <script>
+        $(function () {
+            setLocal();
+        });
+
+        // Offline && Offline.options = { checks: { xhr: { url: '/connection-test' } } };
+
+        var divProgress = "<div class='progress progress-striped active'><div class='progress-bar progress-bar-danger' role='progressbar' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100' style=width: 100%'><span class='sr-only'></span></div></div>";
+
+        var opcionesDataTable = {
+            'paging': true,
+            'lengthChange': true,
+            'searching': true,
+            'ordering': false,
+            'info': true,
+            'autoWidth': false,
+            'responsive': true,
+            'language': {
+                "url": "/Content/dataTables.spanish.txt"
+            },
+            'dom': 'Bfrtip',
+            'buttons': [
+                { extend: 'excelHtml5', className: 'btn btn-success btn-circle ', text: ' <i class="fa fa-file-excel-o "></i> Excel', footer: true },
+                { extend: 'print', className: 'btn btn-info btn-circle ', text: ' <i class=" fa fa-print "></i> Imprimir', footer: true }
+            ]
+        };
+
+        var opcionesDataTableSingleSelect = {
+            'paging': true,
+            'lengthChange': true,
+            'searching': true,
+            'ordering': false,
+            'info': true,
+            'autoWidth': false,
+            'responsive': true,
+            'columnDefs': [{
+                'orderable': false,
+                'className': 'select-checkbox',
+                'targets': 0
+            }],
+            'select': {
+                'style': 'os',
+                'selector': 'td:first-child',
+                'info': false
+            },
+            "language": {
+                "url": "/Content/dataTables.spanish.txt"
+            }
+        };
+
+        var opcionesDataTableNoSearching = {
+            'paging': true,
+            'lengthChange': false,
+            'searching': false,
+            'ordering': false,
+            'info': true,
+            'autoWidth': false,
+            'responsive': true,
+            "language": {
+                "url": "/Content/dataTables.spanish.txt"
+            },
+            "fixedColumns": true
+        };
+
+        var optionsToastr = {
+            "closeButton": true,
+            "debug": false,
+            "positionClass": "toast-top-right",
+            //"toastClass": "black",
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+
+        var optionsMaskMoney = {
+            thousands: '',
+            decimal: '.',
+            allowZero: true
+        };
+
+        var menu_settings = {
+            parentMenu: '',
+            optionMenu: ''
+        };
+        function SetActiveMenu() {
+            $("#" + menu_settings.parentMenu).addClass("active");
+            $("#" + menu_settings.parentMenu).addClass("opened");
+            $("#" + menu_settings.parentMenu + ">ul").addClass("visible");
+            $("#" + menu_settings.optionMenu).addClass("active");
+        }
+
+    </script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

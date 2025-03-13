@@ -1,0 +1,202 @@
+﻿@using TendaGo.Web.Models
+@model NotaPedidoModel
+@{
+    var listaRuc = (IEnumerable<SelectListItem>)ViewBag.ListaRuc;
+    var listaFormaPagoSri = (IEnumerable<SelectListItem>)ViewBag.ListaFormaPagoSri;
+    var boolListItem = new List<SelectListItem> {
+        new SelectListItem { Value=false.ToString(), Text="A nombre del Cliente" },
+        new SelectListItem { Value=true.ToString(), Text="Consumidor Final" }
+    };
+
+    var listaBool = new List<SelectListItem> {
+        new SelectListItem { Value="REGULAR", Text="Entrega Regular" },
+        new SelectListItem { Value="INMEDIATA", Text="Entrega Inmediata" }
+    };
+
+}
+<style>
+
+    .pslider {
+        width: 76px;
+        height: 48px;
+        position: absolute;
+        vertical-align: middle;
+        margin-top: 48px;
+        margin-left: -110px;
+        border: 0px;
+        background: none;
+        font: bold 29px Arial;
+        text-align: center;
+        color: rgb(0, 177, 157);
+        padding: 0px;
+        -webkit-appearance: none;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-5 col-xs-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="panel-title">Cliente</div>
+                <div class="panel-options" style="padding-top: 5px;">
+                    @if (ViewBag.Accion == "Aprobar" || ViewBag.Accion == "Entregar" || ViewBag.Accion == "Facturar")
+                    {
+                        <button type="button" class="btn btn-sm btn-white" id="btnAgregarCliente" title="Agregar Cliente">
+                            <i class="entypo-user-add"></i>
+                        </button>
+
+                        <button type="button" class="btn btn-sm btn-white" id="btnBuscarCliente" title="Buscar Cliente">
+                            <i class="entypo-search"></i>
+                        </button>
+
+                        <button type="button" class="btn btn-sm btn-white" id="btnLimpiaCliente" title="Limpiar">
+                            <i class="entypo-erase"></i>
+                        </button>
+                    }
+                </div>
+            </div>
+            <div class="panel-body">
+
+                @if (ViewBag.Accion == "Facturar")
+                {
+                    Model.Observaciones = "";
+
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <label for="ConsumidorFinal">
+                                Facturar a nombre:
+                            </label>
+                        </div>
+                        <div class="col-sm-12">
+                            @Html.DropDownListFor(model => model.ConsumidorFinal, new SelectList(boolListItem, "Value", "Text", Model.ConsumidorFinal), new { @class = "form-control" })
+                        </div>
+                    </div>
+                }
+
+                <div id="clientResult" class="tile-title tile-gray">
+                    <div class="icon">
+                        <i class="entypo-user"></i>
+                    </div>
+                    <div class="title">
+                        <h3 id="identificacionCli">@Html.Raw(Model.Cliente.Identificacion)</h3>
+                        <p id="razonSocialCli">.@Html.Raw(Model.RazonSocial)</p>
+                    </div>
+                </div>
+                @Html.HiddenFor(x => x.IdCliente)
+                @Html.ValidationMessageFor(model => model.IdCliente, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="col-md-7 col-xs-12" style="padding-left: 0;">
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                @if (ViewBag.Accion == "Entregar")
+                {
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <label><strong>Generar Factura</strong></label>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="checkbox checkbox-replace color-blue">
+                                @Html.CheckBoxFor(m => m.Facturar)
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                @if (ViewBag.Accion == "Aprobar" || ViewBag.Accion == "Entregar" || ViewBag.Accion == "Facturar")
+                {
+                    if (ViewBag.Accion == "Facturar")
+                    {
+                        <div class="form-group row no-margin-bottom ">
+                            @Html.Label("FechaFactura", "Fecha Factura", new { @class = "col-sm-5 control-label" })
+                            <div class="col-sm-7"> @Html.TextBox("FechaFactura", DateTime.Today.ToString("yyyy-MM-dd"), new { @class = "form-control", @type = "date", @max = DateTime.Today.ToString("yyyy-MM-dd"), @min = DateTime.Today.AddDays(-90).ToString("yyyy-MM-dd") }) </div>
+                        </div>
+                    }
+
+                    <div class="form-group">
+                        @Html.Label("RUC Facturacion", new { @class = "form-label" })
+                        @Html.DropDownListFor(m => m.Ruc, listaRuc, new { @class = "form-control" })
+                    </div>
+
+                    <div class="form-group">
+                        <label for="IdFormaPagoSri">
+                            Forma De Pago:
+                        </label>
+                        @Html.DropDownListFor(model => model.IdFormaPagoSri, new SelectList(listaFormaPagoSri, "Value", "Text", Model.IdFormaPagoSri), new { @class = "form-control" })
+
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Observaciones", new { @class = "form-label" })
+                        @Html.TextAreaFor(m => m.Observaciones, new { @class = "form-control" })
+                    </div>
+
+                    if (ViewBag.Accion == "Aprobar")
+                    {
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.EntregaInmediata, "Forma de Entrega", new { @class = "form-label" })
+
+
+                            @*@Html.DropDownListFor(m => m.EntregaInmediata, listaBool, new { @class = "form-control" })*@
+                            @Html.DropDownListFor(m => m.Entrega, listaBool, new { @class = "form-control" })
+
+                        </div>
+                    }
+
+                    <div class="form-group row no-margin-bottom ">
+                        @Html.Label("Valor Total", new { @class = "col-sm-5 control-label" })
+                        <div class="col-sm-7">
+                            $<strong id="strTotal">  @Model.Total.ToString("F2", System.Globalization.CultureInfo.GetCultureInfo("en-US"))</strong>
+                        </div>
+                    </div>
+
+
+
+                    if (ViewBag.Accion == "Facturar")
+                    {
+                        <div class="form-group row">
+
+                            @Html.Label("Porcentaje a Facturar", new { @class = "col-sm-5 control-label" })
+
+                            <div class="col-sm-7">
+                                <div class="input-group">
+                                    @Html.TextBoxFor(m => m.PorcentajeFactura, new { @class = "form-control", @min = "1", @max = "100", @type = "number" })
+                                    <span class="input-group-addon"> % </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group row no-margin-bottom ">
+                            @Html.Label("Valor Factura", new { @class = "col-sm-5 control-label" })
+                            <div class="col-sm-7">
+                                $&nbsp;<strong id="strFactura">  @Model.Total.ToString("F2", System.Globalization.CultureInfo.GetCultureInfo("en-US"))</strong>
+                            </div>
+                        </div>
+                    }
+
+
+                }
+                else
+                {
+
+                    <div class="form-group">
+                        @Html.Label("RUC Facturacion", new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.Ruc, new { @class = "readonly form-control", @readonly = "readonly" })
+                    </div>
+                    <div class="form-group">
+                        @Html.Label("Observaciones", new { @class = "form-label" })
+                        @Html.TextAreaFor(m => m.Observaciones, new { @class = "form-control" })
+                    </div>
+
+                    <div class="form-group row no-margin-bottom ">
+                        @Html.Label("Valor Total", new { @class = "col-sm-5 control-label" })
+                        <div class="col-sm-7">
+                            $<strong id="strTotal">  @Model.Total.ToString("F2", System.Globalization.CultureInfo.GetCultureInfo("en-US"))</strong>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

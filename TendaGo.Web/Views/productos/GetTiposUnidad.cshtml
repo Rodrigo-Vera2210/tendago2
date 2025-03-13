@@ -1,0 +1,82 @@
+﻿@model IEnumerable<TendaGo.Common.UnitTypeDto>
+@{
+    int idProducto = (int)ViewBag.IdProducto;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left">
+            <h4>Precios</h4>
+        </div>
+        <div class="pull-right">
+            <button class="btn btn-info btn-sm btn-icon icon-left" onclick="LoadFormMant('0', '@idProducto');">
+                <i class="entypo-list-add"></i>Nuevo
+            </button>
+        </div>
+    </div>
+</div>
+<div class="table-responsive">
+    <table id="unitsTable" class="table datatable table-bordered table-hover">
+        <thead>
+            <tr>
+                @*<th>@Html.DisplayNameFor(model => model.Producto)</th>*@
+                <th>@Html.DisplayNameFor(model => model.TipoUnidad)</th>
+                <th>@Html.DisplayNameFor(model => model.Cantidad)</th>
+                @*<th>@Html.DisplayNameFor(model => model.UnidadMedida)</th>*@
+                <th>@Html.DisplayNameFor(model => model.CantidadMinima)</th>
+                <th>@Html.DisplayNameFor(model => model.Precio)</th>
+                <th>@Html.DisplayNameFor(model => model.Margen)</th>
+                @*<th>@Html.DisplayNameFor(model => model.IncluyeIva)</th>*@
+                <th>@Html.DisplayNameFor(model => model.IdEstado)</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+    <tr>
+        @*<td>@Html.DisplayFor(modelItem => item.Producto)</td>*@
+        <td>@Html.DisplayFor(modelItem => item.TipoUnidad)</td>
+        <td>@Html.DisplayFor(modelItem => item.Cantidad)</td>
+        <td>@Html.DisplayFor(modelItem => item.CantidadMinima)</td>
+        @*<td>@Html.DisplayFor(modelItem => item.UnidadMedida)</td>*@
+        <td>@((item.Precio ?? 0M).ToString("C4"))
+        <td>@Html.DisplayFor(modelItem => item.Margen)</td>
+        @*<td>
+            @if (item.IncluyeIva.Value)
+            {
+                <span class="label label-primary">SI</span>
+            }
+            else
+            {
+                <span class="label label-warning">NO</span>
+            }
+        </td>*@
+        <td>
+            @if (item.IdEstado == 1)
+            {
+                <span class="label label-success">Activo</span>
+            }
+            else
+            {
+                <span class="label label-danger">Inactivo</span>
+            }
+        </td>
+        <td>
+            <button class="btn btn-default btn-sm btn-icon icon-left" onclick="LoadFormMant('@item.Id', '@idProducto');">
+                <i class="entypo-pencil"></i>Editar
+            </button>
+        </td>
+    </tr>
+        }
+
+    </table>
+</div>
+<br/>
+<div class="row">
+    <div class="col-lg-12">
+        <button type="button" class="btn btn-default btn-icon icon-left" onclick="CancelSetProductPrice()">
+            <i class="entypo-reply"></i>Regresar a la búsqueda
+        </button>
+    </div>
+</div>

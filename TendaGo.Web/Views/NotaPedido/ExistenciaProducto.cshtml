@@ -1,0 +1,52 @@
+﻿@using TendaGo.Web.Models
+@model List<ExistenciaProductoViewModel>
+
+<div class="modal-dialog">
+    <div class="modal-content">
+
+        <div class="modal-header modal-header-inventory ">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Producto: @ViewBag.Producto</h4>
+        </div>
+
+        <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Descripción</label>
+                    <input type="text" class="form-control" value="@ViewBag.DescripcionProducto" readonly="readonly" />
+                </div>
+
+            <div class="table-responsive">
+                <table id="tablaExistenciaProducto" class="table datatable table-bordered table-hover">
+                    <thead>
+                        <tr class="text-sm">
+                            <th>IdBodega</th>
+                            <th>Bodega</th>
+                            <th>Existencia</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var existencia in Model)
+                        {
+                            <tr>
+                                <td>@existencia.IdBodega</td>
+                                <td>@existencia.DescripcionBodega</td>
+                                <td class="text-right">@existencia.StockDisponible.ToCustomFormatString()</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="2" style="text-align:right">Total:</th>
+                            <th class="text-right">1460,00</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <div class="modal-footer modal-footer-inventory ">
+            <button type="button" class="btn btn-blue" data-dismiss="modal">Aceptar</button>
+        </div>
+    </div>
+</div>
+

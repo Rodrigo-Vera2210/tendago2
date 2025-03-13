@@ -1,0 +1,85 @@
+﻿@{
+    var divisionList = (IEnumerable<SelectListItem>)ViewBag.DivisionList;
+    bool isEdit = ViewBag.IsEdit ?? false;
+    ViewBag.PanelTitle = isEdit ? "Editar" : "Nuevo";
+}
+@model TendaGo.Web.Models.LineModel
+
+@using (Html.BeginForm("MantLine", "Parametrizacion", FormMethod.Post, new { id = "formMantLine" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="panel panel-primary">
+        <div class="panel-body">
+            <h4>@ViewBag.PanelTitle</h4>
+            <hr />
+            <div class="form-group">
+                @Html.LabelFor(model => model.IdDivision, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownListFor(m => m.IdDivision, divisionList, "Seleccione División", new { @class = "form-control", id = "IdDivision" })
+                @Html.ValidationMessageFor(model => model.IdDivision, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.Name, htmlAttributes: new { @class = "form-control", maxlength = 50 })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.IdEstado, htmlAttributes: new { @class = "control-label" })
+                <div class="checkbox">
+                    <label >
+                        @Html.CheckBoxFor(model => model.IdEstado, new { id = "IdEstado" })
+                    </label>
+                    @Html.ValidationMessageFor(model => model.IdEstado, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-footer">
+            <button type="button" id="btnCancelLine" class="btn btn-sm btn-default">Cancelar</button>
+            <input type="submit" value="Guardar" class="btn btn-sm btn-success" />
+        </div>
+    </div>
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+<script>
+    $('#formMantLine').submit(function () {
+        if ($('#formMantLine').validate().valid()) {
+            $.ajax({
+                url: $('#formMantLine').attr('action'),
+                type: 'POST',
+                data: $('#formMantLine').serialize(),
+                beforeSend: function () {
+                    $("#divMant").empty();
+                    $("#divMant").append('<div id="divLoading" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+                },
+                complete: function () {
+                    $("#divLoading").remove();
+                },
+                success: function (dataReceived) {
+                    console.log("dataReceived: " + JSON.stringify(dataReceived));
+
+                    if (dataReceived && dataReceived.Success) {
+                        toastr.success(dataReceived.Mensaje, "", optionsToastr);
+                        refreshLines(dataReceived.line);
+                    }
+                    if (dataReceived && !dataReceived.Success) {
+                        toastr.error(dataReceived.Error.UserMessage);
+                        console.error("dataReceived:" + JSON.stringify(dataReceived.Error));
+                    }
+                },
+                error: function(xhr) {
+                    console.log(JSON.stringify(xhr));
+                }
+            }).done(function(doneReceived) {
+                //console.log("doneReceived: " + JSON.stringify(doneReceived));
+                LoadFormMant();
+            });
+        }
+        return false;
+    });
+</script>
+
+

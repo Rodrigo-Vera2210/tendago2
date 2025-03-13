@@ -1,0 +1,229 @@
+﻿@using TendaGo.Common
+@using TendaGo.Web.Models
+@using TendaGo.Web.ApplicationServices
+
+@model NotaPedidoModel
+@{
+    ViewBag.Title = "Cambiar de Local";
+    var IdLocalO = Session.GetIdLocal() ?? 0;
+
+    var localesTodos = InventarioAppService
+        .ObtenerLocales()
+        .Select(x => new { x.Id, x.Local }).ToList();
+
+    var locales = localesTodos
+    .Where(x => x.Id != IdLocalO)
+    .ToList();
+
+    Model.Fecha = DateTime.Today;
+    
+    var idLocalDestino = 0;
+    var desde = Request["desde"] ?? DateTime.Today.ToString("yyyy-MM-dd");
+    var hasta = Request["hasta"] ?? DateTime.Today.ToString("yyyy-MM-dd");
+}
+@section styles{
+    <style>
+        span.select2 {
+            width: 100% !important;
+        }
+
+        .tile-title .title p {
+            padding-bottom: 5px;
+        }
+
+        #idProvider {
+            width: 0;
+            height: 0;
+        }
+    </style>
+
+    @Styles.Render("~/Styles/datatables")
+    @Styles.Render("~/Styles/toggle")
+    @Styles.Render("~/Styles/select2")
+
+}
+
+<ol class="breadcrumb bc-3 small hidden-xs breadcrumb-no-padding">
+    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Inicio</a></li>
+    <li>Inventario</li>
+    <li class="active"><strong>Cambiar de Local</strong></li>
+</ol>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left">
+            <h3>Pedir a Bodega</h3>
+        </div>
+    </div>
+</div>
+<br />
+<div class="row">
+    @using (Html.BeginForm("CambiarLocal", "NotaPedido", FormMethod.Post, new { id = "cambioLocalForm", @class = "form-wizard validate" }))
+    {
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.IdVendedor)
+        @Html.HiddenFor(m => m.EstadoActual)
+        @Html.HiddenFor(m => m.IdCliente)
+        @Html.HiddenFor(m => m.Ruc)
+        @Html.HiddenFor(m => m.FechaHoraEntregaPropuesta)
+        @Html.HiddenFor(m => m.ValorAdicional)
+        @Html.HiddenFor(m => m.FormaPago);
+        @Html.HiddenFor(m => m.IdFormaPago);
+        @Html.HiddenFor(m => m.Entrega);
+        @Html.HiddenFor(m => m.CuentasPorCobrar);
+
+
+        @Html.AntiForgeryToken()
+        <div class="steps-progress">
+            <div class="progress-indicator"></div>
+        </div>
+
+        <ul>
+            <li class="active"> <a href="#tab1" data-toggle="tab"><span>1</span>Detalle de Productos</a> </li>
+            <li> <a href="#tab2" data-toggle="tab"><span>2</span>Datos del Pedido</a> </li>
+
+        </ul>
+
+
+
+        <div class="tab-content">
+
+
+            <div class="tab-pane active" id="tab1">
+
+                @{ Html.RenderPartial("MantNotaPedido_Detalle", Model, ViewData); }
+
+            </div>
+
+            <div class="tab-pane" id="tab2">
+                <div class="row">
+
+
+                    <div class="col-md-offset-2 col-md-8">
+                        <div class="panel panel-primary">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+
+                                        <div class="row col-md-12">
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.Fecha, new { @class = "control-label" })
+                                                @Html.TextBoxFor(model => model.Fecha, "{0:yyyy-MM-dd}", new { @class = "form-control text-center", @type = "date-local", @data_format = "yyyy-mm-dd", @autocomplete = "off" })
+                                                @Html.ValidationMessageFor(model => model.Fecha, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="row col-md-12">
+                                            <div class="form-group">
+                                                @{
+                                                    object destinoConfig;
+                                                    destinoConfig = new { @class = "form-control" };
+                                                    @Html.LabelFor(model => model.IdLocal, new { @class = "control-label" })
+                                                    @Html.DropDownListFor(model => model.IdLocal, new SelectList(locales, "Id", "Local", Model.IdLocal), destinoConfig)
+                                                    @Html.ValidationMessageFor(model => model.IdLocal, "", new { @class = "text-danger" })
+                                                }
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+
+                                        <div class="row col-md-12">
+                                            <div class="form-group">
+                                                @Html.Label("Observaciones", new { @class = "form-label" })
+                                                @Html.TextAreaFor(m => m.Observaciones, new { @class = "form-control", @rows = "5" })
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <ul class="pager wizard">
+                <li class="previous">
+                    <a href="#">
+                        <i class="entypo-left-open"></i>
+                        <span class="hidden-xs">Anterior</span>
+                    </a>
+                </li>
+                <li class="finish">
+                    <button type="submit" class="btn btn-success btn-icon icon-left btn-sm">
+                        <i class="entypo-floppy"></i>
+                        <span class="">Guardar</span>
+                    </button>
+                </li>
+                <li class="next">
+                    <a href="#">
+                        <span class="hidden-xs">Siguiente</span>
+                        <i class="entypo-right-open"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    }
+</div>
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/wizard")
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/datepicker")
+    @Scripts.Render("~/bundles/timepicker")
+    @Scripts.Render("~/bundles/fileinput")
+    @Scripts.Render("~/bundles/maskmoney")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/select2")
+    @Scripts.Render("~/bundles/toggle")
+    @Scripts.Render("~/bundles/inventory/transfer")
+    @Scripts.Render("~/bundles/productos/index")
+
+<script>
+
+        $("#cambioLocalForm").on("submit", function (event) {
+            event.preventDefault();
+            var $div = $(this).closest('div');
+            $.ajax({
+                url: $(this).attr('action'),
+                type: $(this).attr("method"),
+                data: $(this).serialize(),
+                beforeSend: function () {
+                    $("#divResults").empty();
+                    blockUI($div);
+                    $div.addClass('loading');
+                },
+                success: function (data) {
+
+                    unblockUI($div);
+                    $div.removeClass('loading');
+
+                    if (data && data !== "") {
+                        if (data.mensaje) {
+                            swal("Guardar Pedido", "Guardado: " + data.id, "success");
+                            setTimeout(function () {
+
+
+                                var consultaPedidoUrl = '@Url.Action("Empaquetar", "NotaPedido")';    
+                                console.log(consultaPedidoUrl);
+                                location.assign(consultaPedidoUrl)
+
+                            }, 4000);
+                        } else {
+                            swal("", (data && data.message) || "Hubo un error al guardar el pedido!", "error")
+                        }
+                    }
+                }, error: function (data) {
+                    swal("", (data && data.message) || "Hubo un error al guardar el pedido!", "error")
+                }
+            });
+        });
+
+</script>
+}

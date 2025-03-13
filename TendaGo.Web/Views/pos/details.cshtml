@@ -1,0 +1,177 @@
+﻿@using TendaGo.Web.Models
+@model PedidoViewModel
+@{
+    if (Model.DetalleNotaPedido == null)
+    {
+        Model.DetalleNotaPedido = new List<DetalleNotaPedidoViewModel>();
+    }
+    var rol = User.Identity.GetClaim("IdPerfil");
+    var empresa = User.Identity.GetClaim("IdEmpresa");
+}
+
+@if (Model.DetalleNotaPedido.Count > 0)
+{
+    for (int i = Model.DetalleNotaPedido.Count - 1; i > -1 ; i--)
+    {
+        var item = Model.DetalleNotaPedido[i];
+
+
+        <div class="col-xs-12">
+            <div class="panel panel-default product-details">
+                <div class="panel-body" style="">
+
+
+                    <div class="col-xs-12 nopadding">
+                        <h4>
+                            <span class="col-xs-1"> </span>
+                            <span class="col-xs-2"> @item.CodigoInterno </span>
+                            <span class="col-xs-9">
+                                <small> @item.NombreProducto</small>
+                                @if (item.CobraIva)
+                                {
+                                    var iva = item.IVA.ToString("#,##0.00");
+                                    <span data-toggle="tooltip" title="@iva"> <span class="text-right badge badge-secondary">+IVA</span> </span>
+                                }
+                            </span>
+                        </h4>
+
+                    </div>
+
+
+                    <div class="col-xs-12 nopadding">
+
+                        <div class="col-xs-1 nopadding">
+                            <a href="javascript:void(0)" onclick="delete_posale('@item.IdProducto')">
+                                <span class="fa-stack fa-sm productD">
+                                    <i class="fa fa-circle fa-stack-2x delete-product"></i>
+                                    <i class="fa fa-times fa-stack-1x fa-fw fa-inverse"></i>
+                                </span>
+                            </a>
+                        </div>
+
+                        <div class=" col-xs-2 nopadding productNum">
+                            <a href="javascript:void(0)" class="product-details-minus">
+                                <span class="fa-stack fa-sm decbutton">
+                                    <i class="fa fa-square fa-stack-2x light-grey"></i>
+                                    <i class="fa fa-minus fa-stack-1x fa-inverse white"></i>
+                                </span>
+                            </a>
+
+                            <input type="text" id="qt-@item.IdProducto" onchange="edit_posale(@item.IdProducto)" class="form-control" value="@item.Cantidad" placeholder="0" maxlength="6">
+
+                            <a href="javascript:void(0)" class="product-details-plus">
+                                <span class="fa-stack fa-sm incbutton">
+                                    <i class="fa fa-square fa-stack-2x light-grey"></i>
+                                    <i class="fa fa-plus fa-stack-1x fa-inverse white"></i>
+                                </span>
+                            </a>
+                        </div>
+
+                        <div class=" col-xs-2 nopadding productNum">
+                            <select id="un-@item.IdProducto" onchange="edit_posale(@item.IdProducto)" class="js-select-options form-control" style="width:100%">
+                                @foreach (var unidad in item.TipoUnidades)
+                                {
+                                    var selected = "";
+
+                                    if (item.IdTipoUnidad == unidad.Id)
+                                    {
+                                        selected = "selected";
+                                    }
+
+                                    <option @selected value="@unidad.Id">@unidad.TipoUnidad</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="col-xs-2">
+                            @{
+                                var price = item.Precio.ToString("#,##0.0000");
+                                if (price.EndsWith("00"))
+                                {
+                                    price = price.Substring(0, price.Length - 2);
+                                }
+                            }
+                            @*<input type="text" class="form-control" value="@price" placeholder="0">*@
+                            @{
+                                if (empresa == "2" && rol != "6")
+                                {
+                                    <input type="text" id="prc-@item.IdProducto" onchange="edit_posale(@item.IdProducto)" class="form-control" readonly value="@price" placeholder="0">
+                                }
+                                else
+                                {
+                                    <input type="text" id="prc-@item.IdProducto" onchange="edit_posale(@item.IdProducto)" class="form-control" value="@price" placeholder="0">
+                                }
+                            }
+
+
+                        </div>
+
+                        <div class="col-xs-2 nopadding text-right">
+                            <h3 class="subtotal textPD">$ @item.Subtotal.ToCustomFormatString()</h3>
+                        </div>
+                        <div class="col-xs-1 nopadding text-right">
+                            
+                        </div>
+                        <div class="col-xs-2 nopadding text-right">
+                            <h3 class="total textPD">$ @item.Total.ToCustomFormatString()</h3>
+                        </div>
+
+                    </div>
+                     
+
+                </div>
+            </div>
+        </div>
+
+
+    }
+
+
+    <script type="text/javascript">
+        changing = false;
+        $(".incbutton").on("click", function () {
+            changing = true;
+
+            var $button = $(this);
+            var oldValue = $button.parent().parent().find("input").val();
+            var newVal = parseFloat(oldValue) + 1;
+
+            $button.parent().parent().find("input").val(newVal);
+
+            edit_posale($button.parent().parent().find("input").attr("id").slice(3));
+        });
+
+        $(".decbutton").on("click", function () {
+            changing = true;
+
+            var $button = $(this);
+            var oldValue = $button.parent().parent().find("input").val();
+
+            if (oldValue > 1) {
+                var newVal = parseFloat(oldValue) - 1;
+            } else {
+                newVal = 1;
+            }
+
+            $button.parent().parent().find("input").val(newVal);
+
+            edit_posale($button.parent().parent().find("input").attr("id").slice(3));
+        }); 
+
+    </script>
+}
+else
+{
+
+    <div class="col-xs-12">
+        <div class="panel panel-default product-details">
+            <div class="panel-body" style="">
+                <div class="messageVide">
+                    <p>NO HAY PRODUCTOS </p>
+                    <span>(Seleccionar Producto)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

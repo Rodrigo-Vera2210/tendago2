@@ -1,0 +1,29 @@
+﻿@using TendaGo.Web.Models
+@model List<ProductoViewModel>
+
+<div class="table-responsive">
+    <table id="tablaProductos" class="table datatable table-bordered table-hover">
+        <thead>
+            <tr class="text-sm">
+                <th></th>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Codigo&nbsp;Interno</th>
+                <th>Stock</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var producto in Model)
+            {
+                <tr>
+                    <td></td>
+                    <td>@producto.Id</td>
+                    <td>@producto.Producto</td>
+                    <td>@producto.CodigoInterno</td>
+                    <td>@producto.Stock</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

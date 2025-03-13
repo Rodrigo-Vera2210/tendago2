@@ -1,0 +1,29 @@
+﻿@model System.Collections.Generic.IEnumerable<TendaGo.Common.ProfileDto>
+
+
+<div class="table-responsive">
+    <table id="profilesTable" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Perfil)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Perfil)
+                </td>
+                <td>
+                    <button type="button" class="btn btn-blue" onclick="selectProfile('@item.Id','@item.Perfil');">
+                        <i class="entypo-cog"></i>
+                    </button>
+                </td>
+            </tr>
+        }
+    </table>
+</div>

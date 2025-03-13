@@ -1,0 +1,147 @@
+﻿@{
+    ViewBag.Title = "Productos";
+    var filtrosBusqueda = (IEnumerable<SelectListItem>)ViewBag.FiltrosBusqueda;
+}
+
+@Styles.Render("~/Styles/datatables")
+@Styles.Render("~/Styles/select2")
+
+<style type="text/css">
+    a.disabled {
+        text-decoration: none;
+        color: black;
+        cursor: default;
+    }
+</style>
+
+<ol class="breadcrumb bc-3 small hidden-xs breadcrumb-no-padding">
+    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home</a></li>
+    <li>Parametrizaciones</li>
+    <li class="active"><strong>Producto</strong></li>
+</ol>
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left">
+            <h3>Producto</h3>
+        </div>
+        <div class="pull-right">
+            <button class="btn btn-info btn-icon icon-left" onclick="crearProducto()">
+                <i class="entypo-list-add"></i>Nuevo
+            </button>
+        </div>
+    </div>
+</div>
+<div id="searchControl" class="searchControl"></div>
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/select2")
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/paginate")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/wizard")
+    @Scripts.Render("~/bundles/maskmoney")
+    @Scripts.Render("~/bundles/fileinput")
+    @Scripts.Render("~/bundles/productos/index")
+
+    <script>
+        menu_settings.parentMenu = 'MnuProducts';
+        menu_settings.optionMenu = 'OpcProd';
+        var idOrigen = 1; // MantProducts
+        searchProductsControl.url = "@Url.Action("Buscar")";
+        searchProductsControl.resultContainer = "searchControl";
+
+        deleteUrl = "@Url.Action("EliminarProducto")";
+
+        function consultarProductos() {
+            $("#consultaProductoForm").submit();
+        }
+
+        var crearProductoUrl = '@Url.Action("CrearProducto")';
+        var editarProductoUrl = '@Url.Action("EditarProducto")';
+        var eliminarProductoUrl = '@Url.Action("EliminarProducto")';
+
+        function crearProducto() {
+            show_loading_bar(50);
+            $('#divModal').empty();
+            $.ajax({
+                url: crearProductoUrl,
+                type: 'GET',
+                beforeSend: function () {
+                },
+                complete: function () {
+
+                }
+            }).done(function (respuesta) {
+                if (respuesta != "") {
+                    $('#divModal').modal({ backdrop: 'static' });
+                    $('#divModal').html(respuesta).focus().ready(function () {
+                        $("#CodigoProveedor").blur().focusin().focus();
+                    });
+                }
+
+
+            }).always(function () {
+                show_loading_bar(100);
+            });
+        }
+
+        function editarProducto(idProducto) {
+            show_loading_bar(50);
+            $('#divModal').empty();
+            $('#divModal').modal({ backdrop: 'static' });
+            $.ajax({
+                url: editarProductoUrl,
+                type: 'POST',
+                data: { idProducto: idProducto },
+                beforeSend: function () {
+                },
+                complete: function () {
+                }
+            }).done(function (respuesta) {
+                if (respuesta != "") {
+                    $('#divModal').html(respuesta).focus().ready(function () {
+                        $("#CodigoProveedor").blur().focusin().focus();
+                    });
+                } 
+
+            }).always(function () {
+                show_loading_bar(100);
+            });
+        }
+
+        function eliminarProducto(idProducto) {
+
+            var r = confirm("Esta seguro de eliminar el producto!");
+            if (r == true) {
+                show_loading_bar(50);
+                $.ajax({
+                    url: eliminarProductoUrl,
+                    type: 'post',
+                    data: { idProducto: idProducto },
+                    beforeSend: function () {
+                    },
+                    complete: function () {
+                    }
+                }).done(function (respuesta) {
+                    if (respuesta != "") {
+                        if (respuesta.Success == true) {
+                            toastr.success(respuesta.Mensaje, "", optionsToastr);
+                        }
+                        else {
+                            toastr.warning(respuesta.Mensaje, "", optionsToastr);
+                        }
+                    }
+                }).always(function () {
+                    show_loading_bar(100);
+                });
+            }
+        }
+
+        $(function () {
+            getSearchControl(idOrigen);
+            SetActiveMenu();
+        });
+
+    </script>
+}

@@ -1,0 +1,73 @@
+﻿@{
+    int origen = (int)ViewBag.Origen;
+}
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header modal-header-inventory">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Buscar Productos</h4>
+        </div>
+        <div class="modal-body" id="SearchProductsModalBody">
+            <div class="tile-stats tile-gray">
+                <div class="row">
+                    <div id="divBuscarProducto" class="col-md-12 col-xs-12">
+                        @using (Html.BeginForm("BuscarParaModal", "productos", FormMethod.Post, new { id = "searchProductsForm", @class = "search-bar" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="textoBusqueda" placeholder="Escriba descripción del producto..">
+                                <div class="input-group-btn">
+                                    <button id="btnConsultarProductos" type="submit" class="btn btn-sm btn-primary">
+                                        <span class="hidden-xs">Buscar</span>
+                                        <i class="entypo-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <input type="hidden" id="idOrigen" name="idOrigen" value="@origen" />
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div id="divResults" class="search-results-panes"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function() {
+        $("#searchProductsForm").submit(function (event) {
+            event.preventDefault();
+            var $div = $(this).closest('div');
+            $.ajax({
+                url: $(this).attr('action'),
+                type: $(this).attr("method"),
+                data: $(this).serialize(),
+                beforeSend: function() {
+                    $("#divResults").empty();
+                    blockUI($div);
+                    $div.addClass('loading');
+                },
+                complete: function() {
+                    unblockUI($div);
+                    $div.removeClass('loading');
+                },
+                success: function(dataReceived) {
+                    if (dataReceived && dataReceived !== "") {
+                        if (dataReceived.Error) {
+                            console.error("ERROR:" + JSON.stringify(dataReceived.Error));
+                            toastr.error(dataReceived.Error.TechnicalMessage);
+                        } else {
+                            $("#divResults").html(dataReceived);
+                            $("#productsTable").datatableNoSortColumn({
+                                column_no_sort: 3
+                            });
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>
+

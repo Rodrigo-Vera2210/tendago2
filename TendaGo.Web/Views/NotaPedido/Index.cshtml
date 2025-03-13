@@ -1,0 +1,277 @@
+﻿@{
+    ViewBag.Title = "Nota de Pedido";
+    var locales = Session.GetLocales();
+}
+
+
+@Styles.Render("~/Styles/datatables")
+
+
+<ol class="breadcrumb bc-3 small hidden-xs breadcrumb-no-padding">
+    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home</a></li>
+    <li>Nota de Pedido</li>
+    <li class="active"><strong>Crear Nota de pedido</strong></li>
+</ol>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left">
+            <h3>Nota de Pedido</h3>
+        </div>
+        <div id="divCarritoCompras" class="pull-right">
+            @Html.Partial("CarritoCompras")
+        </div>
+    </div>
+</div>
+<div id="searchControl" class="searchControl"></div>
+<div id="divNotaPedido"></div>
+
+<div class="modal fade" id="divNotasPedido">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header modal-header-inventory ">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Cantidad de Notas de Pedido</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <label class="col-md-4 control-label">N° Notas Pedido</label>
+                    <div class="col-md-8">
+                        <div id="spinnerCantidadNotasPedido" class="input-spinner input-spinner-cantidad">
+                            <button type="button" class="btn btn-default">-</button>
+                            <input type="text" id="cantNotasPedido" value="1" class="form-control" data-min="1" />
+                            <button type="button" class="btn btn-default">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer modal-footer-inventory">
+                <button type="button" class="btn btn-blue" data-dismiss="modal" onclick="setCantidadNotasPedidoTemp()">Aceptar</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalClientes">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header modal-header-inventory">
+                <button type="button" class="close" id="btnClose" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Buscar Clientes</h4>
+            </div>
+            <div id="divModalClientesBody" class="modal-body">
+
+            </div>
+            <button data-dismiss="modal" class="close" type="button">
+                <span aria-hidden="true">×</span>
+                <span class="sr-only">Close</span>
+            </button>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/wizard")
+    @Scripts.Render("~/bundles/datepicker")
+    @Scripts.Render("~/bundles/timepicker")
+    @Scripts.Render("~/bundles/fileinput")
+    @Scripts.Render("~/bundles/maskmoney")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/paginate")
+    @Scripts.Render("~/bundles/productos/index")
+
+    <script>
+        menu_settings.parentMenu = 'MnuNotaPedido';
+        menu_settings.optionMenu = 'OpcCrear';
+
+        var idOrigen = 3;
+        searchProductsControl.url = "@Url.Action("Buscar", "productos")";
+        searchProductsControl.resultContainer = "searchControl";
+
+        $(function() {
+            getSearchControl(idOrigen);
+            SetActiveMenu();
+            limpiarClientes();
+        });
+
+        $(".input-spinner-cantidad button").on('click', function (e) {
+            //setTimeout(function() {
+            //    setCantidadNotasPedidoTemp();
+            //},200);
+        });
+        $(".input-spinner-cantidad input").on('change paste keyup', function (e) {
+            //setTimeout(function () {
+            //    setCantidadNotasPedidoTemp();
+            //}, 200);
+        });
+
+        function setCantidadNotasPedidoTemp() {
+            var cantidad = $("#cantNotasPedido").val();
+            console.log(cantidad);
+                $.ajax({
+                    url: '@Url.Action("CreaCantidadNotasPedido", "NotaPedido")',
+                    type: 'post',
+                    data: { cantidad: cantidad},
+                    beforeSend: function() {
+                    },
+                    complete: function() {
+                    }
+                }).done(function(respuesta) {
+                    if (respuesta != "") {
+                        if (respuesta.success) {
+                            actualizarCarritoCompras();
+                            toastr.success(respuesta.mensaje, "", optionsToastr);
+                        } else {
+                            toastr.error(respuesta.mensaje, "", optionsToastr);
+                        }
+                    }
+                });
+            }
+
+
+            var checkoutUrl = '@Url.Action("Checkout", "NotaPedido")';
+            function checkout() {
+                $.ajax({
+                    url: checkoutUrl,
+                    type: 'get',
+                    beforeSend: function() {
+                        $("#divNotaPedido").append('<div id="divLoading" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+                    },
+                    complete: function() {
+                        $("#divLoading").remove();
+                    }
+                }).done(function(respuesta) {
+                    if (respuesta != "") {
+                        $("#divNotaPedido").empty().html(respuesta).fadeIn('fast');
+                        $("#searchControl").fadeOut('fast');
+                    }
+                });
+            }
+
+            var existenciaUrl = '@Url.Action("ExistenciaProducto", "NotaPedido")';
+            function existenciaProducto(idProducto) {
+                $('#divModal').empty();
+                $('#divModal').modal('show', { backdrop: 'static' });
+
+                $.ajax({
+                    url: existenciaUrl,
+                    data: { idProducto: idProducto },
+                    type: 'post',
+                    beforeSend: function() {},
+                    complete: function() {}
+                }).done(function(respuesta) {
+                    if (respuesta != "") {
+                        $('#divModal').html(respuesta);
+                        $('#tablaExistenciaProducto').DataTable(opcionesDataTable);
+                    }
+                });
+            }
+
+            var mostrarProductoUrl = '@Url.Action("MostrarProducto", "NotaPedido")';
+            function mostrarProducto(idProducto) {
+                $.ajax({
+                    url: mostrarProductoUrl,
+                    data: { idProducto: idProducto },
+                    type: 'POST',
+                    beforeSend: function() {
+                    },
+                    complete: function() {
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(`error: ${error}, status: ${status}`);
+                    }
+                }).done(function (respuesta) {
+                    console.log(respuesta);
+                    if (respuesta != '') {
+                        if (respuesta.Success != undefined) {
+                            if (respuesta.Success == true) {
+
+                            } else {
+                                toastr.error(respuesta.Mensaje, "", optionsToastr);
+                            }
+                            console.log(`error: ${respuesta.Mensaje}`);
+                        } else {
+                            $('#divModal').empty();
+                            $('#divModal').modal('show', { backdrop: 'static' });
+                            $('#divModal').html(respuesta);
+                        }
+                    }
+                });
+            }
+
+            function actualizarCarritoCompras() {
+                $.ajax({
+                    url: '@Url.Action("CarritoCompras", "NotaPedido")',
+                    type: 'post',
+                    beforeSend: function() {
+                        $('#divCarritoCompras').html("Actualizando...");
+                    },
+                    complete: function() {
+
+                    }
+                }).done(function(respuesta) {
+                    if (respuesta != "") {
+                        $('#divCarritoCompras').html(respuesta);
+                    }
+                });
+            }
+
+            function crearCliente() {
+                $('#divModal').empty();
+                $('#divModal').modal('show', { backdrop: 'static' });
+
+                $.ajax({
+                    url: '@Url.Action("CrearCliente", "NotaPedido")',
+                    type: 'get',
+                    beforeSend: function() {
+                    },
+                    complete: function() {
+                    }
+                }).done(function(respuesta) {
+                    if (respuesta != "") {
+                        $('#divModal').html(respuesta);
+                    }
+                });
+            }
+
+            function consultarClientes() {
+                //$('#divModalClientes').empty();
+                $('#divModalClientes').modal('show', { backdrop: 'static' });
+
+                $.ajax({
+                    url: '@Url.Action("ConsultarClientes", "NotaPedido")',
+                    type: 'get',
+                    beforeSend: function () {
+                        $("#divModalClientes").append('<div id="divLoading" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+                    },
+                    complete: function () {
+                        $("#divLoading").remove();
+                    }
+                }).done(function(respuesta) {
+                    if (respuesta != "") {
+                        $('#divModalClientesBody').html(respuesta);
+                    }
+                });
+        }
+
+        function mostrarConsultaProductos() {
+            $("#searchControl").fadeIn('fast');
+            $("#divNotaPedido").fadeOut('fast');
+        }
+
+        function crearCantidadNotasPedido() {
+            //$('#divNotasPedido').empty();
+            $('#divNotasPedido').modal('show', { backdrop: 'static' });
+        }
+
+        function limpiarClientes() {
+            localStorage.removeItem("client");
+            localStorage.removeItem("checkoutData");
+            $("#clientResult").addClass('hidden').fadeIn('fast');
+        }
+
+    </script>
+}

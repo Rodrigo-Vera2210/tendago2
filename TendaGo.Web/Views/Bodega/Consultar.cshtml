@@ -1,0 +1,199 @@
+﻿@using TendaGo.Web.Models
+@model List<NotaPedidoViewModel>
+
+<table id="tablaNotasPedido" class="table datatable table-bordered table-striped table-hover">
+    <thead>
+        <tr class="small">
+            <th class="text-center bold"></th>
+            <th class="text-center bold">Numero</th>
+            <th class="text-center bold">Vendedor</th>
+            <th class="text-center bold">
+
+                @if (ViewBag.Accion != "Consultar")
+                {
+                    <span> Fecha Entrega </span>
+                }
+                else
+                {
+                    <span> Fecha </span>
+                }
+            </th>
+            <th class="text-center bold">Estado</th>
+            <th class="text-center bold"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            foreach (var notaPedido in Model)
+            {
+                <tr>
+                    <td class="text-center">
+                        @if (notaPedido.EstadoActual == "EN PROCESO")
+                        {
+                            <button type="button" class="btn btn-primary btn-icon icon-left" title="APROBAR NOTA DE PEDIDO" onclick="mostrarDetalleNotaPedido('@notaPedido.Id', '@ViewBag.Accion');">
+                                <i class="entypo-thumbs-up"></i> Aprobar
+                            </button>
+                        }
+                        else if (notaPedido.EstadoActual == "APROBADA")
+                        {
+                            <button type="button" class="btn btn-success btn-icon icon-left" title="Empaquetar" onclick="mostrarDetalleNotaPedido('@notaPedido.Id', '@ViewBag.Accion');">
+                                <i class="entypo-box"></i> Alistar
+                            </button>
+                        }
+                        else if (notaPedido.EstadoActual == "EMPAQUETADA")
+                        {
+                            <button type="button" class="btn btn-info btn-icon icon-left" title="Revisar" onclick="mostrarDetalleNotaPedido('@notaPedido.Id', '@ViewBag.Accion')">
+                                <i class="entypo-book-open"></i> Revisar
+                            </button>
+                        }
+                        else if (notaPedido.EstadoActual == "REVISADA")
+                        {
+                            <button type="button" class="btn btn-primary btn-icon icon-left" title="Entregar" onclick="mostrarDetalleNotaPedido('@notaPedido.Id', '@ViewBag.Accion')">
+                                <i class="entypo-basket"></i> Entregar
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-danger btn-icon icon-left" title="Consultar" onclick="mostrarDetalleNotaPedido('@notaPedido.Id', '@ViewBag.Accion')">
+                                <i class="entypo-pencil"></i> Consultar
+                            </button>
+                        }
+                    </td>
+                    <td class="text-center">
+                        <a href="@string.Format("{0}/{1}", Url.Action("Resumen"), notaPedido.Id)" class="btn btn-default" title="Vista Preliminar">
+                            <i class="fa fa-search"></i>
+                        </a>
+                        @notaPedido.Id
+
+
+                    </td>
+
+                    <td>@notaPedido.IdVendedor</td>
+                    @if (ViewBag.Accion == "Consultar")
+                    {
+                        <td class="text-center">@notaPedido.Fecha.ToString("dd/MM/yyyy")</td>
+                    }
+                    else
+                    {
+                        <td class="text-center">@notaPedido.FechaHoraEntregaPropuesta.ToString(new System.Globalization.CultureInfo("es-EC"))</td>
+                    }
+                    <td class="text-center">
+                        @{
+                            if (notaPedido.EstadoActual == "EN PROCESO")
+                            {
+                                <span class="label label-warning">@notaPedido.EstadoActual</span>
+                            }
+                            else if (notaPedido.EstadoActual == "APROBADA")
+                            {
+                                <span class="label label-info">@notaPedido.EstadoActual</span>
+                            }
+                            else if (notaPedido.EstadoActual == "EMPAQUETADA")
+                            {
+                                <span class="label label-default">@notaPedido.EstadoActual</span>
+                            }
+                            else if (notaPedido.EstadoActual == "REVISADA")
+                            {
+                                <span class="label label-primary">@notaPedido.EstadoActual</span>
+                            }
+                            else if (notaPedido.EstadoActual == "ENTREGADA")
+                            {
+                                <span class="label label-secondary">@notaPedido.EstadoActual</span>
+                            }
+                            else
+                            {
+                                <span class="label label-success">@notaPedido.EstadoActual</span>
+                            }
+                        }
+                    </td>
+
+                    <td>
+                        @if (notaPedido.EstadoActual != "ANULADA")
+                        {
+                            <a href="#" onclick="anular_pedido('@notaPedido.Id');" class="btn btn-danger" title="Anular Pedido">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<script>
+    var configureTable = function () {
+
+        var $table = opcionesDataTable;
+        var accion = "@ViewBag.Accion";
+
+
+        //if (accion == "Entregar") {
+        //    $table = {
+        //        'paging': true,
+        //        'lengthChange': true,
+        //        'searching': true,
+        //        'ordering': false,
+        //        'info': true,
+        //        'autoWidth': false,
+        //        'responsive': true,
+        //        'language': { "url": "/Content/dataTables.spanish.txt" },
+        //        'dom': 'Bfrtip',
+        //        'buttons': [
+        //            { extend: 'excelHtml5', className: 'btn btn-success btn-circle ', text: ' <i class="fa fa-file-excel-o "></i> Excel', footer: true },
+        //            { extend: 'print', className: 'btn btn-info btn-circle ', text: ' <i class=" fa fa-print "></i> Imprimir', footer: true }
+        //        ],
+        //        "columnDefs": [{ "targets": [8], "visible": false }],
+        //        "order": [[4, 'asc'], [6, 'asc']],
+        //        "rowGroup": { "dataSrc": 4 }
+        //    };
+        //}
+
+        $('#tablaNotasPedido').DataTable($table);
+    };
+
+    function anular_pedido(idNotaPedido) {
+
+        swal({
+            title: "Anular Pedido",
+            text: "¿Esta usted seguro? Una vez anulada la orden, el estado no se puede revertir!",
+            type: "warning",
+            buttons: true,
+            showCancelButton: true,
+            dangerMode: true,
+            confirmButtonColor: "#cc2424",
+            confirmButtonText: "Anular",
+            cancelButtonText: "Cancelar",
+            closeOnConfirm: true
+
+        }, function (eliminar) {
+
+            if (eliminar) {
+                var motivo = "ORDEN DE PEDIDO # " + idNotaPedido;
+                var url = "@Url.Action("AnularPedido")" + "/" + idNotaPedido + "?motivo=" + motivo;
+
+                $.post(url, {}, function (result) {
+                    if (isValid(result)) {
+
+                        swal({
+                            title: "Anular Pedido",
+                            text: result.mensaje || "Hubo un error al anular el pedido!",
+                            type: (result.success && result.mensaje != '') ? "success" : "warning",
+                        }, function () {
+                            location.reload();
+                        });
+
+                    }
+
+                });
+
+            }
+
+        });
+
+    }
+
+    $(document).ready(configureTable);
+
+
+</script>

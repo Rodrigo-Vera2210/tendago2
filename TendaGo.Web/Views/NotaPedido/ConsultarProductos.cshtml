@@ -1,0 +1,61 @@
+﻿
+<div class="tile-stats tile-gray">
+    <div id="divBuscarProducto" class="row">
+        <div class="col-md-12">
+            @using (Html.BeginForm("ConsultarProductos", "NotaPedido", FormMethod.Post, new { id = "consultarProductosForm", @class = "search-bar" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="input-group">
+                    <input type="text" class="form-control input-lg" name="textoBusqueda" placeholder="Buscar producto...">
+                    <div class="input-group-btn">
+                        <button id="btnConsultarProductos" type="button" class="btn btn-lg btn-primary">
+                            <span class="hidden-xs">Buscar</span>
+                            <i class="entypo-search"></i>
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div id="divResultadoProductos" class="search-results-panes">
+
+
+</div>
+
+
+<script>
+    $(function () {
+
+        $("#btnConsultarProductos").click(function () {
+            $("#consultarProductosForm").submit();
+        });
+
+        $("#consultarProductosForm").submit(function (event) {
+            event.preventDefault();
+            var $div = $(this).closest('div');
+            var post_url = $(this).attr("action");
+            var request_method = $(this).attr("method");
+            var form_data = $(this).serialize();
+            $.ajax({
+                url: post_url,
+                type: request_method,
+                data: form_data,
+                beforeSend: function () {
+                    $("#divResultadoProductos").empty();
+                    blockUI($div)
+                    $div.addClass('loading');
+                },
+                complete: function () {
+                    unblockUI($div)
+                    $div.removeClass('loading');
+                }
+            }).done(function (respuesta) {
+                if (respuesta != "") {
+                    $("#divResultadoProductos").html(respuesta);
+                }
+            });
+        });
+    });
+</script>

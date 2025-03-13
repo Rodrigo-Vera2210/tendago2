@@ -1,0 +1,159 @@
+﻿@using TendaGo.Web.Models
+@using TendaGo.Web.ApplicationServices
+@using Newtonsoft.Json;
+
+@model DocumentViewModel
+@{
+    ViewBag.Title = "FACTURA (Vista Preliminar)";
+    var rucs = RucsAppService.ObtenerRucs();
+    var listaRUCs = new SelectList(rucs, "Ruc", "RazonSocial");
+
+    var ruc = listaRUCs.FirstOrDefault(m => m.Value == Model.RUC);
+    if (ruc == null)
+    {
+        ruc = listaRUCs.FirstOrDefault() ?? new SelectListItem { Text = "RUC no ha sido configurado" };
+    }
+
+    var Factura = Model;
+
+    var emisor = rucs.Where(m => m.Ruc == ruc.Value);
+
+}
+
+<div class="invoice">
+
+    <div class="row">
+        <div class="col-xs-6 invoice-left">
+            <h4>@ruc.Text <br /> <small>RUC: <b>  @Factura.RUC </b></small></h4>
+        </div>
+        <div class="col-xs-6 invoice-right">
+            @if (Model.IdTipoDocumento == "01")
+            {
+                <h3><b>FACTURA</b></h3>
+            }
+            else
+            {
+                <h3><b>NOTA DE VENTA</b></h3>
+            }
+
+            <span>Fecha: @Factura.Fecha.ToCustomFormatString()</span>
+
+        </div>
+    </div>
+    <div class="divider"><hr /></div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <h4>CLIENTE</h4>
+        </div>
+
+        <div class="col-sm-12">
+            <b>Nombre/Razon Social:</b> @Factura.Entidad.RazonSocial<br />
+            <b>RUC o C&eacute;dula #:</b> @Factura.Entidad.Identificacion
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6 invoice-left">
+            <b>Direccion:</b> @Factura.Entidad.Direccion @Factura.Entidad.Ciudad @Factura.Entidad.Provincia <br />
+
+            <b>Telefono:</b> @Factura.Entidad.Celular
+            @if (!string.IsNullOrEmpty(Factura.Entidad.Celular) && !string.IsNullOrEmpty(Factura.Entidad.Telefono))
+            {
+                <span>/</span>
+            }
+            @Factura.Entidad.Telefono<br />
+
+            <b>Correo:</b> @((Factura.Entidad.Correo ?? "").ToLower()) <br />
+
+        </div>
+
+        <div class="col-md-6 invoice-right">
+
+        </div>
+    </div>
+    <div class="margin"></div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="text-center">Cantidad</th>
+                <th class="text-center">Unidad</th>
+                <th width="40%">Producto</th>
+                <th class="text-center">Precio</th>
+                <th class="text-center">IVA</th>
+                <th class="text-center">Subtotal</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @if (Factura.Detalles != null)
+            {
+                foreach (var item in Factura.Detalles)
+                {
+                    <tr>
+                        <td class="text-center">@item.Cantidad</td>
+                        <td class="text-center">@item.UnidadMedida</td>
+
+                        <td>@item.CodigoInterno - @item.NombreProducto @((item.DescripcionProducto ?? "").Replace(item.NombreProducto, ""))  </td>
+                        <td class="text-right">$ @item.Precio.ToString("#,##0.0000")</td>
+                        <td class="text-right">@item.PorcentajeTarifaImpuesto %</td>
+                        <td class="text-right">$ @item.SubtotalSinImpuesto.ToString("#,##0.00")</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+
+    <div class="margin"></div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="invoice-left">
+
+
+                @if (!string.IsNullOrEmpty(Factura.Notas))
+                {
+                    <table class="table table-bordered margin-5-5" width="100%" border="1">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Observaciones: <br />
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@Factura.Notas </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="invoice-right">
+                <ul class="list-unstyled">
+                    <li> Subtotal 0%: <strong>$ @Factura.Base0.ToCustomFormatString()</strong> </li>
+                    <li> Subtotal 15%: <strong>$ @Factura.BaseIva.ToCustomFormatString()</strong> </li>
+                    <li> _______________________________________________________________________ </li>
+                    <li> Subtotal sin impuestos: <strong>$ @Factura.TotalSinImpuesto.ToCustomFormatString()</strong> </li>
+                    <li> Descuento: <strong>$ @Factura.TotalDescuento.ToCustomFormatString()</strong> </li>
+                    <li> ICE: <strong>$ @Factura.TotalIce.ToCustomFormatString()</strong> </li>
+                    <li> IVA 15%: <strong>$ @Factura.TotalIva.ToCustomFormatString()</strong> </li>
+
+                    <li> <h4> Total a Pagar: <strong>$ @Factura.Total.ToCustomFormatString()</strong></h4> </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<input type='hidden' name='Factura' id='Factura' value='@Html.Raw(JsonConvert.SerializeObject(Factura))' />
+
+<script>
+    var facturaJSON = @Html.Raw(JsonConvert.SerializeObject(Factura));
+
+    $("#strFactura").text("@Factura.Total.ToString("F2", System.Globalization.CultureInfo.GetCultureInfo("en-US"))");
+</script>

@@ -1,0 +1,221 @@
+﻿@using TendaGo.Web.Models
+@using TendaGo.Web.ApplicationServices
+@using TendaGo.Common
+
+@Styles.Render("~/Styles/datatables")
+@Styles.Render("~/Styles/select2")
+
+@model EntidadViewModel
+@{
+    ViewBag.Title = "Estado de Cuenta";
+    Model.IdEmpresa = User.Identity.GetIdEmpresa();
+
+}
+
+<ol class="breadcrumb bc-3 small hidden-xs breadcrumb-no-padding">
+    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home</a></li>
+    <li>Estado de Cuenta</li>
+    <li class="active"><strong>@ViewBag.Title</strong></li>
+</ol>
+
+@using (Html.BeginForm("DescargarCxc", "Cobros", FormMethod.Post, new { id = "guardarCobrosForm", @class = "form-wizard validate", @enctype = "multipart/form-data", autocomplete = "off", target = "_blank" }))
+{
+    @Html.HiddenFor(model => model.IdEmpresa)
+    @Html.Hidden("format", "PDF")
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id, new { @id = "IdCliente", @class = "required", @required = "required", @min = "1" })
+    @Html.HiddenFor(model => model.Identificacion, new { @id = "clienteIdentificacion", @required = "required" })
+    @Html.HiddenFor(model => model.RazonSocial, new { @id = "clienteRazonSocial", @required = "required", @class = "required" })
+    @Html.HiddenFor(model => model.Direccion, new { @id = "clienteDireccion" })
+    @Html.HiddenFor(model => model.Telefono, new { @id = "clienteTelefono" })
+    @Html.HiddenFor(model => model.Correo, new { @id = "clienteCorreo" })
+    @Html.HiddenFor(model => model.Full, new { @id = "clFull" })
+
+
+    <div class="row">
+        <div class="col-md-4 col-xs-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="panel-title">Cliente</div>
+                    <div class="panel-options" style="padding-top: 5px;">
+                        <button type="button" id="btnBuscarCliente" class="btn btn-sm btn-white" title="Buscar Cliente">
+                            <i class="entypo-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div id="clientResult" class="tile-title tile-gray">
+                        <div class="icon">
+                            <i class="entypo-user"></i>
+                        </div>
+                        <div class="title">
+                            <h3 class="cliente-identificacion"></h3>
+                            <p class="cliente-RazonSocial">.</p>
+                            <p class="cliente-Direccion">.</p>
+                            <p class="cliente-Telefono">.</p>
+                            <p class="cliente-Correo">.</p>
+                        </div>
+                    </div>
+
+                    @Html.ValidationMessageFor(model => model.Id)
+                    @Html.ValidationMessageFor(model => model.Identificacion)
+                    @Html.ValidationMessageFor(model => model.RazonSocial)
+                    @Html.ValidationMessageFor(model => model.IdEmpresa)
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+}
+
+<div class="row">
+    <div class="col-md-6 col-xs-12 text-left" style="padding-bottom: 1rem">
+        <div class="checkbox checkbox-replace color-blue" id="Full">
+            @Html.CheckBoxFor(model => model.Full)
+            @Html.LabelFor(x => x.Full, new { @class = "col-sm-6 control-label" })
+        </div>
+        @*<p class="cl-full">.gghghgg</p>*@
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="btn-group text-right">
+            <button type="button" class="btn btn-success  download-pdf "><i class="entypo-print"></i> Imprimir </button>
+            <button type="button" class="btn btn-green dropdown-toggle" data-toggle="dropdown" aria-expanded="true" style="background: #00582b;"> <i class="entypo-down"></i> </button>
+            <ul class="dropdown-menu dropdown-danger" role="menu">
+                <li><a class="text-danger download-pdf" href="javascript:;"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;Descargar PDF</a> </li>
+                <li><a class="text-info download-word" href="javascript:;"><i class="fa fa-file-word-o"></i>&nbsp;&nbsp;Descargar Word</a> </li>
+                <li><a class="text-success download-excel" href="javascript:;"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp;Descargar Excel</a> </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div id="divListaClientes" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Seleccione un Cliente:</h4>
+            </div>
+            <div class="modal-body" id="divListaBody">
+
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .checkbox-replace, .radio-replace {
+        display: flex !important
+    }
+
+    .checkbox label#label-check {
+        padding-left: 10px !important;
+    }
+</style>
+@section Scripts {
+    @Scripts.Render("~/bundles/wizard")
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/datepicker")
+    @Scripts.Render("~/bundles/timepicker")
+    @Scripts.Render("~/bundles/fileinput")
+    @Scripts.Render("~/bundles/maskmoney")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/scripts/TendaGo.cobros.index.js")
+
+    <script>
+
+        var clienteData = {};
+
+        //menu_settings.parentMenu = 'MnuCobro';
+        //menu_settings.optionMenu = 'OpcCrear';
+
+        // Handler cuando se seleccione un cliente:
+        //Cobros.configure();
+
+        $(document).ready(function () {
+
+        $(".download-word").on("click", function (event) {
+            $("input[name='format']").val("WORD");
+            $("#guardarCobrosForm").submit();
+        });
+
+        $(".download-excel").on("click", function (event) {
+            $("input[name='format']").val("EXCEL");
+            $("#guardarCobrosForm").submit();
+        });
+
+        $(".download-pdf").on("click", function (event) {
+            $("input[name='format']").val("PDF");
+            $("#guardarCobrosForm").submit();
+        });
+
+        $("#btnBuscarCliente").on("click", function (event) {
+            var $urlCliente = '@Url.Action("ConsultarClientes", "NotaPedido")';
+            var $divElement = $("#divListaClientes");
+
+            blockUI($("body"));
+            toastr.warning("Cargando clientes...");
+
+            var searchTerm = $("#IdCliente").val();
+            var url = $urlCliente + "?filtroBusqueda=&textoBusqueda=" + searchTerm;
+
+            $.get(url, function (data) {
+                var $divElement = $("#divListaClientes");
+                unblockUI($("body"));
+                toastr.clear();
+
+                var $divBody = $("#divListaBody");
+
+                $divBody.empty();
+
+                if (data) {
+                    $divBody.html(data);
+                }
+
+                $divElement.modal({
+                    "focus": "true",
+                    "show": "true"
+                });
+            });
+        });
+
+
+        });
+
+    function onSelectClient(customer) {
+
+        var client = JSON.parse(customer);
+
+        var ciudad = (client.Ciudad != '' && client.Ciudad != null) ? client.Ciudad.Nombre : "No disponible";
+        var correo = (client.Correo) ? client.Correo : "No disponible";
+        var direccion = `Dirección: ${client.Direccion} | Ciudad: ${ciudad}`;
+        var telefono = ((client.Telefono) ? client.Telefono + " " : "") + ((client.Celular) ? client.Celular : "");
+
+        $("#IdCliente").val(client.Id);
+        $("#IdCliente").removeClass('input-validation-error').addClass("valid").attr("aria-invalid", "false");
+        $("#IdCliente").next().empty();
+
+        $(".cliente-Identificacion").text(client.Identificacion);
+        $(".cliente-RazonSocial").text(client.RazonSocial);
+        $(".cliente-Direccion").text(direccion);
+        $(".cliente-Telefono").text(telefono);
+        $(".cliente-Correo").text(correo);
+        $(".cl-Full").text(client.Full);
+
+        $("#clienteIdentificacion").val(client.Identificacion);
+        $("#clienteRazonSocial").val(client.RazonSocial);
+        $("#clienteTelefono").val(telefono);
+        $("#clienteCorreo").val(client.Correo);
+        $("#clFull").val(client.Full);
+        $("#clienteDireccion").val(direccion);
+
+        $("#clientResult").removeClass('hidden').fadeIn('fast');
+    }
+
+    </script>
+
+}

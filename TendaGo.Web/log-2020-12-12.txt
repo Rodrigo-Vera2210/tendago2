@@ -1,0 +1,35 @@
+==================================================
+Metodo: SaveOutput
+Fecha: 12/12/2020 02:15:13 PM
+
+"{\"TechnicalMessage\":\"System.Data.SqlClient.SqlException (0x80131904): 00-66DUONUT TINTE CAPILAR ROJO INTENSO 2 UND 35 ml.: No se puede guardar el stock de un producto con cantidad cero.\\r\\nTransaction count after EXECUTE indicates a mismatching number of BEGIN and COMMIT statements. Previous count = 1, current count = 0.\\r\\n   at TendaGo.Api.Controllers.salesOrderController.GuardarSalida(SalidaEntity salida) in C:\\\\Users\\\\expert\\\\OneDrive\\\\Projects\\\\Workspaces\\\\WebBinasystem\\\\TendaGo.2.0\\\\TendaGo.Api\\\\Controllers\\\\salesOrderController.cs:line 304\\r\\n   at TendaGo.Api.Controllers.salesOrderController.ReviewOutput(String id, SalesOrderReviewDto model) in C:\\\\Users\\\\expert\\\\OneDrive\\\\Projects\\\\Workspaces\\\\WebBinasystem\\\\TendaGo.2.0\\\\TendaGo.Api\\\\Controllers\\\\salesOrderController.cs:line 140\\r\\nClientConnectionId:d5849dfa-d46d-4002-9a36-470340fbff71\\r\\nError Number:50000,State:1,Class:16\",\"UserMessage\":\"00-66DUONUT TINTE CAPILAR ROJO INTENSO 2 UND 35 ml.: No se puede guardar el stock de un producto con cantidad cero.\\r\\nTransaction count after EXECUTE indicates a mismatching number of BEGIN and COMMIT statements. Previous count = 1, current count = 0.\",\"ErrorCode\":\"500\"}"
+==================================================
+Metodo: SaveOutput
+Fecha: 12/12/2020 02:21:41 PM
+
+""
+==================================================
+Metodo: SaveOutput
+Fecha: 12/12/2020 02:27:41 PM
+
+"{\"TechnicalMessage\":\"System.Data.SqlClient.SqlException (0x80131904): 00-66DUONUT TINTE CAPILAR ROJO INTENSO 2 UND 35 ml.: No se puede guardar el stock de un producto con cantidad cero.\\r\\nTransaction count after EXECUTE indicates a mismatching number of BEGIN and COMMIT statements. Previous count = 1, current count = 0.\\r\\n   at TendaGo.Api.Controllers.salesOrderController.GuardarSalida(SalidaEntity salida) in C:\\\\Users\\\\expert\\\\OneDrive\\\\Projects\\\\Workspaces\\\\WebBinasystem\\\\TendaGo.2.0\\\\TendaGo.Api\\\\Controllers\\\\salesOrderController.cs:line 304\\r\\n   at TendaGo.Api.Controllers.salesOrderController.DeliverOutput(String id, SalesOrderDeliverDto model) in C:\\\\Users\\\\expert\\\\OneDrive\\\\Projects\\\\Workspaces\\\\WebBinasystem\\\\TendaGo.2.0\\\\TendaGo.Api\\\\Controllers\\\\salesOrderController.cs:line 191\\r\\nClientConnectionId:6d8feaff-2066-485b-8b28-f4299027a8db\\r\\nError Number:50000,State:1,Class:16\",\"UserMessage\":\"00-66DUONUT TINTE CAPILAR ROJO INTENSO 2 UND 35 ml.: No se puede guardar el stock de un producto con cantidad cero.\\r\\nTransaction count after EXECUTE indicates a mismatching number of BEGIN and COMMIT statements. Previous count = 1, current count = 0.\",\"ErrorCode\":\"500\"}"
+==================================================
+Metodo: SaveOutput
+Fecha: 12/12/2020 02:39:39 PM
+
+""
+==================================================
+Metodo: SaveOutput
+Fecha: 12/12/2020 03:24:46 PM
+
+"{\"TechnicalMessage\":\"System.Data.SqlClient.SqlException (0x80131904): 00-66DUONUT TINTE CAPILAR ROJO INTENSO 2 UND 35 ml.: No se puede guardar el stock de un producto con cantidad cero.\\r\\nTransaction count after EXECUTE indicates a mismatching number of BEGIN and COMMIT statements. Previous count = 1, current count = 0.\\r\\n   at TendaGo.Api.Controllers.salesOrderController.GuardarSalida(SalidaEntity salida) in C:\\\\Users\\\\expert\\\\OneDrive\\\\Projects\\\\Workspaces\\\\WebBinasystem\\\\TendaGo.2.0\\\\TendaGo.Api\\\\Controllers\\\\salesOrderController.cs:line 304\\r\\n   at TendaGo.Api.Controllers.salesOrderController.DeliverOutput(String id, SalesOrderDeliverDto model) in C:\\\\Users\\\\expert\\\\OneDrive\\\\Projects\\\\Workspaces\\\\WebBinasystem\\\\TendaGo.2.0\\\\TendaGo.Api\\\\Controllers\\\\salesOrderController.cs:line 191\\r\\nClientConnectionId:a586d426-c7bb-4a07-8224-306dee76c92c\\r\\nError Number:50000,State:1,Class:16\",\"UserMessage\":\"00-66DUONUT TINTE CAPILAR ROJO INTENSO 2 UND 35 ml.: No se puede guardar el stock de un producto con cantidad cero.\\r\\nTransaction count after EXECUTE indicates a mismatching number of BEGIN and COMMIT statements. Previous count = 1, current count = 0.\",\"ErrorCode\":\"500\"}"
+==================================================
+Metodo: SaveOutput
+Fecha: 12/12/2020 03:43:21 PM
+
+"{\"TechnicalMessage\":\"System.Data.SqlClient.SqlException (0x80131904): 00-66DUONUT TINTE CAPILAR ROJO INTENSO 2 UND 35 ml.: No se puede guardar el stock de un producto con cantidad cero.\\r\\nTransaction count after EXECUTE indicates a mismatching number of BEGIN and COMMIT statements. Previous count = 1, current count = 0.\\r\\n   at TendaGo.Api.Controllers.salesOrderController.GuardarSalida(SalidaEntity salida) in C:\\\\Users\\\\expert\\\\OneDrive\\\\Projects\\\\Workspaces\\\\WebBinasystem\\\\TendaGo.2.0\\\\TendaGo.Api\\\\Controllers\\\\salesOrderController.cs:line 304\\r\\n   at TendaGo.Api.Controllers.salesOrderController.DeliverOutput(String id, SalesOrderDeliverDto model) in C:\\\\Users\\\\expert\\\\OneDrive\\\\Projects\\\\Workspaces\\\\WebBinasystem\\\\TendaGo.2.0\\\\TendaGo.Api\\\\Controllers\\\\salesOrderController.cs:line 191\\r\\nClientConnectionId:0559b0ee-5f4a-4ad3-b09c-28f271861276\\r\\nError Number:50000,State:1,Class:16\",\"UserMessage\":\"00-66DUONUT TINTE CAPILAR ROJO INTENSO 2 UND 35 ml.: No se puede guardar el stock de un producto con cantidad cero.\\r\\nTransaction count after EXECUTE indicates a mismatching number of BEGIN and COMMIT statements. Previous count = 1, current count = 0.\",\"ErrorCode\":\"500\"}"
+==================================================
+Metodo: SaveOutput
+Fecha: 12/12/2020 03:53:01 PM
+
+""

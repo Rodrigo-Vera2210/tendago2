@@ -1,0 +1,94 @@
+﻿@using TendaGo.Web.Models
+@model List<ProductoViewModel>
+
+<html>
+
+<head>
+    <style type="text/css">
+        a.disabled {
+            text-decoration: none;
+            color: black;
+            cursor: default;
+        }
+
+        #productos,#productos-pagination {
+            display: none;
+        }
+    </style>
+  
+</head>
+<body>
+
+    <div class="row">
+        <div id="productos-pagination">
+            <div class="col-md-3 col-xs-6">
+                              
+                <a class="btn btn-blue" id="productos-previous" href="#">
+                    &laquo; Anterior
+                </a>
+
+                <a class="btn btn-blue" id="productos-next" href="#">
+                    Siguiente &raquo;
+                </a>
+                    
+</div>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="row">
+        <ul id="productos">
+
+            @foreach (var producto in Model)         {
+
+
+                <div class="col-md-3 col-xs-6">
+                    <li>
+                        <div class="tile-title tile-gray title-left">
+                            <div class="icon">
+                                @if (producto.FotoDataUrl == null)
+                                {
+                                    <i class="fa fa-picture-o"></i>
+                                }
+                                else
+                                {
+                                    <img class="cover-parent" src="@producto.FotoDataUrl">
+                                }
+                            </div>
+                            <div class="title title-left">
+                                <h4>@producto.Nombre</h4>
+                                <p>@producto.Descripcion.PadRight(100).Substring(0, 100).Trim() ...</p>
+                                <div class="title-buttons">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-sm btn-default btn-product-details" onclick="existenciaProducto(@producto.Id)">
+                                            <span class="hidden-xs">Ver Detalles</span>
+                                            <i class="entypo-eye"></i>
+                                        </button>
+                                    </div>
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-sm btn-default btn-add-product" onclick="mostrarProducto(@producto.Id)">
+                                            <span class="hidden-xs">Agregar</span>
+                                            <i class="entypo-basket"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </div>
+
+
+            }
+        </ul>
+    </div>
+
+    @Scripts.Render("~/bundles/paginate")
+   
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#productos').paginate({ itemsPerPage: 8 });
+        });
+    </script>
+</body>
+</html>

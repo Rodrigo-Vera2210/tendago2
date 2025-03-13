@@ -1,0 +1,69 @@
+﻿@model List<TendaGo.Web.Models.ProductoViewModel>
+
+<div class="table-responsive">
+    <table id="compraTable" class="display datatable table table-bordered table-hover" >
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(item => item[0].Id)</th>
+                <th>@Html.DisplayNameFor(item => item[0].CodigoProveedor)</th>
+                <th>@Html.DisplayNameFor(item => item[0].CodigoBarra)</th>
+                <th>@Html.DisplayNameFor(item => item[0].CodigoInterno)</th>
+                <th>@Html.DisplayNameFor(item => item[0].TipoProducto)</th>
+                <th>@Html.DisplayNameFor(item => item[0].Producto)</th>
+                <th>@Html.DisplayNameFor(item => item[0].Descripcion)</th>
+                <th>@Html.DisplayNameFor(item => item[0].Stock)</th>
+                <th>@Html.DisplayNameFor(item => item[0].StockMinimo)</th>
+                <th>Precio</th>
+                <th>Unidad de Medida</th>
+                <th>@Html.DisplayNameFor(item => item[0].Descuento)</th>
+                <th>@Html.DisplayNameFor(item => item[0].CobraIva)</th>
+                <th>@Html.DisplayNameFor(item => item[0].Division)</th>
+                <th>@Html.DisplayNameFor(item => item[0].Linea)</th>
+                <th>@Html.DisplayNameFor(item => item[0].Categoria)</th>
+                <th>@Html.DisplayNameFor(item => item[0].Marca)</th>
+
+                <th>Observacion</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+            <tr>
+                <td> @Model[i].CodigoProveedor</td>
+                <td> @Model[i].CodigoBarra</td>
+                <td> @Model[i].CodigoInterno</td>
+                <td> @Model[i].TipoProducto</td>
+                <td> @Model[i].Producto</td>
+                <td> @Model[i].Descripcion</td>
+                <td> @Model[i].Stock</td>
+                <td> @Model[i].StockMinimo</td>
+                <td> @Model[i].Costo</td>
+                <td> @Model[i].FotoDataUrl</td>
+                <td> @Model[i].Descuento</td>
+                <td> @Model[i].CobraIva</td>
+                <td> @Model[i].Division</td>
+                <td> @Model[i].Linea</td>
+                <td> @Model[i].Categoria</td>
+                <td> @Model[i].Marca</td>
+
+                <th>
+                    @{
+                        if (Model[i].Id > 0)
+                        {
+                            <span class="text-success">Correcto</span>
+                        }
+                        else
+                        {
+                            <span class="text-danger">Hubo un error al guardar el producto</span>
+                        }
+                    }
+                </th>
+            </tr>
+            }
+        </tbody>
+        <tfoot>
+            
+        </tfoot>
+    </table>
+</div>
+ 

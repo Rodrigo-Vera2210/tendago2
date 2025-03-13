@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "index";
+}
+
+<ol class="breadcrumb bc-3 small hidden-xs breadcrumb-no-padding">
+    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home</a></li>
+    <li>Parametrizaciones</li>
+    <li class="active"><strong>Perfiles</strong></li>
+</ol>
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left">
+            <h3>Producto</h3>
+        </div>
+        <div class="pull-right">
+            <button class="btn btn-info btn-icon icon-left" onclick="crearProducto()">
+                <i class="entypo-list-add"></i>Nuevo
+            </button>
+        </div>
+    </div>
+</div>
+

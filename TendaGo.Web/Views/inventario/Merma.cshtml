@@ -1,0 +1,334 @@
+﻿@using TendaGo.Common
+@using TendaGo.Web.Models
+@using TendaGo.Web.ApplicationServices
+
+@model MermaViewModel
+@{
+    ViewBag.Title = "Ajuste";
+    var jsonLocalesBodegas = Json.Encode(Session.GetLocales().Select(x => new { x.Id, Nombre = x.Local }));
+
+}
+
+@section styles{
+    <style>
+        span.select2 {
+            width: 100% !important;
+        }
+
+        .tile-title .title p {
+            padding-bottom: 5px;
+        }
+
+        #idProvider {
+            width: 0;
+            height: 0;
+        }
+    </style>
+
+    @Styles.Render("~/Styles/datatables")
+    @Styles.Render("~/Styles/toggle")
+    @Styles.Render("~/Styles/select2")
+
+}
+
+<ol class="breadcrumb bc-3 small hidden-xs breadcrumb-no-padding">
+    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Inicio</a></li>
+    <li>Inventario</li>
+    <li class="active"><strong>Ajuste</strong></li>
+</ol>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left">
+            <h3>Ajuste de Inventario</h3>
+        </div>
+    </div>
+</div>
+<br />
+
+<div class="row">
+    @using (Html.BeginForm("Merma", "Inventario", FormMethod.Post, new { id = "guardarAjusteForm", @class = "form-wizard validate" }))
+    {
+        @Html.HiddenFor(m => m.IdLocal, Session.GetIdLocal())
+        <div class="panel panel-primary">
+
+            <div class="panel-heading">
+
+            </div>
+            <div class="panel-body with-table">
+
+                <button type="button" class="btn btn-green btn-icon icon-left" id="btnNuevoDetalle">
+
+                    <span>Agregar</span>
+                    <i class="entypo-plus"></i>
+                </button>
+
+                <div class="table-responsive">
+                    <table id="tablaDetalleInv" class="table datatable table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="text-center"></th>
+                                <th style="min-width:300px;">Producto</th>
+                                <th style="min-width:150px;" class="text-center">Local</th>
+                                <th style="min-width:150px;" class="text-center">Tipo Unidad</th>
+                                <th class="text-center" style="min-width:150px;">Fisico</th>
+                                <th style="min-width:150px;" class="text-center">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+
+
+        </div>
+        <div style="display:flex; width:100%">
+            <button type="submit" class="btn btn-success btn-sm" style="margin:auto;">
+                <i class="entypo-floppy"></i>
+                <span class="hidden-xs">Guardar Ajuste</span>
+            </button>
+        </div>        
+    }
+</div>
+
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/wizard")
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/datepicker")
+    @Scripts.Render("~/bundles/timepicker")
+    @Scripts.Render("~/bundles/fileinput")
+    @Scripts.Render("~/bundles/maskmoney")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/toggle")
+
+    @Scripts.Render("~/bundles/productos/index")
+
+<script>
+        var rowIndex = 0;
+        var $btnBuscarProducto;
+        var jsonLocales = '@Html.Raw(jsonLocalesBodegas)';
+        var productoSeleccionado;        
+        var tipoUnidadUrl = '@Url.Action("ObtenerTiposUnidadPorProducto", "Compra")';   
+        var idOrigen = 4; // Compra
+        var selfUrl = "@Url.Action("Merma","inventario")";
+        var estados = [
+            { id: 1, Nombre: 'AJUSTE'},
+            { id: 2, Nombre: 'DAÑADA'},
+            { id: 3, Nombre: 'FALTANTE DE ORIGEN'},
+        ];
+        
+        searchModalSettings.url = "@Url.Action("BuscarParaModal", "productos")";
+        searchModalSettings.resultContainer = "divConsultaProductosModal";
+
+        menu_settings.parentMenu = 'MnuInventory';
+        menu_settings.optionMenu = 'OpcPedir';
+
+        $("#btnNuevoDetalle").click(function () {
+            var index = rowIndex++;
+            var inputNombreProducto = crearInputGroup(index, "IdProducto", "NombreProducto", "btnBuscarProducto");
+            var selectLocalBodega = crearSelect(index, "IdLocal", false, jsonLocales);
+            var selectTipoUnidad = crearSelect(index, "IdTipoUnidad", true, '[]');
+            var selectEstado = crearSelect(index, "Estado", false, estados);              
+            var spinnerCantidad = crearSpinnerCantidad(index);
+            var deleteButton = crearDeleteButton(index);
+            var $table = $("#tablaDetalleInv tbody");
+
+
+            /////////////////////////////////////////////////////
+
+            $table.append(`<tr id="${index}">
+                    <td>${deleteButton}</td>
+                    <td>${inputNombreProducto}</td>
+                    <td>${selectLocalBodega}</td>                    
+                    <td>${selectTipoUnidad}</td>
+                    <td>${spinnerCantidad}</td>
+                    <td>${selectEstado}</td>
+                    </tr>`);
+
+            /////////////////////////////////////////////////////
+
+            $("#spinnerCantidad" + index).spinnercustom();
+            $(".input-money").maskAsDecimal();
+            $(".input-money-4").maskAsDecimal({ precision: 4 });
+
+            $(".delete-btn").on("click", function () {
+                $(this).parent().parent().remove();
+            });
+
+        });
+
+        function crearSelect(id, field, readonly, jsonElements) {
+            var select = "<select id = 'Detalle_" + id + "__" + field + "' name = 'Detalle[" + id + "]." + field +"' class='form-control "+field+"-control' ></select>";
+            return select;
+        }
+
+        function crearDeleteButton(id) {
+            return "<a class='btn text-danger delete-btn'><i class='entypo-trash'></i></a>";
+        }
+
+        function crearSpinnerCantidad(id) {
+            var spinner = "<div id='spinnerCantidad" + id + "' class='input-spinner input-spinner-cantidad input-spinner-sx'>";
+            spinner += "<button type='button' class='btn btn-default'>-</button>";
+            spinner += "<input type='text' name='Detalle[" + id + "].Cantidad' value='1' class='form-control text-cantidad' />";
+            spinner += "<button type='button' class='btn btn-default'>+</button>";
+            spinner += "</div>";
+            return spinner;
+        }
+
+        function crearInputGroup(id, nombrePropiedadOculta, nombrePropiedad, nombreBotonBusqueda) {
+            var input = "<div class='input-group' style='width:100%;'>";
+            input += "<input class='" + nombrePropiedadOculta + "' id='Detalle_" + id + "__" + nombrePropiedadOculta + "' name='Detalle[" + id + "]." + nombrePropiedadOculta + "' type='hidden' >";
+            input += "<input class='form-control " + nombrePropiedad + "' id='Detalle_" + id + "__" + nombrePropiedad + "' name='Detalle[" + id + "]." + nombrePropiedad + "' readonly='readonly' type='text' >";
+            input += "<div class='input-group-btn'>";
+            input += "<button type='button' class='btn btn-blue " + nombreBotonBusqueda + "'>";
+            input += "<i class='entypo-search'></i>";
+            input += "</button>";
+            input += "</div>";
+            input += "</div>";
+            return input;
+        }
+
+        $('#guardarAjusteForm').on('click', '.btnBuscarProducto', function () {
+            $btnBuscarProducto = $(this);
+            $('#divConsultaProductosModal').empty();
+            $('#divConsultaProductosModal').modal('show', { backdrop: 'static' });
+            getSearchProductsModal(idOrigen);
+        });
+
+        function onSelectProduct(product) {
+            console.log("onSelectProductxxxx" + product);
+            var pro = JSON.parse(product);
+            productoSeleccionado = pro;
+            var $tr = $btnBuscarProducto.closest('tr');
+            var $td = $tr.find('td');
+            $td.eq(1).find('.IdProducto').val(pro.Id);
+            $td.eq(1).find('.NombreProducto').val(pro.CodigoInterno + " " + pro.Nombre);
+            $td.eq(1).find('.TipoProducto').val(pro.TipoProducto);
+
+            llenarSelectTipoUnidad($tr.attr('id'), pro.Id);
+            llenarSelectEstados($tr.attr('id'));
+            llenarSelectLocales($tr.attr('id'), pro.Id);
+    }
+
+        function llenarSelectEstados(index) {
+            var $estadosDropDown = $("#Detalle_" + index + "__Estado");
+            $estadosDropDown.empty();
+            $.each(estados,
+                function (index, item) {
+                    var p = new Option(item.Nombre, item.id)
+                    //console.log(item);
+                    $estadosDropDown.append(p);
+                });
+        }
+
+        function llenarSelectTipoUnidad(index, idProducto) {
+            var $tipoUnidadDropDown = $("#Detalle_" + index + "__IdTipoUnidad");
+            $tipoUnidadDropDown.empty();
+            $tipoUnidadDropDown.attr("disabled", "disabled");
+
+            $.ajax({
+                url: tipoUnidadUrl,
+                type: 'post',
+                data: { idProducto: idProducto }
+            }).done(function (respuesta) {
+                if (respuesta.length > 0) {
+                    $tipoUnidadDropDown.removeAttr("disabled");
+                    $.each(respuesta,
+                        function (index, item) {
+                            var p = new Option(item.Nombre, item.Id);
+                            $tipoUnidadDropDown.append(p);
+                        });
+                }
+                else {
+                    var p = new Option("Debe configurar las unidades de venta del producto", null);
+                    $tipoUnidadDropDown.append(p);
+                    toastr.warning("El producto especificado no tiene configuradas las unidades de venta en el modulo de Precios");
+                }
+            });
+        }
+
+        function llenarSelectLocales(index, idProducto) {
+            var $localDropDown = $("#Detalle_" + index + "__IdLocal");
+            $localDropDown.empty();
+            $localDropDown.attr("disabled", "disabled");
+
+            $.ajax({
+                url: "/inventario/GetLocalAct/"+idProducto,
+                type: 'get',
+                data: { idProducto: idProducto }
+            }).done(function (respuesta) {
+                /*console.log(respuesta);*/
+                if (respuesta.length > 0) {
+                    $localDropDown.removeAttr("disabled");
+                    $.each(respuesta,
+                        
+                        function (index, item) {
+
+                            //console.log(item["IdLocal"]);
+
+                            /*if (item["IdLocal"] == "1") {*/
+                                var p = new Option(item.Local + "  |  Stock:" + item.StockInventario+  " | " + item.NombreUnidadMedida , item.IdLocal);
+                                $localDropDown.append(p);
+                            /*} */                           
+
+                        });
+                }
+                else {
+                    var p = new Option("Debe configurar las unidades de venta del producto", null);
+                    $localDropDown.append(p);
+                    toastr.warning("El producto especificado no tiene configuradas las unidades de venta en el modulo de Precios");
+                }
+            });
+        }
+
+        $("#guardarAjusteForm").submit(function (event) {
+            event.preventDefault();
+            //removing maskmoney
+            $(".input-money").each(function () {
+                var valorUnmasked = parseFloat(($(this).maskMoney('unmasked')[0]));
+                $(this).val(valorUnmasked);
+            });
+            var formGuardarCompra = $("#guardarAjusteForm");
+            var $div = $(formGuardarCompra).closest('div');
+            var action_url = formGuardarCompra.attr("action");
+            var request_method = formGuardarCompra.attr("method");
+            var form_data = formGuardarCompra.serializeArray();
+
+            $.ajax({
+                url: action_url,
+                type: request_method,
+                data: form_data,
+                beforeSend: function () {
+                    blockUI($div);
+                    $div.addClass('loading');
+                },
+                complete: function () {
+                    unblockUI($div);
+                    $div.removeClass('loading');
+                }
+            }).error(function (error, a, b) {
+                console.log(error);
+                console.log({ a, b });
+
+                toastr.error(error.Mensaje, "", optionsToastr);
+            }).done(function (respuesta) {
+                if (respuesta !== "") {
+                    if (respuesta.Success == true) {
+                        toastr.success(respuesta.Mensaje, "", optionsToastr);
+                        setTimeout(function () {
+                            location.href = selfUrl;
+                        }, 2000);
+                    } else {
+                        toastr.warning(respuesta.Mensaje, "", optionsToastr);
+                        $(".input-money").maskMoney('mask');
+                    }
+                }
+            });
+        });
+
+        var x = @Html.Raw(jsonLocalesBodegas);
+</script>
+}

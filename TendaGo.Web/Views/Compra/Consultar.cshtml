@@ -1,0 +1,125 @@
+﻿@using TendaGo.Web.Models
+@model List<EntradaViewModel>
+
+<table id="tablaNotasPedido" class="table datatable table-bordered table-striped table-hover">
+    <thead>
+        <tr class="small">
+            @*<th class="text-center bold"></th>*@
+            <th class="text-center bold">Numero</th>
+            <th class="text-center bold">Proveedor</th>
+            <th class="text-center bold">Valor Total</th>
+            <th class="text-center bold">Forma de Pago</th>
+            <th class="text-center bold">Fecha </th>
+            <th class="text-center bold">Estado</th>
+            <th class="text-center bold"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            foreach (var entrada in Model)
+            {
+                <tr>
+                    @*<td class="text-center">
+
+                        @if (entrada.EstadoActual == "APROBADA")
+                        {
+                            <button type="button" class="btn btn-success btn-icon icon-left" title="Empaquetar" onclick="mostrarDetalleentrada('@entrada.Id', '@ViewBag.Accion');">
+                                <i class="entypo-box"></i> Recibir
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-danger btn-icon icon-left" title="Consultar" onclick="mostrarDetalleentrada('@entrada.Id', '@ViewBag.Accion')">
+                                <i class="entypo-pencil"></i> Consultar
+                            </button>
+                        }
+                    </td>*@
+                    <td class="text-center">
+                        <a href="@string.Format("{0}/{1}", Url.Action("Resumen"), entrada.Id)" class="btn btn-default" title="Vista Preliminar">
+                            <i class="fa fa-search"></i>
+                        </a>
+                        @entrada.Id
+                    </td>
+
+                    <td class="text-center">
+                        @if (entrada.Proveedor != null)
+                        {
+                            @entrada.Proveedor.RazonSocial
+                        }
+                    </td>
+
+                    <td class="text-center">@entrada.Total</td>
+                    <td class="text-center">@entrada.FormaPago</td>
+                    <td class="text-center">@entrada.Fecha.ToString("dd/MM/yyyy")</td>
+
+                    <td class="text-center">
+                        @{
+                            if (entrada.EstadoActual == "APROBADA")
+                            {
+                                <span class="label label-info">MANUAL</span>
+                            }
+                            else if (entrada.EstadoActual == "EN PROCESO")
+                            {
+                                <span class="label label-success">IMPORTADAS</span>
+                            }
+                            else if (entrada.EstadoActual == "ANULADA")
+                            {
+                                <span class="label label-danger">@entrada.EstadoActual</span>
+                            }
+                            else
+                            {
+                                <span class="label label-success">@entrada.EstadoActual</span>
+                            }
+                        }
+                    </td>
+                    <td>
+                        @if (entrada.EstadoActual != "ANULADA"
+                            //&& notaPedido.EstadoActual != "ENTREGADA" && notaPedido.EstadoActual != "APROBADA"
+                            )
+                        {
+                            <a href="#" onclick="anular_compra('@entrada.Id');" class="text-danger" title="Anular Compra">
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                        }
+
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<script>
+    var configureTable = function () {
+
+        var $table = opcionesDataTable;
+        var accion = "@ViewBag.Accion";
+
+        if (accion == "Entregar") {
+            $table = {
+                'paging': true,
+                'lengthChange': true,
+                'searching': true,
+                'ordering': false,
+                'info': true,
+                'autoWidth': false,
+                'responsive': true,
+                'language': { "url": "/Content/dataTables.spanish.txt" },
+                'dom': 'Bfrtip',
+                'buttons': [
+                    { extend: 'excelHtml5', className: 'btn btn-success btn-circle ', text: ' <i class="fa fa-file-excel-o "></i> Excel', footer: true },
+                    { extend: 'print', className: 'btn btn-info btn-circle ', text: ' <i class=" fa fa-print "></i> Imprimir', footer: true }
+                ],
+                "columnDefs": [{ "targets": [8], "visible": false }],
+                "order": [[4, 'asc'], [6, 'asc']],
+                "rowGroup": { "dataSrc": 4 }
+            };
+
+        }
+
+        $('#tablaNotasPedido').DataTable($table);
+    };
+
+    $(document).ready(configureTable);
+</script>

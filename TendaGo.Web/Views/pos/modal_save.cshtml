@@ -1,0 +1,663 @@
+﻿@using TendaGo.Web.Models
+@using TendaGo.Web.ApplicationServices
+@using TendaGo.Web.Infraestructura
+
+@model  PedidoViewModel
+@{
+    var rucs = RucsAppService.ObtenerRucs();
+    var formaPago = new List<SelectListItem> {
+        new SelectListItem{ Text="Contado", Value="1" },
+        new SelectListItem{ Text="Credito", Value="2" }
+    };
+
+    var listaMetodoPago = (IEnumerable<SelectListItem>)ViewBag.ListaMediosPago;
+    var listaFormaPagoSri = (IEnumerable<SelectListItem>)ViewBag.ListaFormaPagoSri;
+
+    if (Model.FechaHoraEntregaPropuesta < DateTime.Now.AddDays(30))
+    {
+        Model.FechaHoraEntregaPropuesta = DateTime.Now;
+    }
+
+    if (Model.DetalleNotaPedido != null)
+    {
+        Model.Total = Model.DetalleNotaPedido.Sum(x => x.Subtotal + x.IVA);
+        Model.CantidadProductos = Model.DetalleNotaPedido.Sum(x => x.Cantidad);
+    }
+    int idxMetodo = 0;
+    string valPag = Model.Total.ToString("#0.00");
+    string observaPago = "";
+
+    int idxInfoA = 0;
+    var cNombreCli = "";
+    if (Model != null && Model.NombreCliente != null)
+    {
+        cNombreCli = Model.NombreCliente.Remove(0, Model.NombreCliente.IndexOf(' ') + 1);
+    }
+
+}
+
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <h4 class="modal-title" id="AddSale">Guardar Pedido</h4>
+        </div>
+        <div class="modal-body">
+            <form id="saveForm" class="form-wizard">
+                <div class="steps-progress">
+                    <div class="progress-indicator"></div>
+                </div>
+                <ul>
+                    <li class="active">
+                        <a href="#tab1" data-toggle="tab"><span>1</span> Datos del Pedido</a>
+                    </li>
+                    <li>
+                        <a href="#tab2" data-toggle="tab"><span>2</span> Forma de Pago</a>
+                    </li>
+                    <li>
+                        <a href="#tab3" data-toggle="tab"><span>3</span> Resumen</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+
+                    <div class="tab-pane active" id="tab1">
+
+                        <div class="col-xs-12 form-group">
+                            <h3>
+                                <label class="control-label">Nombre del Cliente:</label>
+                                <span id="customerName">@cNombreCli</span>
+                            </h3>
+                        </div>
+                        <div class="clearfix"></div>
+                        @if (AppServiceBase.Empresa.FacturaPOS || rucs.Count > 0)
+                        {
+                            var local = Session.GetLocal();
+
+                            var defaultRUC = local != null ? local.DefaultRUC : "";
+                            <div class="col-xs-12 form-group">
+                                <label class="control-label">RUC para Factura o Comprobante de Venta</label>
+                                <select id="ruc" name="ruc" placeholder="Debe seleccionar el RUC" class="form-control" style="width: 100%;">
+                                    @{
+                                        if (string.IsNullOrEmpty(defaultRUC) || !AppServiceBase.Empresa.FacturaPOS)
+                                        {
+                                            <option value=''> Debe seleccionar el RUC </option>
+                                        }
+
+                                        foreach (var ruc in rucs)
+                                        {
+                                            var selected = "";
+
+                                            if (Model.Ruc != null && ruc.Ruc == Model.Ruc.Ruc)
+                                            {
+                                                selected = "selected";
+                                            }
+                                            else if (defaultRUC == ruc.Ruc)
+                                            {
+                                                selected = "selected";
+                                            }
+
+                                            <option @selected value='@ruc.Ruc' data-ruc='@Json.Encode(ruc)'> @ruc.Descripcion </option>
+                                        }
+
+                                    }
+                                </select>
+                                <span class="small"> ** Si no se selecciona el RUC, no se adjuntara la factura electronica a la orden.</span>
+                            </div>
+                        }
+
+                        <div class="col-xs-6 form-group">
+                            <label class="control-label">Fecha/Hora Estimada Entrega</label>
+
+                            <div class="date-and-time">
+                                @Html.TextBox("fecha", Model.FechaHoraEntregaPropuesta.ToString("dd/MM/yyyy"), new { @class = "form-control datepicker", @data_format = "dd/mm/yyyy", @autocomplete = "off" })
+                                @Html.TextBox("hora", Model.FechaHoraEntregaPropuesta.ToString("hh:mm:ss"), new { @class = "form-control timepicker", @data_template = "dropdown", @data_show_seconds = "false", @data_default_time = "current", @data_show_meridian = "false", @data_minute_step = "5", @data_second_step = "5", @autocomplete = "off" })
+                            </div>
+
+                        </div>
+
+                        <div class="col-xs-12 form-group">
+                            <label for="notes">Observaciones:</label>
+                            @Html.TextArea("observaciones", Model.Observaciones, new { @class = "form-control", @style = "width:100%;", @rows = "1" })
+                        </div>
+
+
+                        <div class="col-xs-12 form-group">
+
+                            <p>
+                                <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                    Información Adicional
+                                </a>
+                            </p>
+
+
+                            <div class="collapse" id="collapseExample">
+
+                                <div class="col-xs-1 form-group">
+                                    <button id="addInfoAd" type="button" class="btn btn-light">+</button>
+                                </div>
+
+                                <div class="col-xs-12 form-group">
+
+                                    <table id="tablaInfoAdicional" class="table datatable table-bordered table-hover">
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="tab-pane" id="tab2">
+
+
+                        <div class="col-xs-4 form-group">
+                            @Html.Label("formaPago", "Tipo de pago", new { @class = "control-label" })
+
+                            @Html.DropDownList("formaPago", formaPago.ToSelectList("Value", "Text", Model.IdFormaPago), new { @id = "paymentForm", @class = "form-control", @style = "width:100%;" })
+                        </div>
+
+
+                        <div class="col-xs-6 form-group">
+                            @Html.Label("formaPagoSri", "Forma de pago", new { @class = "control-label" })
+                            @Html.DropDownList("formaPagoSri", listaFormaPagoSri.ToSelectList("Value", "Text", Model.IdFormaPagoSri), new { @id = "pagoSriForm", @class = "form-control", @style = "width:100%;" })
+                        </div>
+
+
+                        <div class="col-xs-4 form-group cuotas" style="display: none;">
+                            <label class="control-label">N° Pagos</label>
+
+                            <div id="spinnerNumeroPagos" class="input-spinner input-spinner-sx">
+                                <button type="button" class="btn btn-default">-</button>
+                                <input type="text" id="cuotas" name="cuotas" value="0" class="form-control" data-min="0" />
+                                <button type="button" class="btn btn-default">+</button>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xs-4 form-group plazo" style="display: none;">
+                            <label class="control-label">Días</label>
+
+                            <div id="spinnerPlazoDias" class="input-spinner input-spinner-sx">
+                                <button type="button" class="btn btn-default">-</button>
+                                <input type="text" id="plazo" name="plazo" value="0" class="form-control" data-min="0" />
+                                <button type="button" class="btn btn-default">+</button>
+                            </div>
+                        </div>
+
+
+
+                        <div class="clearfix"></div>
+
+                        <div class="col-xs-6 form-group">
+                            <label for="medioPago">Método de Pago</label>
+                        </div>
+                        <div class="col-xs-4 form-group">
+                            <label for="pagado">Valor Pagado</label>
+                        </div>
+
+                        <div class="clearfix"></div>
+                        <div class="col-xs-6 form-group">
+                            @Html.DropDownListFor(m => m.IdFormaPago, new SelectList(listaMetodoPago, "Value", "Text"), new { @id = "medioPago", @name = "medioPago", @class = "form-control" })
+                        </div>
+
+                        <div class="col-xs-4 form-group pagado">
+
+                            <input type="hidden" value="@Model.Total" name="pagado" class="form-control text-right text-valor-pagado input-money" id="pagado" placeholder="Valor Metodo">
+                            <input type="text" value="@valPag" name="pagado2" class="form-control text-right text-valor-pagado input-money" id="pagado2" placeholder="Valor Metodo">
+                        </div>
+
+                        <div class="col-xs-10 form-group">
+                            <label for="notes">Detalle de Pago:</label>
+                            @Html.TextArea("detallePago", @observaPago, new { @id = "detmedioPago", @class = "form-control", @style = "width:100%;", @rows = "1" })
+                        </div>
+
+                        <div class="col-xs-2 form-group">
+                        </div>
+                        <div class="col-xs-2 form-group">
+                        </div>
+
+                        <div class="col-xs-2 form-group pagado">
+                            <button type="button" id="btnAddMeth" class="btn btn-blue">
+                                <i class="entypo-plus"></i>
+                            </button>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="col-xs-12 form-group">
+                            <table id="tablaMetodosPago" class="table datatable table-bordered table-hover">
+                                <thead>
+                                    <tr class="text-sm">
+                                        <th><label>Id</label></th>
+                                        <th><label>Metodos</label></th>
+                                        <th><label>Detalle</label></th>
+                                        <th><label>Valor</label></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                                <tfoot>
+                                    <tr class="text-sm">
+                                        <th><label></label></th>
+                                        <th><label></label></th>
+                                        <th><h4> <span>Total</span> </h4></th>
+                                        <th><h4 id="TotalMeth"> <span>0.00</span> </h4></th>
+                                        <th><label></label></th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+
+                        
+                        <div class="clearfix"></div>
+
+                        <div class="col-xs-12 form-group CreditCardNum">
+                            <i class="fa fa-cc-visa fa-2x" id="visa" aria-hidden="true"></i>
+                            <i class="fa fa-cc-mastercard fa-2x" id="mastercard" aria-hidden="true"></i>
+                            <i class="fa fa-cc-amex fa-2x" id="amex" aria-hidden="true"></i>
+                            <i class="fa fa-cc-discover fa-2x" id="discover" aria-hidden="true"></i>
+                            <label for="CreditCardNum"># Tarjeta de Credito (swipe)</label>
+                            <input type="text" class="form-control cc-num" name="numeroTarjeta" id="CreditCardNum" placeholder="Credit Card Number (swipe)">
+                        </div>
+
+                        <div class="clearfix"></div>
+                        <div class="col-xs-12 form-group CreditCardHold col-md-4 padding-s">
+                            <input type="text" class="form-control" id="CreditCardHold" name="holderTarjeta" placeholder="Credit Card Holder">
+                        </div>
+                        <div class="col-xs-12 form-group CreditCardHold col-md-2 padding-s">
+                            <input type="text" class="form-control" id="CreditCardMonth" name="mesTarjeta" placeholder="Month">
+                        </div>
+                        <div class="col-xs-12 form-group CreditCardHold col-md-2 padding-s">
+                            <input type="text" class="form-control" id="CreditCardYear" name="anioTarjeta" placeholder="Year">
+                        </div>
+                        <div class="col-xs-12 form-group CreditCardHold col-md-4 padding-s">
+                            <input type="text" class="form-control" id="CreditCardCODECV" name="codigocvTarjeta" placeholder="CODE CV">
+                        </div>
+                        <div class="col-xs-12 form-group ChequeNum" style="display: none;">
+                            <label for="ChequeNum">Cheque #</label>
+                            <input type="text" name="chequenum" class="form-control " id="ChequeNum" placeholder="Cheque Number">
+                        </div>
+
+
+                    </div>
+
+                    <div class="tab-pane" id="tab3">
+
+                        <div id="detallePagos" class="row">
+
+                        </div>
+                        <div class="row">
+                            <input type="checkbox" name="slim" id="slim" value="true" style="display: initial">
+                            <label for="slim">Imprimir Ticket</label>
+                        </div>
+                        <center>
+                            <button type="button" class="btn btn-green btn-add" onclick="saleBtn()">Guardar <i class="entypo-floppy"></i></button>
+                        </center>
+                    </div>
+
+
+                    <ul class="pager wizard">
+                        <li class="previous">
+                            <a href="#"><i class="entypo-left-open"></i> Anterior</a>
+                        </li>
+                        <li class="next">
+                            <a href="#">Siguiente <i class="entypo-right-open"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+
+
+            <div class="col-xs-4 form-group text-center">
+                <h3 id="ItemsNum2"><span>@Model.CantidadProductos</span> articulos</h3>
+            </div>
+
+            <div class="col-xs-4 form-group text-center">
+                <h2 id="TotalModal">Total $ @Model.Total.ToCustomFormatString()</h2>
+            </div>
+
+            <div class="col-xs-4 form-group ReturnChange text-center">
+                <h3 id="ReturnChange">Cambio $ <span>0.00</span> </h3>
+            </div>
+
+            <div class="clearfix"></div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+
+        $("#saveForm").importPurchaseWizard();
+        $("#fecha").datepicker();
+        $("#hora").timepicker();
+
+        function getRUC() {
+            var data = $("#ruc").find(":selected").attr("data-ruc") || null;
+            return (data != '') ? JSON.parse(data) : null;
+        }
+
+        $("#ruc").on("change", function () {
+            var model = getRUC();
+
+            $.post(POS.SetRuc_Url, model);
+
+            $('#details').load(POS.Details_Url);
+            $('#ItemsNum span, #ItemsNum2 span').load(POS.TotalCart_Url);
+            $('#subtotalIVA').load(POS.SubtotalIVA_Url);
+            $('#subtotal0').load(POS.Subtotal0_Url);
+            $('#taxValue').load(POS.ValorIVA_Url);
+
+            $('#Subtot').load(POS.SubtotalCart_Url, null, total_change);
+
+            $.get(POS.SetCustomer_Url, setClientData)
+        });
+
+        var updatePaymentMethod = function () {
+
+            var p_met = $("#medioPago").find('option:selected').val();
+
+            //if (p_met === '1') {
+                $('.pagado').show();
+                $('.ReturnChange').show();
+                $('.CreditCardNum').hide();
+                $('.CreditCardHold').hide();
+                $('.CreditCardMonth').hide();
+                $('.CreditCardYear').hide();
+                $('.CreditCardCODECV').hide();
+                $('#CreditCardNum').val('');
+                $('#CreditCardHold').val('');
+                $('#CreditCardYear').val('');
+                $('#CreditCardMonth').val('');
+                $('#CreditCardCODECV').val('');
+                $('.stripe-btn').hide();
+                $('.ChequeNum').hide();
+            //} else if (p_met === '2') {
+            //    $('.pagado').show();
+            //    $('.ReturnChange').hide();
+            //    $('.CreditCardNum').show();
+            //    $('.CreditCardHold').show();
+            //    $('.CreditCardMonth').show();
+            //    $('.CreditCardYear').show();
+            //    $('.CreditCardCODECV').show();
+            //    $('.stripe-btn').show();
+            //    $('.ChequeNum').hide();
+            //} else if (p_met === '3') {
+            //    $('.pagado').hide();
+            //    $('.ReturnChange').hide();
+            //    $('.CreditCardNum').hide();
+            //    $('.CreditCardHold').hide();
+            //    $('.CreditCardMonth').hide();
+            //    $('.CreditCardYear').hide();
+            //    $('.CreditCardCODECV').hide();
+            //    $('#CreditCardNum').val('');
+            //    $('#CreditCardHold').val('');
+            //    $('#CreditCardYear').val('');
+            //    $('#CreditCardMonth').val('');
+            //    $('#CreditCardCODECV').val('');
+            //    $('.stripe-btn').hide();
+            //    $('.ChequeNum').show();
+            //}
+
+        };
+
+        $("#medioPago").change(updatePaymentMethod);
+
+        /********************************* Credit Card infos section ****************************************/
+        $('#CreditCardNum').validateCreditCard(function (result) {
+            var cardtype = result.card_type == null ? '-' : result.card_type.name;
+            $('.CreditCardNum i').removeClass('dark-blue');
+            $('#' + cardtype).addClass('dark-blue');
+        });
+
+        $('#CreditCardNum').keypress(function (e) {
+            var data = $(this).val();
+            if (data.length > 22) {
+
+                if (e.keyCode == 13) {
+                    e.preventDefault();
+
+                    var c = new SwipeParserObj(data);
+
+                    $('#CreditCardNum').val(c.account);
+                    $('#CreditCardHold').val(c.account_name);
+                    $('#CreditCardYear').val(c.exp_year);
+                    $('#CreditCardMonth').val(c.exp_month);
+                    $('#CreditCardCODECV').val('');
+
+                }
+                else {
+                    $('#CreditCardNum').val('');
+                    $('#CreditCardHold').val('');
+                    $('#CreditCardYear').val('');
+                    $('#CreditCardMonth').val('');
+                    $('#CreditCardCODECV').val('');
+                }
+
+                $('#CreditCardCODECV').focus();
+                $('#CreditCardNum').validateCreditCard(function (result) {
+                    var cardtype = result.card_type == null ? '-' : result.card_type.name;
+                    $('.CreditCardNum i').removeClass('dark-blue');
+                    $('#' + cardtype).addClass('dark-blue');
+                });
+            }
+
+        });
+
+
+        // ********************************* change calculations
+        $("#spinnerNumeroPagos > button").on("click", inicializarCuentasCobrar);
+        $("#spinnerPlazoDias > button").on("click", inicializarCuentasCobrar);
+
+        $("#cuotas").on("change", inicializarCuentasCobrar);
+        $("#plazo").on("change", inicializarCuentasCobrar);
+
+
+        //$('#pagado').on('change keyup', function () {
+        //    var payed = parseFloat($('#pagado').val()) || 0.00;
+        //    var total = parseFloat($('#total').text()) || 0.00;
+        //    var change = -(total - payed);
+
+        //    if (change < 0) {
+        //        $('#ReturnChange span').text(change.toFixed(2));
+        //        $('#ReturnChange span').addClass("red");
+        //        $('#ReturnChange span').removeClass("light-blue");
+        //        $('#ReturnChange').hide();
+
+        //        $("#paymentForm").val(2);
+        //    } else {
+        //        $('#ReturnChange span').text(change.toFixed(2));
+        //        $('#ReturnChange span').removeClass("red");
+        //        $('#ReturnChange span').addClass("light-blue");
+        //        $('#ReturnChange').show();
+
+        //        $("#paymentForm").val(1);
+        //    }
+
+        //    change_payform(false)
+        //});
+
+
+        var change_payform = function (e) {
+            //debugger
+            var formaPago = $("#paymentForm").val() * 1;
+
+            if (formaPago == 1) {
+                $(".plazo").hide();
+                $(".cuotas").hide();
+
+                $("#plazo").val(0);
+                $("#cuotas").val(0);
+
+                $("#pagado2").val(@Model.Total);
+            }
+            else {
+                $(".plazo").show();
+                $(".cuotas").show();
+
+                $("#cuotas").val(1);
+
+                $("#pagado2").val(0);
+            }
+
+            inicializarCuentasCobrar(e);
+        };
+
+        $("#paymentForm").on("change", change_payform);
+
+
+        $(".input-spinner").spinnercustom()
+
+        inicializarCuentasCobrar();
+        updatePaymentMethod();
+
+
+
+
+    //***************************************
+     var eliminarDetallePago = function () {
+        var trow = $(this).closest("tr");
+        trow.remove();
+        CalcularMetodos();
+        return false;
+    };
+
+    $("a.btnElminarDetalle").on("click", eliminarDetallePago);
+
+    var scntDiv = $('#tablaMetodosPago');
+    var idxMethod = @(idxMetodo);
+    var dropmeth = document.getElementById("medioPago");
+    var clicPlus = true;
+
+    $('.wizard li.next > a').on("click", function () {
+        if ($("#tab2").hasClass("active")) {
+            if (calcular() <= 0) {
+                clicPlus = false;
+                document.getElementById("btnAddMeth").click();
+            }
+        }
+    })
+
+    $('#btnAddMeth').click(function () {
+        var idMeth = dropmeth.options[dropmeth.selectedIndex].value;
+        var desMetodoPago = dropmeth.options[dropmeth.selectedIndex].text;
+        var valmeth = parseFloat($('#pagado2').val()) || 0.00;
+        var detPago = $('#detmedioPago').val();
+        //debugger;
+        if (valmeth <= 0 && clicPlus) {
+            swal("Valor enviado a Credito.");
+            return;
+        }
+        clicPlus = true;
+
+        var totalMeth = calcular() + valmeth;
+        var total = @Model.Total;
+        var validar = total.toFixed(2);
+
+        console.log(total);
+        console.log(validar);
+        if (totalMeth > validar) {
+            console.log(total.toFixed(2));
+            swal("Pago no debe ser mayor al total.");
+            return;
+        }
+
+        var desMeth = $("<input data-val='true' id='CuentasPorCobrar_0__MetodosPago_" + idxMethod + "__IdMedioPago' name='CuentasPorCobrar[0].MetodosPago[" + idxMethod + "].IdMedioPago' type='hidden' value='" + idMeth + "' /><span>" + desMetodoPago + "</span> ");
+        var observaMeth = $("<input data-val='true' id='CuentasPorCobrar_0__MetodosPago_" + idxMethod + "__Descripcion' name='CuentasPorCobrar[0].MetodosPago[" + idxMethod + "].Descripcion' type='hidden' value='" + detPago + "' /><span>" + detPago + "</span> ");
+        var txtValor = $("<input data-val='true' id='CuentasPorCobrar_0__MetodosPago_" + idxMethod + "__Valor' name='CuentasPorCobrar[0].MetodosPago[" + idxMethod + "].Valor'  type='hidden' value='" + valmeth + "' /><span>" + valmeth + "</span> ");
+        txtValor.maskMoney(optionsMaskMoney);
+
+        var icEliminar = CrearIconoEliminar();
+        icEliminar.on("click", eliminarDetallePago);
+
+        var $tr = $("<tr></tr>");
+        $tr.append($("<td></td>").append(idMeth))
+            .append($("<td></td>").append(desMeth))
+            .append($("<td></td>").append(observaMeth))
+            .append($("<td></td>").append(txtValor))
+            .append($("<td></td>").addClass("text-center").append(icEliminar));
+
+        scntDiv.find("tbody").append($tr);
+
+        scntDiv.append($tr)
+        idxMethod++;
+        CalcularMetodos()
+        $('#detmedioPago').val('');
+        return false;
+    });
+
+    function CrearIconoEliminar() {
+        var  eliminar = $(" <a href='#'  class='text-info btnElminarDetalle'><i class='entypo-trash'></i> </a>");
+        return eliminar;
+   }
+
+    function CalcularMetodos () {
+        var payed = calcular()
+        var total = @Model.Total;
+        var change = -(total.toFixed(2) - payed);
+
+        $("#TotalMeth").text("$ " + (payed * 1).toFixed(2));
+
+        if (change < 0) {
+            $('#ReturnChange span').text(change.toFixed(2));
+            $('#ReturnChange span').addClass("red");
+            $('#ReturnChange span').removeClass("light-blue");
+            $('#ReturnChange').hide();
+
+            $("#paymentForm").val(2);
+        } else {
+            $('#ReturnChange span').text(change.toFixed(2));
+            $('#ReturnChange span').removeClass("red");
+            $('#ReturnChange span').addClass("light-blue");
+            $('#ReturnChange').show();
+
+            $("#paymentForm").val(1);
+        }
+        change_payform(false)
+    }
+    function calcular() {
+            var suma = 0;
+            $('#tablaMetodosPago tbody').find('tr').each(function (i, el) {
+                suma += parseFloat($(this).find('td').eq(3).text());
+            });
+            return suma;
+        }
+
+
+
+        var scntDivInfo = $('#tablaInfoAdicional');
+        var idxinfoAd = @(idxInfoA);
+
+        $('#addInfoAd').click(function () {
+
+
+            var tituloTxt = $("<textarea placeholder='Titulo' style='width: 100 %;' rows='1' data-val='true' id='InformacionAdicional_" + idxinfoAd + "__TituloInfoAdicional' name='InformacionAdicional[" + idxinfoAd + "].TituloInfoAdicional' class='form-control' ></textarea>");
+            var valorTxt = $("<textarea placeholder='Valor' style='width: 100 %;' rows='1' data-val='true' id='InformacionAdicional_" + idxinfoAd + "__InfoAdicional' name='InformacionAdicional[" + idxinfoAd + "].InfoAdicional' class='form-control' ></textarea>");
+
+            var icEliminar = CrearIconoEliminar();
+            icEliminar.on("click", eliminarDetallePago);
+
+            var $tr = $("<tr></tr>");
+            $tr.append($("<td></td>").append(tituloTxt))
+                .append($("<td></td>").append(valorTxt))
+                .append($("<td></td>").addClass("text-center").append(icEliminar));
+
+            scntDivInfo.find("tbody").append($tr);
+            scntDivInfo.append($tr)
+            idxinfoAd++;
+            return false;
+        });
+
+    });
+
+</script>

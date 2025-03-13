@@ -1,0 +1,280 @@
+﻿@using TendaGo.Common
+@using TendaGo.Web.Models
+@using TendaGo.Web.ApplicationServices
+
+@model CobroDebitoViewModel
+@{
+    ViewBag.Title = "Cobros";
+    var locales = Session.GetLocales();
+    var mediosPago = CatalogosAppService.ObtenerMediosPago();
+}
+
+@Styles.Render("~/Styles/datatables")
+
+
+<ol class="breadcrumb bc-3 small hidden-xs breadcrumb-no-padding">
+    <li> <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home</a>  </li>
+    <li> Cobros </li>
+    <li class="active"> <strong>Registrar Cobros</strong> </li>
+</ol>
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left">
+            <h3>Cobros</h3>
+        </div>
+    </div>
+</div>
+<div class="row">
+    @using (Html.BeginForm("Index", "Cobros", FormMethod.Post, new { id = "guardarCobrosForm", @class = "form-wizard validate" }))
+    {
+        <div class="steps-progress">
+            <div class="progress-indicator"></div>
+        </div>
+        <ul class="hidden-print">
+            <li class="active">
+                <a href="#tab1" data-toggle="tab"><span>1</span>Detalle del Cobro</a>
+            </li>
+            <li>
+                <a href="#tab2" data-toggle="tab"><span>2</span>Forma de Pago</a>
+            </li>
+            <li>
+                <a href="#tab3" data-toggle="tab"><span>3</span>Resumen</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+
+            <div class="tab-pane active" id="tab1">
+
+                @Html.HiddenFor(model => model.Id, new { @id = "receiptId" })
+                @Html.HiddenFor(model => model.IdCliente, new { @id = "IdCliente", @class = "required", @required = "required", @min = "1" })
+                @Html.HiddenFor(model => model.Identificacion, new { @id = "clienteIdentificacion", @required = "required" })
+                @Html.HiddenFor(model => model.RazonSocial, new { @id = "clienteRazonSocial", @required = "required", @class = "required" })
+                @Html.HiddenFor(model => model.Direccion, new { @id = "clienteDireccion" })
+                @Html.HiddenFor(model => model.Telefono, new { @id = "clienteTelefono" })
+                @Html.HiddenFor(model => model.Correo, new { @id = "clienteCorreo" })
+                @Html.HiddenFor(model => model.IdEmpresa, new { @required = "required" })
+
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <div class="panel-title">Cliente</div>
+                                <div class="panel-options" style="padding-top: 5px;">
+                                    <button type="button" id="btnBuscarCliente" class="btn btn-sm btn-white" title="Buscar Cliente">
+                                        <i class="entypo-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div id="clientResult" class="tile-title tile-gray">
+                                    <div class="icon">
+                                        <i class="entypo-user"></i>
+                                    </div>
+                                    <div class="title">
+                                        <h3 class="cliente-identificacion"></h3>
+                                        <p class="cliente-RazonSocial">.</p>
+                                        <p class="cliente-Direccion">.</p>
+                                        <p class="cliente-Telefono">.</p>
+                                        <p class="cliente-Correo">.</p>
+                                    </div>
+                                </div>
+
+                                @Html.ValidationMessageFor(model => model.IdCliente)
+                                @Html.ValidationMessageFor(model => model.Identificacion)
+                                @Html.ValidationMessageFor(model => model.RazonSocial)
+                                @Html.ValidationMessageFor(model => model.IdEmpresa)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-xs-12">
+                        <div class="panel panel-primary">
+                            <div class="panel-body">
+                                <div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-2 ">
+                                            <label class="control-label">Fecha</label>
+                                        </div>
+                                        <div class="col-sm-4" lang="es-es">
+                                            <div class="input-group">
+                                                <input id="Fecha" name="FechaEmision" type="text"
+                                                       autocomplete="off" class="form-control datepicker valid" data-val="true"
+                                                       data-val-date="Se requiere una fecha válida."
+                                                       data-val-required="El campo fecha de emisión es requerido."
+                                                       value="@Model.FechaEmision.ToString(" yyyy-MM-dd")"
+                                                       data-format="yyyy-mm-dd" aria-required="true" aria-invalid="false" aria-describedby="Fecha-error">
+                                                <div class="input-group-addon"> <a href="#"><i class="entypo-calendar"></i></a> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        @Html.LabelFor(x => x.Observaciones, new { @class = "col-sm-2 control-label" })
+                                        <div class="col-sm-10">
+                                            @Html.TextAreaFor(x => x.Observaciones, new { id = "Detalle", @class = "form-control no-resize", rows = "3" })
+                                            @Html.ValidationMessageFor(x => x.Observaciones)
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <hr />
+                                    </div>
+
+                                    <div class="form-group row text-center">
+                                        <h3>
+                                            <b>Valor a pagar:  $ <span class="total">0.00</span> </b>
+                                        </h3>
+                                        @Html.HiddenFor(model => model.Total, new { @id = "totalRecibo", @class = "required", @required = "required" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row"> 
+                    <div id="divConsultasCuotas" class=" col-xs-12">
+
+                        @{ Html.RenderPartial("ListaCuotasPendientes", new List<ReceivableDto>()); }
+
+                    </div>
+                </div> 
+
+            </div>
+
+            <div class="tab-pane" id="tab2">
+
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="panel-title">.</div>
+                        <div class="panel-options">
+                            <a href="#" class="bg-success agregar-pago">
+                                <span>Agregar</span>
+                                <i class="entypo-plus"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="panel-body with-table">
+
+                         
+                        <table id="tablaDetalleCompra" class="table datatable table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th width="20%">Forma de Pago</th>
+                                    <th width="40%">Detalle</th>
+                                    <th class="text-center">Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody id="paymentBody">
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th colspan="2" class="bold" style="text-align:right">(+) Total</th>
+                                    <th class="text-right">
+                                        $ <span class="total">0.00</span>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    @Html.HiddenFor(model => model.TotalPagos, new { @id = "totalPagos", @class = "required", @required = "required" })
+
+                                    <th colspan="2" class="bold" style="text-align:right">(-) Pagos</th>
+                                    <th class="text-right ">
+                                        $ <span class="total-pagos">0.00</span>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th colspan="2" class="bold" style="text-align:right">(=) Saldo</th>
+                                    <th class="text-right bold">
+                                        $ <span class="saldo-total">0.00</span>
+                                    </th>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                       
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            <div class="tab-pane" id="tab3">
+                @{ Html.RenderPartial("ReciboVistaPreliminar", Model); }
+            </div>
+
+            <ul class="pager wizard">
+                <li class="previous">
+                    <a href="#">
+                        <i class="entypo-left-open"></i>
+                        <span class="hidden-xs">Anterior</span>
+                    </a>
+                </li>
+
+                <li class="next">
+                    <a href="#">
+                        <span class="hidden-xs">Siguiente</span>
+                        <i class="entypo-right-open"></i>
+                    </a>
+                </li>
+
+                <li class="finish pull-right" style="display: none;">
+                    <button type="submit" class="btn btn-success btn-icon icon-left hidden-print">
+                        <i class="entypo-floppy"></i>
+                        <span>Guardar</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+    }
+</div>
+
+<div id="divListaClientes" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Seleccione un Cliente:</h4>
+            </div>
+            <div class="modal-body" id="divListaBody">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/wizard")
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/datepicker")
+    @Scripts.Render("~/bundles/timepicker")
+    @Scripts.Render("~/bundles/fileinput")
+    @Scripts.Render("~/bundles/maskmoney")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/scripts/TendaGo.cobros.index.js")
+
+    <script>
+
+        var clienteData = {};
+
+        menu_settings.parentMenu = 'MnuCobro';
+        menu_settings.optionMenu = 'OpcCrear';
+
+        // Handler cuando se seleccione un cliente:
+        var onSelectClient = Cobros.onSelectCustomer;
+        Cobros.saveReceiptUrl = '@Url.Action("GuardarRecibo")';
+        Cobros.loadReceivablesUrl = '@Url.Action("CuotasPendientes")';
+        Cobros.previewReceiptUrl = '@Url.Action("ReciboVistaPreliminar")';
+        Cobros.searchCustomerUrl = '@Url.Action("ConsultarClientes", "NotaPedido")';
+
+        Cobros.paymentMethods = @Html.Raw(Json.Encode(mediosPago.Select(m=>new { m.Id, m.MedioPago })));
+
+        Cobros.configure();
+
+    </script>
+}

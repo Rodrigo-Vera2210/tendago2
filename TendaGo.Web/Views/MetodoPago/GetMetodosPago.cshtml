@@ -1,0 +1,36 @@
+﻿@model System.Collections.Generic.IEnumerable<TendaGo.Common.PaymentMethodDto>
+
+
+<div class="table-responsive">
+    <table id="profilesTable" class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.MedioPago)
+                </th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MedioPago)
+                </td>
+                <td>
+                    <button type="button" class="btn btn-blue" onclick="editByModule('@item.Id');">
+                        <i class="entypo-pencil"></i>
+                    </button>                    
+                </td>
+                <td>
+                    <script> var data = @Html.Raw(Json.Encode(@item));</script>
+                    <button type="button" class="btn btn-danger" onclick="deleteByModule(data);">
+                        <i class="entypo-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        }
+    </table>
+</div>

@@ -1,0 +1,374 @@
+﻿@using TendaGo.Web.Models
+@model NotaPedidoModel
+@{
+    ViewBag.EditarPagos = ViewBag.EditarPagos ?? false;
+    var listaFormaPago = (IEnumerable<SelectListItem>)ViewBag.ListaFormaPago;
+
+    var listaMetodoPago = (IEnumerable<SelectListItem>)ViewBag.ListaMediosPago;
+
+    // Si la forma de Pago es cero, se asume que es contado inicialmente.
+    if (Model.IdFormaPago == 0)
+    {
+        Model.IdFormaPago = 1;
+    }
+
+    var formaPagoValue = Model.IdFormaPago.ToString();
+
+    var ValorPagado = 0M;
+
+    if (Model.CuentasPorCobrar != null)
+    {
+        ValorPagado = Model.CuentasPorCobrar.Sum(m => m.Valor - m.Saldo);
+    }
+
+    if (ViewBag.Accion == "Entregar")
+    {
+        Model.CuentasPorCobrar[0].MetodosPago = new List<TendaGo.Common.ReceivablePayMethodDto>();
+    }
+
+    var isEnabledView = (ViewBag.Accion == "Aprobar" || ViewBag.Accion == "Entregar");
+
+    var disableControl = (formaPagoValue != "2" && isEnabledView) ? "disabled" : "";
+    var disableControlMp = (formaPagoValue == "2" && isEnabledView) ? "disabled" : "";
+
+    int idxMetodo = 0;
+}
+
+<div class="panel panel-primary">
+    <div class="panel-body">
+
+        <div class="row">
+            <div class="col-sm-7 row">
+                <div class="col-md-12">
+                    <div class="form-group row margin-5-5">
+                        <div class="col-md-3">
+                            @Html.Label("Forma pago", new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-9">
+                            @if (isEnabledView)
+                            {
+                                @Html.DropDownListFor(m => m.IdFormaPago, new SelectList(listaFormaPago, "Value", "Text", formaPagoValue), new { @class = "form-control" })
+                            }
+                            else
+                            {
+                                var formaPago = listaFormaPago.FirstOrDefault(m => m.Value == Model.IdFormaPago.ToString());
+                                <span id="DesFormaPago" class="form-control">@(formaPago != null ? formaPago.Text : "No Disponible")</span>
+                                @Html.HiddenFor(m => m.IdFormaPago)
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-sm-5 row">
+                <div class="col-md-12">
+                    <div class="form-group row margin-5-5">
+                        <div class="col-md-4">
+                            @Html.Label("Total a Pagar", new { @class = "control-label" })
+                        </div>
+                        <div class="col-md-4">
+                            @Html.Label("Total", Model.Total.ToCustomFormatString(), new { @class = "form-control text-total text-right" })
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="col-sm-7 row">
+
+                <div class="col-xs-6">
+                    <div class="form-group row margin-5-5">
+                        <label class="col-xs-6 control-label">N° Pagos</label>
+                        <div class="col-xs-6">
+                            @if (isEnabledView)
+                            {
+                                <div id="spinnerNumeroPagos" class="input-spinner input-spinner-sx">
+                                    <button type="button" class="btn btn-default @disableControl">-</button>
+                                    <input type="text" id="Cuotas" name="Cuotas" value="@Model.Cuotas" class="form-control" data-min="1" @disableControl />
+                                    <button type="button" class="btn btn-default" @disableControl>+</button>
+                                </div>
+                            }
+                            else
+                            {
+                                @Html.Hidden("Cuotas", Model.Cuotas)
+                                <span class="form-control"> @Model.Cuotas</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group row margin-5-5">
+                        <label class="col-xs-6 control-label">Días</label>
+                        <div class="col-xs-6">
+                            @if (isEnabledView)
+                            {
+                                <div id="spinnerPlazoDias" class="input-spinner input-spinner-sx">
+                                    <button type="button" class="btn btn-default" @disableControl>-</button>
+                                    <input type="text" id="Plazo" name="Plazo" value="@Model.Plazo" class="form-control" data-min="0" @disableControl />
+                                    <button type="button" class="btn btn-default" @disableControl>+</button>
+                                </div>
+                            }
+                            else
+                            {
+                                @Html.Hidden("Plazo", Model.Plazo)
+                                <span class="form-control">@Model.Plazo</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @if (Model.EstadoActual == "EN PROCESO" && Model.ValorNc>0)
+            {
+                <div class="col-sm-5 row">
+                    <div class="col-md-12">
+                        <div class="form-group row margin-5-5">
+                            <div class="col-md-4">
+                                @Html.Label("Valor Crédito", new { @class = "control-label", style = "color:#ff0000"})
+                            </div>
+                            <div class="col-md-4">
+                                @Html.Label("ValorNc", Model.ValorNc.ToCustomFormatString(), new { @class = "form-control text-total text-right"})
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            }
+            
+            @if (isEnabledView)
+            {
+                <div class="col-sm-7 row">
+                    <div class="col-md-12">
+                        <div class="form-group row margin-5-5">
+                            <div class="col-md-3">
+                                @Html.Label("Método de pago", new { @class = "control-label" })
+                            </div>
+                            <div class="col-md-5">
+
+                                @Html.DropDownListFor(m => m.IdFormaPago, new SelectList(listaMetodoPago, "Value", "Text"), new { @id = "dropd", @class = "form-control" })
+
+                            </div>
+                            <div class="col-xs-4">
+                                <button type="button" id="btnAddMeth" class="btn btn-blue">
+                                    <i class="entypo-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+            <div class="col-sm-5 row">
+                <div class="col-md-12">
+                    <div class="form-group row margin-5-5">
+                        <div class="form-group col margin-5-5">
+                            @for (int i = 0; i < Model.Recibo.Count; i++)
+                            {
+
+                                <div class="form-group row margin-5-5">
+                                    <div class="col-md-1">
+                                        @Html.Label("Rec", new { @class = "control-label" })
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.TextBoxFor(m => m.Recibo[i], new { @class = "form-control", @readonly = true })
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="text" id="recibovalor" name="recibovalor" value="@(Model.ReciboValor[i] != null ? Model.ReciboValor[i] : 0)" class='form-control text-right text-valor-pagado input-money' disabled />
+                                    </div>
+                                    <div class="col-xs-1">
+                                        <button type="button" id="btnViewRec" class="btn btn-blue" onclick="mostrarDetalleRecibo('@Model.Recibo[i]', '@ViewBag.Accion');">
+                                            <i class="entypo-eye"></i>
+                                        </button>
+                                    </div>
+                                    @if (Model.EstadoActual == "REVISADA")
+                                    {
+                                        <div class="col-xs-1">
+                                            <button type="button" id="btnDelRec" class="btn btn-red">
+                                                <i class="entypo-trash"></i>
+                                            </button>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <table id="tablaMetodosPago" class="table datatable table-bordered table-hover">
+                <thead>
+                    <tr class="text-sm">
+                        <th><label>Id</label></th>
+                        <th><label>Metodos</label></th>
+                        <th><label>Comentario</label></th>
+                        <th><label>Valor</label></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @{
+                        if (Model.CuentasPorCobrar.Count > 0)
+                        {
+                            var meth = Model.CuentasPorCobrar[0];
+
+                            foreach (var me in meth.MetodosPago)
+                            {
+                                <tr>
+                                    <td>
+                                        @me.IdMedioPago
+                                    </td>
+                                    <td>
+                                        @Html.HiddenFor(m => m.CuentasPorCobrar[0].MetodosPago[idxMetodo].IdMedioPago)
+                                        @Html.HiddenFor(m => m.CuentasPorCobrar[0].MetodosPago[idxMetodo].IdCobroDebito)
+                                        @Html.HiddenFor(m => m.CuentasPorCobrar[0].MetodosPago[idxMetodo].IdCierreCaja)
+                                        @Html.HiddenFor(m => m.CuentasPorCobrar[0].MetodosPago[idxMetodo].Id)
+                                        @Html.HiddenFor(m => m.CuentasPorCobrar[0].MetodosPago[idxMetodo].Descripcion)
+                                        @Html.HiddenFor(m => m.CuentasPorCobrar[0].MetodosPago[idxMetodo].ValorOriginal)
+                                        @Html.HiddenFor(m => m.CuentasPorCobrar[0].MetodosPago[idxMetodo].Estado)
+
+                                        @me.MetodoPago
+                                    </td>
+
+                                    <td class="text-right">
+                                        @if (isEnabledView)
+                                        {
+                                            @Html.TextBoxFor(m => m.CuentasPorCobrar[0].MetodosPago[idxMetodo].Descripcion, new { @class = "form-control" })
+                                        }
+                                        else
+                                        {
+                                            @me.Valor
+                                            @Html.HiddenFor(m => m.CuentasPorCobrar[0].MetodosPago[idxMetodo].Descripcion)
+                                        }
+                                    </td>
+
+                                    <td class="text-right">
+                                        @if (isEnabledView)
+                                        {
+                                            @*@Html.TextBoxFor(m => m.CuentasPorCobrar[0].MetodosPago[idxMetodo].Valor, new { @class = "form-control text-right text-valor-pagado input-money" })*@
+                                            @Html.TextBoxFor(m => m.CuentasPorCobrar[0].MetodosPago[idxMetodo].Valor, new { @class = "form-control text-right subtotal-cobro input-money" })
+                                        }
+                                        else
+                                        {
+                                            @me.Valor
+                                            @Html.HiddenFor(m => m.CuentasPorCobrar[0].MetodosPago[idxMetodo].Valor)
+                                        }
+                                    </td>
+
+                                    <td class="text-center">
+                                        @if (isEnabledView)
+                                        {
+                                            <a href="#" class="text-info btnElminarDetalle">
+                                                <i class="entypo-trash"></i>
+                                            </a>
+                                        }
+                                    </td>
+                                </tr>
+
+                                idxMetodo++;
+                            }
+                        }
+                    }
+                </tbody>
+
+                <tfoot>
+                    <tr class="text-sm">
+                        <th><label></label></th>
+                        <th><label></label></th>
+                        <th>
+                            <label class="col-xs-4 control-label">Valor Pagado</label>
+                            @Html.Hidden("ValorPagado", ValorPagado)
+                        </th>
+
+                        <th>
+                            <input type="text" id="ValorAbono" name="ValorAbono" value="@ValorPagado" class='form-control text-right text-valor-pagado input-money' disabled />
+                        </th>
+
+                        <th class="text-center">
+                            @if (isEnabledView)
+                            {
+                                <button type="button" id="btnCuentasCobrar" class="btn btn-blue">
+                                    <i class="entypo-right-dir"></i>
+                                </button>
+                            }
+                        </th>
+
+
+                    </tr>
+                </tfoot>
+
+            </table>
+
+        </div>
+    </div>
+</div>
+<div id="detallePagos" class="row">
+    @{ Html.RenderPartial("GenerarCuentasPorCobrar", Model, ViewData); }
+</div>
+ 
+<div class="modal" id="modalRecibo">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Recibo
+            </div>
+            <div class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var eliminarDetallePago = function () {
+        var trow = $(this).closest("tr");
+        trow.remove();
+        @{
+            idxMetodo--;
+        }
+        recalcularMetodos();
+        return false;
+    };
+
+    function recalcularMetodos(element) {
+        console.log(element)
+        if (!element) {
+            element = $("#tablaMetodosPago > tbody > tr").first();
+        }
+        var cobros = 0.00;
+
+        $.each($("input.subtotal-cobro"), function () {
+
+            cobros += $(this).toFloat();
+        });
+
+        cobros = parseFloat(cobros.toFixed(2));
+
+        $("#ValorAbono").val(cobros.toFixed(2));
+    }
+
+    $("a.btnElminarDetalle").on("click", eliminarDetallePago);
+
+    var scntDiv = $('#tablaMetodosPago');
+    var idxMethod = @(idxMetodo);
+    var dropmeth = document.getElementById("dropd");
+
+    function mostrarDetalleRecibo($id) {
+
+        if ($id != "") {
+            var $div = $("#modalRecibo");
+            var $body = $div.find(".modal-content > .modal-body");
+
+            $body.empty();
+
+            $body.load('@Url.Action("ReciboVistaPreliminar")/' + $id, function () {
+                $div.modal("show");
+            });
+        }
+    }
+
+</script>

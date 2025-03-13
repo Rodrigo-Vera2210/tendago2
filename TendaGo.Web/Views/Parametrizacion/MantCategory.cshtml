@@ -1,0 +1,98 @@
+﻿
+@model TendaGo.Web.Models.CategoriaModel
+@{
+    var divisionList = (IEnumerable<SelectListItem>)ViewBag.DivisionList;
+    var lineList = (IEnumerable<SelectListItem>)ViewBag.LineList;
+    bool isEdit = ViewBag.IsEdit ?? false;
+    ViewBag.PanelTitle = isEdit ? "Editar" : "Nuevo";
+}
+
+@using (Html.BeginForm("MantCategory", "Parametrizacion", FormMethod.Post, new { id = "MantCategory" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">@ViewBag.PanelTitle</div>
+            @*<div class="panel-options">
+                <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                <a href="#" data-rel="close"><i class="entypo-cancel"></i></a>
+            </div>*@
+        </div>
+
+        <div class="panel-body">
+            <div class="form-group">
+                @Html.LabelFor(model => model.IdDivision, htmlAttributes: new {@class = "control-label"})
+                @Html.DropDownListFor(m => m.IdDivision, divisionList, "Seleccione División", new {@class = "form-control", id = "division"})
+                @Html.ValidationMessageFor(model => model.IdDivision, "", new {@class = "text-danger"})
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.IdLinea, htmlAttributes: new {@class = "control-label"})
+                @Html.DropDownListFor(m => m.IdLinea, lineList, "Seleccione Línea", new {@class = "form-control", id = "linea"})
+                @Html.ValidationMessageFor(model => model.IdLinea, "", new {@class = "text-danger"})
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Categoria, htmlAttributes: new {@class = "control-label"})
+                @Html.EditorFor(model => model.Categoria, new {htmlAttributes = new {@class = "form-control"}})
+                @Html.ValidationMessageFor(model => model.Categoria, "", new {@class = "text-danger"})
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.IdEstado, htmlAttributes: new {@class = "control-label"})
+                <div class="checkbox">
+                    <label>
+                        @Html.CheckBoxFor(model => model.IdEstado, new { id = "IdEstado" })
+                    </label>
+                    @Html.ValidationMessageFor(model => model.IdEstado, "", new {@class = "text-danger"})
+                </div>
+            </div>            
+        </div>
+        <div class="panel-footer">
+            <button type="button" id="btnCancelCat" class="btn btn-sm btn-default">Cancelar</button>
+            <input type="submit" value="Guardar" class="btn btn-sm btn-success"/>
+        </div>
+    </div>
+
+}
+@Scripts.Render("~/bundles/jqueryval")
+<script>
+    $('#MantCategory').submit(function () {
+        if ($('#MantCategory').validate().valid()) {
+            $.ajax({
+                url: $('#MantCategory').attr('action'),
+                type: 'POST',
+                data: $('#MantCategory').serialize(),
+                beforeSend: function () {
+                    $("#divMant").empty();
+                    $("#divMant").append('<div id="divLoading" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+                },
+                complete: function () {
+                    $("#divLoading").remove();
+                },
+                success: function (dataReceived) {
+                    if (dataReceived) {
+                        if (dataReceived.Error) {
+                            toastr.error(dataReceived.Error.UserMessage);
+                            console.error("dataReceived:" + JSON.stringify(dataReceived.Error));
+                        }
+                        else if (dataReceived.Success) {
+                            toastr.success(dataReceived.Mensaje, "", optionsToastr);
+                            refreshCategories(dataReceived.cat);
+                        }
+                    }
+                }
+            }).done(function (doneReceived) {
+                console.log("doneReceived: " + JSON.stringify(doneReceived));
+                console.log("doneReceived: " + JSON.stringify(doneReceived.Error));
+                LoadFormMant(0);
+            });
+        }
+        return false;
+    });
+
+    $("#division").on("change", function(e) {
+        var idDivision = $("#division option:selected").val();
+        getLines("linea",idDivision);
+    });
+</script>

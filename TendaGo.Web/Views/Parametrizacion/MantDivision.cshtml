@@ -1,0 +1,84 @@
+﻿@model TendaGo.Web.Models.DivisionModel
+@{
+    bool isEdit = ViewBag.IsEdit ?? false;
+    ViewBag.PanelTitle = isEdit ? "Editar" : "Nuevo";
+}
+
+@using (Html.BeginForm("MantDivision", "Parametrizacion", FormMethod.Post, new { id = "formMantDivision" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">@ViewBag.PanelTitle</div>
+        </div>
+
+        <div class="panel-body">
+            @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new {@class = "control-label"})
+                @Html.EditorFor(model => model.Name, new {htmlAttributes = new {@class = "form-control"}})
+                @Html.ValidationMessageFor(model => model.Name, "", new {@class = "text-danger"})
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IdEstado, htmlAttributes: new {@class = "control-label"})
+
+                <div class="checkbox">
+                    <label>
+                        @Html.CheckBoxFor(model => model.IdEstado, new {id = "IdEstado"})
+                    </label>
+                </div>
+                @Html.ValidationMessageFor(model => model.IdEstado, "", new {@class = "text-danger"})
+            </div>
+        </div>
+        <div class="panel-footer">
+            <button type="button" id="btnCancelCreate" class="btn btn-sm btn-default">Cancelar</button>
+            <input type="submit" value="Guardar" class="btn btn-sm btn-success"/>
+        </div>
+    </div>
+}
+
+@Scripts.Render("~/bundles/jqueryval")
+<script>
+    $("#btnCancelCreate").on("click", function () {
+        LoadFormMant(0);
+    });
+
+    $('#formMantDivision').submit(function () {
+        if ($('#formMantDivision').validate().valid()) {
+            $.ajax({
+                url: $('#formMantDivision').attr('action'),
+                type: 'POST',
+                data: $('#formMantDivision').serialize(),
+                beforeSend: function () {
+                    $("#divMant").empty();
+                    $("#divMant").append('<div id="divLoading" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+                },
+                complete: function () {
+                    $("#divLoading").remove();
+                },
+                success: function (dataReceived) {
+                    if (dataReceived) {
+                        if (dataReceived.Error) {
+                            toastr.error(dataReceived.Error.UserMessage);
+                            console.error("dataReceived:" + JSON.stringify(dataReceived.Error));
+                        }
+                        else if (dataReceived.Success) {
+                            console.log("success: " + JSON.stringify(dataReceived));
+                            toastr.success(dataReceived.Mensaje, "", optionsToastr);
+                            getDivisions();
+                        }
+                    }
+                }
+            }).done(function(doneReceived) {
+                LoadFormMant(0);
+            });
+        }
+        return false;
+    });
+
+</script>

@@ -1,0 +1,150 @@
+﻿@model TendaGo.Web.Models.EmbedConfig
+
+@{ ViewBag.Title = "Reporte"; }
+
+@section styles{
+    
+    <style>
+        iframe{
+            border: 0 none transparent;
+        }
+
+    </style>
+     
+    <script src="https://npmcdn.com/es6-promise@3.2.1"></script>
+    <script src="~/scripts/powerbi.js"></script>
+
+}
+
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+<div id="errorWrapper">
+    <h2> Error </h2>
+    <pre> @Model.ErrorMessage </pre>
+</div>return;
+} 
+
+<div id="embedContainer" noborder style="width:100%; height:80%"></div>
+
+@section scripts{
+
+    <script>
+        $(".page-container").addClass("sidebar-collapsed");
+
+    // Read embed application token from Model
+    var accessToken = "@Model.EmbedToken.Token";
+
+    // Read embed URL from Model
+    var embedUrl = "@Html.Raw(Model.EmbedUrl)";
+
+    // Read report Id from Model
+    var embedReportId = "@Model.Id";
+
+    // Get models. models contains enums that can be used.
+    var models = window['powerbi-client'].models;
+
+    // Embed configuration used to describe the what and how to embed.
+    // This object is used when calling powerbi.embed.
+    // This also includes settings and options such as filters.
+    // You can find more information at https://github.com/Microsoft/PowerBI-JavaScript/wiki/Embed-Configuration-Details.
+    var config = {
+        type: 'report',
+        tokenType: models.TokenType.Aad,
+        accessToken: accessToken,
+        embedUrl: embedUrl,
+        id: embedReportId,
+        permissions: models.Permissions.All,
+        settings: {
+            filterPaneEnabled: true,
+            navContentPaneEnabled: true,
+            localeSettings: {
+                language: "es",
+                formatLocale: "es"
+            },
+            panes: {
+                bookmarks: {
+                    visible: false
+                },
+                fields: {
+                    expanded: false
+                },
+                filters: {
+                    expanded: false,
+                    visible: false
+                },
+                pageNavigation: {
+                    visible: true
+                },
+                selection: {
+                    visible: true
+                },
+                syncSlicers: {
+                    visible: true
+                },
+                visualizations: {
+                    expanded: true
+                }
+            }
+
+        }
+    };
+
+        // Get a reference to the embedded report HTML element
+        var reportContainer = document.getElementById("embedContainer");
+
+    if ("@Model.Username" != "") {
+        $("#RLS").prop('checked', true);
+        $("#RLSdiv").show();
+    }
+    else
+    {
+        $("#RLS").prop('checked', false);
+        $("#RLSdiv").hide();
+    }
+
+    if ("@Model.IsEffectiveIdentityRequired.GetValueOrDefault()" == "True") {
+        $("#noRLSdiv").hide();
+        $("#RLS").removeAttr("disabled");
+        $("#RLS").change(function () {
+            if ($(this).is(":checked")) {
+                $("#RLSdiv").show(300);
+            } else {
+                $("#RLSdiv").hide(200);
+            }
+        });
+    }
+    else
+    {
+        $("#noRLSdiv").show();
+    }
+    // Embed the report and display it within the div container.
+    var report = powerbi.embed(reportContainer, config);
+
+    </script>
+     
+    <script>
+        menu_settings.parentMenu = 'MnuDashboard';
+        menu_settings.optionMenu = 'OpcDashboard';
+
+        $(function () {
+            SetActiveMenu();
+
+        });
+
+        function hideNotifications() {
+            setTimeout(function () {
+                var $notification = $("notification-bar")
+                if ($notification.length > 0) {
+                    $notification.hide();
+                    return;
+                }
+
+                hideNotifications();
+            }, 2000);
+        }
+
+        hideNotifications();
+
+    </script>
+}

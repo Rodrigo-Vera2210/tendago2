@@ -1,0 +1,72 @@
+﻿@using TendaGo.Common
+@using TendaGo.Web.Models
+@model List<ReceivableDto>
+<style>
+    td {
+        vertical-align:middle!important;
+    }
+</style>
+
+
+    <table id="tablaCuotas" class="table datatable table-bordered table-striped table-hover">
+        <thead>
+            <tr class="small">
+                <th class="text-center bold  select-checkbox"><input id="selectAllReceivables" type="checkbox" class="" onclick="" /></th>
+                <th class="text-center bold">Número de Factura</th>
+                <th class="text-center bold">Nota de Pedido No.</th>
+                <th class="text-center bold">Numero</th>
+                <th class="text-center bold" style="max-width: 150px;">Valor</th>
+                <th class="text-center bold" style="max-width: 150px;width: 150px;">Pago</th>
+                <th class="text-center bold" style="max-width: 150px;">Saldo</th>
+            </tr>
+        </thead>
+        <tbody id="cuotasBody">
+            @{ for (int i = 0; i < Model.Count; i++)
+                {
+                    var cuota = Model[i];
+                    var index = i.ToString();
+                    <tr>
+                        <td class="text-center" data-order="@i">
+                            <input id="selected_@i" class="check-cuota-selected" type="checkbox" value="0" />
+                            @Html.Hidden("Detalles[" + index + "].IdCuentaPorCobrar", cuota.Id)
+                            @Html.Hidden("Detalles[" + index + "].Estado", Estado.ACTIVO)
+                            @Html.Hidden("Detalles[" + index + "].IdSalida", cuota.IdSalida)
+                            @Html.Hidden("Detalles[" + index + "].Numero", cuota.Numero)
+                            @Html.Hidden("Detalles[" + index + "].Cuota", cuota.Saldo)
+
+                        </td>
+                        <td class="text-center">@cuota.NumeroFactura</td>
+                        <td class="text-center">@cuota.IdSalida</td>
+                        <td class="text-center">@cuota.Numero</td>
+                        <td class="text-right" data-order="@cuota.Saldo">
+                                 $&nbsp; 
+                                <span class="text-right" id="valorCuota_@i">@cuota.Saldo.ToCustomFormatString()</span>
+                         </td>
+                        <td class="text-right" >
+                            <div class="input-group">
+                                <span class="input-group-addon">$ </span>
+                                @Html.TextBox("Detalles[" + index + "].Valor", "0.00", new { @id = "valorPagado_" + index, @class = "form-control text-right text-valor-pagado input-money-2" })
+                            </div>
+                        </td>
+
+                        <td class="text-right" data-order="@cuota.Saldo">
+                            $&nbsp;
+                            <span id="saldoCuota_@i">@cuota.Saldo.ToCustomFormatString()</span>
+                        </td>
+
+                    </tr>
+                }
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="4" class="bold" style="text-align:right">Total:</th>
+                <th class="text-right bold">
+                    $ <span class="total">0.00</span>
+                </th>
+                <th class="text-right bold disabled-text">
+                    $ <span class="saldo">0.00</span>
+                </th>
+            </tr>
+        </tfoot>
+    </table> 

@@ -1,0 +1,71 @@
+﻿@using TendaGo.Web.Models
+@model List<DetalleNotaPedidoViewModel>
+
+@{
+    int cantidadDetalles = Model == null ? 0 : Model.Count;
+    decimal totalDetalles = Model == null ? 0 : Model.Sum(x => x.Subtotal);
+    int cantidadNotasPedido = ViewBag.CantidadNotasPedido != null ? ViewBag.CantidadNotasPedido : 1;
+}
+
+<ul class="user-info">
+    <li class="shopping-car notifications dropdown">
+        <div class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+            <a href="#" onclick="crearCantidadNotasPedido()" title="Notas de Pedido">
+                <i class="entypo-archive fa-2x"></i>
+                <span class="badge badge-primary">@cantidadNotasPedido</span>
+            </a>
+        </div>
+    </li>
+
+    <li class="shopping-car notifications dropdown">
+        <div class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+            <a href="#">
+                <i class="entypo-basket fa-2x"></i>
+                @if (cantidadDetalles > 0)
+                {
+                    <span class="badge badge-secondary">@cantidadDetalles</span>
+                }
+            </a>
+            <span>Total: $ @totalDetalles.ToCustomFormatString()</span>
+        </div>
+        <ul class="dropdown-menu pull-right">
+            <li>
+                <ul class="dropdown-menu-list scroller">
+                    @if (cantidadDetalles > 0)
+                    {
+                        foreach (var detalle in Model)
+                        {
+                            <li class="">
+                                <a href="#">
+                                    @*<i class="entypo-cancel dropdown-item-action pull-right"></i>*@
+                                    <span class="pull-right">
+                                        $ @detalle.Subtotal
+                                    </span>
+                                    <span class="line">
+                                        <strong>@detalle.NombreProducto</strong>
+                                    </span>
+                                    <span class="line">
+                                    </span>
+                                </a>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <li class="top">
+                            <p class="unread">
+                                <strong>No hay elementos</strong>
+                            </p>
+                        </li>
+                    }
+                </ul>
+            </li>
+
+            <li class="">
+                <p class="text-center">
+                    <button id="btnCheckOut" class="btn btn-default" onclick="checkout()">Check Out</button>
+                </p>
+            </li>
+        </ul>
+    </li>
+</ul>

@@ -1,0 +1,309 @@
+﻿@using TendaGo.Common
+@using TendaGo.Web.Models
+@using TendaGo.Web.ApplicationServices
+
+@model List<EntradaViewModel>
+
+@{
+    string accion = ViewBag.Accion;
+
+    ViewBag.Title = "Consulta de Compras";
+
+    var localesTodos = InventarioAppService
+    .ObtenerLocales()
+    .Select(x => new { x.Id, x.Local }).ToSelectList("Id", "Local");
+
+
+    if (ViewBag.localSelect != null)
+    {
+        int localsele = ViewBag.localSelect;
+        localesTodos = InventarioAppService
+        .ObtenerLocalesOrdenados(localsele)
+        .Select(x => new { x.Id, x.Local }).ToSelectList("Id", "Local");
+    }
+
+}
+
+@Styles.Render("~/styles/datatables")
+@Styles.Render("~/styles/select2")
+
+<ol class="breadcrumb bc-3 small hidden-xs breadcrumb-no-padding">
+    <li>
+        <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home</a>
+    </li>
+    <li>
+        Compras
+    </li>
+    <li class="active">
+        <strong>@ViewBag.Title</strong>
+    </li>
+</ol>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left">
+            <h3>@ViewBag.Title</h3>
+        </div>
+    </div>
+</div>
+<br />
+
+@if (ViewBag.Accion == "Consultar")
+{
+    var sessionName = string.Format("EntradaSearchModel_{0}", ViewBag.Accion);
+    var searchModel = Session[sessionName] as OrderSearchModel ?? new OrderSearchModel
+    {
+        fechaInicio = DateTime.Today.AddDays(-30).ToString("dd/MM/yyyy"),
+        fechaFin = DateTime.Today.ToString("dd/MM/yyyy")
+    };
+
+    <div class="row">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="panel-title"><b>BUSCAR COMPRAS</b></div>
+                <div class="panel-options">
+                    <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                </div>
+            </div>
+            <div class="panel-body">
+                <form id="searchForm" role="form" lang="en-US" action="@Url.Action("Consultar")" method="post" class="validate" novalidate="novalidate">
+                    @Html.Hidden("accion", (string)ViewBag.Accion)
+
+                    <div class="form-group col-md-3">
+                        <label class="control-label">Fecha Inicio</label>
+                        @Html.TextBox("fechaInicio", searchModel.fechaInicio, new { @class = "form-control datepicker-custom", @placeholder = "Fecha de Inicio" })
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label class="control-label">Fecha Fin</label>
+                        @Html.TextBox("fechaFin", searchModel.fechaFin, new { @class = "form-control datepicker-custom", @placeholder = "Fecha Fin" })
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Buscar</label>
+                        @Html.TextBox("filtro", searchModel.filtro, new { @class = "form-control", @placeholder = "Filtro de Busqueda" })
+                    </div>
+
+                    @{
+                        var clientes = TendaGo.Web.ApplicationServices.ClientesAppService.BuscarClientes();
+                        var listaClientes = clientes.Select(m => new SelectListItem
+                        {
+                            Text = string.Format("{0} - {1}", m.Identificacion, m.RazonSocial),
+                            Value = m.Id.ToString(),
+                            Selected = (m.Id == searchModel.idPersona)
+                        }).ToList();
+                    }
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Proveedor</label>
+                        @Html.DropDownList("idCliente", listaClientes, "Todos", new { @class = "form-control" })
+                    </div>
+
+
+                    @{
+                        var vendedores = TendaGo.Web.ApplicationServices.UserAppService.BuscarVendedores("all");
+                        var listaVendedores = vendedores.Select(m => new SelectListItem
+                        {
+                            Text = m.Nombres,
+                            Value = m.Id,
+                            Selected = (m.Id == searchModel.idVendedor)
+                        }).ToList();
+                    }
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Usuario</label>
+                        @Html.DropDownList("idVendedor", listaVendedores, "Todos", new { @class = "form-control" })
+                    </div>
+
+                    @{ 
+                        var listaEstado = new List<SelectListItem> {
+                            new SelectListItem{ Text="Todas", Value = null },
+                            new SelectListItem{ Text="Aprobado", Value = TransactionStatus.Aprobada.ToString() },
+                            //new SelectListItem{ Text="En Proceso", Value = TransactionStatus.EnProceso.ToString() },
+                            new SelectListItem{ Text="Anulado", Value = TransactionStatus.Anulada.ToString() },
+                        }.ToSelectList("Value", "Text", searchModel.status);
+
+                        if (!AppServiceBase.Empresa.Importacion)
+                        {
+                            listaEstado.Append(new SelectListItem { Text = "En Proceso", Value = TransactionStatus.EnProceso.ToString() });
+                        }
+                    }
+
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Estado</label>
+                        @Html.DropDownList("status", listaEstado, new { @class = "form-control", @style = "width:100%" })
+                    </div>
+
+
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Local</label>                        
+                        @Html.DropDownList("idLocal", localesTodos, "Todos", new { @class = "form-control", @style = "width:100%" })
+                    </div>
+
+                    <div class="form-group col-md-offset-8 col-md-4">
+                        <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-search"></i>&nbsp;&nbsp; Buscar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+}
+
+
+<div id="divConsultasNotasPedido" class="row">
+    @{ Html.RenderPartial("Consultar", Model, ViewData); }
+</div>
+<br />
+<div id="divloading" class="progress progress-striped active hidden">
+    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+        <span class="sr-only">40% Complete (success)</span>
+    </div>
+</div>
+
+
+@section Scripts {
+
+
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/wizard")
+    @Scripts.Render("~/bundles/maskmoney")
+    @Scripts.Render("~/bundles/datepicker")
+    @Scripts.Render("~/bundles/fileinput")
+    @Scripts.Render("~/bundles/select2")
+
+    <script>
+        var action = '@accion';
+        menu_settings.parentMenu = 'MnuInventory';
+
+        $(function() {
+            SetActiveMenuByAction();
+
+            $(".datepicker").datepickercustom();
+            $(".datepicker").attr("data-format", "yyyy-mm-dd");
+        });
+
+        function SetActiveMenuByAction() {
+            if (action == 'Aprobar') {
+                menu_settings.optionMenu = 'OpcAprobar';
+            }
+            if (action == 'Revisar') {
+                menu_settings.optionMenu = 'OpcRev';
+            }
+            if (action == 'Empaquetar') {
+                menu_settings.optionMenu = 'OpcEmpaq';
+            }
+            if (action == 'Entregar') {
+                menu_settings.optionMenu = 'OpcEntreg';
+            }
+
+            SetActiveMenu();
+        }
+
+
+
+        //var $div = $('#divConsultasNotasPedido');
+
+        var accion = '@ViewBag.Accion';
+
+
+        var consultaPedidoUrl = '@Url.Action("Editar")';
+
+        function mostrarDetalleNotaPedido(idNotaPedido, accion) {
+            location.assign(consultaPedidoUrl + "/" + idNotaPedido + "?" + accion)
+        }
+
+        function anular_compra(idCompra) {
+
+            swal({
+                title: "Anular Compra",
+                text: "¿Esta usted seguro? Una vez anulada la compra, el estado no se puede revertir!",
+                type: "warning",
+                buttons: true,
+                showCancelButton: true,
+                dangerMode: true,
+                confirmButtonColor: "#cc2424",
+                confirmButtonText: "Anular",
+                cancelButtonText: "Cancelar",
+                closeOnConfirm: true
+
+            }, function (eliminar) {
+                if (eliminar) {
+
+                    var url = "@Url.Action("AnularCompra")" + "/" + idCompra;
+
+                    $.post(url, {}, function (result) {
+                        if (isValid(result)) {
+
+                            swal({
+                                title: "Anular Compra",
+                                text: result.mensaje || "Hubo un error al anular compra!",
+                                type: (result.success && result.mensaje != '') ? "success" : "warning",
+                            }, function () {
+                                location.reload();
+                            });
+                        }
+                    });
+                }
+            });
+
+        }
+
+        var detalleNotaPedido = '@Url.Action("DetalleNotaPedido")';
+
+
+        $(".datepicker-custom").datepickercustom();
+
+        $("#locales").on("change", function () {
+            blockUI(window, "Cambiando local...")
+
+            sessionStorage.removeItem("NotaPedidoConsulta");
+
+            window.location.reload();
+        });
+
+
+
+        $("#searchForm").submit(function (e) {
+            e.preventDefault();
+            blockUI(".panel");
+
+            var $searchForm = $(this);
+            var $data = $searchForm.serialize();
+            var $url = $searchForm.attr("action");
+
+            $.ajax({
+                url: $url,
+                method: "post",
+                data: $data
+            }).done(function (result) {
+
+                if (result) {
+                    var $div = $("#divConsultasNotasPedido");
+                    $div.empty();
+                    $div.html(result);
+                }
+                else {
+                    toastr.error("Hubo un error al procesar la consulta!");
+                }
+
+            }).always(function () {
+                unblockUI(".panel");
+            });
+        });
+
+
+        $(document).ready(function () {
+            $("#idVendedor").select2()
+            $("#idCliente").select2()
+        });
+
+
+
+    </script>
+
+
+
+}

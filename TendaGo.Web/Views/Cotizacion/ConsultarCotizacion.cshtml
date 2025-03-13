@@ -1,0 +1,258 @@
+﻿@using TendaGo.Common
+@using TendaGo.Web.Models
+@model List<NotaPedidoViewModel>
+
+@{
+    ViewBag.Title = "Consulta Cotizacion";
+    string accion = ViewBag.Accion ?? "Aprobar";
+}
+
+@Styles.Render("~/styles/datatables")
+@Styles.Render("~/styles/select2")
+
+<ol class="breadcrumb bc-3 small hidden-xs breadcrumb-no-padding">
+    <li>
+        <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home</a>
+    </li>
+    <li>
+        Cotizacion
+    </li>
+    <li class="active">
+        <strong>
+            @ViewBag.Accion            
+        </strong>
+    </li>
+</ol>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left">
+            <h3>
+                @ViewBag.Accion
+            </h3>
+        </div>
+    </div>
+</div>
+<br />
+
+<div id="divConsultasNotasPedido" class="row">    
+    @{ Html.RenderPartial("Consultar", Model, ViewData); }
+</div>
+<br />
+<div id="divloading" class="progress progress-striped active hidden">
+    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+        <span class="sr-only">40% Complete (success)</span>
+    </div>
+</div>
+
+
+@section Scripts {
+
+
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/wizard")
+    @Scripts.Render("~/bundles/maskmoney")
+    @Scripts.Render("~/bundles/datepicker")
+    @Scripts.Render("~/bundles/fileinput")
+    @Scripts.Render("~/bundles/select2")
+
+<script>
+    var action = '@accion';
+    menu_settings.parentMenu = 'MnuNotaPedido';
+
+    $(function () {
+        SetActiveMenuByAction();
+
+        $(".datepicker").datepickercustom();
+        $(".datepicker").attr("data-format", "yyyy-mm-dd");
+    });
+
+    function SetActiveMenuByAction() {
+        if (action == 'Aprobar') {
+            menu_settings.optionMenu = 'OpcAprobar';
+        }
+        if (action == 'Revisar') {
+            menu_settings.optionMenu = 'OpcRev';
+        }
+        if (action == 'Empaquetar') {
+            menu_settings.optionMenu = 'OpcEmpaq';
+        }
+        if (action == 'Entregar') {
+            menu_settings.optionMenu = 'OpcEntreg';
+        }
+        if (action == 'Facturar') {
+            menu_settings.optionMenu = 'OpcFacturar';
+        }
+        SetActiveMenu();
+    }
+
+
+
+
+
+    $(document).ready(function () {
+        $(".datepicker-custom").datepickercustom();
+
+        $("#locales").on("change", function () {
+            blockUI(window, "Cambiando local...")
+
+            sessionStorage.removeItem("NotaPedidoConsulta");
+
+            window.location.reload();
+        });
+
+        $("#idVendedor").select2({
+            ajax: {
+                url: "@Url.Action("BuscarVendedor", "NotaPedido")",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        searchTerm: params.term || "all", // search term
+                        page: params.page
+                    };
+                },
+                cache: true
+            },
+            placeholder: 'Seleccione el vendedor',
+            allowClear: true
+
+        });
+
+        $("#idPersona").select2({
+
+            ajax: {
+                url: "@Url.Action("BuscarCliente", "NotaPedido")",
+                dataType: 'json',
+                data: function (params) {
+                    return {
+                        searchTerm: params.term || "", // search term
+                        page: params.page
+                    };
+                },
+                cache: true
+            },
+            placeholder: 'Seleccione el cliente',
+            allowClear: true
+
+        });
+
+    });
+
+
+    //var $div = $('#divConsultasNotasPedido');
+
+    var accion = '@ViewBag.Accion';
+
+        $("#searchForm").on("submit", function (e) {
+            e.preventDefault();
+
+            blockUI(".panel");
+
+            var $searchForm = $(this);
+            var $data = $searchForm.serialize();
+            var $url = $searchForm.attr("action");
+
+            $.ajax({
+                url: $url,
+                method: "post",
+                data: $data
+            }).done(function (result) {
+
+                if (result) {
+                    var $div = $("#divConsultasNotasPedido");
+                    $div.empty();
+                    $div.html(result);
+                }
+                else {
+                    toastr.error("Hubo un error al procesar la consulta!");
+                }
+
+            }).always(function () {
+                unblockUI(".panel");
+            });
+
+            return false;
+        });
+
+
+    var consultaPedidoUrl = '@Url.Action("Editar", "NotaPedido")';
+
+    function mostrarDetalleNotaPedido(idNotaPedido, accion) {
+        console.log(consultaPedidoUrl);
+        location.assign(consultaPedidoUrl + "/" + idNotaPedido + "?" + accion)
+    }
+
+
+
+    function anular_pedido(idNotaPedido) {
+
+        swal({
+            title: "Anular Cotización",
+            text: "¿Esta usted seguro? Una vez anulada la orden, el estado no se puede revertir!",
+            type: "warning",
+            buttons: true,
+            showCancelButton: true,
+            dangerMode: true,
+            confirmButtonColor: "#cc2424",
+            confirmButtonText: "Anular",
+            cancelButtonText: "Cancelar",
+            closeOnConfirm: true
+
+        }, function (eliminar) {
+
+            if (eliminar) {
+                var motivo = "ORDEN DE PEDIDO # " + idNotaPedido;
+                var url = "@Url.Action("AnularPedido")" + "/" + idNotaPedido + "?motivo=" + motivo;
+
+                $.post(url, {}, function (result) {
+                    if (isValid(result)) {
+
+                        swal({
+                            title: "Anular Pedido",
+                            text: result.mensaje || "Hubo un error al anular el pedido!",
+                            type: (result.success && result.mensaje != '') ? "success" : "warning",
+                        }, function () {
+                            location.reload();
+                        });
+
+                    }
+
+                });
+
+            }
+
+        });
+
+    }
+
+
+
+    var detalleNotaPedido = '@Url.Action("DetalleNotaPedido", "NotaPedido")';
+
+
+    function actualizarConsultaNotaPedido() {
+        $.ajax({
+            url: '@Url.Action("ListaNotasPedido", "NotaPedido")',
+            data: { accion: accion },
+            type: 'post',
+            beforeSend: function () {
+            },
+            complete: function () {
+            }
+        }).done(function (respuesta) {
+            if (respuesta != "") {
+                $('#divConsultasNotasPedido').html(respuesta);
+                $('#tablaNotasPedido').DataTable(opcionesDataTable);
+            }
+        });
+    }
+
+
+</script>
+
+
+
+}

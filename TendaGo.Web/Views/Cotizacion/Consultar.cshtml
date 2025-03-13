@@ -1,0 +1,153 @@
+﻿@using TendaGo.Web.Models
+@model List<NotaPedidoViewModel>
+
+<table id="tablaNotasPedido" class="table datatable table-bordered table-striped table-hover">
+    <thead>
+        <tr class="small">
+            <th class="text-center bold"></th>
+            <th class="text-center bold">Numero</th>
+            <th class="text-center bold">Cliente</th>
+            <th class="text-center bold">Valor Total</th>
+            <th class="text-center bold">Forma de Pago</th>
+            <th class="text-center bold">Vendedor</th>
+            <th class="text-center bold">            
+                <span> Fecha Entrega </span>                
+            </th>
+            <th class="text-center bold">Estado</th>
+            <th class="text-center bold"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            foreach (var notaPedido in Model)
+            {
+        <tr>
+            <td class="text-center">
+
+                <button type="button" class="btn btn-info text-dark btn-icon icon-left" title="APROBAR COTIZACION" onclick="mostrarDetalleNotaPedido('@notaPedido.Id', '@ViewBag.Accion');">
+                    <i class="entypo-thumbs-up"></i> Aprobar
+                </button>           
+
+            </td>
+            <td class="text-center">
+                <a href="@string.Format("{0}/{1}", Url.Action("Resumen"), notaPedido.Id)" class="btn btn-default" title="Vista Preliminar">
+                    <i class="fa fa-search"></i>
+                </a>   @notaPedido.Id
+            </td>
+            <td>
+
+                @if (notaPedido.Cliente != null)
+                {
+                    @notaPedido.Cliente.RazonSocial
+                }
+                else
+                {
+                    @notaPedido.NombreCliente
+                }
+
+            </td>
+            <td class="text-right">
+                <span class="pull-left">&nbsp;$</span>
+                <span class="pull-right">@notaPedido.Total.ToCustomFormatString()</span>
+            </td>
+            @{ 
+                var saldo = notaPedido.Saldo - notaPedido.Total;
+                
+                if (notaPedido.IdFormaPago == 1 && saldo > 0)
+                {
+                    <td class="text-center bg-danger" title="Saldo pendiente $ @(saldo.ToCustomFormatString())"> @notaPedido.FormaPago </td>
+                }
+                else
+                {
+                    <td class="text-center"> @notaPedido.FormaPago </td>
+                }
+            }
+            <td>@notaPedido.IdVendedor</td>
+            @if (ViewBag.Accion == "Facturar" || ViewBag.Accion == "Consultar")
+            {
+                <td class="text-center">@notaPedido.Fecha.ToString("dd/MM/yyyy")</td>
+            }
+            else
+            {
+                <td class="text-center">@notaPedido.FechaHoraEntregaPropuesta.ToString(new System.Globalization.CultureInfo("es-EC"))</td>
+            }
+            <td class="text-center">
+                @{
+                    if (notaPedido.EstadoActual == "EN PROCESO")
+                    {
+                        <span class="label label-info">@notaPedido.EstadoActual</span>
+                    }
+                    else if (notaPedido.EstadoActual == "APROBADA")
+                    {
+                        <span class="label label-success">@notaPedido.EstadoActual</span>
+                    }
+                    else if (notaPedido.EstadoActual == "EMPAQUETADA")
+                    {
+                        <span class="label label-info">ALISTADA</span>
+                    }
+                    else if (notaPedido.EstadoActual == "REVISADA")
+                    {
+                        <span class="label label-warning">@notaPedido.EstadoActual</span>
+                    }
+                    else if (notaPedido.EstadoActual == "ENTREGADA")
+                    {
+                        <span class="label label-secondary">@notaPedido.EstadoActual</span>
+                    }
+                    else if (notaPedido.EstadoActual == "ANULADA")
+                    {
+                        <span class="label label-default">@notaPedido.EstadoActual</span>
+                    }
+                    else
+                    {
+                        <span class="label label-success">@notaPedido.EstadoActual</span>
+                    }
+                }
+            </td>
+
+            <td>
+                @if (notaPedido.EstadoActual != "FACTURADA" && notaPedido.EstadoActual != "ANULADA")
+                {
+                    <a href="#" onclick="anular_pedido('@notaPedido.Id');" class="btn btn-danger" title="Anular Pedido">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                }
+            </td>
+        </tr>
+                    }
+                }
+    </tbody>
+</table>
+
+<script>
+    var configureTable = function () {
+
+        var $table = opcionesDataTable;
+        var accion = "@ViewBag.Accion";
+
+        if (accion == "Entregar") {
+            $table = {
+                'paging': true,
+                'lengthChange': true,
+                'searching': true,
+                'ordering': false,
+                'info': true,
+                'autoWidth': false,
+                'responsive': true,
+                'language': { "url": "/Content/dataTables.spanish.txt" },
+                'dom': 'Bfrtip',
+                'buttons': [
+                    { extend: 'excelHtml5', className: 'btn btn-success btn-circle ', text: ' <i class="fa fa-file-excel-o "></i> Excel', footer: true },
+                    { extend: 'print', className: 'btn btn-info btn-circle ', text: ' <i class=" fa fa-print "></i> Imprimir', footer: true }
+                ],
+                "order": [[4, 'asc'], [6, 'asc']],
+                "rowGroup": { "dataSrc": 4 }
+            };
+
+        }
+
+        $('#tablaNotasPedido').DataTable($table); 
+    };
+
+    $(document).ready(configureTable);
+</script>

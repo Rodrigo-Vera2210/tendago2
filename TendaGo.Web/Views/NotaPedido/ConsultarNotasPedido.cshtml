@@ -1,0 +1,436 @@
+﻿@using TendaGo.Common
+@using TendaGo.Web.Models
+@using TendaGo.Web.ApplicationServices
+
+@model List<NotaPedidoViewModel>
+@{
+    ViewBag.Title = "Consulta Notas de Pedido";
+    string accion = ViewBag.Accion ?? "Consultar";
+    //var localesTodos;
+
+    var localesTodos = InventarioAppService
+    .ObtenerLocales()
+    .Select(x => new { x.Id, x.Local }).ToSelectList("Id", "Local");
+
+    if (ViewBag.localSelect != null)
+    {
+        int localsele = ViewBag.localSelect;
+        localesTodos = InventarioAppService
+        .ObtenerLocalesOrdenados(localsele)
+        .Select(x => new { x.Id, x.Local }).ToSelectList("Id", "Local");
+    }
+}
+
+@Styles.Render("~/styles/datatables")
+@Styles.Render("~/styles/select2")
+
+<ol class="breadcrumb bc-3 small hidden-xs breadcrumb-no-padding">
+    <li>
+        <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home</a>
+    </li>
+    <li>
+        Notas de pedido
+    </li>
+    <li class="active">
+        <strong>
+            @if (ViewBag.Accion == "Empaquetar")
+            {
+                <span>Alistar</span>
+            }
+            else
+            {
+                @ViewBag.Accion
+            }  Notas de pedido
+        </strong>
+    </li>
+</ol>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left">
+            <h3>
+                @if (ViewBag.Accion == "Empaquetar")
+                {
+                    <span>Alistar</span>
+                }
+                else
+                {
+                    @ViewBag.Accion
+                } Nota de Pedido
+            </h3>
+        </div>
+    </div>
+</div>
+<br />
+
+@if (ViewBag.Accion == "Consultar" || ViewBag.Accion == "Facturar")
+{
+    var sessionName = string.Format("NotaPedidoSearchModel_{0}", ViewBag.Accion);
+    var searchModel = Session[sessionName] as OrderSearchModel ?? new OrderSearchModel
+    {
+        fechaInicio = DateTime.Today.ToString("dd/MM/yyyy"),
+        fechaFin = DateTime.Today.ToString("dd/MM/yyyy")
+    };
+
+    if (accion == "Facturar")
+    {
+        searchModel.status = TransactionStatus.Entregada;
+    }
+
+    <div class="row">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="panel-title"><b>BUSCAR NOTAS DE PEDIDO</b></div>
+                <div class="panel-options">
+                    <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                </div>
+            </div>
+            <div class="panel-body">
+                <form id="searchForm" role="form" lang="en-US" action="@Url.Action("Consultar")" method="post" class="validate" novalidate="novalidate">
+                    @Html.Hidden("accion", accion)
+
+                    <div class="form-group col-md-3">
+                        <label class="control-label">Fecha Inicio</label>
+                        @Html.TextBox("fechaInicio", searchModel.fechaInicio, new { @class = "form-control datepicker-custom", @placeholder = "Fecha de Inicio" })
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label class="control-label">Fecha Fin</label>
+                        @Html.TextBox("fechaFin", searchModel.fechaFin, new { @class = "form-control datepicker-custom", @placeholder = "Fecha Fin" })
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Buscar</label>
+                        @Html.TextBox("filtro", searchModel.filtro, new { @class = "form-control", @placeholder = "Filtro de Busqueda" })
+                    </div>
+
+                    @{
+                        var clientes = new List<TendaGo.Common.EntityDto>(); //TendaGo.Web.ApplicationServices.ClientesAppService.BuscarClientes();
+                        if (searchModel.idPersona > 0)
+                        {
+                            var cliente = TendaGo.Web.ApplicationServices.ClientesAppService.ObtenerClientePorId(searchModel.idPersona ?? 0);
+                            if (cliente != null)
+                            {
+                                clientes.Add(cliente);
+                            }
+                        }
+
+                        var listaClientes = clientes.Select(m => new SelectListItem
+                        {
+                            Text = string.Format("{0} - {1}", m.Identificacion, m.RazonSocial),
+                            Value = m.Id.ToString(),
+                            Selected = (m.Id == searchModel.idPersona)
+                        }).ToList();
+                    }
+                <div class="form-group col-md-6"> 
+                    <label class="control-label">Cliente</label>
+                    @Html.DropDownList("idPersona", listaClientes, "Todos", new { @class = "form-control", @style = "width:100%" })
+                </div>
+
+
+                    @{
+                        var vendedores = new List<TendaGo.Common.SellerDto>(); //TendaGo.Web.ApplicationServices.UserAppService.BuscarVendedores("all");
+                        if (!string.IsNullOrEmpty(searchModel.idVendedor))
+                        {
+                            var vendedor = TendaGo.Web.ApplicationServices.UserAppService.BuscarVendedores(searchModel.idVendedor).FirstOrDefault();
+                            if (vendedor != null)
+                            {
+                                vendedores.Add(vendedor);
+                            }
+                        }
+
+                        var listaVendedores = vendedores.Select(m => new SelectListItem
+                        {
+                            Text = m.Nombres,
+                            Value = m.Id,
+                            Selected = (m.Id == searchModel.idVendedor)
+                        }).ToList();
+                    }
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Vendedor</label>
+                        @Html.DropDownList("idVendedor", listaVendedores, "Todos", new { @class = "form-control", @style = "width:100%" })
+                    </div>
+
+                    @if (ViewBag.Accion == "Consultar")
+                    {
+                        //var listaEstado = new List<SelectListItem> {
+                        //    new SelectListItem{ Text="Todos", Value = null },
+                        //    new SelectListItem{ Text="En Proceso", Value = TransactionStatus.EnProceso.ToString() },
+                        //    new SelectListItem{ Text="Aprobado", Value = TransactionStatus.Aprobada.ToString() },
+                        //    new SelectListItem{ Text="Alistado", Value = TransactionStatus.Empaquetada.ToString() },
+                        //    new SelectListItem{ Text="Revisado", Value = TransactionStatus.Revisada.ToString() },
+                        //    new SelectListItem{ Text="Entregado", Value = TransactionStatus.Entregada.ToString() },
+                        //    new SelectListItem{ Text="Facturado", Value = TransactionStatus.Facturada.ToString() },
+                        //    new SelectListItem{ Text="Anulado", Value = TransactionStatus.Anulada.ToString() },
+                        //}.ToSelectList("Value", "Text", searchModel.status);
+
+                        List<SelectListItem> list = new List<SelectListItem>();
+                        list.Add(new SelectListItem { Text = "Todos", Value = null });
+
+                        if (ViewBag.IdPerfil != "3")
+                        {
+                            list.Add(new SelectListItem { Text = "En Proceso", Value = TransactionStatus.EnProceso.ToString() });
+                            list.Add(new SelectListItem { Text = "Aprobado", Value = TransactionStatus.Aprobada.ToString() });
+                        }
+
+                        list.Add(new SelectListItem { Text = "Alistado", Value = TransactionStatus.Empaquetada.ToString() });
+                        list.Add(new SelectListItem { Text = "Revisado", Value = TransactionStatus.Revisada.ToString() });
+                        list.Add(new SelectListItem { Text = "Entregado", Value = TransactionStatus.Entregada.ToString() });
+                        list.Add(new SelectListItem { Text = "Facturado", Value = TransactionStatus.Facturada.ToString() });
+                        list.Add(new SelectListItem { Text = "Anulado", Value = TransactionStatus.Anulada.ToString() });
+
+                        var listaEstado = list.ToSelectList("Value", "Text", searchModel.status);
+
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Estado</label>
+                            @Html.DropDownList("status", listaEstado, new { @class = "form-control", @style = "width:100%" })
+                        </div>
+                         
+
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Local</label>
+                            @*@Html.DropDownList("idLocal", localesTodos,"Todos", new { @class = "form-control", @style = "width:100%" })*@
+                            @Html.DropDownList("idLocal", localesTodos, new { @class = "form-control", @style = "width:100%" })
+                        </div>
+                    }
+                    else
+                    {
+                        @Html.Hidden("status", searchModel.status)
+                    }
+                    <div class="form-group col-md-offset-8 col-md-4">
+                        <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-search"></i>&nbsp;&nbsp; Buscar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+}
+
+
+<div id="divConsultasNotasPedido" class="row">
+    @{ Html.RenderPartial("Consultar", Model, ViewData); }
+</div>
+<br />
+<div id="divloading" class="progress progress-striped active hidden">
+    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+        <span class="sr-only">40% Complete (success)</span>
+    </div>
+</div>
+
+
+@section Scripts {
+
+
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/wizard")
+    @Scripts.Render("~/bundles/maskmoney")
+    @Scripts.Render("~/bundles/datepicker")
+    @Scripts.Render("~/bundles/fileinput")
+    @Scripts.Render("~/bundles/select2")
+
+<script>
+    var action = '@accion';
+    menu_settings.parentMenu = 'MnuNotaPedido';
+
+    $(function () {
+        SetActiveMenuByAction();
+
+        $(".datepicker").datepickercustom();
+        $(".datepicker").attr("data-format", "yyyy-mm-dd");
+    });
+
+    function SetActiveMenuByAction() {
+        if (action == 'Aprobar') {
+            menu_settings.optionMenu = 'OpcAprobar';
+        }
+        if (action == 'Revisar') {
+            menu_settings.optionMenu = 'OpcRev';
+        }
+        if (action == 'Empaquetar') {
+            menu_settings.optionMenu = 'OpcEmpaq';
+        }
+        if (action == 'Entregar') {
+            menu_settings.optionMenu = 'OpcEntreg';
+        }
+        if (action == 'Facturar') {
+            menu_settings.optionMenu = 'OpcFacturar';
+        }
+        SetActiveMenu();
+    }
+
+
+
+
+
+    $(document).ready(function () {
+        $(".datepicker-custom").datepickercustom();
+
+        $("#locales").on("change", function () {
+            blockUI(window, "Cambiando local...")
+
+            sessionStorage.removeItem("NotaPedidoConsulta");
+
+            window.location.reload();
+        });
+
+        $("#idVendedor").select2({
+            ajax: {
+                url: "@Url.Action("BuscarVendedor", "NotaPedido")",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        searchTerm: params.term || "all", // search term
+                        page: params.page
+                    };
+                },
+                cache: true
+            },
+            placeholder: 'Seleccione el vendedor',
+            allowClear: true
+
+        });
+
+        $("#idPersona").select2({
+
+            ajax: {
+                url: "@Url.Action("BuscarCliente", "NotaPedido")",
+                dataType: 'json',
+                data: function (params) {
+                    return {
+                        searchTerm: params.term || "", // search term
+                        page: params.page
+                    };
+                },
+                cache: true
+            },
+            placeholder: 'Seleccione el cliente',
+            allowClear: true
+
+        });
+
+    });
+
+
+    //var $div = $('#divConsultasNotasPedido');
+
+    var accion = '@ViewBag.Accion';
+
+        $("#searchForm").on("submit", function (e) {
+            e.preventDefault();
+
+            blockUI(".panel");
+
+            var $searchForm = $(this);
+            var $data = $searchForm.serialize();
+            var $url = $searchForm.attr("action");
+
+            $.ajax({
+                url: $url,
+                method: "post",
+                data: $data
+            }).done(function (result) {
+
+                if (result) {
+                    var $div = $("#divConsultasNotasPedido");
+                    $div.empty();
+                    $div.html(result);
+                }
+                else {
+                    toastr.error("Hubo un error al procesar la consulta!");
+                }
+
+            }).always(function () {
+                unblockUI(".panel");
+            });
+
+            return false;
+        });
+
+
+    var consultaPedidoUrl = '@Url.Action("Editar", "NotaPedido")';
+
+    function mostrarDetalleNotaPedido(idNotaPedido, accion) {
+        location.assign(consultaPedidoUrl + "/" + idNotaPedido + "?" + accion)
+    }
+
+    var consultaNcUrl = '@Url.Action("NotaCredito", "NotaPedido")';
+
+    function mostrarDetalleNotaCredito(idNotaPedido, accion) {
+        location.assign(consultaNcUrl + "/" + idNotaPedido + "?" + accion)
+    }
+
+
+    function anular_pedido(idNotaPedido) {
+
+        swal({
+            title: "Anular Pedido",
+            text: "¿Esta usted seguro? Una vez anulada la orden, el estado no se puede revertir!",
+            type: "warning",
+            buttons: true,
+            showCancelButton: true,
+            dangerMode: true,
+            confirmButtonColor: "#cc2424",
+            confirmButtonText: "Anular",
+            cancelButtonText: "Cancelar",
+            closeOnConfirm: true
+
+        }, function (eliminar) {
+
+            if (eliminar) {
+                var motivo = "ORDEN DE PEDIDO # " + idNotaPedido;
+                var url = "@Url.Action("AnularPedido")" + "/" + idNotaPedido + "?motivo=" + motivo;
+
+                $.post(url, {}, function (result) {
+                    if (isValid(result)) {
+
+                        swal({
+                            title: "Anular Pedido",
+                            text: result.mensaje || "Hubo un error al anular el pedido!",
+                            type: (result.success && result.mensaje != '') ? "success" : "warning",
+                        }, function () {
+                            location.reload();
+                        });
+
+                    }
+
+                });
+            }
+
+        });
+
+    }
+
+
+
+    var detalleNotaPedido = '@Url.Action("DetalleNotaPedido", "NotaPedido")';
+
+
+    function actualizarConsultaNotaPedido() {
+        $.ajax({
+            url: '@Url.Action("ListaNotasPedido", "NotaPedido")',
+            data: { accion: accion },
+            type: 'post',
+            beforeSend: function () {
+            },
+            complete: function () {
+            }
+        }).done(function (respuesta) {
+            if (respuesta != "") {
+                $('#divConsultasNotasPedido').html(respuesta);
+                $('#tablaNotasPedido').DataTable(opcionesDataTable);
+            }
+        });
+    }
+
+
+</script>
+
+
+
+}

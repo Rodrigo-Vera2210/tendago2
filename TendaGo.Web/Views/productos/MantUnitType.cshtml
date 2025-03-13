@@ -1,0 +1,196 @@
+﻿@model TendaGo.Web.Models.TipoUnidadModel
+@{
+    var unidadMedidasList = (IEnumerable<SelectListItem>)ViewBag.UnidadMedidasList;
+    bool isEdit = ViewBag.IsEdit ?? false;
+    ViewBag.PanelTitle = isEdit ? "Editar" : "Nuevo";
+
+    if (!isEdit)
+    {
+        Model.Cantidad = 1;
+    }
+
+    //Model.UnidadMedidad = 1;
+}
+
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <div class="panel-title">@ViewBag.PanelTitle</div>
+    </div>
+    @using (Html.BeginForm("MantUnitType", "productos", FormMethod.Post, new { id = "MantUnitType" }))
+    {
+        @Html.AntiForgeryToken()
+<div class="panel-body">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.IdProducto)
+
+    @if (isEdit)
+    {
+        <div class="form-group">
+            @Html.LabelFor(model => model.Producto, htmlAttributes: new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.Producto, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.UnidadMedida, htmlAttributes: new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.UnidadMedida, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+    }
+    <div class="form-group">
+        @Html.LabelFor(model => model.TipoUnidad, htmlAttributes: new { @class = "control-label" })
+        @Html.TextBoxFor(model => model.TipoUnidad, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.TipoUnidad, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Cantidad, htmlAttributes: new { @class = "control-label" })
+        @*@Html.TextBoxFor(model => model.Cantidad, new { @type = "number", @min = "1", @class = "form-control input-money" })*@
+        @Html.TextBoxFor(model => model.Cantidad, new { @class = "form-control input-money" })
+        @Html.ValidationMessageFor(model => model.Cantidad, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.CantidadMinima, htmlAttributes: new { @class = "control-label" })
+        @Html.TextBoxFor(model => model.CantidadMinima, new { @type = "number", @class = "form-control input-money" })
+        @Html.ValidationMessageFor(model => model.CantidadMinima, "", new { @class = "text-danger" })
+    </div>
+    
+    
+    
+    @if (isEdit)
+    {
+        @Html.HiddenFor(model => model.UnidadMedidad)
+    }
+    else
+    {
+        <div class="form-group">
+            @*@Html.LabelFor(model => model.UnidadMedidad, htmlAttributes: new { @class = "control-label" })
+            @Html.DropDownListFor(m => m.UnidadMedidad, unidadMedidasList, "Seleccione Unidad de Medida", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.UnidadMedidad, "", new { @class = "text-danger" })*@
+
+            @Html.LabelFor(model => model.UnidadMedidad, htmlAttributes: new { @class = "control-label" })
+            
+            <select id="ruc" name="ruc" placeholder="Debe seleccionar el RUC" class="form-control" style="width: 100%;" disabled>
+                @{
+                    if (string.IsNullOrEmpty(Model.UnidadMedida))
+                    {
+                        <option value=''> Debe seleccionar el RUC </option>
+                    }
+
+                    foreach (var unidad in unidadMedidasList)
+                    {
+                        var selected = "";
+
+                        if (Model.UnidadMedida == unidad.Value)
+                        {
+                            selected = "selected";
+                        }
+
+                        <option @selected value='@unidad.Value' data-ruc='@Json.Encode(unidad)'> @unidad.Text </option>
+                    }
+
+                }
+            </select>
+
+        </div>
+    }
+    
+    
+    <div class="form-group">
+        @Html.LabelFor(model => model.Precio, htmlAttributes: new { @class = "control-label" })
+        @Html.TextBoxFor(model => model.Precio, new { Id = "Precio", @class = "form-control input-money", maxlength = 30 })
+        @Html.ValidationMessageFor(model => model.Precio, "", new { @class = "text-danger" })
+    </div>
+    
+    @if (ViewBag.TipoProducto == "SERVICIO")
+    {
+        <div class="form-group">
+            @Html.LabelFor(model => model.Costo, htmlAttributes: new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.Costo, new { Id = "Costo", @class = "form-control input-money", maxlength = 30 })
+            @Html.ValidationMessageFor(model => model.Costo, "", new { @class = "text-danger" })
+        </div>
+    }
+    <div class="form-group">
+        @Html.LabelFor(model => model.Margen, htmlAttributes: new { @class = "control-label" })
+        @Html.TextBoxFor(model => model.Margen, new { Id = "Margen", @class = "form-control input-money readonly", @readonly = true, maxlength = 30 })
+        @Html.ValidationMessageFor(model => model.Margen, "", new { @class = "text-danger" })
+    </div>
+    @if (ViewBag.CobraIva == true)
+    {
+        <div class="form-group">
+            @Html.LabelFor(model => model.IncluyeIva, htmlAttributes: new { @class = "control-label" })
+            <div class="checkbox">
+                <label>
+                    @Html.CheckBoxFor(model => model.IncluyeIva, new { id = "IncluyeIva" })
+                </label>
+                @Html.ValidationMessageFor(model => model.IncluyeIva, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    }
+    <div class="form-group">
+        @Html.LabelFor(model => model.IdEstado, htmlAttributes: new { @class = "control-label" })
+        <div class="checkbox">
+            <label>
+                @Html.CheckBoxFor(model => model.IdEstado, new { id = "IdEstado" })
+            </label>
+            @Html.ValidationMessageFor(model => model.IdEstado, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+        <div class="panel-footer">
+            <button type="button" id="btnCancelUnit" class="btn btn-sm btn-default">Cancelar</button>
+            <input type="submit" value="Guardar" class="btn btn-sm btn-success" />
+        </div>
+    }
+
+</div>
+
+@Scripts.Render("~/bundles/jqueryval")
+<script>
+    $(function () {
+        $("#Cantidad").maskAsDecimal({ precision: 2 });
+        $("#Precio").maskAsDecimal({ precision: 4 });
+        $("#Costo").maskAsDecimal({ precision: 4 });
+    });
+
+    $("#btnCancelUnit").on("click", function () {
+        $("#price").empty();
+    });
+
+    $('#MantUnitType').submit(function (event) {
+        event.preventDefault();
+        var $div = $(this).closest('div');
+        if ($('#MantUnitType').validate().valid()) {
+            $.ajax({
+                url: $(this).attr('action'),
+                type: $(this).attr("method"),
+                data: $('#MantUnitType').serialize(),
+                beforeSend: function () {
+                    $("#divMant").empty();
+                    //$("#divMant").append('<div id="divLoading" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+                    blockUI($div);
+                    $div.addClass('loading');
+                },
+                complete: function () {
+                    //$("#divLoading").remove();
+                    unblockUI($div);
+                    $div.removeClass('loading');
+                },
+                success: function (dataReceived) {
+                    if (dataReceived) {
+                        if (dataReceived.Error) {
+                            toastr.error(dataReceived.Error.UserMessage);
+                            console.error("dataReceived:" + JSON.stringify(dataReceived.Error));
+                        }
+                        else {
+                            console.log("success: " + JSON.stringify(dataReceived));
+                            refreshUnitTypes(dataReceived.unitType);
+                            toastr.success(dataReceived.Mensaje, "", optionsToastr);
+                        }
+                    }
+                }
+            }).done(function (doneReceived) {
+                console.log("doneReceived: " + JSON.stringify(doneReceived));
+                console.log("doneReceived Error: " + JSON.stringify(doneReceived.Error));
+            });
+        }
+    });
+</script>

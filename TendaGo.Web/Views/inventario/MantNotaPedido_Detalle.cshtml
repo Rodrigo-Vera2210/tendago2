@@ -1,0 +1,158 @@
+﻿@using TendaGo.Web.Models
+@using TendaGo.Web.ApplicationServices
+@using TendaGo.Common
+@model EntradaViewModel
+
+@if (ViewBag.Accion == "Aprobar" || ViewBag.Accion == "Revisar" || ViewBag.Accion == "Entregar")
+{
+    <style type="text/css">
+        .transfer-button {
+            display: none;
+        }
+
+            div.input-spinner-cantidad:hover + .transfer-button, .transfer-button:hover {
+                display: inline-block;
+            }
+    </style>
+
+    <div class="row ">
+        <table id="tablaDetalleNotasPedido" class="table datatable table-bordered table-hover">
+            <thead>
+                <tr class="text-sm">
+                    <th></th>
+                    <th>Código</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th class="text-center">Unidad</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.DetalleNotaPedido.Count; i++)
+                {
+                    var tipoUnidad = GetTipoUnidad(Model.DetalleNotaPedido[i].IdProducto);
+
+                    <tr id='@Model.DetalleNotaPedido[i].IdProducto'>
+                        <td class="text-center">
+                            <div class="checkbox checkbox-replace color-orange">
+                                @Html.CheckBoxFor(m => m.DetalleNotaPedido[i].Recibido)
+                            </div>
+                        </td>
+
+                        <td>
+                            @Model.DetalleNotaPedido[i].CodigoInterno
+                        </td>
+                        <td>
+                            @Html.HiddenFor(m => m.DetalleNotaPedido[i].Id)
+                            @Html.HiddenFor(m => m.DetalleNotaPedido[i].IdProducto)
+                            @Html.HiddenFor(m => m.DetalleNotaPedido[i].DescripcionProducto)
+                            @Html.HiddenFor(m => m.DetalleNotaPedido[i].NombreProducto)
+                            @Html.HiddenFor(m => m.DetalleNotaPedido[i].CodigoInterno)
+                            @Html.HiddenFor(m => m.DetalleNotaPedido[i].Precio, new { @class = "precio-detalle" })
+                            @Model.DetalleNotaPedido[i].NombreProducto
+                        </td>
+                        <td>
+                            <center>
+                                <div id="@("spinnerCantidadProductos" + i)" class="input-spinner input-spinner-cantidad input-spinner-sx">
+                                    <button type="button" class="btn btn-default">-</button>
+                                    @Html.TextBoxFor(m => m.DetalleNotaPedido[i].Cantidad, new { @class = "form-control cantidad-detalle", @data_min = "1" })
+                                    <button type="button" class="btn btn-default">+</button>
+                                </div>
+                                <!--
+                                    <a href="javascript:;" class="btn btn-primary transfer-button "><i class="entypo-box"></i> Pedir desde otro local...</a>
+                                -->
+                            </center>
+                        </td>
+                        <td class="text-center">
+                            @Html.HiddenFor(m => m.DetalleNotaPedido[i].DesTipoUnidad)
+                            @Html.HiddenFor(m => m.DetalleNotaPedido[i].IdTipoUnidad, new { @class = "unidad-detalle" })
+
+                            <span>@(Model.DetalleNotaPedido[i].DesTipoUnidad ?? "UNIDAD")</span>
+                        </td>
+
+                        <td class="text-center">
+                            <a href="#" class="text-info btnElminarDetalle">
+                                <i class="entypo-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    string selectColumn = "Seleccionado";
+    if (ViewBag.Accion == "Empaquetar")
+    {
+        selectColumn = "Empaquetado";
+    }
+    else if (ViewBag.Accion == "Entregar")
+    {
+        selectColumn = "Entregado";
+    }
+
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.Id)
+
+    <h4>Detalle Nota Pedido</h4>
+    <div class="row">
+        <table id="tablaDetalleNotasPedido" class="table datatable table-bordered table-hover">
+            <thead>
+                <tr class="text-sm">
+                    <th>Código</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Unidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.DetalleNotaPedido.Count; i++)
+                {
+                    <tr>
+                         
+                        <td>
+                            @Model.DetalleNotaPedido[i].CodigoInterno
+                        </td>
+                        <td>
+                            @Html.HiddenFor(m => m.DetalleNotaPedido[i].Id)
+                            @Html.HiddenFor(m => m.DetalleNotaPedido[i].IdProducto)
+                            @Model.DetalleNotaPedido[i].NombreProducto
+                        </td>
+                        <td class="text-right">
+                            @Html.HiddenFor(m => m.DetalleNotaPedido[i].Cantidad)
+                            @Model.DetalleNotaPedido[i].Cantidad
+                        </td>
+                        <td class="text-right">
+                            @Html.HiddenFor(m => m.DetalleNotaPedido[i].IdTipoUnidad)
+                            @Model.DetalleNotaPedido[i].DesTipoUnidad
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+}
+
+
+@functions{
+
+    List<UnitTypeDto> unidadList = new List<UnitTypeDto>();
+
+    List<SelectListItem> GetTipoUnidad(int idProducto)
+    {
+        var unidades = new List<UnitTypeDto>();
+
+        try
+        {
+            unidades = TipoUnidadAppService.ObtenerTiposUnidadPorProducto(idProducto, UnitTypeStatusEnum.Active); ;
+        }
+        catch (Exception) { }
+        unidadList = unidades;
+        return unidades.Select(m => new SelectListItem { Text = m.TipoUnidad, Value = m.Id.ToString() }).ToList();
+    }
+
+
+}

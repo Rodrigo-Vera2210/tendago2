@@ -1,0 +1,389 @@
+﻿@using TendaGo.Web.Models
+@using TendaGo.Web.ApplicationServices
+@model NotaPedidoModel
+@{
+    ViewBag.Title = string.Format("Nota de Pedido No. # {0}", Model.Id);
+    var cliente = Model.Cliente;
+
+    if (cliente == null)
+    {
+        var customer = ClientesAppService.ObtenerClientePorId(Model.IdCliente);
+        cliente = AutoMapper.Mapper.Map<ClienteViewModel>(customer);
+    }
+
+    var numFactura = Model.Factura != null ? Model.Factura.NumeroDocumento : string.Empty;
+    var idFactura = Model.Factura != null ? Model.Factura.Id : string.Empty;
+    var tiempo = getTiempo(Model.Plazo);
+
+}
+
+<div class="invoice">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="col-xs-6 invoice-left">
+                @if (!string.IsNullOrEmpty(AppServiceBase.Empresa.Logo))
+                {
+                    <img src="@Url.Content("~"+AppServiceBase.Empresa.Logo)" width="300" alt=""><br />
+                }
+
+                <h4><b>@AppServiceBase.Empresa.NombreEmpresa.ToUpper()</b></h4>
+                
+                @if (!string.IsNullOrEmpty(numFactura))
+                {
+                    <h4>No. Factura: @numFactura</h4>
+                }
+            </div>
+            <div class="col-xs-6 invoice-right">
+
+                <h3><b>COTIZACION</b> <br /><span>No. @Model.Id</span></h3>
+                <span>Fecha: @Model.Fecha.ToCustomFormatString()</span>
+                <h4>
+                    ESTADO: <span class="label label-success">@Model.EstadoActual</span>
+                </h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="divider"><hr /></div>
+
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <div class="col-sm-12">
+
+                <h4>CLIENTE</h4>
+            </div>
+
+            <div class="col-sm-6 invoice-left">
+                <b>Nombre/Razon Social:</b> @cliente.RazonSocial<br />
+                <b>RUC o C&eacute;dula #:</b> @cliente.Identificacion
+            </div>
+            <div class="col-sm-6 invoice-right">
+
+                @*<a href="@Url.Action("Editar", new { id=Model.Id })" class="btn btn-primary btn-icon icon-left hidden-print ">
+                    @getAction()
+                    <i class="entypo-bookmark"></i>
+                </a>*@
+            </div>
+        </div>
+        <div class="col-sm-12">
+
+            <div class="col-sm-6 invoice-left">
+                <b>Direccion:</b> @cliente.Direccion @cliente.Ciudad @cliente.Provincia <br />
+
+                <b>Telefono:</b> @cliente.Celular
+                @if (!string.IsNullOrEmpty(cliente.Celular) && !string.IsNullOrEmpty(cliente.Telefono))
+                {
+                    <span>/</span>
+                }
+                @cliente.Telefono<br />
+
+                <b>Correo:</b> @((cliente.Correo ?? "").ToLower()) <br />
+
+            </div>
+
+            <div class="col-md-6 invoice-right">
+                @if (Model.FechaHoraEntregaPropuesta != DateTime.MinValue)
+                {
+                    <b>Fecha y hora de Entrega:</b><br />
+                    @Model.FechaHoraEntregaPropuesta.ToString(new System.Globalization.CultureInfo("es-EC"))
+
+                }
+            </div>
+        </div>
+    </div>
+    <div class="margin"></div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="text-center">Codigo</th>
+                <th width="40%">Producto</th>
+                <th class="text-center">Cantidad</th>
+                <th class="text-center">Tipo de Unidad</th>
+                <th class="text-center">Precio</th>
+                @if (AppServiceBase.Empresa.IncluyeIVA)
+                {
+                    <th class="text-center"></th>
+                }
+                <th class="text-center">Valor</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.DetalleNotaPedido != null)
+            {
+                foreach (var item in Model.DetalleNotaPedido)
+                {
+            <tr>
+                <td class="text-center">@item.CodigoInterno</td>
+                <td>
+                    @item.NombreProducto
+                @if (item.IncluyeIva)
+                {
+                    <span>*</span>
+                }
+            </td>
+            <td class="text-center">@item.Cantidad</td>
+            <td class="text-center">@item.DesTipoUnidad</td>
+                @if (AppServiceBase.Empresa.IncluyeIVA)
+                {
+                    var precio = (item.Total - item.IVA) / (item.Cantidad > 0 ? item.Cantidad : 1M);
+                    var subtotal = item.Subtotal;
+                    if (!item.IncluyeIva)
+                    {
+                        subtotal = item.Subtotal + item.IVA;
+                    }
+
+                    <td class="text-right">$@precio.ToString("#,##0.0000")</td>
+                    <td class="text-center">
+                        @if (item.IVA > 0)
+                        {
+                            <span class="text-right badge badge-secondary" data-toggle="tooltip" title="$ @item.IVA.ToString("#,##0.00")">+IVA</span>
+                        }
+                    </td>
+                    <td class="text-right">$@subtotal.ToCustomFormatString()</td>
+                }
+                else
+                {
+                    <td class="text-right">$@item.Precio.ToString("#,##0.0000")</td>
+                    <td class="text-right">$@item.Subtotal.ToCustomFormatString()</td>
+                }
+                
+            </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+
+    <div class="margin"></div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="invoice-left">
+                @if (Model.CuentasPorCobrar != null && Model.CuentasPorCobrar.Count > 0)
+                {
+                    <h4>Forma de Pago: <small>@(Model.IdFormaPago == 2 ? "CREDITO" : "CONTADO")</small></h4>
+                    <strong>No. Pagos:</strong> @Model.Cuotas <strong>&nbsp;&nbsp;&nbsp;Plazo:</strong> <span>@Model.Plazo</span> <span>@tiempo</span>
+                    <div class="margin"></div>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th><label># Pago</label></th>
+                                <th><label>Fecha Pago</label></th>
+                                <th><label>V.Cuota</label></th>
+                                <th><label>V.Pagado</label></th>
+                                <th><label>Saldo</label></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.CuentasPorCobrar.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @Model.CuentasPorCobrar[i].Numero
+                                    </td>
+                                    <td>
+                                        @Model.CuentasPorCobrar[i].FechaVencimiento.ToCustomFormatString()
+                                    </td>
+                                    <td class="text-right">
+                                        @Model.CuentasPorCobrar[i].Valor.ToCustomFormatString()
+                                    </td>
+                                    <td class="text-right">
+
+                                        @Model.CuentasPorCobrar[i].ValorPagado.ToCustomFormatString()
+                                    </td>
+                                    <td class="right-aligned">
+                                        @Model.CuentasPorCobrar[i].Saldo.ToCustomFormatString()
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="4" style="text-align:right">Saldo Total:</th>
+                                @{
+                                    var total = Model.CuentasPorCobrar.Sum(x => x.Valor);
+                                    var totalPagado = Model.CuentasPorCobrar.Sum(x => x.ValorPagado);
+                                    var saldo = total - totalPagado;
+                                }
+                                <th class="text-right total">@saldo.ToCustomFormatString()</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                }
+
+                @if (Model.DetalleEmpaquetado != null && Model.DetalleEmpaquetado.Count > 0)
+                {
+                    <strong>Empaquetado</strong>
+                    <ul>
+                        @foreach (var item in Model.DetalleEmpaquetado.GroupBy(x => x.TipoPaquete).Select(s => new { TipoPaquete = s.Key, Cantidad = s.Sum(x => x.Cantidad) }))
+                        {
+                            <li>@item.Cantidad  - @item.TipoPaquete</li>
+                        }
+                    </ul>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.Observaciones))
+                {
+                    <table class="table table-bordered margin-5-5" width="100%" border="1">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Observaciones: <br />
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@Model.Observaciones </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="invoice-right">
+                <ul class="list-unstyled">
+                     
+                    <li>
+                        <h4>
+                            <strong>
+                                Total a Pagar: $ @Model.Total.ToCustomFormatString()
+                            </strong>
+                        </h4>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+    <div class="margin"></div>
+    <div class="row hidden-print">
+        <div class="col-sm-6 invoice-left">
+            @AppServiceBase.Empresa.IncluyeIVA
+            <a href="@ViewBag.ActionUrl" class="btn btn-default btn-icon icon-left hidden-print">
+                Regresar
+                <i class="entypo-fast-backward"></i>
+            </a>
+
+        </div>
+        <div class="col-sm-6 invoice-right">
+            @if (!string.IsNullOrEmpty(idFactura))
+            {
+                <div class="btn-group">
+                    <button type="button" class="btn btn-danger download-factura"><i class="entypo-download"></i> Ver Factura </button>
+                    <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="true" > <i class="entypo-down"></i> </button>
+                    <ul class="dropdown-menu dropdown-danger" role="menu">
+                        <li><a class="text-dark" href="@Url.Action("Factura", new { id=idFactura})" target="_blank" ><i class="fa fa-search"></i>&nbsp;&nbsp;Ver Factura</a> </li>
+                        <li><a class="text-danger" href="@Url.Action("Factura", new { id=idFactura, descargar = true})" target="_blank" ><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;Descargar Factura</a> </li>
+                    </ul>
+                </div> 
+            }
+            <div class="btn-group">
+                <button type="button" class="btn btn-success  download-pdf "><i class="entypo-print"></i> Imprimir </button>
+                <button type="button" class="btn btn-green dropdown-toggle" data-toggle="dropdown" aria-expanded="true" style="background: #00582b;"> <i class="entypo-down"></i> </button>
+                <ul class="dropdown-menu dropdown-danger" role="menu">
+                    <li><a class="text-danger download-pdf" href="javascript:;"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;Descargar PDF</a> </li>
+                    <li><a class="text-info download-word" href="javascript:;"><i class="fa fa-file-word-o"></i>&nbsp;&nbsp;Descargar Word</a> </li>
+                    <li><a class="text-success download-excel" href="javascript:;"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp;Descargar Excel</a> </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<form id="downloadForm" action="@Url.Action("Descargar", new {  id=Model.Id })" method="GET" target="_download_@Model.Id">
+    <input name="format" id="downloadFormat" type="hidden" value="PDF" />
+</form>
+@{ 
+    
+}
+
+@section scripts{
+
+    <script>
+        (function () {
+            menu_settings.parentMenu = 'MnuNotaPedido';
+            menu_settings.optionMenu = 'OpcCrear';
+            SetActiveMenu();
+
+            var descargarNotaPedido = function (format) {
+                $("#downloadFormat").val(format);
+                $("#downloadForm").submit();
+            }
+
+            var descargarFactura = function () {
+                var url = "@Url.Action("Factura", new { id= idFactura})";
+                location.assign(url);
+            }
+
+            $(".download-factura").on("click", descargarFactura);
+
+            $(".download-pdf").on("click", function () { descargarNotaPedido("PDF"); });
+            $(".download-excel").on("click", function () { descargarNotaPedido("Excel"); });
+            $(".download-word").on("click", function () { descargarNotaPedido("Word"); });
+
+        })();
+
+    </script>
+}
+
+@functions{
+    string getAction()
+    {
+        if (Model.EstadoActual == "APROBADA")
+        {
+            return "Alistar";
+        }
+        else if (Model.EstadoActual == "EMPAQUETADA")
+        {
+            return "Revisar";
+        }
+        else if (Model.EstadoActual == "REVISADA")
+        {
+            return "Entregar";
+        }
+        else if (Model.EstadoActual == "ENTREGADA")
+        {
+            return "Facturar";
+        }
+        else if (Model.EstadoActual == "EN PROCESO")
+        {
+            return "Aprobar";
+        }
+        else
+        {
+            return "Consultar";
+        }
+    }
+
+
+    string getTiempo(int plazo)
+    {
+        string tiempo = "dias";
+        //Función que cambia a meses si pasa de 29 días o a años si pasa de 364, pero no cambia el valor del plazo
+        //if (plazo > 29)
+        //{
+        //    if (plazo % 29 > 0)
+        //    {
+        //        if (plazo > 364)
+        //        {
+        //            tiempo = "año(s)";
+        //        }
+        //        else
+        //        {
+        //            tiempo = "meses";
+        //        }
+        //    }
+        //    else
+        //    {
+        //        tiempo = "mes";
+        //    }
+        //}
+        return tiempo;
+    }
+}

@@ -1,0 +1,438 @@
+﻿@using TendaGo.Web.ApplicationServices
+@using TendaGo.Web.Models
+@model CompraViewModel
+@{
+    ViewBag.Title = "Compra";
+    var listaFormaPago = CatalogosAppService.ObtenerFormasPago().ToSelectList("Value", "Text", Model.IdFormaPago);
+    var jsonLocalesBodegas = Json.Encode(Session.GetLocales().Select(x => new { x.Id, Nombre = x.Local }));
+    var listaRuc = RucsAppService.ObtenerRucs().ToSelectList("Ruc", "Descripcion", Model.Ruc);
+    var listaMoneda = CatalogosAppService.ObtenerMonedas().ToSelectList("Id", "CodigoISO", Model.IdMonedaOrigen);
+
+    string date = DateTime.Now.ToString("dd/MM/yyyy");
+
+    var span = 11;
+    if (!AppServiceBase.Empresa.Importacion)
+    {
+        span = 7;
+    }
+
+}
+
+@section styles{
+
+    @Styles.Render("~/Styles/datatables")
+    @Styles.Render("~/Styles/toggle")
+    @Styles.Render("~/Assets/DataTables/Responsive-2.2.3/css/responsive.dataTables.css")
+
+    <style>
+        .tile-title .title p {
+            padding-bottom: 5px;
+        }
+
+        #idProvider {
+            width: 0;
+            height: 0;
+        }
+    </style>
+}
+
+<ol class="breadcrumb bc-3 small hidden-xs breadcrumb-no-padding">
+    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home</a></li>
+    <li>Compras</li>
+    <li class="active"><strong>Ingresar Compra</strong></li>
+</ol>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left">
+            <h3>Compra</h3>
+        </div>
+    </div>
+</div>
+<br />
+<div class="row">
+    @using (Html.BeginForm("Guardar", "Compra", FormMethod.Post, new { id = "guardarCompraForm", @class = "form-wizard validate" }))
+    {
+        @Html.HiddenFor(m => m.LocalSeleccionado, Session.GetIdLocal())
+
+        <div class="steps-progress">
+            <div class="progress-indicator"></div>
+        </div>
+
+        <ul>
+            <li class="active">
+                <a href="#tab1" data-toggle="tab"><span>1</span>Detalle compra</a>
+            </li>
+            <li>
+                <a href="#tab2" data-toggle="tab"><span>2</span>Datos Facturacion</a>
+            </li>
+            <li>
+                <a href="#tab3" data-toggle="tab"><span>3</span>Detalle Pagos</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab1">
+                <div class="row">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+
+                        </div>
+                        <div class="panel-body with-table">
+
+                            <button type="button" class="btn btn-green btn-icon icon-left" id="btnNuevoDetalle">
+
+                                <span>Agregar</span>
+                                <i class="entypo-plus"></i>
+                            </button>
+
+                            <div class="table-responsive">
+                                <table id="tablaDetalleCompra" class="table datatable table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center"></th>
+                                            <th style="min-width:300px;">Producto</th>
+                                            <th style="min-width:150px;" class="text-center">Local</th>
+                                            <th style="min-width:150px;" class="text-center">Cantidad</th>
+                                            <th style="min-width:150px;" class="text-center">Tipo Unidad</th>
+
+                                            @if (AppServiceBase.Empresa.Importacion)
+                                            {
+                                                <th style="min-width:150px;" class="text-center">Valor FOB</th>
+                                                <th style="min-width:150px;" class="text-center">Val Moneda Orig</th>
+                                                <th style="min-width:150px;" class="text-center">Impuesto Gasto</th>
+                                                <th style="min-width:150px;" class="text-center">Costo Venta</th>
+                                                <th style="max-width:150px;" class="text-center">Fecha Caducidad</th>
+                                            }
+                                            else
+                                            {
+                                                <th style="min-width:150px;" class="text-center">Valor</th>
+                                            }
+
+                                            <th class="text-center" style="min-width:50px;">Serie</th>
+                                            <th class="text-center" style="min-width:150px;">Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                    <tfoot>
+
+                                        <tr>
+                                            <th colspan="@(span)" style="text-align:right">Subtotal:</th>
+                                            <th class="text-right total">
+                                                <span class="valor-subtotal ">0.00</span>
+                                            </th>
+                                        </tr>
+
+                                        <tr>
+                                            <th colspan="@(span)" style="text-align:right">Valor Adicional:</th>
+                                            <th class="text-right total">
+                                                @Html.TextBoxFor(model => model.ValorAdicional, new { id = "ValorAdicional", @class = "form-control input-money" })
+                                            </th>
+                                        </tr>
+
+                                        <tr>
+                                            <th colspan="@(span)" style="text-align:right;">Total:</th>
+                                            <th class="text-right total">
+                                                @Html.HiddenFor(m => m.Total)
+                                                <span class="valor-total bold">0.00</span>
+                                            </th>
+                                        </tr>
+
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="tab2">
+                <div class="row">
+                    <div class="col-md-4 col-xs-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <div class="panel-title">Proveedor</div>
+                                <div class="panel-options" style="padding-top: 5px;">
+                                    <button type="button" class="btn btn-sm btn-white add-supplier-button" title="Agregar Proveedor">
+                                        <i class="entypo-user-add"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-white search-supplier-button" title="Buscar Proveedor">
+                                        <i class="entypo-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div id="providerResult" class="tile-title tile-gray hidden">
+                                    <div class="icon">
+                                        <i class="entypo-user"></i>
+                                    </div>
+                                    <div class="title">
+                                        <h3 id="identificacionProv"></h3>
+                                        <p id="razonSocialProv">.</p>
+                                        <p id="direccionProv">.</p>
+                                    </div>
+                                </div>
+                                @Html.TextBoxFor(model => model.IdProveedor, new { id = "idProvider", @class = "input-sm input-no-margin transparente" })
+                                @Html.ValidationMessageFor(model => model.IdProveedor, "", new { @class = "text-danger", @readonly = "readonly" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8 col-xs-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.FechaCompra, new { @class = "control-label" })
+                                            @Html.TextBoxFor(model => model.FechaCompra, new { id = "FechaCompra", @class = "form-control", @data_format = "dd/mm/yyyy", @autocomplete = "off" })
+                                            @Html.ValidationMessageFor(model => model.FechaCompra, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.NumeroFacturaPedido, new { @class = "control-label" })
+                                            @Html.TextBoxFor(model => model.NumeroFacturaPedido, new { id = "NotaPedidoFactura", @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.NumeroFacturaPedido, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Ruc, new { @class = "control-label" })
+                                            @Html.DropDownListFor(model => model.Ruc, listaRuc, "Seleccione Ruc", htmlAttributes: new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.Ruc, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.IdMonedaOrigen, new { @class = "control-label" })
+                                            @Html.DropDownListFor(model => model.IdMonedaOrigen, listaMoneda, "Seleccione Moneda", htmlAttributes: new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.IdMonedaOrigen, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Tasa, new { @class = "control-label" })
+                                            @Html.TextBoxFor(model => model.Tasa, new { id = "Tasa", @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.Tasa, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Subtotal</label>
+                                            <span class="valor-subtotal form-control ">0.00</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Valor Adicional</label>
+                                            <span class="valor-adicional form-control">0.00</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Total</label>
+                                            <span class="valor-total form-control ">0.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="tab3">
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="panel-title">Detalle de Pagos</div>
+                    </div>
+
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.IdFormaPago, new { @class = "control-label" })
+                                    @Html.DropDownListFor(model => model.IdFormaPago, listaFormaPago, "Seleccione Forma de Pago", new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.IdFormaPago, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="numeroPagos" class="control-label">N° Pagos</label>
+                                    <div id="spinnerNumeroPagos" class="input-spinner input-spinner-sx">
+                                        <button type="button" class="btn btn-default">-</button>
+                                        <input type="text" id="numeroPagos" value="1" class="form-control" data-min="1" />
+                                        <button type="button" class="btn btn-default">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="numeroPlazoDias" class="control-label">Días</label>
+                                    <div id="spinnerPlazoDias" class="input-spinner input-spinner-sx">
+                                        <button type="button" class="btn btn-default">-</button>
+                                        <input type="text" id="numeroPlazoDias" value="0" class="form-control" data-min="0" />
+                                        <button type="button" class="btn btn-default">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label for="numeroPlazoDias" class="control-label">Valor Pagado</label>
+                                    <input type="text" id="ValorPagado" class="form-control text-right input-money-2" />
+                                </div>
+                            </div>
+                            <div class="col-md-1 form-group">
+                                <label style="width: 100%;">&nbsp;</label>
+                                <button type="button" id="btnCuentasPagar" class="btn btn-blue">
+                                    <i class="entypo-right-dir"></i> Calcular
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="detallePagos" class="table-responsive"></div>
+            </div>
+            <ul class="pager wizard">
+                <li class="previous">
+                    <a href="#">
+                        <i class="entypo-left-open"></i>
+                        <span class="hidden-xs">Anterior</span>
+                    </a>
+                </li>
+                <li class="finish">
+                    <button type="submit" class="btn btn-success btn-sm">
+                        <i class="entypo-floppy"></i>
+                        <span class="hidden-xs">Guardar Compra</span>
+                    </button>
+                </li>
+                <li class="next">
+                    <a href="#">
+                        <span class="hidden-xs">Siguiente</span>
+                        <i class="entypo-right-open"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    }
+</div>
+
+<div class="modal fade" id="SearchProductsModal">
+
+</div>
+
+
+
+<div id="miModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Contenido del modal -->
+        <div class="modal-content" style=" height: 100%; width: 122%;">
+            
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+                
+                <div class="row" style="padding: 2%; margin-right:20px;">
+                        <div class="col-lg-9">
+                            <input type="text" id="lserie" name="lserie" value="" class="form-control" />
+                        </div>
+                        
+                        <div class="col-lg-3">
+                            <button type="button" class="btn btn-green btn-icon icon-left" id="btnAddSerie">
+                                <span>Agregar Serie</span>
+                                <i class="entypo-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                <div class="panel-body with-table">
+                    <br/>
+                    <div class="table-responsive">
+                        <table id="tablaSerie" class="table datatable table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th style="max-width:35px;" class="text-center">Producto</th>
+                                    <th>Serie</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">Cerrar</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/wizard")
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/datepicker")
+    @Scripts.Render("~/bundles/timepicker")
+    @Scripts.Render("~/bundles/fileinput")
+    @Scripts.Render("~/bundles/maskmoney")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/toggle")
+
+    @Scripts.Render("~/bundles/compras/index")
+    @Scripts.Render("~/bundles/productos/index")
+    @Scripts.Render("~/Assets/DataTables/Responsive-2.2.3/js/dataTables.responsive.js")
+
+
+<script>
+        var $btnBuscarProducto;
+        var jsonLocales = '@Html.Raw(jsonLocalesBodegas)';
+        var productoSeleccionado;
+        var searchProvidersUrl = '@Url.Action("ConsultarProveedores", "proveedores")';
+        var createProviderFormUrl = '@Url.Action("NuevoProveedor", "proveedores")';
+        var tipoUnidadUrl = '@Url.Action("ObtenerTiposUnidadPorProducto", "Compra")';
+        var generarCuentasUrl = '@Url.Action("GenerarCuentasPorPagar", "Compra")';
+        var selfUrl = "@Url.Action("Index","Compra")";
+        var buscarProveedoresUrl = '@Url.Action("ConsultarProveedores", "Compra")';
+        var fechaCompra = '@date';
+        var idOrigen = 4; // Compra
+        var compraImportacion = @Convert.ToInt32(AppServiceBase.Empresa.Importacion);
+
+        searchModalSettings.url = "@Url.Action("BuscarParaModal", "productos")";
+        searchModalSettings.resultContainer = "divConsultaProductosModal";
+
+        menu_settings.parentMenu = 'MnuPurchase';
+        menu_settings.optionMenu = 'OpcPurchaseSimple';
+
+
+        $(function () {
+            SetActiveMenu();
+            setProvidersSettings();
+            $(".input-money").maskAsDecimal();
+            $("#Tasa").maskAsDecimal({ precision: 4 });
+            $("#ValorAdicional").on("change keyup", function () { recalcularTotales("#ValorAdicional") });
+
+            $("#FechaCompra").datepickercustom();
+            $("#FechaCompra").val(fechaCompra);
+            $(".add-supplier-button").on("click", getCreateProviderForm);
+            $(".search-supplier-button").on("click", searchProvider);
+        });
+
+        var x = @Html.Raw(jsonLocalesBodegas);
+</script>
+}

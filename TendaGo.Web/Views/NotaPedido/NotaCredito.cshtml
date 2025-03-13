@@ -1,0 +1,195 @@
+﻿@using TendaGo.Web
+@using TendaGo.Web.Models
+@using Newtonsoft.Json;
+
+
+@model NotaPedidoModel
+@{
+
+    var jsonTiposPaquete = (string)ViewBag.JsonTiposPaquete;
+
+    // DEFINIMOS LA ACCION A REALIZAR EN LOS DISTINTOS CASOS
+    // EN PROCESO U OTROS NO RECONOCIDOS DEBE PASAR A APROBAR:
+    var factura = "";
+    ViewBag.Accion = "Consultar";
+
+    ViewBag.Title = "Creación de Nota de Crédito";
+
+}
+
+@section styles{
+    @Styles.Render("~/Styles/NotaPedido")
+}
+
+<ol class="breadcrumb bc-3 small hidden-xs breadcrumb-no-padding">
+    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home</a></li>
+    <li>Nota de Crédito</li>
+    <li class="active">
+        <strong>
+            <span>Crear</span>
+        </strong>
+    </li>
+</ol>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left">
+            <h3>
+                <small> FACTURA # <b>@Model.Factura.NumeroDocumento</b></small>
+            </h3>
+            <h3>
+                <small> NOTA DE PEDIDO # <b>@Model.Id</b></small>
+            </h3>
+            <h4>CLIENTE: @Model.RazonSocial</h4>
+            <h5>LOCAL: @Model.LocalSeleccionado</h5>
+        </div>
+
+        <div id="divCarritoCompras" class="pull-right">
+            <h4>
+                ESTADO ACTUAL:
+                <span class="label label-success">@Model.EstadoActual</span>
+            </h4>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+
+    @using (Html.BeginForm("NotaCredito", "NotaPedido", FormMethod.Post, new { @id = "NotaCreditoForm", @class = "form-wizard validate", @enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.IdLocal)
+        @Html.HiddenFor(model => model.Total)
+        @Html.HiddenFor(model => model.Fecha)
+        @Html.HiddenFor(model => model.Factura)
+
+        var index = 1;
+
+        <div class="steps-progress">
+            <div class="progress-indicator"></div>
+        </div>
+
+        <ul class="hidden-print">
+            <li class="active">
+                <a href="#tab1" data-toggle="tab"><span>@(index++)</span>Detalle Nota de Crédito</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane  active" id="tab1">
+                @{ Html.RenderPartial("MantNotaCredito_Detalle", Model, ViewData); }
+            </div>
+
+            <ul class="pager wizard hidden-print">
+                <li class="previous"> <a href="javascript:;"><i class="entypo-left-open"></i> Anterior</a> </li>
+                <li class="finish" onclick="crearNotaCredito()"> <a class="save-button"><i class="entypo-check"></i> Guardar &nbsp; </a> </li>
+                <li class="next"> <a href="javascript:;" id="idsiguiente">  <i class="entypo-right-open"></i> Siguiente</a> </li>
+            </ul>
+        </div>
+    }
+</div>
+
+<div class="modal fade" id="divModalClientes">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header modal-header-inventory">
+                <button type="button" class="close" id="btnClose" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Buscar Clientes</h4>
+            </div>
+            <div id="divModalClientesBody" class="modal-body">
+
+            </div>
+            <button data-dismiss="modal" class="close" type="button">
+                <span aria-hidden="true">&times;</span>
+                <span class="sr-only">Close</span>
+            </button>
+        </div>
+
+    </div>
+</div>
+
+@*<div class="modal fade" id="divModalTransferencia">
+
+    </div>*@
+
+@*<form id="resumenForm" method="post" action="@Url.Action("Resumen", "NotaPedido", new { id =  Model.Id})">
+        <input type="hidden" name="Action" value="@ViewBag.Accion" />
+    </form>*@
+
+<input type='hidden' name='FacturaJson' id='FacturaJson' value='@Html.Raw(JsonConvert.SerializeObject(Model.Factura))' />
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/wizard")
+    @Scripts.Render("~/bundles/datepicker")
+    @Scripts.Render("~/bundles/timepicker")
+    @Scripts.Render("~/bundles/fileinput")
+    @Scripts.Render("~/bundles/maskmoney")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/paginate")
+    @Scripts.Render("~/bundles/notaPedido")
+    @Scripts.Render("~/bundles/productos/index")
+
+
+
+    <script>
+        function crearNotaCredito() {
+
+            
+
+            var formAceptarNotaPedido = $("#NotaCreditoForm");
+            var post_url = '@Url.Action("NotaCredito", "NotaPedido")';
+            var request_method = formAceptarNotaPedido.attr("method");
+            @{
+                foreach (var item in Model.DetalleNotaPedido)
+                {
+                    DocumentDetailViewModel det = new DocumentDetailViewModel();
+                    det.IdProducto = item.IdProducto;
+                    det.Precio = item.Precio;
+                    det.Cantidad = item.Cantidad;
+                    det.Descuento = item.Descuento;
+                    det.TipoIva = (item.CobraIva) ? "2" : "0";
+                    det.TipoIce = "0";
+                    det.IdTipoUnidad = item.IdTipoUnidad;
+                    det.CodigoInterno = item.CodigoInterno;
+                    det.NombreProducto = item.NombreProducto;
+
+                    Model.Factura.Detalles.Add(det);
+                }
+
+                Model.FacturaJson = @Html.Raw(JsonConvert.SerializeObject(Model.Factura)).ToString();
+                var json = Newtonsoft.Json.JsonConvert.SerializeObject(Model);
+            }
+            var jsonData = @Html.Raw(json);
+
+            console.log(jsonData);
+
+            $.ajax({
+                url: post_url,
+                type: request_method,
+                data: jsonData,
+                beforeSend: function () {
+                },
+                complete: function () {
+                }
+            }).done(function (respuesta) {
+                if (respuesta.success == true) {
+                    swal("Guardar crédito", "Guardado: ", "success");
+                    setTimeout(function () {
+                        var consultaPedidoUrl = respuesta.url;                            
+                        location.assign(consultaPedidoUrl)
+                    }, 4000);
+                }
+                else {
+                    toastr.error("Se ha producido un error", "", optionsToastr);
+                }
+            });
+        }
+
+    </script>
+
+
+}

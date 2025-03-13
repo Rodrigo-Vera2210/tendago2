@@ -1,0 +1,140 @@
+﻿@using TendaGo.Web.Models
+@using TendaGo.Web.ApplicationServices
+@using TendaGo.Web.Infraestructura
+
+@{
+    ViewBag.Title = "Metodos de Pago";
+}
+@Styles.Render("~/Styles/datatables")
+@Styles.Render("~/Styles/select2")
+
+
+<ol class="breadcrumb bc-3 small hidden-xs breadcrumb-no-padding">
+    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home</a></li>
+    <li>Parametrizaciones</li>
+    <li class="active"><strong>@ViewBag.Title</strong></li>
+</ol>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left">
+            <h3>@ViewBag.Title</h3>
+        </div>
+        <div class="pull-right">            
+                <button class="btn btn-info btn-icon icon-left" onclick="editByModule(0);">
+                    <i class="entypo-list-add"></i>Nuevo
+                </button>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div id="divPerfiles" class="col-lg-6 col-md-5"></div>
+    <div id="divMant" class="col-lg-9 col-md-7">
+        <input type="hidden" id="idPerfil" />
+        <br />
+        <p><h3 id="selectedProfile"></h3></p>
+        <div id="divDatatable"></div>
+    </div>
+</div>
+
+<div class="modal fade" id="divModalMPagos" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="myModalLabel">Crear&nbsp;Metodo de Pago</h4>
+            </div>
+            <div class="modal-body">
+                <div id="modal-content">
+                    <!-- close register detail goes here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/select2")
+
+<script>
+        menu_settings.parentMenu = 'MnuParam';
+        menu_settings.optionMenu = 'OpcMetodoPago';
+
+        $(function() {
+            SetActiveMenu();
+            getMethods();
+        });
+
+        var getProfilesUrl = '@Url.Action("GetMetodosPago", "MetodoPago")';
+
+        function getMethods() {
+            $.ajax({
+                url: getProfilesUrl,
+                type: "GET",
+                beforeSend: function() {
+                    $("#divPerfiles")
+                        .append('<div id="divLoading" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+                },
+                complete: function() {
+                    $("#divLoading").remove();
+                }
+            }).done(function(dataResponse) {
+                if (dataResponse != "") {
+                    $("#divPerfiles").html(dataResponse);
+                    $("#profilesTable").basicDatatable();
+                }
+            });
+        }
+
+        function editByModule(idPerfil) {
+            $('#divModalMPagos').modal('show');
+            $("#modal-content").load("/MetodoPago/postMetodoPago/" + idPerfil);
+        }
+
+        @*var getDeleteUrl = '@Url.Action("Borrar", "MetodoPago")';
+        function deleteByModule(modeloPago) {
+            $.ajax({
+                url: getDeleteUrl,
+                data: modeloPago ,
+                type: "DELETE"
+            }).done(function(dataResponse) {
+                //if (dataResponse != "") {
+                //    $("#divDatatable").html(dataResponse);
+                //    $("#displaysTable").datatableNoSortColumn({ column_no_sort:2});
+                //}
+            });*@
+
+
+        function deleteByModule(modeloPago) {
+
+            swal({
+                title: "Eliminar Pago",
+                text: "¿Esta usted seguro? Una vez anulado el pago, el estado no se puede revertir!",
+                type: "warning",
+                buttons: true,
+                showCancelButton: true,
+                dangerMode: true,
+                confirmButtonColor: "#cc2424",
+                confirmButtonText: "Anular",
+                cancelButtonText: "Cancelar",
+                closeOnConfirm: true
+
+            }, function (eliminar) {
+                var getDeleteUrl = '@Url.Action("Borrar", "MetodoPago")';
+                if (eliminar) {
+                    $.ajax({
+                        url: getDeleteUrl,
+                        data: modeloPago,
+                        type: "DELETE"
+                    }).done(function (dataResponse) {
+                        location.reload();
+                    });
+                }
+            });
+
+        }
+</script>
+}

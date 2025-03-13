@@ -1,0 +1,62 @@
+﻿@using TendaGo.Web.Models
+@model IEnumerable<TendaGo.Web.Models.ProductoViewModel>
+@{
+    // las funciones javascript desde los eventos onclick de los botones deben ser declaradas en la View principal
+    // desde donde se llama a la PartialView Buscar, aqui no debe ser declarada ninguna funcion javascript que responda a los eventos onclick
+    int idOrigen = (int)ViewBag.Origen;
+    OrigenesBusquedaProductos origen = (OrigenesBusquedaProductos)idOrigen;
+
+    var searchId = Guid.NewGuid().ToString();
+}
+@if (Model.Any())
+{
+    @*<h3>Productos</h3>*@
+    <div class="panel">
+        <div id="listitems" class="panel-body">
+            @foreach (var producto in Model)
+            {
+                producto.Origen = origen;
+            <div class="row">
+                <div class="member-entry" data-uid="@producto.Id"> </div>
+            </div>
+            }
+        </div>
+
+        <ul class="pager" id="listitems-pagination" style="display:none">
+            <li class="previous">
+                <a id="listitems-previous" href="#"><i class="entypo-left-thin"></i> Anterior</a>
+            </li>
+            <li class="next">
+                <a id="listitems-next" href="#">Siguiente <i class="entypo-right-thin"></i></a>
+            </li>
+        </ul>
+    </div>
+
+}
+else
+{
+    <div class="tile-stats tile-white-orange">
+        <div class="icon"><i class="entypo-docs"></i></div>
+        <div class="num">0</div>
+        <h3>La búsqueda solicitada no obtuvo resultados</h3>
+    </div>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var items = $(".member-entry");
+
+        for (var i = 0; i < items.length; i++) {
+            var item = $(items[i]);
+            var id = item.attr("data-uid");
+            
+            item.load("@Url.Action("GetSearchItem")/@searchId?productid=" + id);
+        }
+
+        $('#listitems').paginate({ itemsPerPage: 5 });
+    });
+</script>
+
+@{ 
+    Session[searchId] = Model;
+}

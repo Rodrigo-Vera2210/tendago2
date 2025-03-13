@@ -1,0 +1,333 @@
+﻿@using TendaGo.Common
+@using TendaGo.Web.Models
+@using TendaGo.Web.ApplicationServices
+
+@model CierreCajaViewModel
+@{
+    ViewBag.Title = "Cierre de Caja";
+
+    var idEmpresa = User.Identity.GetIdEmpresa();
+    var mediosPago = CatalogosAppService.ObtenerMediosPago();
+
+}
+
+@Styles.Render("~/Styles/datatables")
+
+
+
+
+<ol class="breadcrumb bc-3 small hidden-xs breadcrumb-no-padding">
+    <li> <a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home</a>  </li>
+    <li> Caja </li>
+    <li class="active"> <strong>@ViewBag.Title</strong> </li>
+</ol>
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left">
+            <h3>@ViewBag.Title</h3>
+        </div>
+        <div class="pull-right">
+            <div class="btn-group">
+                <button type="button" class="btn btn-success  download-pdf "><i class="entypo-print"></i> Imprimir </button>
+                <button type="button" class="btn btn-green dropdown-toggle" data-toggle="dropdown" aria-expanded="true" style="background: #00582b;"> <i class="entypo-down"></i> </button>
+                <ul class="dropdown-menu dropdown-danger" role="menu">
+                    <li><a class="text-danger download-pdf" href="javascript:;"><i class="fa fa-file-pdf-o"></i>&nbsp;&nbsp;Descargar PDF</a> </li>
+                    <li><a class="text-info download-word" href="javascript:;"><i class="fa fa-file-word-o"></i>&nbsp;&nbsp;Descargar Word</a> </li>
+                    <li><a class="text-success download-excel" href="javascript:;"><i class="fa fa-file-excel-o"></i>&nbsp;&nbsp;Descargar Excel</a> </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="row">
+    @using (Html.BeginForm("Cierre", "Caja", FormMethod.Post, new { id = "guardarCierreForm", @class = "form-wizard validate" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="steps-progress">
+            <div class="progress-indicator"></div>
+        </div>
+        <ul class="hidden-print">
+            <li class="active">
+                <a href="#tab1" data-toggle="tab"><span>1</span>Información de Inicio</a>
+            </li>
+            <li>
+                <a href="#tab2" data-toggle="tab"><span>2</span>Detalle</a>
+            </li>
+            <li>
+                <a href="#tab3" data-toggle="tab"><span>3</span>Resumen</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+
+            <div class="tab-pane active" id="tab1">
+
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.IdLocal)
+                @Html.HiddenFor(model => model.IdEmpresa, new { @required = "required" })
+
+                <div class="row">
+
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="panel panel-primary">
+                            <div class="panel-body">
+
+
+                                <div class="form-group row">
+                                    <div class="col-md-3 ">
+                                        <label class="control-label">Fecha de Apertura</label>
+                                    </div>
+                                    <div class="col-md-4" lang="es-es">
+                                        <div class="input-group">
+                                            <input id="FechaApertura" name="FechaApertura" type="text" autocomplete="off" class="form-control datepicker" data-val="true"
+                                                   data-val-date="Se requiere una fecha válida." data-val-required="El campo fecha de emisión es requerido."
+                                                   value="@Model.FechaApertura.ToString("yyyy-MM-dd")" maxvalue="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")"
+                                                   data-format="yyyy-mm-dd" aria-required="true" aria-invalid="false" aria-describedby="Fecha-error">
+                                            <div class="input-group-addon"> <a href="#"><i class="entypo-calendar"></i></a> </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    @Html.LabelFor(x => x.HoraApertura, new { @class = "col-md-3 control-label" })
+
+                                    <div class="col-md-4" lang="es-es">
+                                        <div class="input-group">
+                                            <input class="form-control valid"
+                                                   data-val="true"
+                                                   data-val-required="El campo hora de apertura es requerido."
+                                                   id="HoraApertura"
+                                                   name="HoraApertura"
+                                                   type="time" value="@Model.HoraApertura.ToString(@"hh\:mm")"
+                                                   aria-describedby="HoraApertura-error"
+                                                   aria-invalid="false">
+                                            <div class="input-group-addon"> <a href="#"><i class="entypo-back-in-time"></i></a> </div>
+                                        </div>
+                                        @Html.ValidationMessageFor(x => x.HoraApertura)
+                                    </div>
+
+
+                                </div>
+
+                                <div class="form-group row">
+                                    @Html.LabelFor(x => x.SaldoInicial, new { @class = "col-md-3 control-label" })
+                                    <div class="col-md-4" lang="en-us">
+                                        <div class="input-group">
+                                            @Html.TextBoxFor(x => x.SaldoInicial, new { @type = "number", @class = "form-control control-numeric", @step = "0.01" })
+                                            <div class="input-group-addon">&nbsp;$&nbsp;&nbsp;</div>
+                                        </div>
+                                        @Html.ValidationMessageFor(x => x.SaldoInicial)
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    @Html.Label("TotalEgresos", "Gastos e Imprevistos", new { @class = "col-md-3 control-label" })
+                                    <div class="col-md-4" lang="en-us">
+                                        <div class="input-group">
+                                            @Html.TextBoxFor(x => x.TotalEgresos, new { @type = "number", @class = "form-control control-numeric", @step = "0.01" })
+                                            <div class="input-group-addon">&nbsp;$&nbsp;&nbsp;</div>
+                                        </div>
+                                        @Html.ValidationMessageFor(x => x.TotalEgresos)
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    @Html.Label("IdCajero", "Cajero", new { @class = "col-md-3 control-label" })
+                                    <div class="col-md-9">
+                                        <span class="form-control">@User.Identity.GetNombreUsuario()</span>
+                                        @Html.HiddenFor(model => Model.IdCajero)
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    @Html.LabelFor(x => x.Observaciones, new { @class = "col-md-3 control-label" })
+                                    <div class="col-md-9">
+                                        @Html.TextAreaFor(x => x.Observaciones, new { @class = "form-control no-resize", rows = "3" })
+                                        @Html.ValidationMessageFor(x => x.Observaciones)
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="tab-pane" id="tab2">
+
+                <div class="row">
+
+                    <div class="col-md-12" id="detalleCaja">
+
+
+                        @{
+                            Html.RenderPartial("detalle", Model, ViewData);
+                        }
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane" id="tab3">
+
+                <div class="row">
+
+                    <div class="col-md-12" id="resumenCaja">
+
+
+                        @{
+                            Html.RenderPartial("resumen", Model, ViewData);
+                        }
+
+                    </div>
+                </div>
+            </div>
+
+
+
+            <ul class="pager wizard">
+                <li class="previous">
+                    <a href="#">
+                        <i class="entypo-left-open"></i>
+                        <span class="hidden-xs">Anterior</span>
+                    </a>
+                </li>
+
+                <li class="next">
+                    <a href="#">
+                        <span class="hidden-xs">Siguiente</span>
+                        <i class="entypo-right-open"></i>
+                    </a>
+                </li>
+
+                @if (idEmpresa != 1)
+                {
+                    <li class="finish pull-right" style="display: none;">
+                        <button type="button" class="btn btn-success btn-icon icon-left hidden-print">
+                            <i class="entypo-floppy"></i>
+                            <span>Guardar</span>
+                        </button>
+                    </li>
+                }
+
+            </ul>
+        </div>
+
+    }
+</div>
+
+<div id="divListaClientes" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Seleccione un Cliente:</h4>
+            </div>
+            <div class="modal-body" id="divListaBody">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="modalDetalle">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Recibo
+            </div>
+            <div class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/wizard")
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/fileinput")
+    @Scripts.Render("~/bundles/maskmoney")
+    @Scripts.Render("~/bundles/jqueryval")
+
+    @Scripts.Render("~/bundles/datepicker")
+    @Scripts.Render("~/bundles/timepicker")
+
+    @Scripts.Render("~/scripts/TendaGo.caja.cierre.js")
+
+    <script>
+        function mostrarDetalleRecibo($id) {
+
+            $.get('../cobros/ReciboVistaPreliminar/' + $id, {})
+                .done(function (respuesta) {
+                    var $div = $("#modalDetalle");
+                    var $body = $div.find("div.modal-body")
+
+                    $body.empty().html(respuesta);
+
+                    $div.modal("show");
+
+                });
+        }
+    </script>
+
+    <script>
+    $(".page-container").addClass("sidebar-collapsed");
+
+    var fechaAperturaValor;
+    var horaAperturaValor;
+    var clienteData = {};
+
+    menu_settings.parentMenu = 'MnuCobro';
+    menu_settings.optionMenu = 'OpcCrear';
+
+    // Handler cuando se seleccione un cliente:
+    var onSelectClient = CierreCaja.onSelectCustomer;
+    CierreCaja.saveReceiptUrl = '@Url.Action("GuardarRecibo")';
+    CierreCaja.loadReceivablesUrl = '@Url.Action("CuotasPendientes")';
+    CierreCaja.detailsReceiptUrl = '@Url.Action("Detalle")';
+    CierreCaja.previewReceiptUrl = '@Url.Action("Resumen")';
+    CierreCaja.searchCustomerUrl = '@Url.Action("ConsultarClientes", "NotaPedido")';
+
+    CierreCaja.paymentMethods = @Html.Raw(Json.Encode(mediosPago.Select(m=>new { m.Id, m.MedioPago })));
+
+    CierreCaja.configure();
+
+    var cargarDetalles = function () {
+        fechaAperturaValor = $("#FechaApertura").val();
+        horaAperturaValor = $("#HoraApertura").val();
+    };
+
+    $("#FechaApertura").on("change", cargarDetalles)
+    $("#HoraApertura").on("change", cargarDetalles)
+
+
+    $(".control-numeric").on("change", function () {
+        var value = $(this).val() || "0.00";
+
+        $(this).val((value * 1).toFixed(2));
+        cargarDetalles();
+    });
+
+    (function () {
+        SetActiveMenu();
+        var descargarCierreCaja = function (format) {
+            var horaAperturaVal = horaAperturaValor || '@Model.HoraApertura';
+            var fechaAperturaVal = fechaAperturaValor || '@Model.FechaApertura';
+            window.open('@Url.Action("ConsultarCierreReporte")?fechaApertura=' + fechaAperturaVal + '&horaApertura=' + horaAperturaVal + '&format=' + format, "_blank");
+        }
+
+        $(".download-pdf").on("click", function () { descargarCierreCaja("PDF"); });
+        $(".download-excel").on("click", function () { descargarCierreCaja("Excel"); });
+        $(".download-word").on("click", function () { descargarCierreCaja("Word"); });
+
+    })();
+
+
+    </script>
+}

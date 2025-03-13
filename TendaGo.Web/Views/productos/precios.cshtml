@@ -1,0 +1,153 @@
+﻿@{
+    ViewBag.Title = "Precios";
+}
+
+@Styles.Render("~/Styles/datatables")
+@Styles.Render("~/Styles/toggle")
+
+<ol class="breadcrumb bc-3 small hidden-xs breadcrumb-no-padding">
+    <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-home"></i>Home</a></li>
+    <li>Productos</li>
+    <li class="active"><strong>Precios</strong></li>
+</ol>
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left">
+            <h3>Precios</h3>
+        </div>
+    </div>
+</div>
+
+<div id="searchControl" class="searchControl"></div>
+<div id="mantPrecio" class="row">
+    <div id="productDetail" class="col-lg-3 col-md-4 col-xs-4"></div>
+    <div id="prices" class="col-lg-6 col-md-8 col-xs-8"></div>
+    <div id="price" class="col-lg-3 col-md-6 col-xs-12"></div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/paginate")
+    @Scripts.Render("~/bundles/maskmoney")
+    @Scripts.Render("~/bundles/toggle")
+    @Scripts.Render("~/bundles/productos/index")
+
+    <script>
+        menu_settings.parentMenu = 'MnuProducts';
+        menu_settings.optionMenu = 'OpcPrec';
+
+        var idOrigen = 2; // MantPrecio
+        searchProductsControl.url = "@Url.Action("Buscar")";
+        searchProductsControl.resultContainer = "searchControl";
+
+        $(function() {
+            getSearchControl(idOrigen);
+            SetActiveMenu();
+        });
+
+        function SetProductPrice(idProduct) {
+            $("#searchControl").fadeOut("fast");
+            $("#mantPrecio").fadeIn("fast");
+            GetProductDetail(idProduct);
+            GetUnitTypes(idProduct);
+        }
+
+        function GetProductDetail(idProduct) {
+            $.ajax({
+                url: "@Url.Action("ProductDetail")",
+                type: "GET",
+                data: { idProduct: idProduct },
+                beforeSend: function() {
+                    $("#productDetail").empty();
+                    $("#productDetail")
+                        .append('<div id="divLoading" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+                },
+                complete: function() {
+                    //$("#divLoading").remove();
+                },
+                success: function(dataReceived) {
+                    $("#divLoading").remove();
+                    if (dataReceived != "") {
+                        $("#productDetail").html(dataReceived);
+                    }
+                }
+            }).done(function(dataResponse) {
+
+            });
+        }
+
+        function GetUnitTypes(idProduct) {
+            $.ajax({
+                url: "@Url.Action("GetTiposUnidad")",
+                type: "GET",
+                data: { idProduct: idProduct },
+                beforeSend: function() {
+                    $("#prices").empty();
+                    $("#prices")
+                        .append('<div id="divLoading" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+                },
+                complete: function() {
+                    $("#divLoading").remove();
+                },
+                success: function(dataReceived) {
+                    if (dataReceived) {
+                        if (dataReceived.Error) {
+                            toastr.error(dataReceived.Error.TechnicalMessage);
+                            console.error("dataReceived:" + JSON.stringify(dataReceived.Error));
+                        } else {
+                            $("#prices").html(dataReceived);
+                            $("#unitsTable").dataTable();
+                        }
+                    }
+                }
+            }).done(function(dataResponse) {
+
+            });
+        }
+
+        function CancelSetProductPrice() {
+            $("#searchControl").fadeIn("fast");
+            $("#mantPrecio").fadeOut("fast");
+            $("#price").empty();
+        }
+
+        function LoadFormMant(idUnitType, idProduct) {
+            var $div = $("#prices");
+
+            $.ajax({
+                url: "@Url.Action("MantUnitType")",
+                type: "GET",
+                data: { id: idUnitType, idProducto: idProduct },
+                beforeSend: function() {
+                    $("#price").empty();
+                    blockUI($div);
+                    $div.addClass('loading');
+                    $("#price").append(
+                        '<div id="divLoading" class="overlay"><i class="fa fa-refresh fa-spin"></i></div>');
+                },
+                complete: function() {
+                    $("#divLoading").remove();
+                    unblockUI($div);
+                    $div.removeClass('loading');
+                }
+            }).done(function(respuesta) {
+                if (respuesta != "") {
+                    $("#price").html(respuesta);
+                    $('#IdEstado').cmodevCheckToogle();
+                    $('#IncluyeIva').cmodevCheckToogle({
+                        on_text: 'Incluye IVA',
+                        off_text: 'NO Incluye'
+                    });
+                }
+            });
+        }
+
+        function refreshUnitTypes(unitTypeSaved) {
+            if (unitTypeSaved) {
+                GetUnitTypes(unitTypeSaved.IdProducto);
+                $("#price").empty();
+            }
+        }
+
+    </script>
+}

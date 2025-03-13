@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="d7781fc9-4179-49df-bca9-40233598e7c8" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>false</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:51670/UnidadMedidaService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="UnidadMedidaService.wsdl" MetadataType="Wsdl" ID="dce7aa3e-92d4-4f27-a554-5bf958cbcc0a" SourceId="1" SourceUrl="http://localhost:51670/UnidadMedidaService.svc?wsdl" />
+    <MetadataFile FileName="UnidadMedidaService.xsd" MetadataType="Schema" ID="82f22e25-b474-4ed1-98b9-9ed761195225" SourceId="1" SourceUrl="http://localhost:51670/UnidadMedidaService.svc?xsd=xsd0" />
+    <MetadataFile FileName="UnidadMedidaService1.xsd" MetadataType="Schema" ID="800c2923-b192-43d3-a5ec-9bcefb528255" SourceId="1" SourceUrl="http://localhost:51670/UnidadMedidaService.svc?xsd=xsd1" />
+    <MetadataFile FileName="UnidadMedidaService2.xsd" MetadataType="Schema" ID="3dc1da60-cfc3-49ef-93b4-8005860438d7" SourceId="1" SourceUrl="http://localhost:51670/UnidadMedidaService.svc?xsd=xsd2" />
+    <MetadataFile FileName="UnidadMedidaService.disco" MetadataType="Disco" ID="51a45626-ebc8-4808-a0d4-9277c9fd191a" SourceId="1" SourceUrl="http://localhost:51670/UnidadMedidaService.svc?disco" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

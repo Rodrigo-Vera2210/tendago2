@@ -1,0 +1,29 @@
+﻿
+#tablaDetalleCuentasCobrar > thead > tr > th {
+    width: 20%;
+}
+
+.control-label {
+    margin-top: 7px;
+}
+
+li.disabled.finish > a.save-button {
+    color: #a0a0a0;
+    background-color: #808080 !important
+}
+
+    li.disabled.finish > a.save-button:hover {
+        background-color: #808080 !important
+    }
+
+li.finish > a.save-button {
+    background-color: #0079c9;
+    color: #fff;
+    padding: 7px !important 15px!important;
+}
+
+    li.finish > a.save-button:hover {
+        background-color: #0040c9;
+        color: #fff !important;
+        padding: 7px !important 15px!important;
+    }
