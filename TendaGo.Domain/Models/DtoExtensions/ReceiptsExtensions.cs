@@ -1,5 +1,6 @@
 ﻿using ER.BE;
 using System.Linq;
+using TendaGo.Common;
 
 namespace TendaGo.Domain
 {

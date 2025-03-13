@@ -1,6 +1,7 @@
 ﻿using ER.BA;
 using ER.BE;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,13 +13,22 @@ using System.Text;
 using System.Threading;
 using System.Web.Http.Controllers;
 using TendaGo.Common;
+using TendaGo.Domain.Services;
 
 namespace TendaGo.Api
 {
     public class TokenAuthorizeAttribute : AuthorizeAttribute
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IUsuarioService _usuario;
 
-        public override void OnAuthorization(HttpActionContext actionContext)
+        public TokenAuthorizeAttribute(IHttpContextAccessor httpContextAccessor, IUsuarioService usuario)
+        {
+            _httpContextAccessor = httpContextAccessor;
+            _usuario = usuario;
+        }
+
+        public override async void OnAuthorization(HttpActionContext actionContext)
         {
             if (!IsAnonymous(actionContext) && !IsApiKey(actionContext))
             {
@@ -30,16 +40,16 @@ namespace TendaGo.Api
 
                     if (!string.IsNullOrEmpty(token))
                     {
-                        if (HttpContext.Current.User.Identity.IsAuthenticated && token == HttpContext.Current.User.GetToken())
+                        if (_httpContextAccessor.HttpContext.User.Identity.IsAuthenticated && token == _httpContextAccessor.HttpContext.User.GetToken())
                         {
                             return; // OK
                         }
 
-                        var user = UsuarioBussinesAction.LoadByToken(token);
+                        var user = await _usuario.LoadByToken(token);
 
                         if (user?.IdEstado == 1)
                         {
-                            HttpContext.Current.User = Thread.CurrentPrincipal = user.ToPrincipal("token");
+                            _httpContextAccessor.HttpContext.User = (ClaimsPrincipal)(Thread.CurrentPrincipal = user.ToPrincipal("token"));
                             return; // OK;
                         }
                         else

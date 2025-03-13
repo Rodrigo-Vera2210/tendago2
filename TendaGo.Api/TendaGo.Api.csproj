@@ -54,6 +54,8 @@
     <!-- Agrega aquí las dependencias NuGet necesarias, por ejemplo: -->
     <!-- <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.0" /> -->
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.3.0" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.WebHost" Version="5.3.0" />
+    <PackageReference Include="Microsoft.ReportingServices.ReportViewerControl.WebForms" Version="150.1652.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="7.3.1" /> <!-- Swagger para documentación -->
     <!-- Puedes agregar más referencias según sea necesario -->
   </ItemGroup>
@@ -156,10 +158,12 @@
       <Project>{33F469FE-9634-42E9-9C79-DF2FA27C26E1}</Project>
       <Name>BusinessEntities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TendaGo.BusinessLogic\TendaGo.BusinessLogic.csproj" />
     <ProjectReference Include="..\TendaGo.Common\TendaGo.Common.csproj">
       <Project>{deb4f781-de8f-45e9-bb73-72377a6cc6d7}</Project>
       <Name>TendaGo.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TendaGo.Domain\TendaGo.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

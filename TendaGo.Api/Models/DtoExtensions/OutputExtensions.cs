@@ -3,11 +3,19 @@ using ER.BA;
 using ER.BE;
 using System.Data.SqlClient;
 using System.Linq;
+using TendaGo.Domain.Services;
 
 namespace TendaGo.Common
 {
     internal static class OutputExtensions
     {
+        //private readonly IEmpresaService empresaService;
+
+        //public OutputExtensions(IEmpresaService empresaService)
+        //{
+        //    this.empresaService = empresaService;
+        //}
+
         internal static readonly MapperConfiguration MapperConfiguration = new MapperConfiguration(config =>
         {
             config.CreateMap<SalidaEntity, SalesOrderApprovalDto>();
@@ -358,29 +366,38 @@ namespace TendaGo.Common
             return entity;
         }
 
-        internal static DocumentoEntityCollection GenerarFacturas(this DocumentoEntityCollection documentos, SqlConnection connection, SqlTransaction transaccion)
+        internal static DocumentoEntityCollection GenerarFacturas(this DocumentoEntityCollection documentos)
         {
             if (documentos != null)
             {
                 var documento = documentos.FirstOrDefault();
-                var facturaGo = EmpresaBussinesAction.LoadByPK(documento.IdEmpresa);
-                if (documento.IdEmpresa > 0 && facturaGo.FacturaGo)
-                    documento.GenerateInvoiceGo(connection, transaccion);//Demas empresas que tienen facturaGo
+                //var facturaGo = EmpresaBussinesAction.LoadByPK(documento.IdEmpresa);
+
+                //if (documento.IdEmpresa > 0 && facturaGo.FacturaGo)
+                //    documento.GenerateInvoiceGo();//Demas empresas que tienen facturaGo
+                //else
+                //    documento.GenerateInvoice();//Carmita y Agrocart
+
+                if (documento.IdEmpresa > 0)
+                    documento.GenerateInvoiceGo();//Demas empresas que tienen facturaGo
                 else
-                    documento.GenerateInvoice(connection, transaccion);//Carmita y Agrocart
+                    documento.GenerateInvoice();//Carmita y Agrocart
             }
             return documentos;
         }
 
-        internal static DocumentoEntityCollection GenerarNotasCreditos(this DocumentoEntityCollection documentos, SqlConnection connection, SqlTransaction transaccion)
+        internal static DocumentoEntityCollection GenerarNotasCreditos(this DocumentoEntityCollection documentos)
         {
             if (documentos != null)
             {
                 foreach (var documento in documentos)
                 {
-                    var facturaGo = EmpresaBussinesAction.LoadByPK(documento.IdEmpresa);
-                    if (documento.IdEmpresa > 0 && facturaGo.FacturaGo)
-                        documento.GenerateCreditGo(connection, transaccion);
+                    //var facturaGo = EmpresaBussinesAction.LoadByPK(documento.IdEmpresa);
+                    //if (documento.IdEmpresa > 0 && facturaGo.FacturaGo)
+                    //    documento.GenerateCreditGo();
+
+                    if (documento.IdEmpresa > 0)
+                        documento.GenerateCreditGo();
                 }
             }
             return documentos;

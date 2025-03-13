@@ -13,38 +13,7 @@ namespace TendaGo.Api.Controllers
     [TokenAuthorize]
     public class clientsController : ApiControllerBase
     {
-        public EntityDto GetClient(string id)
-        {
-            try
-            {
-                var cat = GetEntidadEntity(id);
-                return cat.ToEntityDto();
-            }
-            catch (HttpResponseException) { throw; }
-            catch (Exception ex)
-            {
-                throw new HttpResponseException(Request.BuildHttpErrorResponse(HttpStatusCode.BadRequest, $"{ex.GetAllMessages()}", "Ocurrio un error general, reintente"));
-            }
-        }
-
-        private EntidadEntity GetEntidadEntity(string id)
-        {
-            int idConverted;
-            bool isValid = int.TryParse(id, out idConverted);
-            if (!isValid)
-                throw new HttpResponseException(Request.BuildHttpErrorResponse(HttpStatusCode.BadRequest, "El parametro id, es invalido", "Id invalido"));
-            return GetEntidadEntity(idConverted);
-        }
-
-        private EntidadEntity GetEntidadEntity(int id)
-        {
-            var cat = EntidadBussinesAction.LoadByPK(id);
-            if (cat == null || cat.IdEmpresa != CurrentUser.IdEmpresa)
-                throw new HttpResponseException(Request.BuildHttpErrorResponse(HttpStatusCode.NotFound, "Entidad no existe", "El registro solicitado no existe"));
-            return cat;
-
-        }
-
+        
         /// <summary>
         /// Obtiene la lista de clientes 
         /// </summary>
@@ -64,14 +33,6 @@ namespace TendaGo.Api.Controllers
             return this.GetClients(searchTerm, identification, lite, page);
         }
 
-        /// <summary>
-        /// Obtener todos los clientes
-        /// </summary>
-        /// <returns></returns>
-        public List<EntityDto> GetAllClients()
-        {
-            return this.GetClients();
-        }
 
         [HttpGet, Route("clients/consulta")]
         public async Task<EntityDto> SearchClients(string id)
@@ -149,50 +110,7 @@ namespace TendaGo.Api.Controllers
             }
         }
 
-        /// <summary>
-        /// Obtiene la lista de clientes 
-        /// </summary>
-        /// <param name="searchTerm">texto de busqueda</param>
-        /// <param name="identification"></param>
-        /// <param name="lite"></param>
-        /// <param name="page"></param>
-        /// <returns></returns>
-        private List<EntityDto> GetClients(string searchTerm = null, bool identification = false, bool lite = false, int? page = null)
-        {
-            var findParameter = new EntidadFindParameterEntity
-            {
-                IdEmpresa = CurrentUser.IdEmpresa,
-                IdEstado = 1
-            };
-
-            //findParameter.EsCliente = 1;
-
-            if (!string.IsNullOrEmpty(searchTerm))
-            {
-                if (identification)
-                {
-                    findParameter.Identificacion = searchTerm;
-                }
-                else
-                {
-                    findParameter.RazonSocial = searchTerm;
-                }
-            }
-
-            EntidadEntityCollection result = null;
-
-            if ((page ?? 0) > 0)
-            {
-                result = EntidadCollectionBussinesAction.FindByAllPaged(findParameter, page.Value, 10, "", lite ? 0 : 1);
-            }
-            else
-            {
-                result = EntidadCollectionBussinesAction.FindByAll(findParameter, lite ? 0 : 1);
-            }
-
-            return result?.Select(pr => pr.ToEntityDto()).ToList();
-        }
-
+        
         /// <summary>
         /// Guarda los datos para un cliente nuevo o existente
         /// </summary>
@@ -356,15 +274,6 @@ namespace TendaGo.Api.Controllers
             }
         }
 
-        private async Task<string> UploadFileAsync(string imagen, string id)
-        {
-            var file = Convert.FromBase64String(imagen);
-            var path = $"{CurrentUser.IdEmpresa}/clientes/{id}";
-
-            var result = await Storage.FileHandler.UploadAsync(path, file);
-
-            return $"{result.Uri}";
-        }
 
         //private string UploadFile(string imagen,string id)
         //{

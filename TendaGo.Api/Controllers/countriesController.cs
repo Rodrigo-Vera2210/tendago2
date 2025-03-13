@@ -20,16 +20,7 @@ namespace TendaGo.Api.Controllers
             var country = PaisBussinesAction.LoadByPK(idConverted);
             return country.GlobalMapperConverter<PaisEntity, CountryDto>();
         }
-        /// <summary>
-        /// Decuelve la lista de paises 
-        /// </summary>
-        /// <returns></returns>
-        public List<CountryDto> GetCountries()
-        {
-            var brands = PaisCollectionBussinesAction.FindByAll(new PaisFindParameterEntity());
-            var brandsDtoList = brands.Select(br => br.ToCountryDto()).ToList();
-            return brandsDtoList;
-        }
+        
 
         [HttpGet, Route("countries/{id}/Provincias")]
         public List<ProvinceDto> GetProvinces(string id)

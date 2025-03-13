@@ -86,14 +86,14 @@ namespace TendaGo
             catch { }
         }
 
-        public static HttpResponseMessage BuildHttpErrorResponse(this HttpRequestMessage Request, HttpStatusCode statusCode, string devMessage, string userMessage = null)
+        public static HttpResponseMessage BuildHttpErrorResponse(this HttpRequestMessage Request, string devMessage, HttpStatusCode statusCode, string userMessage = null)
         {
             return Request.CreateErrorResponse(statusCode, GetCustomHttpError(devMessage, userMessage ?? devMessage, statusCode));
         }
 
         public static HttpResponseException BuildHttpErrorException(this HttpRequestMessage Request, HttpStatusCode statusCode, string devMessage, string userMessage = null)
         {
-            var errorResponse = BuildHttpErrorResponse(Request, statusCode, devMessage, userMessage);
+            var errorResponse = BuildHttpErrorResponse(Request, devMessage, statusCode, userMessage);
             return new HttpResponseException(errorResponse);
         }
 

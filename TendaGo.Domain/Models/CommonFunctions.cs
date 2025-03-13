@@ -1,22 +1,21 @@
-﻿using ER.BA;
-using ER.BE;
-using System;
-using System.Collections.Generic;
+﻿using ER.BE;
+using Microsoft.AspNetCore.Hosting.Internal;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
-using System.IO;
 using System.Net;
-using System.Net.Http;
 using System.Reflection;
 using System.Text;
-using System.Web.Hosting;
 using System.Web.Http;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
+using TendaGo.Domain.Services;
 
 namespace TendaGo
 {
     public static class CommonFunctions
     {
+        private static readonly IUsuarioService _usuarioService;
         /// <summary>
         /// Url de la pagina web
         /// </summary>
@@ -73,7 +72,7 @@ namespace TendaGo
                 }
 
 
-                var path = $"{HostingEnvironment.MapPath("/logs")}";
+                var path = $"/logs";
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
@@ -99,7 +98,7 @@ namespace TendaGo
 
         public static HttpResponseException BuildExceptionResponse(this HttpRequestMessage Request, Exception ex)
         {
-            var errorResponse = Request.BuildHttpErrorResponse(HttpStatusCode.InternalServerError, ex.GetAllMessages(), ex.GetMessage());
+            var errorResponse = Request.BuildHttpErrorResponse(HttpStatusCode.InternalServerError, ex.Message, ex.Message);
             return new HttpResponseException(errorResponse);
         }
 
@@ -124,11 +123,11 @@ namespace TendaGo
         /// </summary>
         /// <param name="username">username del inicio de sesion</param>
         /// <returns>Retorna el objeto Usuario</returns>
-        public static UsuarioEntity GetAuthUser(string username)
+        public async static Task<UsuarioEntity> GetAuthUser(string username)
         {
             if (string.IsNullOrEmpty(username))
                 throw new Exception("El username no es válido");
-            var usuarioEntity = UsuarioBussinesAction.LoadByPK(username);
+            var usuarioEntity = await _usuarioService.LoadByPK(username);
             return usuarioEntity;
         }
 

@@ -9,12 +9,7 @@ namespace TendaGo.Api.Controllers
 {
     public class displayController : ApiControllerBase
     {
-        public List<DisplayDto> GetDisplays()
-        {
-            var pantallas = PantallaCollectionBussinesAction.FindByAll(new PantallaFindParameterEntity { IdEstado = 1 });
-            var displays = pantallas.Select(pa => pa.GlobalMapperConverter<PantallaEntity, DisplayDto>()).ToList();
-            return displays;
-        }
+        
 
         [HttpGet, Route("display/profile")]
         public List<DisplayDto> GetUserProfileDisplays()

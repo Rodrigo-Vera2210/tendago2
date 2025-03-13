@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ER.BE;
+using TendaGo.Common;
 
 namespace TendaGo.Domain.DtoExtensions
 {

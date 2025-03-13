@@ -1,4 +1,6 @@
-﻿namespace TendaGo.Api.Reporting
+﻿using Microsoft.Reporting.Map.WebForms.BingMaps;
+
+namespace TendaGo.Api.Reporting
 {
     public class ReportResult
     {

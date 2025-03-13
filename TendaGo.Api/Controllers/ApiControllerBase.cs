@@ -1,22 +1,37 @@
-﻿namespace TendaGo.Api.Controllers
+﻿using ER.BA;
+using ER.BE;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
+using System.Web.Http;
+using TendaGo.Domain.Services;
+
+namespace TendaGo.Api.Controllers
 {
     /// <summary>
     /// Api controller base
     /// </summary>
     public class ApiControllerBase : ApiController
     {
+        private readonly IUsuarioService _usuarioService;
+
+        public ApiControllerBase(IUsuarioService usuarioService)
+        {
+            _usuarioService = usuarioService;
+        }
 
         /// <summary>
         /// Usuario Actual
         /// </summary>
-        protected UsuarioEntity CurrentUser => GetAuthenticatedUser();
+        protected async Task<UsuarioEntity> CurrentUser () { return await GetAuthenticatedUser(); }
 
 
         /// <summary>
         /// Valida al usuario autenticado
         /// </summary>
         /// <returns></returns>
-        private UsuarioEntity GetAuthenticatedUser()
+        private async Task<UsuarioEntity> GetAuthenticatedUser()
         {
             IEnumerable<string> header = null;
 
@@ -29,7 +44,7 @@
                     if (string.IsNullOrEmpty(token))
                         throw new HttpResponseException(Request.BuildHttpErrorResponse(HttpStatusCode.BadRequest, "El token de inicio de sesion no es válido"));
 
-                    var usuarioEntity = UsuarioBussinesAction.LoadByToken(token);
+                    var usuarioEntity = await _usuarioService.LoadByToken(token);
 
                     if (usuarioEntity != null)
                         return usuarioEntity;

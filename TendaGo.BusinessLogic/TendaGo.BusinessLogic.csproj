@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TendaGo.Amonsys\BusinessAction\BusinessAction.csproj" />
+    <ProjectReference Include="..\TendaGo.Amonsys\DataAccess\DataAccess.csproj" />
     <ProjectReference Include="..\TendaGo.Common\TendaGo.Common.csproj" />
     <ProjectReference Include="..\TendaGo.Domain\TendaGo.Domain.csproj" />
   </ItemGroup>

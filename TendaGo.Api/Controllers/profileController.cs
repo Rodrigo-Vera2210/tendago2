@@ -12,13 +12,7 @@ namespace TendaGo.Api.Controllers
     [TokenAuthorize]
     public class profileController : ApiControllerBase
     {
-        public List<ProfileDto> GetProfiles()
-        {
-            var profiles = new List<ProfileDto>();
-            var perfilEntities = PerfilCollectionBussinesAction.FindByAll(new PerfilFindParameterEntity { IdEstado = 1 });
-            profiles = (perfilEntities as List<PerfilEntity>).Select(x => x.ToProfileDTO()).ToList();
-            return profiles;
-        }
+        
 
         [HttpGet, Route("profile/{id}/displays")]
         public List<DisplayDto> GetDisplaysByProfile(string id)

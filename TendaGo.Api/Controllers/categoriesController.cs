@@ -2,20 +2,31 @@
 using ER.BE;
 using System;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web.Http;
+using TendaGo.BusinessLogic.Services;
 using TendaGo.Common;
+using TendaGo.Domain.Services;
 
 namespace TendaGo.Api.Controllers
 {
     [TokenAuthorize]
     public class categoriesController : ApiControllerBase
     {
-        [Route("categories/{id}")]
-        public CategoryDto GetCategory(string id)
+        private readonly ICategoriaService _categoriaService;
+
+        public categoriesController(CategoriaService categoriaService)
+        {
+            _categoriaService = categoriaService;
+        }
+
+        [HttpGet, Route("categories/{id}")]
+        public async Task<CategoryDto> GetCategory(int id)
         {
             try
             {
-                var cat = GetCategoriaEntity(id);
+                var cat = await _categoriaService.GetCategoriaEntity(id);
+
                 return cat.ToCategoryDto();
             }
             catch (HttpResponseException) { throw; }
@@ -25,34 +36,14 @@ namespace TendaGo.Api.Controllers
             }
         }
 
-        public CategoryDto PostCategory(CategoryDto category)
+        [HttpPost]
+        public async Task<CategoryDto> PostCategory(CategoryDto category)
         {
             try
             {
-                CategoriaEntity catEntity;
-                if (category.Id != 0)
-                {
-                    catEntity = CategoriaBussinesAction.LoadByPK(category.Id);
-                    catEntity.IdLinea = category.IdLinea;
-                    catEntity.Categoria = category.Categoria;
-                    catEntity.IdEstado = category.IdEstado;
-                    if (catEntity.CurrentState.Equals(EntityStatesEnum.Updated))
-                    {
-                        catEntity.UsuarioModificacion = category.UsuarioModificacion;
-                        catEntity.IpModificacion = category.IpModificacion;
-                        catEntity.FechaModificacion = DateTime.Today;
-                    }
-                }
-                else
-                {
-                    catEntity = category.ToCategoryEntity();
-                    catEntity.FechaIngreso = DateTime.Today;
-                }
-                //var usuarioentity = category.Id != 0 ? GetAuthenticatedUserByToken(category.UsuarioModificacion) : GetAuthenticatedUserByToken(category.UsuarioIngreso);
+                var result = await _categoriaService.PostCategory(category);
 
-                catEntity.IdEmpresa = CurrentUser.IdEmpresa;
-                catEntity = CategoriaBussinesAction.Save(catEntity);
-                return catEntity.ToCategoryDto();
+                return result;
             }
             catch (Exception ex)
             {
@@ -63,24 +54,6 @@ namespace TendaGo.Api.Controllers
                 }
                 throw new HttpResponseException(Request.BuildHttpErrorResponse(HttpStatusCode.BadRequest, $"{ex.GetAllMessages()}", UserError));
             }
-        }
-
-        private CategoriaEntity GetCategoriaEntity(string id)
-        {
-            int idConverted;
-            bool isValid = int.TryParse(id, out idConverted);
-            if (!isValid)
-                throw new HttpResponseException(Request.BuildHttpErrorResponse(HttpStatusCode.BadRequest, "El parametro id, es invalido", "Id invalido"));
-            return GetCategoriaEntity(idConverted);
-        }
-
-        private CategoriaEntity GetCategoriaEntity(int id)
-        {
-            var cat = CategoriaBussinesAction.LoadByPK(id);
-            if (cat == null || cat.IdEmpresa != CurrentUser.IdEmpresa)
-                throw new HttpResponseException(Request.BuildHttpErrorResponse(HttpStatusCode.NotFound, "Categoría no existe", "El registro solicitado no existe"));
-            return cat;
-
         }
     }
 }

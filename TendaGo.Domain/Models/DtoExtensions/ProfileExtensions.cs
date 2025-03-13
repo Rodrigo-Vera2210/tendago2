@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ER.BE;
 using System.Collections.Generic;
+using TendaGo.Common;
 
 namespace TendaGo.Domain
 {

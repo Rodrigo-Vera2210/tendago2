@@ -1,13 +1,15 @@
 ﻿using AutoMapper;
-using ER.BA;
 using ER.BE;
-using System;
-using System.Linq;
+using NPOI.OpenXmlFormats.Spreadsheet;
+using TendaGo.Common;
+using TendaGo.Domain.Services;
 
 namespace TendaGo.Domain
 {
     internal static class RucExtensions
     {
+        private static readonly ITipoUnidadService _tipoUnidadService;
+        private static readonly IStockService _stockService;
         internal static RucDtoLite ToRucDtoLite(this RucEntity entity)
         {
             var conf = new MapperConfiguration(config => config.CreateMap<LocalBodegaEntity, RucDtoLite>());
@@ -207,7 +209,7 @@ namespace TendaGo.Domain
         }
 
         //Para Ajuste
-        internal static SalidaEntity GenerarSalidaAju(this AdjustInventoryDto model)
+        internal async static Task<SalidaEntity> GenerarSalidaAju(this AdjustInventoryDto model)
         {
             var detalles = model.Detalle.ToList();
 
@@ -238,11 +240,11 @@ namespace TendaGo.Domain
                 DetalleSalidaFromIdSalida = new DetalleSalidaEntityCollection()
             };
 
-            salida.DetalleSalidaFromIdSalida.AddRange(detalles.Select(m =>
+            salida.DetalleSalidaFromIdSalida.AddRange(detalles.Select(async m =>
             {
                 var detalle = m.ToDetalleSalidaEntity();
-                var stockActual = StockCollectionBussinesAction.StockInventario(model.IdEmpresa, m.IdProducto, model.IdLocal).ConvertirToDto<StockDto>().FirstOrDefault();
-                var tipoUnidad = TipoUnidadBussinesAction.LoadByPK(m.IdTipoUnidad);
+                var stockActual = await _stockService.StockInventario(model.IdEmpresa, m.IdProducto, model.IdLocal).ConvertirToDto<StockDto>().FirstOrDefault();
+                var tipoUnidad = await _tipoUnidadService.LoadByPK(m.IdTipoUnidad);
 
                 detalle.IdProveedor = DEFAULT_TRANSFER_ENTITY;
                 detalle.FechaFabricacion = DateTime.Now;

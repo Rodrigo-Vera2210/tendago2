@@ -12,13 +12,7 @@ namespace TendaGo.Api.Controllers
     [TokenAuthorize]
     public class paymentMethodsController : ApiControllerBase
     {
-        public List<PaymentMethodDto> GetPaymentMethods()
-        {
-            var medioPagoFindParameter = new ER.BE.MedioPagoFindParameterEntity { IdEstado = 1 };
-            var paymentMethods = ER.BA.MedioPagoCollectionBussinesAction.FindByAll(medioPagoFindParameter);
-            var paymentMethodsDto = paymentMethods.Select(py => py.GlobalMapperConverter<ER.BE.MedioPagoEntity, PaymentMethodDto>()).ToList();
-            return paymentMethodsDto;
-        }
+       
 
         [HttpGet, Route("getPaymentMethodsByPK/{id}")]
         public PaymentMethodDto GetPaymentMethodsByPK(int id)
