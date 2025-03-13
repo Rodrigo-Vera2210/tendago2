@@ -1,11 +1,4 @@
-﻿using ER.BA;
-using ER.BE;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Web.Http;
-
-namespace TendaGo.Api.Controllers
+﻿namespace TendaGo.Api.Controllers
 {
     /// <summary>
     /// Api controller base

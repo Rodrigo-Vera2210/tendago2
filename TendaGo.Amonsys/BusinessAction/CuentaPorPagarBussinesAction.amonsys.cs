@@ -32,140 +32,140 @@ namespace ER.BA
     public partial class CuentaPorPagarBussinesAction
     {
          
-       #region Implementation
+//       #region Implementation
         
-       public static CuentaPorPagarEntity Save(CuentaPorPagarEntity cuentaPorPagar )
-       {   
-            return Save(cuentaPorPagar,null, null);
-       }
+//       public static CuentaPorPagarEntity Save(CuentaPorPagarEntity cuentaPorPagar )
+//       {   
+//            return Save(cuentaPorPagar,null, null);
+//       }
        
-       public static CuentaPorPagarEntity Save(CuentaPorPagarEntity cuentaPorPagar , SqlConnection connection, SqlTransaction transaction)
-       {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true; 
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//       public static CuentaPorPagarEntity Save(CuentaPorPagarEntity cuentaPorPagar , SqlConnection connection, SqlTransaction transaction)
+//       {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true; 
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+///*
+//					if( cuentaPorPagar.IdEntradaAsEntrada != null && cuentaPorPagar.IdEntradaAsEntrada.CanSave )
+//					{
+//						cuentaPorPagar.IdEntrada = EntradaBussinesAction.Save(cuentaPorPagar.IdEntradaAsEntrada , connection,transaction).Id;
+//					}
+
+
+//*/
+//                    switch (cuentaPorPagar.CurrentState)
+//                    {
+//                        case EntityStatesEnum.Deleted:
+//                            CuentaPorPagarDataAccess.Delete(cuentaPorPagar, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.Updated:
+//                            CuentaPorPagarDataAccess.Update(cuentaPorPagar, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.New:
+//                            cuentaPorPagar = CuentaPorPagarDataAccess.Insert(cuentaPorPagar, connection, transaction);
+//                            break;
+//                        default:
+//                            break;
+//                    }
+                    
+                    
+
+////                } 
+               
+//               //End of Transaction
+//               if (isBAParent && transaction != null)
+//               {
+//					transaction.Commit();
+//					cuentaPorPagar.SetState(EntityStatesEnum.SavedSuccessfully);
+//               }
+               
+//               return cuentaPorPagar;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
 //                {
-/*
-					if( cuentaPorPagar.IdEntradaAsEntrada != null && cuentaPorPagar.IdEntradaAsEntrada.CanSave )
-					{
-						cuentaPorPagar.IdEntrada = EntradaBussinesAction.Save(cuentaPorPagar.IdEntradaAsEntrada , connection,transaction).Id;
-					}
-
-
-*/
-                    switch (cuentaPorPagar.CurrentState)
-                    {
-                        case EntityStatesEnum.Deleted:
-                            CuentaPorPagarDataAccess.Delete(cuentaPorPagar, connection, transaction);
-                            break;
-                        case EntityStatesEnum.Updated:
-                            CuentaPorPagarDataAccess.Update(cuentaPorPagar, connection, transaction);
-                            break;
-                        case EntityStatesEnum.New:
-                            cuentaPorPagar = CuentaPorPagarDataAccess.Insert(cuentaPorPagar, connection, transaction);
-                            break;
-                        default:
-                            break;
-                    }
+//                    transaction.Rollback();
+//                    if ( cuentaPorPagar != null)  cuentaPorPagar.RollBackState();
                     
-                    
-
-//                } 
-               
-               //End of Transaction
-               if (isBAParent && transaction != null)
-               {
-					transaction.Commit();
-					cuentaPorPagar.SetState(EntityStatesEnum.SavedSuccessfully);
-               }
-               
-               return cuentaPorPagar;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( cuentaPorPagar != null)  cuentaPorPagar.RollBackState();
-                    
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
   
          
          
          
-        public static CuentaPorPagarEntity LoadByPK(int Id)
-        {
-            return LoadByPK(Id , null, null, 1);
-        }
-        public static CuentaPorPagarEntity LoadByPK(int Id ,int deepLoadLevel)
-        {
-            return LoadByPK(Id , null, null, deepLoadLevel);
-        }
+//        public static CuentaPorPagarEntity LoadByPK(int Id)
+//        {
+//            return LoadByPK(Id , null, null, 1);
+//        }
+//        public static CuentaPorPagarEntity LoadByPK(int Id ,int deepLoadLevel)
+//        {
+//            return LoadByPK(Id , null, null, deepLoadLevel);
+//        }
         
-        public static CuentaPorPagarEntity LoadByPK(int Id, SqlConnection connection,SqlTransaction  transaction)
-        {
-            return LoadByPK(Id , connection, transaction, 1);
-        }
+//        public static CuentaPorPagarEntity LoadByPK(int Id, SqlConnection connection,SqlTransaction  transaction)
+//        {
+//            return LoadByPK(Id , connection, transaction, 1);
+//        }
         
-        public static CuentaPorPagarEntity LoadByPK(int Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static CuentaPorPagarEntity LoadByPK(int Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
             
-            try
-            {
+//            try
+//            {
 
                 
-				CuentaPorPagarEntity cuentaPorPagar = CuentaPorPagarDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
-				if(cuentaPorPagar!=null) 
-                {
-					if (deepLoadLevel > 1)
-	                {
-							cuentaPorPagar.IdEntradaAsEntrada = EntradaBussinesAction.LoadByPK(cuentaPorPagar.IdEntrada, connection , transaction , deepLoadLevel - 1);
+//				CuentaPorPagarEntity cuentaPorPagar = CuentaPorPagarDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
+//				if(cuentaPorPagar!=null) 
+//                {
+//					if (deepLoadLevel > 1)
+//	                {
+//							cuentaPorPagar.IdEntradaAsEntrada = EntradaBussinesAction.LoadByPK(cuentaPorPagar.IdEntrada, connection , transaction , deepLoadLevel - 1);
 
-	                }
+//	                }
 	                   
-						cuentaPorPagar.SetLoadedState();
-				}
+//						cuentaPorPagar.SetLoadedState();
+//				}
 
-				return cuentaPorPagar;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//				return cuentaPorPagar;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
          
-        #endregion Implementation
+//        #endregion Implementation
           
      }
 }

@@ -32,134 +32,134 @@ namespace ER.BA
     public partial class ModuloBussinesAction
     {
          
-       #region Implementation
+//       #region Implementation
         
-       public static ModuloEntity Save(ModuloEntity modulo )
-       {   
-            return Save(modulo,null, null);
-       }
+//       public static ModuloEntity Save(ModuloEntity modulo )
+//       {   
+//            return Save(modulo,null, null);
+//       }
        
-       public static ModuloEntity Save(ModuloEntity modulo , SqlConnection connection, SqlTransaction transaction)
-       {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true; 
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//       public static ModuloEntity Save(ModuloEntity modulo , SqlConnection connection, SqlTransaction transaction)
+//       {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true; 
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+///*
+
+//*/
+//                    switch (modulo.CurrentState)
+//                    {
+//                        case EntityStatesEnum.Deleted:
+//                            ModuloDataAccess.Delete(modulo, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.Updated:
+//                            ModuloDataAccess.Update(modulo, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.New:
+//                            modulo = ModuloDataAccess.Insert(modulo, connection, transaction);
+//                            break;
+//                        default:
+//                            break;
+//                    }
+                    
+                    
+
+////                } 
+               
+//               //End of Transaction
+//               if (isBAParent && transaction != null)
+//               {
+//					transaction.Commit();
+//					modulo.SetState(EntityStatesEnum.SavedSuccessfully);
+//               }
+               
+//               return modulo;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
 //                {
-/*
-
-*/
-                    switch (modulo.CurrentState)
-                    {
-                        case EntityStatesEnum.Deleted:
-                            ModuloDataAccess.Delete(modulo, connection, transaction);
-                            break;
-                        case EntityStatesEnum.Updated:
-                            ModuloDataAccess.Update(modulo, connection, transaction);
-                            break;
-                        case EntityStatesEnum.New:
-                            modulo = ModuloDataAccess.Insert(modulo, connection, transaction);
-                            break;
-                        default:
-                            break;
-                    }
+//                    transaction.Rollback();
+//                    if ( modulo != null)  modulo.RollBackState();
                     
-                    
-
-//                } 
-               
-               //End of Transaction
-               if (isBAParent && transaction != null)
-               {
-					transaction.Commit();
-					modulo.SetState(EntityStatesEnum.SavedSuccessfully);
-               }
-               
-               return modulo;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( modulo != null)  modulo.RollBackState();
-                    
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
   
          
          
          
-        public static ModuloEntity LoadByPK(short Id)
-        {
-            return LoadByPK(Id , null, null, 1);
-        }
-        public static ModuloEntity LoadByPK(short Id ,int deepLoadLevel)
-        {
-            return LoadByPK(Id , null, null, deepLoadLevel);
-        }
+//        public static ModuloEntity LoadByPK(short Id)
+//        {
+//            return LoadByPK(Id , null, null, 1);
+//        }
+//        public static ModuloEntity LoadByPK(short Id ,int deepLoadLevel)
+//        {
+//            return LoadByPK(Id , null, null, deepLoadLevel);
+//        }
         
-        public static ModuloEntity LoadByPK(short Id, SqlConnection connection,SqlTransaction  transaction)
-        {
-            return LoadByPK(Id , connection, transaction, 1);
-        }
+//        public static ModuloEntity LoadByPK(short Id, SqlConnection connection,SqlTransaction  transaction)
+//        {
+//            return LoadByPK(Id , connection, transaction, 1);
+//        }
         
-        public static ModuloEntity LoadByPK(short Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static ModuloEntity LoadByPK(short Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
             
-            try
-            {
+//            try
+//            {
 
                 
-				ModuloEntity modulo = ModuloDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
-				if(modulo!=null) 
-                {
-					if (deepLoadLevel > 1)
-	                {
+//				ModuloEntity modulo = ModuloDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
+//				if(modulo!=null) 
+//                {
+//					if (deepLoadLevel > 1)
+//	                {
 	
-	                }
+//	                }
 	                   
-						modulo.SetLoadedState();
-				}
+//						modulo.SetLoadedState();
+//				}
 
-				return modulo;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//				return modulo;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
          
-        #endregion Implementation
+//        #endregion Implementation
           
      }
 }

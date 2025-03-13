@@ -26,419 +26,419 @@ namespace ER.DA
 	{
     
    
-        #region << Default Methods >>
+   //     #region << Default Methods >>
 
-        /// <summary>
-        /// Create a new entity type of Marca
-        /// </summary>
-        public static MarcaEntity Insert(MarcaEntity marca, SqlConnection connection, SqlTransaction transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText =  "Marca_Insert";
+   //     /// <summary>
+   //     /// Create a new entity type of Marca
+   //     /// </summary>
+   //     public static MarcaEntity Insert(MarcaEntity marca, SqlConnection connection, SqlTransaction transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText =  "Marca_Insert";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
                  
-				mCommand.Parameters.AddWithValue("@IdEmpresa", marca.IdEmpresa);
-				mCommand.Parameters.AddWithValue("@Marca", marca.Marca.ToUpper());
-				mCommand.Parameters.AddWithValue("@IpIngreso", marca.IpIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", marca.UsuarioIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@FechaIngreso", marca.FechaIngreso);
-				if(!String.IsNullOrEmpty(marca.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", marca.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@IdEmpresa", marca.IdEmpresa);
+			//	mCommand.Parameters.AddWithValue("@Marca", marca.Marca.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@IpIngreso", marca.IpIngreso.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", marca.UsuarioIngreso.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@FechaIngreso", marca.FechaIngreso);
+			//	if(!String.IsNullOrEmpty(marca.IpModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion", marca.IpModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(marca.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", marca.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(marca.UsuarioModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", marca.UsuarioModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+			//	}
 
-				if(marca.FechaModificacion != null && marca.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", marca.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
-				}
+			//	if(marca.FechaModificacion != null && marca.FechaModificacion != DateTime.MinValue)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion", marca.FechaModificacion);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IdEstado", marca.IdEstado);
+			//	mCommand.Parameters.AddWithValue("@IdEstado", marca.IdEstado);
 
-				// Add the primary keys columns
-				mCommand.Parameters.Add("@Id", SqlDbType.Int);
-				mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
+			//	// Add the primary keys columns
+			//	mCommand.Parameters.Add("@Id", SqlDbType.Int);
+			//	mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
 
 
-                #endregion
+   //             #endregion
                 
-                // Insert Marca
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Insert Marca
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
-				marca.Id = Convert.ToInt32(mCommand.Parameters["@Id"].Value);
+			//	marca.Id = Convert.ToInt32(mCommand.Parameters["@Id"].Value);
 
 
-                return marca;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //             return marca;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
 
-        /// <summary>
-        /// Update a entity
-        /// </summary>
-        public static void Update(MarcaEntity marca, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "Marca_Update";
+   //     /// <summary>
+   //     /// Update a entity
+   //     /// </summary>
+   //     public static void Update(MarcaEntity marca, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;;
+   //             mCommand.CommandText = "Marca_Update";
 
-                 #region << Add the params >>
+   //              #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@Id", marca.Id);
-				mCommand.Parameters.AddWithValue("@IdEmpresa", marca.IdEmpresa);
-				mCommand.Parameters.AddWithValue("@Marca", marca.Marca);
-				mCommand.Parameters.AddWithValue("@IpIngreso", marca.IpIngreso);
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", marca.UsuarioIngreso);
-				mCommand.Parameters.AddWithValue("@FechaIngreso", marca.FechaIngreso);
-				if(!String.IsNullOrEmpty(marca.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", marca.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@Id", marca.Id);
+			//	mCommand.Parameters.AddWithValue("@IdEmpresa", marca.IdEmpresa);
+			//	mCommand.Parameters.AddWithValue("@Marca", marca.Marca);
+			//	mCommand.Parameters.AddWithValue("@IpIngreso", marca.IpIngreso);
+			//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", marca.UsuarioIngreso);
+			//	mCommand.Parameters.AddWithValue("@FechaIngreso", marca.FechaIngreso);
+			//	if(!String.IsNullOrEmpty(marca.IpModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion", marca.IpModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(marca.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", marca.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(marca.UsuarioModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", marca.UsuarioModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+			//	}
 
-				if(marca.FechaModificacion != null && marca.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", marca.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
-				}
+			//	if(marca.FechaModificacion != null && marca.FechaModificacion != DateTime.MinValue)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion", marca.FechaModificacion);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IdEstado", marca.IdEstado);
+			//	mCommand.Parameters.AddWithValue("@IdEstado", marca.IdEstado);
                 
    
-                #endregion
+   //             #endregion
                 
-                // Update marca
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Update marca
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
 
-         /// <summary>
-        /// Delete a entity
-        /// </summary>
-        public static void Delete(MarcaEntity marca, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "Marca_Delete";
-				mCommand.Parameters.AddWithValue("@Id", marca.Id);
-				mCommand.Parameters.AddWithValue("@FechaModificacion", marca.FechaModificacion);
-				mCommand.Parameters.AddWithValue("@UsuarioModificacion", marca.UsuarioModificacion.ToUpper());
-				mCommand.Parameters.AddWithValue("@IpModificacion", marca.IpModificacion.ToUpper());
+   //      /// <summary>
+   //     /// Delete a entity
+   //     /// </summary>
+   //     public static void Delete(MarcaEntity marca, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;;
+   //             mCommand.CommandText = "Marca_Delete";
+			//	mCommand.Parameters.AddWithValue("@Id", marca.Id);
+			//	mCommand.Parameters.AddWithValue("@FechaModificacion", marca.FechaModificacion);
+			//	mCommand.Parameters.AddWithValue("@UsuarioModificacion", marca.UsuarioModificacion.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@IpModificacion", marca.IpModificacion.ToUpper());
 
                 
-                // Update marca
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Update marca
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
         
          
          
-         /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static MarcaEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction)
-        {
-        	return LoadByPK(Id,connection,transaction,1);
-        }
+   //      /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static MarcaEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //     	return LoadByPK(Id,connection,transaction,1);
+   //     }
         
-        /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static MarcaEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
-        {
-            MarcaEntity marca = new MarcaEntity();
+   //     /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static MarcaEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
+   //     {
+   //         MarcaEntity marca = new MarcaEntity();
             
-			marca.Id = Id;
+			//marca.Id = Id;
             
             
-            SqlCommand mCommand = new SqlCommand();
-            SqlDataReader reader = null;
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText = "Marca_LoadByPK";
+   //         SqlCommand mCommand = new SqlCommand();
+   //         SqlDataReader reader = null;
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText = "Marca_LoadByPK";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@Id", marca.Id);
+			//	mCommand.Parameters.AddWithValue("@Id", marca.Id);
                 
  
-                #endregion 
+   //             #endregion 
                 
-                if (connection.State != ConnectionState.Open) connection.Open();
+   //             if (connection.State != ConnectionState.Open) connection.Open();
 
-                reader = mCommand.ExecuteReader();
+   //             reader = mCommand.ExecuteReader();
 
-                if(!reader.HasRows) return null;
+   //             if(!reader.HasRows) return null;
                 
-	            while (reader.Read())
-	            {
-					#region << Deep Load >>
-                    if (deepLoadLevel == 1)
-		     		{
+	  //          while (reader.Read())
+	  //          {
+			//		#region << Deep Load >>
+   //                 if (deepLoadLevel == 1)
+		 //    		{
 
-                    }
-	                #endregion
+   //                 }
+	  //              #endregion
 	                
-	                #region << Load the BusinessEntity Object >>
+	  //              #region << Load the BusinessEntity Object >>
 					
-					marca.Id = Convert.ToInt32(reader["Id"]);
-					marca.IdEmpresa = Convert.ToInt32(reader["IdEmpresa"]);
-					marca.Marca = Convert.ToString(reader["Marca"]);
-					marca.IpIngreso = Convert.ToString(reader["IpIngreso"]);
-					marca.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
-					marca.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
-					if (reader["IpModificacion"] != DBNull.Value)
-					{
-						marca.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
-					}
-					if (reader["UsuarioModificacion"] != DBNull.Value)
-					{
-						marca.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
-					}
-					if (reader["FechaModificacion"] != DBNull.Value)
-					{
-						marca.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
-					}
-					marca.IdEstado = Convert.ToInt16(reader["IdEstado"]);
+			//		marca.Id = Convert.ToInt32(reader["Id"]);
+			//		marca.IdEmpresa = Convert.ToInt32(reader["IdEmpresa"]);
+			//		marca.Marca = Convert.ToString(reader["Marca"]);
+			//		marca.IpIngreso = Convert.ToString(reader["IpIngreso"]);
+			//		marca.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
+			//		marca.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
+			//		if (reader["IpModificacion"] != DBNull.Value)
+			//		{
+			//			marca.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
+			//		}
+			//		if (reader["UsuarioModificacion"] != DBNull.Value)
+			//		{
+			//			marca.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
+			//		}
+			//		if (reader["FechaModificacion"] != DBNull.Value)
+			//		{
+			//			marca.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
+			//		}
+			//		marca.IdEstado = Convert.ToInt16(reader["IdEstado"]);
 
-	                #endregion
-	            }
+	  //              #endregion
+	  //          }
 
-                marca.SetLoadedState();
-                return marca;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (reader != null) reader.Close();
-                mCommand.Dispose();
-            }
-        }
+   //             marca.SetLoadedState();
+   //             return marca;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             if (reader != null) reader.Close();
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
-        #endregion
-        
-        
+   //     #endregion
         
         
-        #region << Mappers >>
         
-        public static MarcaEntity ConvertToMarcaEntity (SqlDataReader reader,string fkColumnName)
-        {
-            MarcaEntity marca = new MarcaEntity();
+        
+   //     #region << Mappers >>
+        
+   //     public static MarcaEntity ConvertToMarcaEntity (SqlDataReader reader,string fkColumnName)
+   //     {
+   //         MarcaEntity marca = new MarcaEntity();
 
-			ConfigureSchema(reader, fkColumnName);
+			//ConfigureSchema(reader, fkColumnName);
 
-            try
-            {
-                bool hasData=false;
-                string columName;
+   //         try
+   //         {
+   //             bool hasData=false;
+   //             string columName;
                 
-                #region << Load the BusinessEntity Object >>
+   //             #region << Load the BusinessEntity Object >>
                 
-				try
-				{
-					columName = String.Format("Id_MarcaFrom{0}", fkColumnName);
-					if (ColumnExists(fkColumnName, columName)) if (reader[columName] != DBNull.Value)
-					{
-						marca.Id = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdEmpresa_MarcaFrom{0}", fkColumnName);
-					if (ColumnExists(fkColumnName, columName)) if (reader[columName] != DBNull.Value)
-					{
-						marca.IdEmpresa = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Marca_MarcaFrom{0}", fkColumnName);
-					if (ColumnExists(fkColumnName, columName)) if (reader[columName] != DBNull.Value)
-					{
-						marca.Marca = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpIngreso_MarcaFrom{0}", fkColumnName);
-					if (ColumnExists(fkColumnName, columName)) if (reader[columName] != DBNull.Value)
-					{
-						marca.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioIngreso_MarcaFrom{0}", fkColumnName);
-					if (ColumnExists(fkColumnName, columName)) if (reader[columName] != DBNull.Value)
-					{
-						marca.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaIngreso_MarcaFrom{0}", fkColumnName);
-					if (ColumnExists(fkColumnName, columName)) if (reader[columName] != DBNull.Value)
-					{
-						marca.FechaIngreso = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpModificacion_MarcaFrom{0}", fkColumnName);
-					if (ColumnExists(fkColumnName, columName)) if (reader[columName] != DBNull.Value)
-					{
-						marca.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioModificacion_MarcaFrom{0}", fkColumnName);
-					if (ColumnExists(fkColumnName, columName)) if (reader[columName] != DBNull.Value)
-					{
-						marca.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaModificacion_MarcaFrom{0}", fkColumnName);
-					if (ColumnExists(fkColumnName, columName)) if (reader[columName] != DBNull.Value)
-					{
-						marca.FechaModificacion = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdEstado_MarcaFrom{0}", fkColumnName);
-					if (ColumnExists(fkColumnName, columName)) if (reader[columName] != DBNull.Value)
-					{
-						marca.IdEstado = Convert.ToInt16(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Id_MarcaFrom{0}", fkColumnName);
+			//		if (ColumnExists(fkColumnName, columName)) if (reader[columName] != DBNull.Value)
+			//		{
+			//			marca.Id = Convert.ToInt32(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdEmpresa_MarcaFrom{0}", fkColumnName);
+			//		if (ColumnExists(fkColumnName, columName)) if (reader[columName] != DBNull.Value)
+			//		{
+			//			marca.IdEmpresa = Convert.ToInt32(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Marca_MarcaFrom{0}", fkColumnName);
+			//		if (ColumnExists(fkColumnName, columName)) if (reader[columName] != DBNull.Value)
+			//		{
+			//			marca.Marca = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IpIngreso_MarcaFrom{0}", fkColumnName);
+			//		if (ColumnExists(fkColumnName, columName)) if (reader[columName] != DBNull.Value)
+			//		{
+			//			marca.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("UsuarioIngreso_MarcaFrom{0}", fkColumnName);
+			//		if (ColumnExists(fkColumnName, columName)) if (reader[columName] != DBNull.Value)
+			//		{
+			//			marca.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("FechaIngreso_MarcaFrom{0}", fkColumnName);
+			//		if (ColumnExists(fkColumnName, columName)) if (reader[columName] != DBNull.Value)
+			//		{
+			//			marca.FechaIngreso = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IpModificacion_MarcaFrom{0}", fkColumnName);
+			//		if (ColumnExists(fkColumnName, columName)) if (reader[columName] != DBNull.Value)
+			//		{
+			//			marca.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("UsuarioModificacion_MarcaFrom{0}", fkColumnName);
+			//		if (ColumnExists(fkColumnName, columName)) if (reader[columName] != DBNull.Value)
+			//		{
+			//			marca.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("FechaModificacion_MarcaFrom{0}", fkColumnName);
+			//		if (ColumnExists(fkColumnName, columName)) if (reader[columName] != DBNull.Value)
+			//		{
+			//			marca.FechaModificacion = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdEstado_MarcaFrom{0}", fkColumnName);
+			//		if (ColumnExists(fkColumnName, columName)) if (reader[columName] != DBNull.Value)
+			//		{
+			//			marca.IdEstado = Convert.ToInt16(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
 
                 
-                #endregion
+   //             #endregion
                 
-                marca.SetLoadedState();
-                if(hasData)
-                {
-                	return marca;
-                }
-                else return null;
-            }
-            catch (Exception exc)
-            {
-                return null;
-            }
-            finally
-            {
+   //             marca.SetLoadedState();
+   //             if(hasData)
+   //             {
+   //             	return marca;
+   //             }
+   //             else return null;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             return null;
+   //         }
+   //         finally
+   //         {
                 
-            }
-        }
+   //         }
+   //     }
         
-        #endregion
+   //     #endregion
         
    
     }

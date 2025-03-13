@@ -32,146 +32,146 @@ namespace ER.BA
     public partial class UsuarioBussinesAction
     {
          
-       #region Implementation
+//       #region Implementation
         
-       public static UsuarioEntity Save(UsuarioEntity usuario )
-       {   
-            return Save(usuario,null, null);
-       }
+//       public static UsuarioEntity Save(UsuarioEntity usuario )
+//       {   
+//            return Save(usuario,null, null);
+//       }
        
-       public static UsuarioEntity Save(UsuarioEntity usuario , SqlConnection connection, SqlTransaction transaction)
-       {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true; 
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//       public static UsuarioEntity Save(UsuarioEntity usuario , SqlConnection connection, SqlTransaction transaction)
+//       {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true; 
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+///*
+//					if( usuario.IdEmpresaAsEmpresa != null && usuario.IdEmpresaAsEmpresa.CanSave )
+//					{
+//						usuario.IdEmpresa = EmpresaBussinesAction.Save(usuario.IdEmpresaAsEmpresa , connection,transaction).Id;
+//					}
+
+//					if( usuario.IdPeriflAsPerfil != null && usuario.IdPeriflAsPerfil.CanSave )
+//					{
+//						usuario.IdPerifl = PerfilBussinesAction.Save(usuario.IdPeriflAsPerfil , connection,transaction).Id;
+//					}
+
+
+//*/
+//                    switch (usuario.CurrentState)
+//                    {
+//                        case EntityStatesEnum.Deleted:
+//                            UsuarioDataAccess.Delete(usuario, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.Updated:
+//                            UsuarioDataAccess.Update(usuario, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.New:
+//                            usuario = UsuarioDataAccess.Insert(usuario, connection, transaction);
+//                            break;
+//                        default:
+//                            break;
+//                    }
+                    
+                    
+
+////                } 
+               
+//               //End of Transaction
+//               if (isBAParent && transaction != null)
+//               {
+//					transaction.Commit();
+//					usuario.SetState(EntityStatesEnum.SavedSuccessfully);
+//               }
+               
+//               return usuario;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
 //                {
-/*
-					if( usuario.IdEmpresaAsEmpresa != null && usuario.IdEmpresaAsEmpresa.CanSave )
-					{
-						usuario.IdEmpresa = EmpresaBussinesAction.Save(usuario.IdEmpresaAsEmpresa , connection,transaction).Id;
-					}
-
-					if( usuario.IdPeriflAsPerfil != null && usuario.IdPeriflAsPerfil.CanSave )
-					{
-						usuario.IdPerifl = PerfilBussinesAction.Save(usuario.IdPeriflAsPerfil , connection,transaction).Id;
-					}
-
-
-*/
-                    switch (usuario.CurrentState)
-                    {
-                        case EntityStatesEnum.Deleted:
-                            UsuarioDataAccess.Delete(usuario, connection, transaction);
-                            break;
-                        case EntityStatesEnum.Updated:
-                            UsuarioDataAccess.Update(usuario, connection, transaction);
-                            break;
-                        case EntityStatesEnum.New:
-                            usuario = UsuarioDataAccess.Insert(usuario, connection, transaction);
-                            break;
-                        default:
-                            break;
-                    }
+//                    transaction.Rollback();
+//                    if ( usuario != null)  usuario.RollBackState();
                     
-                    
-
-//                } 
-               
-               //End of Transaction
-               if (isBAParent && transaction != null)
-               {
-					transaction.Commit();
-					usuario.SetState(EntityStatesEnum.SavedSuccessfully);
-               }
-               
-               return usuario;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( usuario != null)  usuario.RollBackState();
-                    
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
   
          
          
          
-        public static UsuarioEntity LoadByPK(string InicioSesion)
-        {
-            return LoadByPK(InicioSesion , null, null, 1);
-        }
-        public static UsuarioEntity LoadByPK(string InicioSesion ,int deepLoadLevel)
-        {
-            return LoadByPK(InicioSesion , null, null, deepLoadLevel);
-        }
+//        public static UsuarioEntity LoadByPK(string InicioSesion)
+//        {
+//            return LoadByPK(InicioSesion , null, null, 1);
+//        }
+//        public static UsuarioEntity LoadByPK(string InicioSesion ,int deepLoadLevel)
+//        {
+//            return LoadByPK(InicioSesion , null, null, deepLoadLevel);
+//        }
         
-        public static UsuarioEntity LoadByPK(string InicioSesion, SqlConnection connection,SqlTransaction  transaction)
-        {
-            return LoadByPK(InicioSesion , connection, transaction, 1);
-        }
+//        public static UsuarioEntity LoadByPK(string InicioSesion, SqlConnection connection,SqlTransaction  transaction)
+//        {
+//            return LoadByPK(InicioSesion , connection, transaction, 1);
+//        }
         
-        public static UsuarioEntity LoadByPK(string InicioSesion , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static UsuarioEntity LoadByPK(string InicioSesion , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
             
-            try
-            {
+//            try
+//            {
 
                 
-				UsuarioEntity usuario = UsuarioDataAccess.LoadByPK(InicioSesion , connection, transaction, deepLoadLevel);
-				if(usuario!=null) 
-                {
-					if (deepLoadLevel > 1)
-	                {
-							usuario.IdEmpresaAsEmpresa = EmpresaBussinesAction.LoadByPK(usuario.IdEmpresa, connection , transaction , deepLoadLevel - 1);
-						usuario.IdPeriflAsPerfil = PerfilBussinesAction.LoadByPK(usuario.IdPerifl, connection , transaction , deepLoadLevel - 1);
+//				UsuarioEntity usuario = UsuarioDataAccess.LoadByPK(InicioSesion , connection, transaction, deepLoadLevel);
+//				if(usuario!=null) 
+//                {
+//					if (deepLoadLevel > 1)
+//	                {
+//							usuario.IdEmpresaAsEmpresa = EmpresaBussinesAction.LoadByPK(usuario.IdEmpresa, connection , transaction , deepLoadLevel - 1);
+//						usuario.IdPeriflAsPerfil = PerfilBussinesAction.LoadByPK(usuario.IdPerifl, connection , transaction , deepLoadLevel - 1);
 
-	                }
+//	                }
 	                   
-						usuario.SetLoadedState();
-				}
+//						usuario.SetLoadedState();
+//				}
 
-				return usuario;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//				return usuario;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
          
-        #endregion Implementation
+//        #endregion Implementation
           
      }
 }

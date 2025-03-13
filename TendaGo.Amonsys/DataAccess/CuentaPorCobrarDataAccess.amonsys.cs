@@ -24,522 +24,522 @@ namespace ER.DA
 {
     public partial class CuentaPorCobrarDataAccess
     {
-    
-   
-        #region << Default Methods >>
-
-        /// <summary>
-        /// Create a new entity type of CuentaPorCobrar
-        /// </summary>
-        public static CuentaPorCobrarEntity Insert(CuentaPorCobrarEntity cuentaPorCobrar, SqlConnection connection, SqlTransaction transaction)
-        {
-			Random rd = new Random();
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText =  "CuentaPorCobrar_Insert";
-
-                #region << Add the params >>
-                 
-				mCommand.Parameters.AddWithValue("@IdSalida", cuentaPorCobrar.IdSalida.ToUpper());
-				mCommand.Parameters.AddWithValue("@Numero", cuentaPorCobrar.Numero);
-				mCommand.Parameters.AddWithValue("@FechaVencimiento", cuentaPorCobrar.FechaVencimiento);
-				mCommand.Parameters.AddWithValue("@Valor", cuentaPorCobrar.Valor);
-				if(cuentaPorCobrar.Saldo != 0)
-				{
-					mCommand.Parameters.AddWithValue("@Saldo", cuentaPorCobrar.Saldo);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@Saldo",DBNull.Value);
-				}
-
-				mCommand.Parameters.AddWithValue("@IpIngreso", cuentaPorCobrar.IpIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", cuentaPorCobrar.UsuarioIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@FechaIngreso", cuentaPorCobrar.FechaIngreso);
-				if(!String.IsNullOrEmpty(cuentaPorCobrar.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", cuentaPorCobrar.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
-
-				if(!String.IsNullOrEmpty(cuentaPorCobrar.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", cuentaPorCobrar.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
-
-				if(cuentaPorCobrar.FechaModificacion != null && cuentaPorCobrar.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", cuentaPorCobrar.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
-				}
-
-				mCommand.Parameters.AddWithValue("@IdEstado", cuentaPorCobrar.IdEstado);
-
-				// Add the primary keys columns
-				mCommand.Parameters.Add("@Id", SqlDbType.Int);
-				mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
 
 
-                #endregion
-                
-                // Insert CuentaPorCobrar
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+		#region << Default Methods >>
 
-				cuentaPorCobrar.Id = Convert.ToInt32(mCommand.Parameters["@Id"].Value);
+		/// <summary>
+		/// Create a new entity type of CuentaPorCobrar
+		/// </summary>
+		//      public static CuentaPorCobrarEntity Insert(CuentaPorCobrarEntity cuentaPorCobrar, SqlConnection connection, SqlTransaction transaction)
+		//      {
+		//	Random rd = new Random();
+		//          SqlCommand mCommand = new SqlCommand();
+		//          try
+		//          {
+		//              mCommand.Connection = connection;
+		//              mCommand.CommandType = CommandType.StoredProcedure;
+		//              mCommand.Transaction = transaction;
+		//              mCommand.CommandText =  "CuentaPorCobrar_Insert";
 
+		//              #region << Add the params >>
 
-                return cuentaPorCobrar;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+		//		mCommand.Parameters.AddWithValue("@IdSalida", cuentaPorCobrar.IdSalida.ToUpper());
+		//		mCommand.Parameters.AddWithValue("@Numero", cuentaPorCobrar.Numero);
+		//		mCommand.Parameters.AddWithValue("@FechaVencimiento", cuentaPorCobrar.FechaVencimiento);
+		//		mCommand.Parameters.AddWithValue("@Valor", cuentaPorCobrar.Valor);
+		//		if(cuentaPorCobrar.Saldo != 0)
+		//		{
+		//			mCommand.Parameters.AddWithValue("@Saldo", cuentaPorCobrar.Saldo);
+		//		}
+		//		else
+		//		{
+		//			mCommand.Parameters.AddWithValue("@Saldo",DBNull.Value);
+		//		}
 
-        /// <summary>
-        /// Update a entity
-        /// </summary>
-        public static void Update(CuentaPorCobrarEntity cuentaPorCobrar, SqlConnection connection, SqlTransaction  transaction)
-        {
-            Random rd = new Random();
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "CuentaPorCobrar_Update";
+		//		mCommand.Parameters.AddWithValue("@IpIngreso", cuentaPorCobrar.IpIngreso.ToUpper());
+		//		mCommand.Parameters.AddWithValue("@UsuarioIngreso", cuentaPorCobrar.UsuarioIngreso.ToUpper());
+		//		mCommand.Parameters.AddWithValue("@FechaIngreso", cuentaPorCobrar.FechaIngreso);
+		//		if(!String.IsNullOrEmpty(cuentaPorCobrar.IpModificacion))
+		//		{
+		//			mCommand.Parameters.AddWithValue("@IpModificacion", cuentaPorCobrar.IpModificacion.ToUpper());
+		//		}
+		//		else
+		//		{
+		//			mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+		//		}
 
-                 #region << Add the params >>
+		//		if(!String.IsNullOrEmpty(cuentaPorCobrar.UsuarioModificacion))
+		//		{
+		//			mCommand.Parameters.AddWithValue("@UsuarioModificacion", cuentaPorCobrar.UsuarioModificacion.ToUpper());
+		//		}
+		//		else
+		//		{
+		//			mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+		//		}
 
-				mCommand.Parameters.AddWithValue("@Id", cuentaPorCobrar.Id);
-				mCommand.Parameters.AddWithValue("@IdSalida", cuentaPorCobrar.IdSalida);
-				mCommand.Parameters.AddWithValue("@Numero", cuentaPorCobrar.Numero);
-				mCommand.Parameters.AddWithValue("@FechaVencimiento", cuentaPorCobrar.FechaVencimiento);
-				mCommand.Parameters.AddWithValue("@Valor", cuentaPorCobrar.Valor);
-				if(cuentaPorCobrar.Saldo != 0)
-				{
-					mCommand.Parameters.AddWithValue("@Saldo", cuentaPorCobrar.Saldo);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@Saldo",DBNull.Value);
-				}
+		//		if(cuentaPorCobrar.FechaModificacion != null && cuentaPorCobrar.FechaModificacion != DateTime.MinValue)
+		//		{
+		//			mCommand.Parameters.AddWithValue("@FechaModificacion", cuentaPorCobrar.FechaModificacion);
+		//		}
+		//		else
+		//		{
+		//			mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
+		//		}
 
-				mCommand.Parameters.AddWithValue("@IpIngreso", cuentaPorCobrar.IpIngreso);
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", cuentaPorCobrar.UsuarioIngreso);
-				mCommand.Parameters.AddWithValue("@FechaIngreso", cuentaPorCobrar.FechaIngreso);
-				if(!String.IsNullOrEmpty(cuentaPorCobrar.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", cuentaPorCobrar.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+		//		mCommand.Parameters.AddWithValue("@IdEstado", cuentaPorCobrar.IdEstado);
 
-				if(!String.IsNullOrEmpty(cuentaPorCobrar.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", cuentaPorCobrar.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
-
-				if(cuentaPorCobrar.FechaModificacion != null && cuentaPorCobrar.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", cuentaPorCobrar.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
-				}
-
-				mCommand.Parameters.AddWithValue("@IdEstado", cuentaPorCobrar.IdEstado);
-                
-   
-                #endregion
-                
-                // Update cuentaPorCobrar
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+		//		// Add the primary keys columns
+		//		mCommand.Parameters.Add("@Id", SqlDbType.Int);
+		//		mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+		//              #endregion
 
-         /// <summary>
-        /// Delete a entity
-        /// </summary>
-        public static void Delete(CuentaPorCobrarEntity cuentaPorCobrar, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "CuentaPorCobrar_Delete";
-				mCommand.Parameters.AddWithValue("@Id", cuentaPorCobrar.Id);
-				mCommand.Parameters.AddWithValue("@FechaModificacion", cuentaPorCobrar.FechaModificacion);
-				mCommand.Parameters.AddWithValue("@UsuarioModificacion", cuentaPorCobrar.UsuarioModificacion.ToUpper());
-				mCommand.Parameters.AddWithValue("@IpModificacion", cuentaPorCobrar.IpModificacion.ToUpper());
+		//              // Insert CuentaPorCobrar
+		//              if (connection.State != ConnectionState.Open) connection.Open();
+		//              mCommand.ExecuteNonQuery();
 
-                
-                // Update cuentaPorCobrar
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+		//		cuentaPorCobrar.Id = Convert.ToInt32(mCommand.Parameters["@Id"].Value);
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
-        
-        
-         
-         
-         /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static CuentaPorCobrarEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction)
-        {
-        	return LoadByPK(Id,connection,transaction,1);
-        }
-        
-        /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static CuentaPorCobrarEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
-        {
-            CuentaPorCobrarEntity cuentaPorCobrar = new CuentaPorCobrarEntity();
-            
-			cuentaPorCobrar.Id = Id;
-            
-            
-            SqlCommand mCommand = new SqlCommand();
-            SqlDataReader reader = null;
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText = "CuentaPorCobrar_LoadByPK";
+		//              return cuentaPorCobrar;
+		//          }
+		//          catch (Exception exc)
+		//          {
+		//              throw exc;
+		//          }
+		//          finally
+		//          {
+		//              mCommand.Dispose();
+		//          }
+		//      }
 
-                #region << Add the params >>
+		//      /// <summary>
+		//      /// Update a entity
+		//      /// </summary>
+		//      public static void Update(CuentaPorCobrarEntity cuentaPorCobrar, SqlConnection connection, SqlTransaction  transaction)
+		//      {
+		//          Random rd = new Random();
+		//          SqlCommand mCommand = new SqlCommand();
+		//          try
+		//          {
+		//              mCommand.Connection = connection;
+		//              mCommand.CommandType = CommandType.StoredProcedure;
+		//              mCommand.Transaction = transaction;;
+		//              mCommand.CommandText = "CuentaPorCobrar_Update";
 
-				mCommand.Parameters.AddWithValue("@Id", cuentaPorCobrar.Id);
-                
- 
-                #endregion 
-                
-                if (connection.State != ConnectionState.Open) connection.Open();
+		//               #region << Add the params >>
 
-                reader = mCommand.ExecuteReader();
+		//		mCommand.Parameters.AddWithValue("@Id", cuentaPorCobrar.Id);
+		//		mCommand.Parameters.AddWithValue("@IdSalida", cuentaPorCobrar.IdSalida);
+		//		mCommand.Parameters.AddWithValue("@Numero", cuentaPorCobrar.Numero);
+		//		mCommand.Parameters.AddWithValue("@FechaVencimiento", cuentaPorCobrar.FechaVencimiento);
+		//		mCommand.Parameters.AddWithValue("@Valor", cuentaPorCobrar.Valor);
+		//		if(cuentaPorCobrar.Saldo != 0)
+		//		{
+		//			mCommand.Parameters.AddWithValue("@Saldo", cuentaPorCobrar.Saldo);
+		//		}
+		//		else
+		//		{
+		//			mCommand.Parameters.AddWithValue("@Saldo",DBNull.Value);
+		//		}
 
-                if(!reader.HasRows) return null;
-                
-	            while (reader.Read())
-	            {
-					#region << Deep Load >>
-                    if (deepLoadLevel == 1)
-		     		{
-						cuentaPorCobrar.IdSalidaAsSalida = SalidaDataAccess.ConvertToSalidaEntity(reader, "IdSalida");
+		//		mCommand.Parameters.AddWithValue("@IpIngreso", cuentaPorCobrar.IpIngreso);
+		//		mCommand.Parameters.AddWithValue("@UsuarioIngreso", cuentaPorCobrar.UsuarioIngreso);
+		//		mCommand.Parameters.AddWithValue("@FechaIngreso", cuentaPorCobrar.FechaIngreso);
+		//		if(!String.IsNullOrEmpty(cuentaPorCobrar.IpModificacion))
+		//		{
+		//			mCommand.Parameters.AddWithValue("@IpModificacion", cuentaPorCobrar.IpModificacion.ToUpper());
+		//		}
+		//		else
+		//		{
+		//			mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+		//		}
 
-                    }
-	                #endregion
-	                
-	                #region << Load the BusinessEntity Object >>
-					
-					cuentaPorCobrar.Id = Convert.ToInt32(reader["Id"]);
-					cuentaPorCobrar.IdSalida = Convert.ToString(reader["IdSalida"]);
-					cuentaPorCobrar.Numero = Convert.ToInt32(reader["Numero"]);
-					cuentaPorCobrar.FechaVencimiento = Convert.ToDateTime(reader["FechaVencimiento"]);
-					cuentaPorCobrar.Valor = (decimal) reader["Valor"];
-					if (reader["Saldo"] != DBNull.Value)
-					{
-						cuentaPorCobrar.Saldo = (decimal) reader["Saldo"];
-					}
-					cuentaPorCobrar.IpIngreso = Convert.ToString(reader["IpIngreso"]);
-					cuentaPorCobrar.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
-					cuentaPorCobrar.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
-					if (reader["IpModificacion"] != DBNull.Value)
-					{
-						cuentaPorCobrar.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
-					}
-					if (reader["UsuarioModificacion"] != DBNull.Value)
-					{
-						cuentaPorCobrar.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
-					}
-					if (reader["FechaModificacion"] != DBNull.Value)
-					{
-						cuentaPorCobrar.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
-					}
-					cuentaPorCobrar.IdEstado = Convert.ToInt16(reader["IdEstado"]);
+		//		if(!String.IsNullOrEmpty(cuentaPorCobrar.UsuarioModificacion))
+		//		{
+		//			mCommand.Parameters.AddWithValue("@UsuarioModificacion", cuentaPorCobrar.UsuarioModificacion.ToUpper());
+		//		}
+		//		else
+		//		{
+		//			mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+		//		}
 
-	                #endregion
-	            }
+		//		if(cuentaPorCobrar.FechaModificacion != null && cuentaPorCobrar.FechaModificacion != DateTime.MinValue)
+		//		{
+		//			mCommand.Parameters.AddWithValue("@FechaModificacion", cuentaPorCobrar.FechaModificacion);
+		//		}
+		//		else
+		//		{
+		//			mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
+		//		}
 
-                cuentaPorCobrar.SetLoadedState();
-                return cuentaPorCobrar;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (reader != null) reader.Close();
-                mCommand.Dispose();
-            }
-        }
+		//		mCommand.Parameters.AddWithValue("@IdEstado", cuentaPorCobrar.IdEstado);
 
-		public static decimal ValorNotaCreditoByCliente(int idCliente, SqlConnection conexion, SqlTransaction transaction)
-		{
-			SqlCommand mCommand = new SqlCommand();
-			SqlDataReader reader = null;
-			try
-			{
-				mCommand.Connection = conexion;
-				mCommand.CommandType = CommandType.StoredProcedure;
-				mCommand.Transaction = transaction;
-				mCommand.CommandText = "Custom_NotaCreditoValor_ByCliente";
-				mCommand.Parameters.AddWithValue("@IdCliente", idCliente);
 
-				if (conexion.State != ConnectionState.Open) conexion.Open();
-				reader = mCommand.ExecuteReader();
+		//              #endregion
 
-				decimal valor = 0M;
+		//              // Update cuentaPorCobrar
+		//              if (connection.State != ConnectionState.Open) connection.Open();
+		//              mCommand.ExecuteNonQuery();
 
-				while (reader.Read())
-				{
-					if (reader["Valor"] != DBNull.Value)
-					{
-						valor = Convert.ToDecimal(reader["Valor"]);
-					}
-				}
 
-				return valor;
-			}
-			catch (Exception exc)
-			{
-				throw exc;
-			}
-			finally
-			{
-				if (reader != null) reader.Close();
-				mCommand.Dispose();
-			}
+		//          }
+		//          catch (Exception exc)
+		//          {
+		//              throw exc;
+		//          }
+		//          finally
+		//          {
+		//              mCommand.Dispose();
+		//          }
+		//      }
 
-		}
+		//       /// <summary>
+		//      /// Delete a entity
+		//      /// </summary>
+		//      public static void Delete(CuentaPorCobrarEntity cuentaPorCobrar, SqlConnection connection, SqlTransaction  transaction)
+		//      {
+		//          SqlCommand mCommand = new SqlCommand();
+		//          try
+		//          {
+		//              mCommand.Connection = connection;
+		//              mCommand.CommandType = CommandType.StoredProcedure;
+		//              mCommand.Transaction = transaction;;
+		//              mCommand.CommandText = "CuentaPorCobrar_Delete";
+		//		mCommand.Parameters.AddWithValue("@Id", cuentaPorCobrar.Id);
+		//		mCommand.Parameters.AddWithValue("@FechaModificacion", cuentaPorCobrar.FechaModificacion);
+		//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", cuentaPorCobrar.UsuarioModificacion.ToUpper());
+		//		mCommand.Parameters.AddWithValue("@IpModificacion", cuentaPorCobrar.IpModificacion.ToUpper());
+
+
+		//              // Update cuentaPorCobrar
+		//              if (connection.State != ConnectionState.Open) connection.Open();
+		//              mCommand.ExecuteNonQuery();
+
+
+		//          }
+		//          catch (Exception exc)
+		//          {
+		//              throw exc;
+		//          }
+		//          finally
+		//          {
+		//              mCommand.Dispose();
+		//          }
+		//      }
+
+
+
+
+		//       /// <summary>
+		//      /// Load a entity by your Primary Key
+		//      /// </summary>
+		//      public static CuentaPorCobrarEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction)
+		//      {
+		//      	return LoadByPK(Id,connection,transaction,1);
+		//      }
+
+		//      /// <summary>
+		//      /// Load a entity by your Primary Key
+		//      /// </summary>
+		//      public static CuentaPorCobrarEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
+		//      {
+		//          CuentaPorCobrarEntity cuentaPorCobrar = new CuentaPorCobrarEntity();
+
+		//	cuentaPorCobrar.Id = Id;
+
+
+		//          SqlCommand mCommand = new SqlCommand();
+		//          SqlDataReader reader = null;
+		//          try
+		//          {
+		//              mCommand.Connection = connection;
+		//              mCommand.CommandType = CommandType.StoredProcedure;
+		//              mCommand.Transaction = transaction;
+		//              mCommand.CommandText = "CuentaPorCobrar_LoadByPK";
+
+		//              #region << Add the params >>
+
+		//		mCommand.Parameters.AddWithValue("@Id", cuentaPorCobrar.Id);
+
+
+		//              #endregion 
+
+		//              if (connection.State != ConnectionState.Open) connection.Open();
+
+		//              reader = mCommand.ExecuteReader();
+
+		//              if(!reader.HasRows) return null;
+
+		//           while (reader.Read())
+		//           {
+		//			#region << Deep Load >>
+		//                  if (deepLoadLevel == 1)
+		//     		{
+		//				cuentaPorCobrar.IdSalidaAsSalida = SalidaDataAccess.ConvertToSalidaEntity(reader, "IdSalida");
+
+		//                  }
+		//               #endregion
+
+		//               #region << Load the BusinessEntity Object >>
+
+		//			cuentaPorCobrar.Id = Convert.ToInt32(reader["Id"]);
+		//			cuentaPorCobrar.IdSalida = Convert.ToString(reader["IdSalida"]);
+		//			cuentaPorCobrar.Numero = Convert.ToInt32(reader["Numero"]);
+		//			cuentaPorCobrar.FechaVencimiento = Convert.ToDateTime(reader["FechaVencimiento"]);
+		//			cuentaPorCobrar.Valor = (decimal) reader["Valor"];
+		//			if (reader["Saldo"] != DBNull.Value)
+		//			{
+		//				cuentaPorCobrar.Saldo = (decimal) reader["Saldo"];
+		//			}
+		//			cuentaPorCobrar.IpIngreso = Convert.ToString(reader["IpIngreso"]);
+		//			cuentaPorCobrar.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
+		//			cuentaPorCobrar.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
+		//			if (reader["IpModificacion"] != DBNull.Value)
+		//			{
+		//				cuentaPorCobrar.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
+		//			}
+		//			if (reader["UsuarioModificacion"] != DBNull.Value)
+		//			{
+		//				cuentaPorCobrar.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
+		//			}
+		//			if (reader["FechaModificacion"] != DBNull.Value)
+		//			{
+		//				cuentaPorCobrar.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
+		//			}
+		//			cuentaPorCobrar.IdEstado = Convert.ToInt16(reader["IdEstado"]);
+
+		//               #endregion
+		//           }
+
+		//              cuentaPorCobrar.SetLoadedState();
+		//              return cuentaPorCobrar;
+		//          }
+		//          catch (Exception exc)
+		//          {
+		//              throw exc;
+		//          }
+		//          finally
+		//          {
+		//              if (reader != null) reader.Close();
+		//              mCommand.Dispose();
+		//          }
+		//      }
+
+		//public static decimal ValorNotaCreditoByCliente(int idCliente, SqlConnection conexion, SqlTransaction transaction)
+		//{
+		//	SqlCommand mCommand = new SqlCommand();
+		//	SqlDataReader reader = null;
+		//	try
+		//	{
+		//		mCommand.Connection = conexion;
+		//		mCommand.CommandType = CommandType.StoredProcedure;
+		//		mCommand.Transaction = transaction;
+		//		mCommand.CommandText = "Custom_NotaCreditoValor_ByCliente";
+		//		mCommand.Parameters.AddWithValue("@IdCliente", idCliente);
+
+		//		if (conexion.State != ConnectionState.Open) conexion.Open();
+		//		reader = mCommand.ExecuteReader();
+
+		//		decimal valor = 0M;
+
+		//		while (reader.Read())
+		//		{
+		//			if (reader["Valor"] != DBNull.Value)
+		//			{
+		//				valor = Convert.ToDecimal(reader["Valor"]);
+		//			}
+		//		}
+
+		//		return valor;
+		//	}
+		//	catch (Exception exc)
+		//	{
+		//		throw exc;
+		//	}
+		//	finally
+		//	{
+		//		if (reader != null) reader.Close();
+		//		mCommand.Dispose();
+		//	}
+
+		//}
+
+		//#endregion
+
+
+
+
+		//#region << Mappers >>
+
+		//public static CuentaPorCobrarEntity ConvertToCuentaPorCobrarEntity (SqlDataReader reader,string fkColumnName)
+		//      {
+		//          CuentaPorCobrarEntity cuentaPorCobrar = new CuentaPorCobrarEntity();
+
+		//          try
+		//          {
+		//              bool hasData=false;
+		//              string columName;
+
+		//              #region << Load the BusinessEntity Object >>
+
+		//		try
+		//		{
+		//			columName = String.Format("Id_CuentaPorCobrarFrom{0}", fkColumnName);
+		//			if (reader[columName] != DBNull.Value)
+		//			{
+		//				cuentaPorCobrar.Id = Convert.ToInt32(reader[columName]);
+		//				hasData = true;
+		//			}
+		//		}
+		//		catch{}
+		//		try
+		//		{
+		//			columName = String.Format("IdSalida_CuentaPorCobrarFrom{0}", fkColumnName);
+		//			if (reader[columName] != DBNull.Value)
+		//			{
+		//				cuentaPorCobrar.IdSalida = Convert.ToString(reader[columName]).ToUpper();
+		//				hasData = true;
+		//			}
+		//		}
+		//		catch{}
+		//		try
+		//		{
+		//			columName = String.Format("Numero_CuentaPorCobrarFrom{0}", fkColumnName);
+		//			if (reader[columName] != DBNull.Value)
+		//			{
+		//				cuentaPorCobrar.Numero = Convert.ToInt32(reader[columName]);
+		//				hasData = true;
+		//			}
+		//		}
+		//		catch{}
+		//		try
+		//		{
+		//			columName = String.Format("FechaVencimiento_CuentaPorCobrarFrom{0}", fkColumnName);
+		//			if (reader[columName] != DBNull.Value)
+		//			{
+		//				cuentaPorCobrar.FechaVencimiento = Convert.ToDateTime(reader[columName]);
+		//				hasData = true;
+		//			}
+		//		}
+		//		catch{}
+		//		try
+		//		{
+		//			columName = String.Format("Valor_CuentaPorCobrarFrom{0}", fkColumnName);
+		//			if (reader[columName] != DBNull.Value)
+		//			{
+		//				cuentaPorCobrar.Valor = (decimal) reader[columName];
+		//				hasData = true;
+		//			}
+		//		}
+		//		catch{}
+		//		try
+		//		{
+		//			columName = String.Format("Saldo_CuentaPorCobrarFrom{0}", fkColumnName);
+		//			if (reader[columName] != DBNull.Value)
+		//			{
+		//				cuentaPorCobrar.Saldo = (decimal) reader[columName];
+		//				hasData = true;
+		//			}
+		//		}
+		//		catch{}
+		//		try
+		//		{
+		//			columName = String.Format("IpIngreso_CuentaPorCobrarFrom{0}", fkColumnName);
+		//			if (reader[columName] != DBNull.Value)
+		//			{
+		//				cuentaPorCobrar.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
+		//				hasData = true;
+		//			}
+		//		}
+		//		catch{}
+		//		try
+		//		{
+		//			columName = String.Format("UsuarioIngreso_CuentaPorCobrarFrom{0}", fkColumnName);
+		//			if (reader[columName] != DBNull.Value)
+		//			{
+		//				cuentaPorCobrar.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
+		//				hasData = true;
+		//			}
+		//		}
+		//		catch{}
+		//		try
+		//		{
+		//			columName = String.Format("FechaIngreso_CuentaPorCobrarFrom{0}", fkColumnName);
+		//			if (reader[columName] != DBNull.Value)
+		//			{
+		//				cuentaPorCobrar.FechaIngreso = Convert.ToDateTime(reader[columName]);
+		//				hasData = true;
+		//			}
+		//		}
+		//		catch{}
+		//		try
+		//		{
+		//			columName = String.Format("IpModificacion_CuentaPorCobrarFrom{0}", fkColumnName);
+		//			if (reader[columName] != DBNull.Value)
+		//			{
+		//				cuentaPorCobrar.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
+		//				hasData = true;
+		//			}
+		//		}
+		//		catch{}
+		//		try
+		//		{
+		//			columName = String.Format("UsuarioModificacion_CuentaPorCobrarFrom{0}", fkColumnName);
+		//			if (reader[columName] != DBNull.Value)
+		//			{
+		//				cuentaPorCobrar.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
+		//				hasData = true;
+		//			}
+		//		}
+		//		catch{}
+		//		try
+		//		{
+		//			columName = String.Format("FechaModificacion_CuentaPorCobrarFrom{0}", fkColumnName);
+		//			if (reader[columName] != DBNull.Value)
+		//			{
+		//				cuentaPorCobrar.FechaModificacion = Convert.ToDateTime(reader[columName]);
+		//				hasData = true;
+		//			}
+		//		}
+		//		catch{}
+		//		try
+		//		{
+		//			columName = String.Format("IdEstado_CuentaPorCobrarFrom{0}", fkColumnName);
+		//			if (reader[columName] != DBNull.Value)
+		//			{
+		//				cuentaPorCobrar.IdEstado = Convert.ToInt16(reader[columName]);
+		//				hasData = true;
+		//			}
+		//		}
+		//		catch{}
+
+
+		//              #endregion
+
+		//              cuentaPorCobrar.SetLoadedState();
+		//              if(hasData)
+		//              {
+		//              	return cuentaPorCobrar;
+		//              }
+		//              else return null;
+		//          }
+		//          catch (Exception exc)
+		//          {
+		//              return null;
+		//          }
+		//          finally
+		//          {
+
+		//          }
+		//      }
 
 		#endregion
 
 
-
-
-		#region << Mappers >>
-
-		public static CuentaPorCobrarEntity ConvertToCuentaPorCobrarEntity (SqlDataReader reader,string fkColumnName)
-        {
-            CuentaPorCobrarEntity cuentaPorCobrar = new CuentaPorCobrarEntity();
-            
-            try
-            {
-                bool hasData=false;
-                string columName;
-                
-                #region << Load the BusinessEntity Object >>
-                
-				try
-				{
-					columName = String.Format("Id_CuentaPorCobrarFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cuentaPorCobrar.Id = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdSalida_CuentaPorCobrarFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cuentaPorCobrar.IdSalida = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Numero_CuentaPorCobrarFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cuentaPorCobrar.Numero = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaVencimiento_CuentaPorCobrarFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cuentaPorCobrar.FechaVencimiento = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Valor_CuentaPorCobrarFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cuentaPorCobrar.Valor = (decimal) reader[columName];
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Saldo_CuentaPorCobrarFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cuentaPorCobrar.Saldo = (decimal) reader[columName];
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpIngreso_CuentaPorCobrarFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cuentaPorCobrar.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioIngreso_CuentaPorCobrarFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cuentaPorCobrar.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaIngreso_CuentaPorCobrarFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cuentaPorCobrar.FechaIngreso = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpModificacion_CuentaPorCobrarFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cuentaPorCobrar.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioModificacion_CuentaPorCobrarFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cuentaPorCobrar.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaModificacion_CuentaPorCobrarFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cuentaPorCobrar.FechaModificacion = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdEstado_CuentaPorCobrarFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cuentaPorCobrar.IdEstado = Convert.ToInt16(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-
-                
-                #endregion
-                
-                cuentaPorCobrar.SetLoadedState();
-                if(hasData)
-                {
-                	return cuentaPorCobrar;
-                }
-                else return null;
-            }
-            catch (Exception exc)
-            {
-                return null;
-            }
-            finally
-            {
-                
-            }
-        }
-        
-        #endregion
-        
-   
-    }
+	}
 }
 
 

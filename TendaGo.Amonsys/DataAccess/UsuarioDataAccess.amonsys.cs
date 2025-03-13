@@ -26,587 +26,587 @@ namespace ER.DA
     {
     
    
-        #region << Default Methods >>
+   //     #region << Default Methods >>
 
-        /// <summary>
-        /// Create a new entity type of Usuario
-        /// </summary>
-        public static UsuarioEntity Insert(UsuarioEntity usuario, SqlConnection connection, SqlTransaction transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText =  "Usuario_Insert";
+   //     /// <summary>
+   //     /// Create a new entity type of Usuario
+   //     /// </summary>
+   //     public static UsuarioEntity Insert(UsuarioEntity usuario, SqlConnection connection, SqlTransaction transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText =  "Usuario_Insert";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
                  
-				mCommand.Parameters.AddWithValue("@IdEmpresa", usuario.IdEmpresa);
-				mCommand.Parameters.AddWithValue("@IdPerifl", usuario.IdPerifl);
-				mCommand.Parameters.AddWithValue("@Nombres", usuario.Nombres.ToUpper());
-				mCommand.Parameters.AddWithValue("@Identificacion", usuario.Identificacion.ToUpper());
-				mCommand.Parameters.AddWithValue("@Sexo", usuario.Sexo);
-				if(!String.IsNullOrEmpty(usuario.Direccion))
-				{
-					mCommand.Parameters.AddWithValue("@Direccion", usuario.Direccion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@Direccion",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@IdEmpresa", usuario.IdEmpresa);
+			//	mCommand.Parameters.AddWithValue("@IdPerifl", usuario.IdPerifl);
+			//	mCommand.Parameters.AddWithValue("@Nombres", usuario.Nombres.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@Identificacion", usuario.Identificacion.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@Sexo", usuario.Sexo);
+			//	if(!String.IsNullOrEmpty(usuario.Direccion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Direccion", usuario.Direccion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Direccion",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@Correo", usuario.Correo.ToUpper());
-				if(!String.IsNullOrEmpty(usuario.Contraseña))
-				{
-					mCommand.Parameters.AddWithValue("@Contraseña", usuario.Contraseña.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@Contraseña",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@Correo", usuario.Correo.ToUpper());
+			//	if(!String.IsNullOrEmpty(usuario.Contraseña))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Contraseña", usuario.Contraseña.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Contraseña",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(usuario.Telefono))
-				{
-					mCommand.Parameters.AddWithValue("@Telefono", usuario.Telefono.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@Telefono",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(usuario.Telefono))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Telefono", usuario.Telefono.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Telefono",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@Foto", usuario.Foto);
-				mCommand.Parameters.AddWithValue("@IpIngreso", usuario.IpIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", usuario.UsuarioIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@FechaIngreso", usuario.FechaIngreso);
-				if(!String.IsNullOrEmpty(usuario.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", usuario.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@Foto", usuario.Foto);
+			//	mCommand.Parameters.AddWithValue("@IpIngreso", usuario.IpIngreso.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", usuario.UsuarioIngreso.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@FechaIngreso", usuario.FechaIngreso);
+			//	if(!String.IsNullOrEmpty(usuario.IpModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion", usuario.IpModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(usuario.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", usuario.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(usuario.UsuarioModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", usuario.UsuarioModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+			//	}
 
-				if(usuario.FechaModificacion != null && usuario.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", usuario.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
-				}
+			//	if(usuario.FechaModificacion != null && usuario.FechaModificacion != DateTime.MinValue)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion", usuario.FechaModificacion);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IdEstado", usuario.IdEstado);
+			//	mCommand.Parameters.AddWithValue("@IdEstado", usuario.IdEstado);
 
-				// Add the primary keys columns
-				mCommand.Parameters.Add("@InicioSesion", SqlDbType.VarChar, 50);
-				mCommand.Parameters["@InicioSesion"].Direction = ParameterDirection.Output;
+			//	// Add the primary keys columns
+			//	mCommand.Parameters.Add("@InicioSesion", SqlDbType.VarChar, 50);
+			//	mCommand.Parameters["@InicioSesion"].Direction = ParameterDirection.Output;
 
 
-                #endregion
+   //             #endregion
                 
-                // Insert Usuario
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Insert Usuario
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
-				usuario.InicioSesion = Convert.ToString(mCommand.Parameters["@InicioSesion"].Value);
+			//	usuario.InicioSesion = Convert.ToString(mCommand.Parameters["@InicioSesion"].Value);
 
 
-                return usuario;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //             return usuario;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
 
-        /// <summary>
-        /// Update a entity
-        /// </summary>
-        public static void Update(UsuarioEntity usuario, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "Usuario_Update";
+   //     /// <summary>
+   //     /// Update a entity
+   //     /// </summary>
+   //     public static void Update(UsuarioEntity usuario, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;;
+   //             mCommand.CommandText = "Usuario_Update";
 
-                 #region << Add the params >>
+   //              #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@InicioSesion", usuario.InicioSesion);
-				mCommand.Parameters.AddWithValue("@IdEmpresa", usuario.IdEmpresa);
-				mCommand.Parameters.AddWithValue("@IdPerifl", usuario.IdPerifl);
-				mCommand.Parameters.AddWithValue("@Nombres", usuario.Nombres);
-				mCommand.Parameters.AddWithValue("@Identificacion", usuario.Identificacion);
-				mCommand.Parameters.AddWithValue("@Sexo", usuario.Sexo);
-				if(!String.IsNullOrEmpty(usuario.Direccion))
-				{
-					mCommand.Parameters.AddWithValue("@Direccion", usuario.Direccion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@Direccion",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@InicioSesion", usuario.InicioSesion);
+			//	mCommand.Parameters.AddWithValue("@IdEmpresa", usuario.IdEmpresa);
+			//	mCommand.Parameters.AddWithValue("@IdPerifl", usuario.IdPerifl);
+			//	mCommand.Parameters.AddWithValue("@Nombres", usuario.Nombres);
+			//	mCommand.Parameters.AddWithValue("@Identificacion", usuario.Identificacion);
+			//	mCommand.Parameters.AddWithValue("@Sexo", usuario.Sexo);
+			//	if(!String.IsNullOrEmpty(usuario.Direccion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Direccion", usuario.Direccion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Direccion",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@Correo", usuario.Correo);
-				if(!String.IsNullOrEmpty(usuario.Contraseña))
-				{
-					mCommand.Parameters.AddWithValue("@Contraseña", usuario.Contraseña.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@Contraseña",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@Correo", usuario.Correo);
+			//	if(!String.IsNullOrEmpty(usuario.Contraseña))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Contraseña", usuario.Contraseña.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Contraseña",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(usuario.Telefono))
-				{
-					mCommand.Parameters.AddWithValue("@Telefono", usuario.Telefono.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@Telefono",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(usuario.Telefono))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Telefono", usuario.Telefono.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Telefono",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@Foto", usuario.Foto);
-				mCommand.Parameters.AddWithValue("@IpIngreso", usuario.IpIngreso);
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", usuario.UsuarioIngreso);
-				mCommand.Parameters.AddWithValue("@FechaIngreso", usuario.FechaIngreso);
-				if(!String.IsNullOrEmpty(usuario.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", usuario.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@Foto", usuario.Foto);
+			//	mCommand.Parameters.AddWithValue("@IpIngreso", usuario.IpIngreso);
+			//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", usuario.UsuarioIngreso);
+			//	mCommand.Parameters.AddWithValue("@FechaIngreso", usuario.FechaIngreso);
+			//	if(!String.IsNullOrEmpty(usuario.IpModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion", usuario.IpModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(usuario.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", usuario.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(usuario.UsuarioModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", usuario.UsuarioModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+			//	}
 
-				if(usuario.FechaModificacion != null && usuario.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", usuario.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
-				}
+			//	if(usuario.FechaModificacion != null && usuario.FechaModificacion != DateTime.MinValue)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion", usuario.FechaModificacion);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IdEstado", usuario.IdEstado);
+			//	mCommand.Parameters.AddWithValue("@IdEstado", usuario.IdEstado);
                 
    
-                #endregion
+   //             #endregion
                 
-                // Update usuario
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Update usuario
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
 
-         /// <summary>
-        /// Delete a entity
-        /// </summary>
-        public static void Delete(UsuarioEntity usuario, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "Usuario_Delete";
-				mCommand.Parameters.AddWithValue("@InicioSesion", usuario.InicioSesion.ToUpper());
-				mCommand.Parameters.AddWithValue("@FechaModificacion", usuario.FechaModificacion);
-				mCommand.Parameters.AddWithValue("@UsuarioModificacion", usuario.UsuarioModificacion.ToUpper());
-				mCommand.Parameters.AddWithValue("@IpModificacion", usuario.IpModificacion.ToUpper());
+   //      /// <summary>
+   //     /// Delete a entity
+   //     /// </summary>
+   //     public static void Delete(UsuarioEntity usuario, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;;
+   //             mCommand.CommandText = "Usuario_Delete";
+			//	mCommand.Parameters.AddWithValue("@InicioSesion", usuario.InicioSesion.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@FechaModificacion", usuario.FechaModificacion);
+			//	mCommand.Parameters.AddWithValue("@UsuarioModificacion", usuario.UsuarioModificacion.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@IpModificacion", usuario.IpModificacion.ToUpper());
 
                 
-                // Update usuario
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Update usuario
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
         
          
          
-         /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static UsuarioEntity LoadByPK(string InicioSesion, SqlConnection connection, SqlTransaction  transaction)
-        {
-        	return LoadByPK(InicioSesion,connection,transaction,1);
-        }
+   //      /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static UsuarioEntity LoadByPK(string InicioSesion, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //     	return LoadByPK(InicioSesion,connection,transaction,1);
+   //     }
         
-        /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static UsuarioEntity LoadByPK(string InicioSesion, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
-        {
-            UsuarioEntity usuario = new UsuarioEntity();
+   //     /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static UsuarioEntity LoadByPK(string InicioSesion, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
+   //     {
+   //         UsuarioEntity usuario = new UsuarioEntity();
             
-			usuario.InicioSesion = InicioSesion.ToUpper();
+			//usuario.InicioSesion = InicioSesion.ToUpper();
             
             
-            SqlCommand mCommand = new SqlCommand();
-            SqlDataReader reader = null;
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText = "Usuario_LoadByPK";
+   //         SqlCommand mCommand = new SqlCommand();
+   //         SqlDataReader reader = null;
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText = "Usuario_LoadByPK";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@InicioSesion", usuario.InicioSesion.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@InicioSesion", usuario.InicioSesion.ToUpper());
                 
  
-                #endregion 
+   //             #endregion 
                 
-                if (connection.State != ConnectionState.Open) connection.Open();
+   //             if (connection.State != ConnectionState.Open) connection.Open();
 
-                reader = mCommand.ExecuteReader();
+   //             reader = mCommand.ExecuteReader();
 
-                if(!reader.HasRows) return null;
+   //             if(!reader.HasRows) return null;
                 
-	            while (reader.Read())
-	            {
-					#region << Deep Load >>
-                    if (deepLoadLevel == 1)
-		     		{
-						usuario.IdEmpresaAsEmpresa = EmpresaDataAccess.ConvertToEmpresaEntity(reader, "IdEmpresa");
-						usuario.IdPeriflAsPerfil = PerfilDataAccess.ConvertToPerfilEntity(reader, "IdPerifl");
+	  //          while (reader.Read())
+	  //          {
+			//		#region << Deep Load >>
+   //                 if (deepLoadLevel == 1)
+		 //    		{
+			//			usuario.IdEmpresaAsEmpresa = EmpresaDataAccess.ConvertToEmpresaEntity(reader, "IdEmpresa");
+			//			usuario.IdPeriflAsPerfil = PerfilDataAccess.ConvertToPerfilEntity(reader, "IdPerifl");
 
-                    }
-	                #endregion
+   //                 }
+	  //              #endregion
 	                
-	                #region << Load the BusinessEntity Object >>
+	  //              #region << Load the BusinessEntity Object >>
 					
-					usuario.InicioSesion = Convert.ToString(reader["InicioSesion"]);
-					usuario.IdEmpresa = Convert.ToInt32(reader["IdEmpresa"]);
-					usuario.IdPerifl = Convert.ToInt16(reader["IdPerifl"]);
-					usuario.Nombres = Convert.ToString(reader["Nombres"]);
-					usuario.Identificacion = Convert.ToString(reader["Identificacion"]);
-                    usuario.Token = Convert.ToString(reader["Token"]);
-                    if (reader["Sexo"] != DBNull.Value)
-					{
-						usuario.Sexo = Convert.ToBoolean(reader["Sexo"]);
-					}
-					if (reader["Direccion"] != DBNull.Value)
-					{
-						usuario.Direccion = Convert.ToString(reader["Direccion"]).ToUpper();
-					}
-					usuario.Correo = Convert.ToString(reader["Correo"]);
-					if (reader["Contraseña"] != DBNull.Value)
-					{
-						usuario.Contraseña = Convert.ToString(reader["Contraseña"]);
-					}
-					if (reader["Telefono"] != DBNull.Value)
-					{
-						usuario.Telefono = Convert.ToString(reader["Telefono"]).ToUpper();
-					}
-					if (reader["Foto"] != DBNull.Value)
-					{
-						usuario.Foto = (byte[]) reader["Foto"];
-					}
-					usuario.IpIngreso = Convert.ToString(reader["IpIngreso"]);
-					usuario.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
-					usuario.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
-					if (reader["IpModificacion"] != DBNull.Value)
-					{
-						usuario.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
-					}
-					if (reader["UsuarioModificacion"] != DBNull.Value)
-					{
-						usuario.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
-					}
-					if (reader["FechaModificacion"] != DBNull.Value)
-					{
-						usuario.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
-					}
-					usuario.IdEstado = Convert.ToInt16(reader["IdEstado"]);
+			//		usuario.InicioSesion = Convert.ToString(reader["InicioSesion"]);
+			//		usuario.IdEmpresa = Convert.ToInt32(reader["IdEmpresa"]);
+			//		usuario.IdPerifl = Convert.ToInt16(reader["IdPerifl"]);
+			//		usuario.Nombres = Convert.ToString(reader["Nombres"]);
+			//		usuario.Identificacion = Convert.ToString(reader["Identificacion"]);
+   //                 usuario.Token = Convert.ToString(reader["Token"]);
+   //                 if (reader["Sexo"] != DBNull.Value)
+			//		{
+			//			usuario.Sexo = Convert.ToBoolean(reader["Sexo"]);
+			//		}
+			//		if (reader["Direccion"] != DBNull.Value)
+			//		{
+			//			usuario.Direccion = Convert.ToString(reader["Direccion"]).ToUpper();
+			//		}
+			//		usuario.Correo = Convert.ToString(reader["Correo"]);
+			//		if (reader["Contraseña"] != DBNull.Value)
+			//		{
+			//			usuario.Contraseña = Convert.ToString(reader["Contraseña"]);
+			//		}
+			//		if (reader["Telefono"] != DBNull.Value)
+			//		{
+			//			usuario.Telefono = Convert.ToString(reader["Telefono"]).ToUpper();
+			//		}
+			//		if (reader["Foto"] != DBNull.Value)
+			//		{
+			//			usuario.Foto = (byte[]) reader["Foto"];
+			//		}
+			//		usuario.IpIngreso = Convert.ToString(reader["IpIngreso"]);
+			//		usuario.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
+			//		usuario.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
+			//		if (reader["IpModificacion"] != DBNull.Value)
+			//		{
+			//			usuario.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
+			//		}
+			//		if (reader["UsuarioModificacion"] != DBNull.Value)
+			//		{
+			//			usuario.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
+			//		}
+			//		if (reader["FechaModificacion"] != DBNull.Value)
+			//		{
+			//			usuario.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
+			//		}
+			//		usuario.IdEstado = Convert.ToInt16(reader["IdEstado"]);
 
-	                #endregion
-	            }
+	  //              #endregion
+	  //          }
 
-                usuario.SetLoadedState();
-                return usuario;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (reader != null) reader.Close();
-                mCommand.Dispose();
-            }
-        }
+   //             usuario.SetLoadedState();
+   //             return usuario;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             if (reader != null) reader.Close();
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
-        #endregion
-        
-        
+   //     #endregion
         
         
-        #region << Mappers >>
         
-        public static UsuarioEntity ConvertToUsuarioEntity (SqlDataReader reader,string fkColumnName)
-        {
-            UsuarioEntity usuario = new UsuarioEntity();
+        
+   //     #region << Mappers >>
+        
+   //     public static UsuarioEntity ConvertToUsuarioEntity (SqlDataReader reader,string fkColumnName)
+   //     {
+   //         UsuarioEntity usuario = new UsuarioEntity();
             
-            try
-            {
-                bool hasData=false;
-                string columName;
+   //         try
+   //         {
+   //             bool hasData=false;
+   //             string columName;
                 
-                #region << Load the BusinessEntity Object >>
+   //             #region << Load the BusinessEntity Object >>
                 
-				try
-				{
-					columName = String.Format("InicioSesion_UsuarioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						usuario.InicioSesion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdEmpresa_UsuarioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						usuario.IdEmpresa = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdPerifl_UsuarioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						usuario.IdPerifl = Convert.ToInt16(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Nombres_UsuarioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						usuario.Nombres = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Identificacion_UsuarioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						usuario.Identificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Sexo_UsuarioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						usuario.Sexo = Convert.ToBoolean(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Direccion_UsuarioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						usuario.Direccion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Correo_UsuarioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						usuario.Correo = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Contraseña_UsuarioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						usuario.Contraseña = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Telefono_UsuarioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						usuario.Telefono = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Foto_UsuarioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						usuario.Foto = (byte[]) reader[columName];
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpIngreso_UsuarioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						usuario.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioIngreso_UsuarioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						usuario.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaIngreso_UsuarioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						usuario.FechaIngreso = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpModificacion_UsuarioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						usuario.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioModificacion_UsuarioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						usuario.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaModificacion_UsuarioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						usuario.FechaModificacion = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdEstado_UsuarioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						usuario.IdEstado = Convert.ToInt16(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
+			//	try
+			//	{
+			//		columName = String.Format("InicioSesion_UsuarioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			usuario.InicioSesion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdEmpresa_UsuarioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			usuario.IdEmpresa = Convert.ToInt32(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdPerifl_UsuarioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			usuario.IdPerifl = Convert.ToInt16(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Nombres_UsuarioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			usuario.Nombres = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Identificacion_UsuarioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			usuario.Identificacion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Sexo_UsuarioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			usuario.Sexo = Convert.ToBoolean(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Direccion_UsuarioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			usuario.Direccion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Correo_UsuarioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			usuario.Correo = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Contraseña_UsuarioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			usuario.Contraseña = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Telefono_UsuarioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			usuario.Telefono = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Foto_UsuarioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			usuario.Foto = (byte[]) reader[columName];
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IpIngreso_UsuarioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			usuario.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("UsuarioIngreso_UsuarioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			usuario.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("FechaIngreso_UsuarioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			usuario.FechaIngreso = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IpModificacion_UsuarioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			usuario.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("UsuarioModificacion_UsuarioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			usuario.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("FechaModificacion_UsuarioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			usuario.FechaModificacion = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdEstado_UsuarioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			usuario.IdEstado = Convert.ToInt16(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
 
                 
-                #endregion
+   //             #endregion
                 
-                usuario.SetLoadedState();
-                if(hasData)
-                {
-                	return usuario;
-                }
-                else return null;
-            }
-            catch (Exception exc)
-            {
-                return null;
-            }
-            finally
-            {
+   //             usuario.SetLoadedState();
+   //             if(hasData)
+   //             {
+   //             	return usuario;
+   //             }
+   //             else return null;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             return null;
+   //         }
+   //         finally
+   //         {
                 
-            }
-        }
+   //         }
+   //     }
         
-        #endregion
+   //     #endregion
         
    
     }

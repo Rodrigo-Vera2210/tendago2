@@ -12,128 +12,128 @@ namespace ER.BA
 {
     public partial class SerieSalidaCollectionBussinesAction
     {
-        #region << Custom Stored Procedures >>
+        //#region << Custom Stored Procedures >>
 
 
-        #endregion
+        //#endregion
 
-        #region Implementation
+        //#region Implementation
 
-        public static SerieSalidaEntityCollection Save(SerieSalidaEntityCollection SerieSalidaCollection)
-        {
-            return Save(SerieSalidaCollection, null, null);
-        }
+        //public static SerieSalidaEntityCollection Save(SerieSalidaEntityCollection SerieSalidaCollection)
+        //{
+        //    return Save(SerieSalidaCollection, null, null);
+        //}
 
-        public static SerieSalidaEntityCollection Save(SerieSalidaEntityCollection SerieSalidaCollection, SqlConnection connection, SqlTransaction transaction)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+        //public static SerieSalidaEntityCollection Save(SerieSalidaEntityCollection SerieSalidaCollection, SqlConnection connection, SqlTransaction transaction)
+        //{
+        //    bool isBAParent = false;
+        //    if (connection == null)
+        //    {
+        //        isBAParent = true;
+        //        connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+        //        connection.Open();
+        //        transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+        //    }
 
-            try
-            {
+        //    try
+        //    {
 
-                foreach (SerieSalidaEntity serieSalida in SerieSalidaCollection)
-                {
-                    SerieSalidaBussinesAction.Save(serieSalida, connection, transaction);
-                }
+        //        foreach (SerieSalidaEntity serieSalida in SerieSalidaCollection)
+        //        {
+        //            SerieSalidaBussinesAction.Save(serieSalida, connection, transaction);
+        //        }
 
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Commit();
-                    SerieSalidaCollection.SetState(EntityStatesEnum.SavedSuccessfully);
-                }
+        //        if (isBAParent && transaction != null)
+        //        {
+        //            transaction.Commit();
+        //            SerieSalidaCollection.SetState(EntityStatesEnum.SavedSuccessfully);
+        //        }
 
-                return SerieSalidaCollection;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if (SerieSalidaCollection != null) SerieSalidaCollection.RollBackState();
+        //        return SerieSalidaCollection;
+        //    }
+        //    catch (Exception exc)
+        //    {
+        //        if (isBAParent && transaction != null)
+        //        {
+        //            transaction.Rollback();
+        //            if (SerieSalidaCollection != null) SerieSalidaCollection.RollBackState();
 
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+        //        }
+        //        throw exc;
+        //    }
+        //    finally
+        //    {
+        //        if (isBAParent) connection.Close();
+        //    }
+        //}
 
-        #region << Find by All >>
+        //#region << Find by All >>
 
-        public static SerieSalidaEntityCollection FindByAll(SerieSalidaFindParameterEntity findParameter)
-        {
-            return FindByAll(findParameter, null, null, 1);
-        }
+        //public static SerieSalidaEntityCollection FindByAll(SerieSalidaFindParameterEntity findParameter)
+        //{
+        //    return FindByAll(findParameter, null, null, 1);
+        //}
 
-        public static SerieSalidaEntityCollection FindByAll(SerieSalidaFindParameterEntity findParameter, int deepLoadLevel)
-        {
-            return FindByAll(findParameter, null, null, deepLoadLevel);
-        }
+        //public static SerieSalidaEntityCollection FindByAll(SerieSalidaFindParameterEntity findParameter, int deepLoadLevel)
+        //{
+        //    return FindByAll(findParameter, null, null, deepLoadLevel);
+        //}
 
-        public static SerieSalidaEntityCollection FindByAll(SerieSalidaFindParameterEntity findParameter, SqlConnection connection, SqlTransaction transaction)
-        {
-            return FindByAll(findParameter, connection, transaction, 1);
-        }
+        //public static SerieSalidaEntityCollection FindByAll(SerieSalidaFindParameterEntity findParameter, SqlConnection connection, SqlTransaction transaction)
+        //{
+        //    return FindByAll(findParameter, connection, transaction, 1);
+        //}
 
-        public static SerieSalidaEntityCollection FindByAll(SerieSalidaFindParameterEntity findParameter, SqlConnection connection, SqlTransaction transaction, int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+        //public static SerieSalidaEntityCollection FindByAll(SerieSalidaFindParameterEntity findParameter, SqlConnection connection, SqlTransaction transaction, int deepLoadLevel)
+        //{
+        //    bool isBAParent = false;
+        //    if (connection == null)
+        //    {
+        //        isBAParent = true;
+        //        connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+        //    }
 
-            SerieSalidaEntityCollection serieSalidaCollection = null;
+        //    SerieSalidaEntityCollection serieSalidaCollection = null;
 
-            try
-            {
+        //    try
+        //    {
 
-                //                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
-                //                {
-                serieSalidaCollection = SerieSalidaDataAccessCollection.FindByAll(findParameter, connection, transaction, deepLoadLevel);
+        //        //                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+        //        //                {
+        //        serieSalidaCollection = SerieSalidaDataAccessCollection.FindByAll(findParameter, connection, transaction, deepLoadLevel);
 
-                if (serieSalidaCollection != null && deepLoadLevel > 1)
-                {
-                    foreach (SerieSalidaEntity sector in serieSalidaCollection)
-                    {
+        //        if (serieSalidaCollection != null && deepLoadLevel > 1)
+        //        {
+        //            foreach (SerieSalidaEntity sector in serieSalidaCollection)
+        //            {
 
-                    }
+        //            }
 
-                }
-
-
-                serieSalidaCollection.SetState(EntityStatesEnum.Loaded);
-                //                    transactionScope.Complete();
-                //
-                //                }  //End of Transaction
-
-                return serieSalidaCollection;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
-
-        #endregion
+        //        }
 
 
-        #endregion Implementation
+        //        serieSalidaCollection.SetState(EntityStatesEnum.Loaded);
+        //        //                    transactionScope.Complete();
+        //        //
+        //        //                }  //End of Transaction
+
+        //        return serieSalidaCollection;
+        //    }
+        //    catch (Exception exc)
+        //    {
+        //        throw exc;
+        //    }
+        //    finally
+        //    {
+        //        if (isBAParent) connection.Close();
+        //    }
+        //}
+
+        //#endregion
+
+
+        //#endregion Implementation
     }
 }

@@ -35,185 +35,185 @@ namespace ER.BA
     
   
     
-        #region << Custom Stored Procedures >>
+//        #region << Custom Stored Procedures >>
         
         
-        #endregion
+//        #endregion
         
-        #region Implementation
+//        #region Implementation
         
-        public static EntradaEntityCollection Save(EntradaEntityCollection entradaCollection )
-        {
-            return Save(entradaCollection, null, null);
-        }
+//        public static EntradaEntityCollection Save(EntradaEntityCollection entradaCollection )
+//        {
+//            return Save(entradaCollection, null, null);
+//        }
         
-        public static EntradaEntityCollection Save(EntradaEntityCollection entradaCollection , SqlConnection connection, SqlTransaction transaction)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//        public static EntradaEntityCollection Save(EntradaEntityCollection entradaCollection , SqlConnection connection, SqlTransaction transaction)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-                    foreach (EntradaEntity entrada in entradaCollection)
-                    {
-                        EntradaBussinesAction.Save(entrada , connection, transaction);
-                    }
+//                    foreach (EntradaEntity entrada in entradaCollection)
+//                    {
+//                        EntradaBussinesAction.Save(entrada , connection, transaction);
+//                    }
                     
-                    if (isBAParent && transaction != null) 
-                    {
-                    	transaction.Commit();
-                    	entradaCollection.SetState(EntityStatesEnum.SavedSuccessfully);
-                    }
+//                    if (isBAParent && transaction != null) 
+//                    {
+//                    	transaction.Commit();
+//                    	entradaCollection.SetState(EntityStatesEnum.SavedSuccessfully);
+//                    }
 
-                    return entradaCollection;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( entradaCollection != null)  entradaCollection.RollBackState();
+//                    return entradaCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
+//                {
+//                    transaction.Rollback();
+//                    if ( entradaCollection != null)  entradaCollection.RollBackState();
                     
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
-        #region << Find by All >>
+//        #region << Find by All >>
         
-        public static EntradaEntityCollection FindByAll(EntradaFindParameterEntity findParameter )
-        {
-        	return FindByAll(findParameter,null,null,1);
-        }
+//        public static EntradaEntityCollection FindByAll(EntradaFindParameterEntity findParameter )
+//        {
+//        	return FindByAll(findParameter,null,null,1);
+//        }
         
-        public static EntradaEntityCollection FindByAll(EntradaFindParameterEntity findParameter ,int deepLoadLevel)
-        {
-        	return FindByAll(findParameter,null,null,deepLoadLevel);
-        }
+//        public static EntradaEntityCollection FindByAll(EntradaFindParameterEntity findParameter ,int deepLoadLevel)
+//        {
+//        	return FindByAll(findParameter,null,null,deepLoadLevel);
+//        }
         
-        public static EntradaEntityCollection FindByAll(EntradaFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction)
-        {
-        	return FindByAll(findParameter,connection,transaction,1);
-        }
+//        public static EntradaEntityCollection FindByAll(EntradaFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction)
+//        {
+//        	return FindByAll(findParameter,connection,transaction,1);
+//        }
         
-        public static EntradaEntityCollection FindByAll(EntradaFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static EntradaEntityCollection FindByAll(EntradaFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
 
-			EntradaEntityCollection entradaCollection = null; 
+//			EntradaEntityCollection entradaCollection = null; 
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
-//                {
-                   entradaCollection  = EntradaDataAccessCollection.FindByAll(findParameter , connection, transaction, deepLoadLevel);
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+//                   entradaCollection  = EntradaDataAccessCollection.FindByAll(findParameter , connection, transaction, deepLoadLevel);
                    
-				if (entradaCollection!=null && deepLoadLevel > 1)
-                {
-                	foreach (EntradaEntity entrada in entradaCollection)
-                    {
-						entrada.IdLocalAsLocalBodega = LocalBodegaBussinesAction.LoadByPK(entrada.IdLocal, connection, transaction, deepLoadLevel - 1);
-						entrada.IdProveedorAsEntidad = EntidadBussinesAction.LoadByPK(entrada.IdProveedor, connection, transaction, deepLoadLevel - 1);
+//				if (entradaCollection!=null && deepLoadLevel > 1)
+//                {
+//                	foreach (EntradaEntity entrada in entradaCollection)
+//                    {
+//						entrada.IdLocalAsLocalBodega = LocalBodegaBussinesAction.LoadByPK(entrada.IdLocal, connection, transaction, deepLoadLevel - 1);
+//						entrada.IdProveedorAsEntidad = EntidadBussinesAction.LoadByPK(entrada.IdProveedor, connection, transaction, deepLoadLevel - 1);
 
-                    }
+//                    }
 
-                }
+//                }
 
                    
-                   entradaCollection.SetState(EntityStatesEnum.Loaded);
-//                    transactionScope.Complete();
-//
-//                }  //End of Transaction
+//                   entradaCollection.SetState(EntityStatesEnum.Loaded);
+////                    transactionScope.Complete();
+////
+////                }  //End of Transaction
 
-                return entradaCollection;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                return entradaCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
-        #endregion
+//        #endregion
         
-        #region << Find by All Paged >>
+//        #region << Find by All Paged >>
         
-        public static EntradaEntityCollection FindByAllPaged(EntradaFindParameterEntity findParameter, int pageNumber, int pageSize ,string orderBy)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize,orderBy, null,null,1);
-        }
+//        public static EntradaEntityCollection FindByAllPaged(EntradaFindParameterEntity findParameter, int pageNumber, int pageSize ,string orderBy)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize,orderBy, null,null,1);
+//        }
         
-        public static EntradaEntityCollection FindByAllPaged(EntradaFindParameterEntity findParameter , int pageNumber, int pageSize,string orderBy, int deepLoadLevel)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, null,null,deepLoadLevel);
-        }
+//        public static EntradaEntityCollection FindByAllPaged(EntradaFindParameterEntity findParameter , int pageNumber, int pageSize,string orderBy, int deepLoadLevel)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, null,null,deepLoadLevel);
+//        }
         
-        public static EntradaEntityCollection FindByAllPaged(EntradaFindParameterEntity findParameter , int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, connection,transaction,1);
-        }
+//        public static EntradaEntityCollection FindByAllPaged(EntradaFindParameterEntity findParameter , int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, connection,transaction,1);
+//        }
         
-        public static EntradaEntityCollection FindByAllPaged(EntradaFindParameterEntity findParameter ,int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static EntradaEntityCollection FindByAllPaged(EntradaFindParameterEntity findParameter ,int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
 
-			EntradaEntityCollection entradaCollection = null; 
+//			EntradaEntityCollection entradaCollection = null; 
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
-//                {
-                   entradaCollection  = EntradaDataAccessCollection.FindByAllPaged(findParameter , pageNumber, pageSize, orderBy, connection, transaction, deepLoadLevel);
-                   entradaCollection.SetState(EntityStatesEnum.Loaded);
-//                    transactionScope.Complete();
-//
-//                }  //End of Transaction
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+//                   entradaCollection  = EntradaDataAccessCollection.FindByAllPaged(findParameter , pageNumber, pageSize, orderBy, connection, transaction, deepLoadLevel);
+//                   entradaCollection.SetState(EntityStatesEnum.Loaded);
+////                    transactionScope.Complete();
+////
+////                }  //End of Transaction
 
-                return entradaCollection;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                return entradaCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
-        #endregion
+//        #endregion
 
       
-        #endregion Implementation
+//        #endregion Implementation
         
           
      }

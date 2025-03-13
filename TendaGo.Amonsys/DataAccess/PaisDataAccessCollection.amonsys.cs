@@ -103,402 +103,402 @@ namespace ER.DA
         }
         */
      
-        public static PaisEntityCollection FindByAll(PaisFindParameterEntity findParameter , SqlConnection conexion, SqlTransaction  transaction)
-        {
-        	return FindByAll(findParameter,conexion,transaction,1);
-        }
+    //    public static PaisEntityCollection FindByAll(PaisFindParameterEntity findParameter , SqlConnection conexion, SqlTransaction  transaction)
+    //    {
+    //    	return FindByAll(findParameter,conexion,transaction,1);
+    //    }
         
-        public static PaisEntityCollection FindByAll(PaisFindParameterEntity findParameter , SqlConnection conexion, SqlTransaction  transaction, int deepLoadLevel)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            SqlDataReader reader = null;
-            try
-            {
-                mCommand.Connection = conexion;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                if (deepLoadLevel >= 1)
-		     	{
-                	mCommand.CommandText = "Pais_DeepFindByAll";
-                }
-                else mCommand.CommandText = "Pais_FindByAll";
+    //    public static PaisEntityCollection FindByAll(PaisFindParameterEntity findParameter , SqlConnection conexion, SqlTransaction  transaction, int deepLoadLevel)
+    //    {
+    //        SqlCommand mCommand = new SqlCommand();
+    //        SqlDataReader reader = null;
+    //        try
+    //        {
+    //            mCommand.Connection = conexion;
+    //            mCommand.CommandType = CommandType.StoredProcedure;
+    //            mCommand.Transaction = transaction;
+    //            if (deepLoadLevel >= 1)
+		  //   	{
+    //            	mCommand.CommandText = "Pais_DeepFindByAll";
+    //            }
+    //            else mCommand.CommandText = "Pais_FindByAll";
 
                 
-				if(findParameter.Id != short.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@Id", findParameter.Id);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@Id",DBNull.Value);
-				}
+				//if(findParameter.Id != short.MinValue)
+				//{
+				//	mCommand.Parameters.AddWithValue("@Id", findParameter.Id);
+				//}
+				//else
+				//{
+				//	mCommand.Parameters.AddWithValue("@Id",DBNull.Value);
+				//}
 
-				if(!String.IsNullOrEmpty(findParameter.Codigo))
-				{
-					mCommand.Parameters.AddWithValue("@Codigo", findParameter.Codigo );
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@Codigo",DBNull.Value);
-				}
+				//if(!String.IsNullOrEmpty(findParameter.Codigo))
+				//{
+				//	mCommand.Parameters.AddWithValue("@Codigo", findParameter.Codigo );
+				//}
+				//else
+				//{
+				//	mCommand.Parameters.AddWithValue("@Codigo",DBNull.Value);
+				//}
 
-				if(!String.IsNullOrEmpty(findParameter.Pais))
-				{
-					mCommand.Parameters.AddWithValue("@Pais", findParameter.Pais );
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@Pais",DBNull.Value);
-				}
+				//if(!String.IsNullOrEmpty(findParameter.Pais))
+				//{
+				//	mCommand.Parameters.AddWithValue("@Pais", findParameter.Pais );
+				//}
+				//else
+				//{
+				//	mCommand.Parameters.AddWithValue("@Pais",DBNull.Value);
+				//}
 
-				if(!String.IsNullOrEmpty(findParameter.Nacionalidad))
-				{
-					mCommand.Parameters.AddWithValue("@Nacionalidad", findParameter.Nacionalidad );
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@Nacionalidad",DBNull.Value);
-				}
+				//if(!String.IsNullOrEmpty(findParameter.Nacionalidad))
+				//{
+				//	mCommand.Parameters.AddWithValue("@Nacionalidad", findParameter.Nacionalidad );
+				//}
+				//else
+				//{
+				//	mCommand.Parameters.AddWithValue("@Nacionalidad",DBNull.Value);
+				//}
 
-				if(!String.IsNullOrEmpty(findParameter.CodigoNacionalidad))
-				{
-					mCommand.Parameters.AddWithValue("@CodigoNacionalidad", findParameter.CodigoNacionalidad );
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@CodigoNacionalidad",DBNull.Value);
-				}
+				//if(!String.IsNullOrEmpty(findParameter.CodigoNacionalidad))
+				//{
+				//	mCommand.Parameters.AddWithValue("@CodigoNacionalidad", findParameter.CodigoNacionalidad );
+				//}
+				//else
+				//{
+				//	mCommand.Parameters.AddWithValue("@CodigoNacionalidad",DBNull.Value);
+				//}
 
-				if(!String.IsNullOrEmpty(findParameter.IpIngreso))
-				{
-					mCommand.Parameters.AddWithValue("@IpIngreso", findParameter.IpIngreso );
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpIngreso",DBNull.Value);
-				}
+				//if(!String.IsNullOrEmpty(findParameter.IpIngreso))
+				//{
+				//	mCommand.Parameters.AddWithValue("@IpIngreso", findParameter.IpIngreso );
+				//}
+				//else
+				//{
+				//	mCommand.Parameters.AddWithValue("@IpIngreso",DBNull.Value);
+				//}
 
-				if(!String.IsNullOrEmpty(findParameter.UsuarioIngreso))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioIngreso", findParameter.UsuarioIngreso );
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioIngreso",DBNull.Value);
-				}
+				//if(!String.IsNullOrEmpty(findParameter.UsuarioIngreso))
+				//{
+				//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", findParameter.UsuarioIngreso );
+				//}
+				//else
+				//{
+				//	mCommand.Parameters.AddWithValue("@UsuarioIngreso",DBNull.Value);
+				//}
 
-				if(findParameter.FechaIngreso != null && findParameter.FechaIngreso != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaIngreso", findParameter.FechaIngreso);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@FechaIngreso",DBNull.Value);
-				}
+				//if(findParameter.FechaIngreso != null && findParameter.FechaIngreso != DateTime.MinValue)
+				//{
+				//	mCommand.Parameters.AddWithValue("@FechaIngreso", findParameter.FechaIngreso);
+				//}
+				//else
+				//{
+				//	mCommand.Parameters.AddWithValue("@FechaIngreso",DBNull.Value);
+				//}
 
-				if(!String.IsNullOrEmpty(findParameter.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", findParameter.IpModificacion );
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+				//if(!String.IsNullOrEmpty(findParameter.IpModificacion))
+				//{
+				//	mCommand.Parameters.AddWithValue("@IpModificacion", findParameter.IpModificacion );
+				//}
+				//else
+				//{
+				//	mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+				//}
 
-				if(!String.IsNullOrEmpty(findParameter.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", findParameter.UsuarioModificacion );
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
+				//if(!String.IsNullOrEmpty(findParameter.UsuarioModificacion))
+				//{
+				//	mCommand.Parameters.AddWithValue("@UsuarioModificacion", findParameter.UsuarioModificacion );
+				//}
+				//else
+				//{
+				//	mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+				//}
 
-				if(findParameter.FechaModificacion != null && findParameter.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", findParameter.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
-				}
+				//if(findParameter.FechaModificacion != null && findParameter.FechaModificacion != DateTime.MinValue)
+				//{
+				//	mCommand.Parameters.AddWithValue("@FechaModificacion", findParameter.FechaModificacion);
+				//}
+				//else
+				//{
+				//	mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
+				//}
 
-				if(findParameter.IdEstado != short.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@IdEstado", findParameter.IdEstado);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IdEstado",DBNull.Value);
-				}
+				//if(findParameter.IdEstado != short.MinValue)
+				//{
+				//	mCommand.Parameters.AddWithValue("@IdEstado", findParameter.IdEstado);
+				//}
+				//else
+				//{
+				//	mCommand.Parameters.AddWithValue("@IdEstado",DBNull.Value);
+				//}
 
     
                	
-                if (conexion.State != ConnectionState.Open) conexion.Open();
-                reader = mCommand.ExecuteReader();
+    //            if (conexion.State != ConnectionState.Open) conexion.Open();
+    //            reader = mCommand.ExecuteReader();
 
-                PaisEntityCollection paisEntityCollection = new PaisEntityCollection();
-                PaisEntity paisEntity;
+    //            PaisEntityCollection paisEntityCollection = new PaisEntityCollection();
+    //            PaisEntity paisEntity;
                 
 
-                while (reader.Read())
-                {
-                    paisEntity = new PaisEntity();
-					#region << Deep Load >>
-                    if (deepLoadLevel == 1)
-		     		{
+    //            while (reader.Read())
+    //            {
+    //                paisEntity = new PaisEntity();
+				//	#region << Deep Load >>
+    //                if (deepLoadLevel == 1)
+		  //   		{
 
-                    }
-	                #endregion                    
-					paisEntity.Id = Convert.ToInt16(reader["Id"]);
-					paisEntity.Codigo = Convert.ToString(reader["Codigo"]);
-					paisEntity.Pais = Convert.ToString(reader["Pais"]);
-					if (reader["Nacionalidad"] != DBNull.Value)
-					{
-						paisEntity.Nacionalidad = Convert.ToString(reader["Nacionalidad"]).ToUpper();
-					}
-					if (reader["CodigoNacionalidad"] != DBNull.Value)
-					{
-						paisEntity.CodigoNacionalidad = Convert.ToString(reader["CodigoNacionalidad"]).ToUpper();
-					}
-					paisEntity.IpIngreso = Convert.ToString(reader["IpIngreso"]);
-					paisEntity.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
-					paisEntity.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
-					if (reader["IpModificacion"] != DBNull.Value)
-					{
-						paisEntity.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
-					}
-					if (reader["UsuarioModificacion"] != DBNull.Value)
-					{
-						paisEntity.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
-					}
-					if (reader["FechaModificacion"] != DBNull.Value)
-					{
-						paisEntity.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
-					}
-					paisEntity.IdEstado = Convert.ToInt16(reader["IdEstado"]);
+    //                }
+	   //             #endregion                    
+				//	paisEntity.Id = Convert.ToInt16(reader["Id"]);
+				//	paisEntity.Codigo = Convert.ToString(reader["Codigo"]);
+				//	paisEntity.Pais = Convert.ToString(reader["Pais"]);
+				//	if (reader["Nacionalidad"] != DBNull.Value)
+				//	{
+				//		paisEntity.Nacionalidad = Convert.ToString(reader["Nacionalidad"]).ToUpper();
+				//	}
+				//	if (reader["CodigoNacionalidad"] != DBNull.Value)
+				//	{
+				//		paisEntity.CodigoNacionalidad = Convert.ToString(reader["CodigoNacionalidad"]).ToUpper();
+				//	}
+				//	paisEntity.IpIngreso = Convert.ToString(reader["IpIngreso"]);
+				//	paisEntity.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
+				//	paisEntity.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
+				//	if (reader["IpModificacion"] != DBNull.Value)
+				//	{
+				//		paisEntity.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
+				//	}
+				//	if (reader["UsuarioModificacion"] != DBNull.Value)
+				//	{
+				//		paisEntity.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
+				//	}
+				//	if (reader["FechaModificacion"] != DBNull.Value)
+				//	{
+				//		paisEntity.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
+				//	}
+				//	paisEntity.IdEstado = Convert.ToInt16(reader["IdEstado"]);
 
                     
-                    paisEntity.SetLoadedState();
-                    paisEntityCollection.Add(paisEntity);
+    //                paisEntity.SetLoadedState();
+    //                paisEntityCollection.Add(paisEntity);
                     
-                }
+    //            }
 
-                return paisEntityCollection;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (reader != null) reader.Close();
-                mCommand.Dispose();
-            }
+    //            return paisEntityCollection;
+    //        }
+    //        catch (Exception exc)
+    //        {
+    //            throw exc;
+    //        }
+    //        finally
+    //        {
+    //            if (reader != null) reader.Close();
+    //            mCommand.Dispose();
+    //        }
 
-        }
+    //    }
         
-        public static PaisEntityCollection FindByAllPaged(PaisFindParameterEntity findParameter , int pageNumber, int pageSize ,string orderBy, SqlConnection conexion, SqlTransaction  transaction )
-        {
-        	return FindByAllPaged(findParameter,pageNumber, pageSize,orderBy, conexion,transaction,1);
-        }
+    //    public static PaisEntityCollection FindByAllPaged(PaisFindParameterEntity findParameter , int pageNumber, int pageSize ,string orderBy, SqlConnection conexion, SqlTransaction  transaction )
+    //    {
+    //    	return FindByAllPaged(findParameter,pageNumber, pageSize,orderBy, conexion,transaction,1);
+    //    }
         
-        public static PaisEntityCollection FindByAllPaged(PaisFindParameterEntity findParameter , int pageNumber, int pageSize ,string orderBy, SqlConnection conexion ,SqlTransaction  transaction, int deepLoadLevel)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            SqlDataReader reader = null;
-            try
-            {
-                mCommand.Connection = conexion;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                if (deepLoadLevel >= 1)
-		     	{
-                	mCommand.CommandText = "Pais_DeepFindByAllPaged";
+    //    public static PaisEntityCollection FindByAllPaged(PaisFindParameterEntity findParameter , int pageNumber, int pageSize ,string orderBy, SqlConnection conexion ,SqlTransaction  transaction, int deepLoadLevel)
+    //    {
+    //        SqlCommand mCommand = new SqlCommand();
+    //        SqlDataReader reader = null;
+    //        try
+    //        {
+    //            mCommand.Connection = conexion;
+    //            mCommand.CommandType = CommandType.StoredProcedure;
+    //            mCommand.Transaction = transaction;
+    //            if (deepLoadLevel >= 1)
+		  //   	{
+    //            	mCommand.CommandText = "Pais_DeepFindByAllPaged";
                 	
-                }
-                else mCommand.CommandText = "Pais_FindByAllPaged";
+    //            }
+    //            else mCommand.CommandText = "Pais_FindByAllPaged";
 
                 
-				if(findParameter.Id != short.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@Id", findParameter.Id);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@Id",DBNull.Value);
-				}
+				//if(findParameter.Id != short.MinValue)
+				//{
+				//	mCommand.Parameters.AddWithValue("@Id", findParameter.Id);
+				//}
+				//else
+				//{
+				//	mCommand.Parameters.AddWithValue("@Id",DBNull.Value);
+				//}
 
-				if(!String.IsNullOrEmpty(findParameter.Codigo))
-				{
-					mCommand.Parameters.AddWithValue("@Codigo", findParameter.Codigo );
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@Codigo",DBNull.Value);
-				}
+				//if(!String.IsNullOrEmpty(findParameter.Codigo))
+				//{
+				//	mCommand.Parameters.AddWithValue("@Codigo", findParameter.Codigo );
+				//}
+				//else
+				//{
+				//	mCommand.Parameters.AddWithValue("@Codigo",DBNull.Value);
+				//}
 
-				if(!String.IsNullOrEmpty(findParameter.Pais))
-				{
-					mCommand.Parameters.AddWithValue("@Pais", findParameter.Pais );
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@Pais",DBNull.Value);
-				}
+				//if(!String.IsNullOrEmpty(findParameter.Pais))
+				//{
+				//	mCommand.Parameters.AddWithValue("@Pais", findParameter.Pais );
+				//}
+				//else
+				//{
+				//	mCommand.Parameters.AddWithValue("@Pais",DBNull.Value);
+				//}
 
-				if(!String.IsNullOrEmpty(findParameter.Nacionalidad))
-				{
-					mCommand.Parameters.AddWithValue("@Nacionalidad", findParameter.Nacionalidad );
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@Nacionalidad",DBNull.Value);
-				}
+				//if(!String.IsNullOrEmpty(findParameter.Nacionalidad))
+				//{
+				//	mCommand.Parameters.AddWithValue("@Nacionalidad", findParameter.Nacionalidad );
+				//}
+				//else
+				//{
+				//	mCommand.Parameters.AddWithValue("@Nacionalidad",DBNull.Value);
+				//}
 
-				if(!String.IsNullOrEmpty(findParameter.CodigoNacionalidad))
-				{
-					mCommand.Parameters.AddWithValue("@CodigoNacionalidad", findParameter.CodigoNacionalidad );
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@CodigoNacionalidad",DBNull.Value);
-				}
+				//if(!String.IsNullOrEmpty(findParameter.CodigoNacionalidad))
+				//{
+				//	mCommand.Parameters.AddWithValue("@CodigoNacionalidad", findParameter.CodigoNacionalidad );
+				//}
+				//else
+				//{
+				//	mCommand.Parameters.AddWithValue("@CodigoNacionalidad",DBNull.Value);
+				//}
 
-				if(!String.IsNullOrEmpty(findParameter.IpIngreso))
-				{
-					mCommand.Parameters.AddWithValue("@IpIngreso", findParameter.IpIngreso );
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpIngreso",DBNull.Value);
-				}
+				//if(!String.IsNullOrEmpty(findParameter.IpIngreso))
+				//{
+				//	mCommand.Parameters.AddWithValue("@IpIngreso", findParameter.IpIngreso );
+				//}
+				//else
+				//{
+				//	mCommand.Parameters.AddWithValue("@IpIngreso",DBNull.Value);
+				//}
 
-				if(!String.IsNullOrEmpty(findParameter.UsuarioIngreso))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioIngreso", findParameter.UsuarioIngreso );
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioIngreso",DBNull.Value);
-				}
+				//if(!String.IsNullOrEmpty(findParameter.UsuarioIngreso))
+				//{
+				//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", findParameter.UsuarioIngreso );
+				//}
+				//else
+				//{
+				//	mCommand.Parameters.AddWithValue("@UsuarioIngreso",DBNull.Value);
+				//}
 
-				if(findParameter.FechaIngreso != null && findParameter.FechaIngreso != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaIngreso", findParameter.FechaIngreso);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@FechaIngreso",DBNull.Value);
-				}
+				//if(findParameter.FechaIngreso != null && findParameter.FechaIngreso != DateTime.MinValue)
+				//{
+				//	mCommand.Parameters.AddWithValue("@FechaIngreso", findParameter.FechaIngreso);
+				//}
+				//else
+				//{
+				//	mCommand.Parameters.AddWithValue("@FechaIngreso",DBNull.Value);
+				//}
 
-				if(!String.IsNullOrEmpty(findParameter.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", findParameter.IpModificacion );
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+				//if(!String.IsNullOrEmpty(findParameter.IpModificacion))
+				//{
+				//	mCommand.Parameters.AddWithValue("@IpModificacion", findParameter.IpModificacion );
+				//}
+				//else
+				//{
+				//	mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+				//}
 
-				if(!String.IsNullOrEmpty(findParameter.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", findParameter.UsuarioModificacion );
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
+				//if(!String.IsNullOrEmpty(findParameter.UsuarioModificacion))
+				//{
+				//	mCommand.Parameters.AddWithValue("@UsuarioModificacion", findParameter.UsuarioModificacion );
+				//}
+				//else
+				//{
+				//	mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+				//}
 
-				if(findParameter.FechaModificacion != null && findParameter.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", findParameter.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
-				}
+				//if(findParameter.FechaModificacion != null && findParameter.FechaModificacion != DateTime.MinValue)
+				//{
+				//	mCommand.Parameters.AddWithValue("@FechaModificacion", findParameter.FechaModificacion);
+				//}
+				//else
+				//{
+				//	mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
+				//}
 
-				if(findParameter.IdEstado != short.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@IdEstado", findParameter.IdEstado);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IdEstado",DBNull.Value);
-				}
+				//if(findParameter.IdEstado != short.MinValue)
+				//{
+				//	mCommand.Parameters.AddWithValue("@IdEstado", findParameter.IdEstado);
+				//}
+				//else
+				//{
+				//	mCommand.Parameters.AddWithValue("@IdEstado",DBNull.Value);
+				//}
 
 
-				mCommand.Parameters.AddWithValue("@PageNumber",pageNumber);
-				mCommand.Parameters.AddWithValue("@PageSize",pageSize);
-				if (deepLoadLevel > 1)
-		     	{
-					mCommand.Parameters.AddWithValue("@OrderBy",orderBy);
-			    }
+				//mCommand.Parameters.AddWithValue("@PageNumber",pageNumber);
+				//mCommand.Parameters.AddWithValue("@PageSize",pageSize);
+				//if (deepLoadLevel > 1)
+		  //   	{
+				//	mCommand.Parameters.AddWithValue("@OrderBy",orderBy);
+			 //   }
                	
-                if (conexion.State != ConnectionState.Open) conexion.Open();
-                reader = mCommand.ExecuteReader();
+    //            if (conexion.State != ConnectionState.Open) conexion.Open();
+    //            reader = mCommand.ExecuteReader();
 
-                PaisEntityCollection paisEntityCollection = new PaisEntityCollection();
-                PaisEntity paisEntity;
+    //            PaisEntityCollection paisEntityCollection = new PaisEntityCollection();
+    //            PaisEntity paisEntity;
                 
 
-                while (reader.Read())
-                {
-                    paisEntity = new PaisEntity();
-					#region << Deep Load >>
-                    if (deepLoadLevel > 1)
-		     		{
+    //            while (reader.Read())
+    //            {
+    //                paisEntity = new PaisEntity();
+				//	#region << Deep Load >>
+    //                if (deepLoadLevel > 1)
+		  //   		{
 
-                    }
-	                #endregion                    
-					paisEntity.Id = Convert.ToInt16(reader["Id"]);
-					paisEntity.Codigo = Convert.ToString(reader["Codigo"]);
-					paisEntity.Pais = Convert.ToString(reader["Pais"]);
-					if (reader["Nacionalidad"] != DBNull.Value)
-					{
-						paisEntity.Nacionalidad = Convert.ToString(reader["Nacionalidad"]).ToUpper();
-					}
-					if (reader["CodigoNacionalidad"] != DBNull.Value)
-					{
-						paisEntity.CodigoNacionalidad = Convert.ToString(reader["CodigoNacionalidad"]).ToUpper();
-					}
-					paisEntity.IpIngreso = Convert.ToString(reader["IpIngreso"]);
-					paisEntity.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
-					paisEntity.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
-					if (reader["IpModificacion"] != DBNull.Value)
-					{
-						paisEntity.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
-					}
-					if (reader["UsuarioModificacion"] != DBNull.Value)
-					{
-						paisEntity.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
-					}
-					if (reader["FechaModificacion"] != DBNull.Value)
-					{
-						paisEntity.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
-					}
-					paisEntity.IdEstado = Convert.ToInt16(reader["IdEstado"]);
+    //                }
+	   //             #endregion                    
+				//	paisEntity.Id = Convert.ToInt16(reader["Id"]);
+				//	paisEntity.Codigo = Convert.ToString(reader["Codigo"]);
+				//	paisEntity.Pais = Convert.ToString(reader["Pais"]);
+				//	if (reader["Nacionalidad"] != DBNull.Value)
+				//	{
+				//		paisEntity.Nacionalidad = Convert.ToString(reader["Nacionalidad"]).ToUpper();
+				//	}
+				//	if (reader["CodigoNacionalidad"] != DBNull.Value)
+				//	{
+				//		paisEntity.CodigoNacionalidad = Convert.ToString(reader["CodigoNacionalidad"]).ToUpper();
+				//	}
+				//	paisEntity.IpIngreso = Convert.ToString(reader["IpIngreso"]);
+				//	paisEntity.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
+				//	paisEntity.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
+				//	if (reader["IpModificacion"] != DBNull.Value)
+				//	{
+				//		paisEntity.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
+				//	}
+				//	if (reader["UsuarioModificacion"] != DBNull.Value)
+				//	{
+				//		paisEntity.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
+				//	}
+				//	if (reader["FechaModificacion"] != DBNull.Value)
+				//	{
+				//		paisEntity.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
+				//	}
+				//	paisEntity.IdEstado = Convert.ToInt16(reader["IdEstado"]);
 
                     
-                    paisEntity.SetLoadedState();
-                    paisEntityCollection.Add(paisEntity);
+    //                paisEntity.SetLoadedState();
+    //                paisEntityCollection.Add(paisEntity);
                     
-                }
+    //            }
 
-                return paisEntityCollection;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (reader != null) reader.Close();
-                mCommand.Dispose();
-            }
+    //            return paisEntityCollection;
+    //        }
+    //        catch (Exception exc)
+    //        {
+    //            throw exc;
+    //        }
+    //        finally
+    //        {
+    //            if (reader != null) reader.Close();
+    //            mCommand.Dispose();
+    //        }
 
-        }
+    //    }
         
           
     }

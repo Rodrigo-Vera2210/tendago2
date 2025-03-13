@@ -26,417 +26,417 @@ namespace ER.DA
     {
     
    
-        #region << Default Methods >>
+   //     #region << Default Methods >>
 
-        /// <summary>
-        /// Create a new entity type of Division
-        /// </summary>
-        public static DivisionEntity Insert(DivisionEntity division, SqlConnection connection, SqlTransaction transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText =  "Division_Insert";
+   //     /// <summary>
+   //     /// Create a new entity type of Division
+   //     /// </summary>
+   //     public static DivisionEntity Insert(DivisionEntity division, SqlConnection connection, SqlTransaction transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText =  "Division_Insert";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
                  
-				mCommand.Parameters.AddWithValue("@IdEmpresa", division.IdEmpresa);
-				mCommand.Parameters.AddWithValue("@Division", division.Division.ToUpper());
-				mCommand.Parameters.AddWithValue("@IpIngreso", division.IpIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", division.UsuarioIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@FechaIngreso", division.FechaIngreso);
-				if(!String.IsNullOrEmpty(division.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", division.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@IdEmpresa", division.IdEmpresa);
+			//	mCommand.Parameters.AddWithValue("@Division", division.Division.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@IpIngreso", division.IpIngreso.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", division.UsuarioIngreso.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@FechaIngreso", division.FechaIngreso);
+			//	if(!String.IsNullOrEmpty(division.IpModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion", division.IpModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(division.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", division.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(division.UsuarioModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", division.UsuarioModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+			//	}
 
-				if(division.FechaModificacion != null && division.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", division.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
-				}
+			//	if(division.FechaModificacion != null && division.FechaModificacion != DateTime.MinValue)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion", division.FechaModificacion);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IdEstado", division.IdEstado);
+			//	mCommand.Parameters.AddWithValue("@IdEstado", division.IdEstado);
 
-				// Add the primary keys columns
-				mCommand.Parameters.Add("@Id", SqlDbType.Int);
-				mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
+			//	// Add the primary keys columns
+			//	mCommand.Parameters.Add("@Id", SqlDbType.Int);
+			//	mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
 
 
-                #endregion
+   //             #endregion
                 
-                // Insert Division
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Insert Division
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
-				division.Id = Convert.ToInt32(mCommand.Parameters["@Id"].Value);
+			//	division.Id = Convert.ToInt32(mCommand.Parameters["@Id"].Value);
 
 
-                return division;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //             return division;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
 
-        /// <summary>
-        /// Update a entity
-        /// </summary>
-        public static void Update(DivisionEntity division, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "Division_Update";
+   //     /// <summary>
+   //     /// Update a entity
+   //     /// </summary>
+   //     public static void Update(DivisionEntity division, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;;
+   //             mCommand.CommandText = "Division_Update";
 
-                 #region << Add the params >>
+   //              #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@Id", division.Id);
-				mCommand.Parameters.AddWithValue("@IdEmpresa", division.IdEmpresa);
-				mCommand.Parameters.AddWithValue("@Division", division.Division);
-				mCommand.Parameters.AddWithValue("@IpIngreso", division.IpIngreso);
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", division.UsuarioIngreso);
-				mCommand.Parameters.AddWithValue("@FechaIngreso", division.FechaIngreso);
-				if(!String.IsNullOrEmpty(division.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", division.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@Id", division.Id);
+			//	mCommand.Parameters.AddWithValue("@IdEmpresa", division.IdEmpresa);
+			//	mCommand.Parameters.AddWithValue("@Division", division.Division);
+			//	mCommand.Parameters.AddWithValue("@IpIngreso", division.IpIngreso);
+			//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", division.UsuarioIngreso);
+			//	mCommand.Parameters.AddWithValue("@FechaIngreso", division.FechaIngreso);
+			//	if(!String.IsNullOrEmpty(division.IpModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion", division.IpModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(division.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", division.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(division.UsuarioModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", division.UsuarioModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+			//	}
 
-				if(division.FechaModificacion != null && division.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", division.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
-				}
+			//	if(division.FechaModificacion != null && division.FechaModificacion != DateTime.MinValue)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion", division.FechaModificacion);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IdEstado", division.IdEstado);
+			//	mCommand.Parameters.AddWithValue("@IdEstado", division.IdEstado);
                 
    
-                #endregion
+   //             #endregion
                 
-                // Update division
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Update division
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
 
-         /// <summary>
-        /// Delete a entity
-        /// </summary>
-        public static void Delete(DivisionEntity division, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "Division_Delete";
-				mCommand.Parameters.AddWithValue("@Id", division.Id);
-				mCommand.Parameters.AddWithValue("@FechaModificacion", division.FechaModificacion);
-				mCommand.Parameters.AddWithValue("@UsuarioModificacion", division.UsuarioModificacion.ToUpper());
-				mCommand.Parameters.AddWithValue("@IpModificacion", division.IpModificacion.ToUpper());
+   //      /// <summary>
+   //     /// Delete a entity
+   //     /// </summary>
+   //     public static void Delete(DivisionEntity division, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;;
+   //             mCommand.CommandText = "Division_Delete";
+			//	mCommand.Parameters.AddWithValue("@Id", division.Id);
+			//	mCommand.Parameters.AddWithValue("@FechaModificacion", division.FechaModificacion);
+			//	mCommand.Parameters.AddWithValue("@UsuarioModificacion", division.UsuarioModificacion.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@IpModificacion", division.IpModificacion.ToUpper());
 
                 
-                // Update division
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Update division
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
         
          
          
-         /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static DivisionEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction)
-        {
-        	return LoadByPK(Id,connection,transaction,1);
-        }
+   //      /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static DivisionEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //     	return LoadByPK(Id,connection,transaction,1);
+   //     }
         
-        /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static DivisionEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
-        {
-            DivisionEntity division = new DivisionEntity();
+   //     /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static DivisionEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
+   //     {
+   //         DivisionEntity division = new DivisionEntity();
             
-			division.Id = Id;
+			//division.Id = Id;
             
             
-            SqlCommand mCommand = new SqlCommand();
-            SqlDataReader reader = null;
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText = "Division_LoadByPK";
+   //         SqlCommand mCommand = new SqlCommand();
+   //         SqlDataReader reader = null;
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText = "Division_LoadByPK";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@Id", division.Id);
+			//	mCommand.Parameters.AddWithValue("@Id", division.Id);
                 
  
-                #endregion 
+   //             #endregion 
                 
-                if (connection.State != ConnectionState.Open) connection.Open();
+   //             if (connection.State != ConnectionState.Open) connection.Open();
 
-                reader = mCommand.ExecuteReader();
+   //             reader = mCommand.ExecuteReader();
 
-                if(!reader.HasRows) return null;
+   //             if(!reader.HasRows) return null;
                 
-	            while (reader.Read())
-	            {
-					#region << Deep Load >>
-                    if (deepLoadLevel == 1)
-		     		{
+	  //          while (reader.Read())
+	  //          {
+			//		#region << Deep Load >>
+   //                 if (deepLoadLevel == 1)
+		 //    		{
 
-                    }
-	                #endregion
+   //                 }
+	  //              #endregion
 	                
-	                #region << Load the BusinessEntity Object >>
+	  //              #region << Load the BusinessEntity Object >>
 					
-					division.Id = Convert.ToInt32(reader["Id"]);
-					division.IdEmpresa = Convert.ToInt32(reader["IdEmpresa"]);
-					division.Division = Convert.ToString(reader["Division"]);
-					division.IpIngreso = Convert.ToString(reader["IpIngreso"]);
-					division.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
-					division.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
-					if (reader["IpModificacion"] != DBNull.Value)
-					{
-						division.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
-					}
-					if (reader["UsuarioModificacion"] != DBNull.Value)
-					{
-						division.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
-					}
-					if (reader["FechaModificacion"] != DBNull.Value)
-					{
-						division.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
-					}
-					division.IdEstado = Convert.ToInt16(reader["IdEstado"]);
+			//		division.Id = Convert.ToInt32(reader["Id"]);
+			//		division.IdEmpresa = Convert.ToInt32(reader["IdEmpresa"]);
+			//		division.Division = Convert.ToString(reader["Division"]);
+			//		division.IpIngreso = Convert.ToString(reader["IpIngreso"]);
+			//		division.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
+			//		division.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
+			//		if (reader["IpModificacion"] != DBNull.Value)
+			//		{
+			//			division.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
+			//		}
+			//		if (reader["UsuarioModificacion"] != DBNull.Value)
+			//		{
+			//			division.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
+			//		}
+			//		if (reader["FechaModificacion"] != DBNull.Value)
+			//		{
+			//			division.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
+			//		}
+			//		division.IdEstado = Convert.ToInt16(reader["IdEstado"]);
 
-	                #endregion
-	            }
+	  //              #endregion
+	  //          }
 
-                division.SetLoadedState();
-                return division;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (reader != null) reader.Close();
-                mCommand.Dispose();
-            }
-        }
+   //             division.SetLoadedState();
+   //             return division;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             if (reader != null) reader.Close();
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
-        #endregion
-        
-        
+   //     #endregion
         
         
-        #region << Mappers >>
         
-        public static DivisionEntity ConvertToDivisionEntity (SqlDataReader reader,string fkColumnName)
-        {
-            DivisionEntity division = new DivisionEntity();
+        
+   //     #region << Mappers >>
+        
+   //     public static DivisionEntity ConvertToDivisionEntity (SqlDataReader reader,string fkColumnName)
+   //     {
+   //         DivisionEntity division = new DivisionEntity();
             
-            try
-            {
-                bool hasData=false;
-                string columName;
+   //         try
+   //         {
+   //             bool hasData=false;
+   //             string columName;
                 
-                #region << Load the BusinessEntity Object >>
+   //             #region << Load the BusinessEntity Object >>
                 
-				try
-				{
-					columName = String.Format("Id_DivisionFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						division.Id = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdEmpresa_DivisionFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						division.IdEmpresa = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Division_DivisionFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						division.Division = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpIngreso_DivisionFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						division.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioIngreso_DivisionFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						division.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaIngreso_DivisionFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						division.FechaIngreso = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpModificacion_DivisionFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						division.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioModificacion_DivisionFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						division.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaModificacion_DivisionFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						division.FechaModificacion = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdEstado_DivisionFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						division.IdEstado = Convert.ToInt16(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Id_DivisionFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			division.Id = Convert.ToInt32(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdEmpresa_DivisionFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			division.IdEmpresa = Convert.ToInt32(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Division_DivisionFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			division.Division = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IpIngreso_DivisionFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			division.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("UsuarioIngreso_DivisionFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			division.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("FechaIngreso_DivisionFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			division.FechaIngreso = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IpModificacion_DivisionFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			division.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("UsuarioModificacion_DivisionFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			division.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("FechaModificacion_DivisionFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			division.FechaModificacion = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdEstado_DivisionFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			division.IdEstado = Convert.ToInt16(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
 
                 
-                #endregion
+   //             #endregion
                 
-                division.SetLoadedState();
-                if(hasData)
-                {
-                	return division;
-                }
-                else return null;
-            }
-            catch (Exception exc)
-            {
-                return null;
-            }
-            finally
-            {
+   //             division.SetLoadedState();
+   //             if(hasData)
+   //             {
+   //             	return division;
+   //             }
+   //             else return null;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             return null;
+   //         }
+   //         finally
+   //         {
                 
-            }
-        }
+   //         }
+   //     }
         
-        #endregion
+   //     #endregion
         
    
     }

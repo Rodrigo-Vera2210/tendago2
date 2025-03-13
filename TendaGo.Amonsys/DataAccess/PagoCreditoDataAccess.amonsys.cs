@@ -26,443 +26,443 @@ namespace ER.DA
     {
     
    
-        #region << Default Methods >>
+   //     #region << Default Methods >>
 
-        /// <summary>
-        /// Create a new entity type of PagoCredito
-        /// </summary>
-        public static PagoCreditoEntity Insert(PagoCreditoEntity pagoCredito, SqlConnection connection, SqlTransaction transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText =  "PagoCredito_Insert";
+   //     /// <summary>
+   //     /// Create a new entity type of PagoCredito
+   //     /// </summary>
+   //     public static PagoCreditoEntity Insert(PagoCreditoEntity pagoCredito, SqlConnection connection, SqlTransaction transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText =  "PagoCredito_Insert";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
                  
-				mCommand.Parameters.AddWithValue("@IdEmpresa", pagoCredito.IdEmpresa);
-                mCommand.Parameters.AddWithValue("@IdProveedor", pagoCredito.IdProveedor);
-                mCommand.Parameters.AddWithValue("@Fecha", pagoCredito.Fecha);
-				mCommand.Parameters.AddWithValue("@Detalle", pagoCredito.Detalle.ToUpper());
-				mCommand.Parameters.AddWithValue("@IpIngreso", pagoCredito.IpIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", pagoCredito.UsuarioIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@FechaIngreso", pagoCredito.FechaIngreso);
-				if(!String.IsNullOrEmpty(pagoCredito.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", pagoCredito.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@IdEmpresa", pagoCredito.IdEmpresa);
+   //             mCommand.Parameters.AddWithValue("@IdProveedor", pagoCredito.IdProveedor);
+   //             mCommand.Parameters.AddWithValue("@Fecha", pagoCredito.Fecha);
+			//	mCommand.Parameters.AddWithValue("@Detalle", pagoCredito.Detalle.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@IpIngreso", pagoCredito.IpIngreso.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", pagoCredito.UsuarioIngreso.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@FechaIngreso", pagoCredito.FechaIngreso);
+			//	if(!String.IsNullOrEmpty(pagoCredito.IpModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion", pagoCredito.IpModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(pagoCredito.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", pagoCredito.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(pagoCredito.UsuarioModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", pagoCredito.UsuarioModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+			//	}
 
-				if(pagoCredito.FechaModificacion != null && pagoCredito.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", pagoCredito.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
-				}
+			//	if(pagoCredito.FechaModificacion != null && pagoCredito.FechaModificacion != DateTime.MinValue)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion", pagoCredito.FechaModificacion);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IdEstado", pagoCredito.IdEstado);
+			//	mCommand.Parameters.AddWithValue("@IdEstado", pagoCredito.IdEstado);
 
-				// Add the primary keys columns
-				mCommand.Parameters.Add("@Id", SqlDbType.VarChar,50);
-				mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
+			//	// Add the primary keys columns
+			//	mCommand.Parameters.Add("@Id", SqlDbType.VarChar,50);
+			//	mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
 
 
-                #endregion
+   //             #endregion
                 
-                // Insert PagoCredito
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Insert PagoCredito
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
-				pagoCredito.Id = Convert.ToString(mCommand.Parameters["@Id"].Value).ToUpper();
+			//	pagoCredito.Id = Convert.ToString(mCommand.Parameters["@Id"].Value).ToUpper();
 
 
-                return pagoCredito;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //             return pagoCredito;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
 
-        /// <summary>
-        /// Update a entity
-        /// </summary>
-        public static void Update(PagoCreditoEntity pagoCredito, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "PagoCredito_Update";
+   //     /// <summary>
+   //     /// Update a entity
+   //     /// </summary>
+   //     public static void Update(PagoCreditoEntity pagoCredito, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;;
+   //             mCommand.CommandText = "PagoCredito_Update";
 
-                 #region << Add the params >>
+   //              #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@Id", pagoCredito.Id);
-				mCommand.Parameters.AddWithValue("@IdEmpresa", pagoCredito.IdEmpresa);
-                mCommand.Parameters.AddWithValue("@IdProveedor", pagoCredito.IdProveedor);
-                mCommand.Parameters.AddWithValue("@Fecha", pagoCredito.Fecha);
-				mCommand.Parameters.AddWithValue("@Detalle", pagoCredito.Detalle);
-				mCommand.Parameters.AddWithValue("@IpIngreso", pagoCredito.IpIngreso);
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", pagoCredito.UsuarioIngreso);
-				mCommand.Parameters.AddWithValue("@FechaIngreso", pagoCredito.FechaIngreso);
-				if(!String.IsNullOrEmpty(pagoCredito.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", pagoCredito.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@Id", pagoCredito.Id);
+			//	mCommand.Parameters.AddWithValue("@IdEmpresa", pagoCredito.IdEmpresa);
+   //             mCommand.Parameters.AddWithValue("@IdProveedor", pagoCredito.IdProveedor);
+   //             mCommand.Parameters.AddWithValue("@Fecha", pagoCredito.Fecha);
+			//	mCommand.Parameters.AddWithValue("@Detalle", pagoCredito.Detalle);
+			//	mCommand.Parameters.AddWithValue("@IpIngreso", pagoCredito.IpIngreso);
+			//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", pagoCredito.UsuarioIngreso);
+			//	mCommand.Parameters.AddWithValue("@FechaIngreso", pagoCredito.FechaIngreso);
+			//	if(!String.IsNullOrEmpty(pagoCredito.IpModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion", pagoCredito.IpModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(pagoCredito.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", pagoCredito.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(pagoCredito.UsuarioModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", pagoCredito.UsuarioModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+			//	}
 
-				if(pagoCredito.FechaModificacion != null && pagoCredito.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", pagoCredito.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
-				}
+			//	if(pagoCredito.FechaModificacion != null && pagoCredito.FechaModificacion != DateTime.MinValue)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion", pagoCredito.FechaModificacion);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IdEstado", pagoCredito.IdEstado);
+			//	mCommand.Parameters.AddWithValue("@IdEstado", pagoCredito.IdEstado);
                 
    
-                #endregion
+   //             #endregion
                 
-                // Update pagoCredito
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Update pagoCredito
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
 
-         /// <summary>
-        /// Delete a entity
-        /// </summary>
-        public static void Delete(PagoCreditoEntity pagoCredito, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "PagoCredito_Delete";
-				mCommand.Parameters.AddWithValue("@Id", pagoCredito.Id);
-				mCommand.Parameters.AddWithValue("@FechaModificacion", pagoCredito.FechaModificacion);
-				mCommand.Parameters.AddWithValue("@UsuarioModificacion", pagoCredito.UsuarioModificacion.ToUpper());
-				mCommand.Parameters.AddWithValue("@IpModificacion", pagoCredito.IpModificacion.ToUpper());
+   //      /// <summary>
+   //     /// Delete a entity
+   //     /// </summary>
+   //     public static void Delete(PagoCreditoEntity pagoCredito, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;;
+   //             mCommand.CommandText = "PagoCredito_Delete";
+			//	mCommand.Parameters.AddWithValue("@Id", pagoCredito.Id);
+			//	mCommand.Parameters.AddWithValue("@FechaModificacion", pagoCredito.FechaModificacion);
+			//	mCommand.Parameters.AddWithValue("@UsuarioModificacion", pagoCredito.UsuarioModificacion.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@IpModificacion", pagoCredito.IpModificacion.ToUpper());
 
                 
-                // Update pagoCredito
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Update pagoCredito
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
         
          
          
-         /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static PagoCreditoEntity LoadByPK(string Id, SqlConnection connection, SqlTransaction  transaction)
-        {
-        	return LoadByPK(Id,connection,transaction,1);
-        }
+   //      /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static PagoCreditoEntity LoadByPK(string Id, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //     	return LoadByPK(Id,connection,transaction,1);
+   //     }
         
-        /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static PagoCreditoEntity LoadByPK(string Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
-        {
-            PagoCreditoEntity pagoCredito = new PagoCreditoEntity();
+   //     /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static PagoCreditoEntity LoadByPK(string Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
+   //     {
+   //         PagoCreditoEntity pagoCredito = new PagoCreditoEntity();
             
-			pagoCredito.Id = Id;
+			//pagoCredito.Id = Id;
             
             
-            SqlCommand mCommand = new SqlCommand();
-            SqlDataReader reader = null;
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText = "PagoCredito_LoadByPK";
+   //         SqlCommand mCommand = new SqlCommand();
+   //         SqlDataReader reader = null;
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText = "PagoCredito_LoadByPK";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@Id", pagoCredito.Id);
+			//	mCommand.Parameters.AddWithValue("@Id", pagoCredito.Id);
                 
  
-                #endregion 
+   //             #endregion 
                 
-                if (connection.State != ConnectionState.Open) connection.Open();
+   //             if (connection.State != ConnectionState.Open) connection.Open();
 
-                reader = mCommand.ExecuteReader();
+   //             reader = mCommand.ExecuteReader();
 
-                if(!reader.HasRows) return null;
+   //             if(!reader.HasRows) return null;
                 
-	            while (reader.Read())
-	            {
-					#region << Deep Load >>
-                    if (deepLoadLevel == 1)
-		     		{
-                        pagoCredito.IdProveedorAsEntidad = EntidadDataAccess.ConvertToEntidadEntity(reader, "IdProveedor");
-                    }
-	                #endregion
+	  //          while (reader.Read())
+	  //          {
+			//		#region << Deep Load >>
+   //                 if (deepLoadLevel == 1)
+		 //    		{
+   //                     pagoCredito.IdProveedorAsEntidad = EntidadDataAccess.ConvertToEntidadEntity(reader, "IdProveedor");
+   //                 }
+	  //              #endregion
 	                
-	                #region << Load the BusinessEntity Object >>
+	  //              #region << Load the BusinessEntity Object >>
 					
-					pagoCredito.Id = Convert.ToString(reader["Id"]).ToUpper();
-					pagoCredito.IdEmpresa = Convert.ToInt32(reader["IdEmpresa"]);
-                    pagoCredito.IdProveedor = Convert.ToInt32(reader["IdProveedor"]);
-                    pagoCredito.Fecha = Convert.ToDateTime(reader["Fecha"]);
-					pagoCredito.Detalle = Convert.ToString(reader["Detalle"]);
-					pagoCredito.IpIngreso = Convert.ToString(reader["IpIngreso"]);
-					pagoCredito.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
-					pagoCredito.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
-					if (reader["IpModificacion"] != DBNull.Value)
-					{
-						pagoCredito.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
-					}
-					if (reader["UsuarioModificacion"] != DBNull.Value)
-					{
-						pagoCredito.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
-					}
-					if (reader["FechaModificacion"] != DBNull.Value)
-					{
-						pagoCredito.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
-					}
-					pagoCredito.IdEstado = Convert.ToInt16(reader["IdEstado"]);
+			//		pagoCredito.Id = Convert.ToString(reader["Id"]).ToUpper();
+			//		pagoCredito.IdEmpresa = Convert.ToInt32(reader["IdEmpresa"]);
+   //                 pagoCredito.IdProveedor = Convert.ToInt32(reader["IdProveedor"]);
+   //                 pagoCredito.Fecha = Convert.ToDateTime(reader["Fecha"]);
+			//		pagoCredito.Detalle = Convert.ToString(reader["Detalle"]);
+			//		pagoCredito.IpIngreso = Convert.ToString(reader["IpIngreso"]);
+			//		pagoCredito.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
+			//		pagoCredito.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
+			//		if (reader["IpModificacion"] != DBNull.Value)
+			//		{
+			//			pagoCredito.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
+			//		}
+			//		if (reader["UsuarioModificacion"] != DBNull.Value)
+			//		{
+			//			pagoCredito.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
+			//		}
+			//		if (reader["FechaModificacion"] != DBNull.Value)
+			//		{
+			//			pagoCredito.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
+			//		}
+			//		pagoCredito.IdEstado = Convert.ToInt16(reader["IdEstado"]);
 
-	                #endregion
-	            }
+	  //              #endregion
+	  //          }
 
-                pagoCredito.SetLoadedState();
-                return pagoCredito;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (reader != null) reader.Close();
-                mCommand.Dispose();
-            }
-        }
+   //             pagoCredito.SetLoadedState();
+   //             return pagoCredito;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             if (reader != null) reader.Close();
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
-        #endregion
-        
-        
+   //     #endregion
         
         
-        #region << Mappers >>
         
-        public static PagoCreditoEntity ConvertToPagoCreditoEntity (SqlDataReader reader,string fkColumnName)
-        {
-            PagoCreditoEntity pagoCredito = new PagoCreditoEntity();
+        
+   //     #region << Mappers >>
+        
+   //     public static PagoCreditoEntity ConvertToPagoCreditoEntity (SqlDataReader reader,string fkColumnName)
+   //     {
+   //         PagoCreditoEntity pagoCredito = new PagoCreditoEntity();
             
-            try
-            {
-                bool hasData=false;
-                string columName;
+   //         try
+   //         {
+   //             bool hasData=false;
+   //             string columName;
                 
-                #region << Load the BusinessEntity Object >>
+   //             #region << Load the BusinessEntity Object >>
                 
-				try
-				{
-					columName = String.Format("Id_PagoCreditoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pagoCredito.Id = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdEmpresa_PagoCreditoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pagoCredito.IdEmpresa = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-                try
-                {
-                    columName = String.Format("IdProveedor_PagoCreditoFrom{0}", fkColumnName);
-                    if (reader[columName] != DBNull.Value)
-                    {
-                        pagoCredito.IdProveedor = Convert.ToInt32(reader[columName]);
-                        hasData = true;
-                    }
-                }
-                catch { }
-                try
-				{
-					columName = String.Format("Fecha_PagoCreditoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pagoCredito.Fecha = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Detalle_PagoCreditoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pagoCredito.Detalle = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpIngreso_PagoCreditoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pagoCredito.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioIngreso_PagoCreditoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pagoCredito.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaIngreso_PagoCreditoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pagoCredito.FechaIngreso = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpModificacion_PagoCreditoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pagoCredito.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioModificacion_PagoCreditoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pagoCredito.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaModificacion_PagoCreditoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pagoCredito.FechaModificacion = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdEstado_PagoCreditoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pagoCredito.IdEstado = Convert.ToInt16(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Id_PagoCreditoFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pagoCredito.Id = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdEmpresa_PagoCreditoFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pagoCredito.IdEmpresa = Convert.ToInt32(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+   //             try
+   //             {
+   //                 columName = String.Format("IdProveedor_PagoCreditoFrom{0}", fkColumnName);
+   //                 if (reader[columName] != DBNull.Value)
+   //                 {
+   //                     pagoCredito.IdProveedor = Convert.ToInt32(reader[columName]);
+   //                     hasData = true;
+   //                 }
+   //             }
+   //             catch { }
+   //             try
+			//	{
+			//		columName = String.Format("Fecha_PagoCreditoFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pagoCredito.Fecha = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Detalle_PagoCreditoFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pagoCredito.Detalle = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IpIngreso_PagoCreditoFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pagoCredito.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("UsuarioIngreso_PagoCreditoFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pagoCredito.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("FechaIngreso_PagoCreditoFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pagoCredito.FechaIngreso = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IpModificacion_PagoCreditoFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pagoCredito.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("UsuarioModificacion_PagoCreditoFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pagoCredito.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("FechaModificacion_PagoCreditoFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pagoCredito.FechaModificacion = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdEstado_PagoCreditoFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pagoCredito.IdEstado = Convert.ToInt16(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
 
                 
-                #endregion
+   //             #endregion
                 
-                pagoCredito.SetLoadedState();
-                if(hasData)
-                {
-                	return pagoCredito;
-                }
-                else return null;
-            }
-            catch (Exception exc)
-            {
-                return null;
-            }
-            finally
-            {
+   //             pagoCredito.SetLoadedState();
+   //             if(hasData)
+   //             {
+   //             	return pagoCredito;
+   //             }
+   //             else return null;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             return null;
+   //         }
+   //         finally
+   //         {
                 
-            }
-        }
+   //         }
+   //     }
         
-        #endregion
+   //     #endregion
         
    
     }

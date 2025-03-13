@@ -32,146 +32,146 @@ namespace ER.BA
     public partial class TipoUnidadBussinesAction
     {
          
-       #region Implementation
+//       #region Implementation
         
-       public static TipoUnidadEntity Save(TipoUnidadEntity tipoUnidad )
-       {   
-            return Save(tipoUnidad,null, null);
-       }
+//       public static TipoUnidadEntity Save(TipoUnidadEntity tipoUnidad )
+//       {   
+//            return Save(tipoUnidad,null, null);
+//       }
        
-       public static TipoUnidadEntity Save(TipoUnidadEntity tipoUnidad , SqlConnection connection, SqlTransaction transaction)
-       {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true; 
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//       public static TipoUnidadEntity Save(TipoUnidadEntity tipoUnidad , SqlConnection connection, SqlTransaction transaction)
+//       {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true; 
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+///*
+//					if( tipoUnidad.IdProductoAsProducto != null && tipoUnidad.IdProductoAsProducto.CanSave )
+//					{
+//						tipoUnidad.IdProducto = ProductoBussinesAction.Save(tipoUnidad.IdProductoAsProducto , connection,transaction).Id;
+//					}
+
+//					if( tipoUnidad.UnidadMedidadAsUnidadMedida != null && tipoUnidad.UnidadMedidadAsUnidadMedida.CanSave )
+//					{
+//						tipoUnidad.UnidadMedidad = UnidadMedidaBussinesAction.Save(tipoUnidad.UnidadMedidadAsUnidadMedida , connection,transaction).Id;
+//					}
+
+
+//*/
+//                    switch (tipoUnidad.CurrentState)
+//                    {
+//                        case EntityStatesEnum.Deleted:
+//                            TipoUnidadDataAccess.Delete(tipoUnidad, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.Updated:
+//                            TipoUnidadDataAccess.Update(tipoUnidad, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.New:
+//                            tipoUnidad = TipoUnidadDataAccess.Insert(tipoUnidad, connection, transaction);
+//                            break;
+//                        default:
+//                            break;
+//                    }
+                    
+                    
+
+////                } 
+               
+//               //End of Transaction
+//               if (isBAParent && transaction != null)
+//               {
+//					transaction.Commit();
+//					tipoUnidad.SetState(EntityStatesEnum.SavedSuccessfully);
+//               }
+               
+//               return tipoUnidad;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
 //                {
-/*
-					if( tipoUnidad.IdProductoAsProducto != null && tipoUnidad.IdProductoAsProducto.CanSave )
-					{
-						tipoUnidad.IdProducto = ProductoBussinesAction.Save(tipoUnidad.IdProductoAsProducto , connection,transaction).Id;
-					}
-
-					if( tipoUnidad.UnidadMedidadAsUnidadMedida != null && tipoUnidad.UnidadMedidadAsUnidadMedida.CanSave )
-					{
-						tipoUnidad.UnidadMedidad = UnidadMedidaBussinesAction.Save(tipoUnidad.UnidadMedidadAsUnidadMedida , connection,transaction).Id;
-					}
-
-
-*/
-                    switch (tipoUnidad.CurrentState)
-                    {
-                        case EntityStatesEnum.Deleted:
-                            TipoUnidadDataAccess.Delete(tipoUnidad, connection, transaction);
-                            break;
-                        case EntityStatesEnum.Updated:
-                            TipoUnidadDataAccess.Update(tipoUnidad, connection, transaction);
-                            break;
-                        case EntityStatesEnum.New:
-                            tipoUnidad = TipoUnidadDataAccess.Insert(tipoUnidad, connection, transaction);
-                            break;
-                        default:
-                            break;
-                    }
+//                    transaction.Rollback();
+//                    if ( tipoUnidad != null)  tipoUnidad.RollBackState();
                     
-                    
-
-//                } 
-               
-               //End of Transaction
-               if (isBAParent && transaction != null)
-               {
-					transaction.Commit();
-					tipoUnidad.SetState(EntityStatesEnum.SavedSuccessfully);
-               }
-               
-               return tipoUnidad;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( tipoUnidad != null)  tipoUnidad.RollBackState();
-                    
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
   
          
          
          
-        public static TipoUnidadEntity LoadByPK(int Id)
-        {
-            return LoadByPK(Id , null, null, 1);
-        }
-        public static TipoUnidadEntity LoadByPK(int Id ,int deepLoadLevel)
-        {
-            return LoadByPK(Id , null, null, deepLoadLevel);
-        }
+//        public static TipoUnidadEntity LoadByPK(int Id)
+//        {
+//            return LoadByPK(Id , null, null, 1);
+//        }
+//        public static TipoUnidadEntity LoadByPK(int Id ,int deepLoadLevel)
+//        {
+//            return LoadByPK(Id , null, null, deepLoadLevel);
+//        }
         
-        public static TipoUnidadEntity LoadByPK(int Id, SqlConnection connection,SqlTransaction  transaction)
-        {
-            return LoadByPK(Id , connection, transaction, 1);
-        }
+//        public static TipoUnidadEntity LoadByPK(int Id, SqlConnection connection,SqlTransaction  transaction)
+//        {
+//            return LoadByPK(Id , connection, transaction, 1);
+//        }
         
-        public static TipoUnidadEntity LoadByPK(int Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static TipoUnidadEntity LoadByPK(int Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
             
-            try
-            {
+//            try
+//            {
 
                 
-				TipoUnidadEntity tipoUnidad = TipoUnidadDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
-				if(tipoUnidad!=null) 
-                {
-					if (deepLoadLevel > 1)
-	                {
-							tipoUnidad.IdProductoAsProducto = ProductoBussinesAction.LoadByPK(tipoUnidad.IdProducto, connection , transaction , deepLoadLevel - 1);
-						tipoUnidad.UnidadMedidadAsUnidadMedida = UnidadMedidaBussinesAction.LoadByPK(tipoUnidad.UnidadMedidad, connection , transaction , deepLoadLevel - 1);
+//				TipoUnidadEntity tipoUnidad = TipoUnidadDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
+//				if(tipoUnidad!=null) 
+//                {
+//					if (deepLoadLevel > 1)
+//	                {
+//							tipoUnidad.IdProductoAsProducto = ProductoBussinesAction.LoadByPK(tipoUnidad.IdProducto, connection , transaction , deepLoadLevel - 1);
+//						tipoUnidad.UnidadMedidadAsUnidadMedida = UnidadMedidaBussinesAction.LoadByPK(tipoUnidad.UnidadMedidad, connection , transaction , deepLoadLevel - 1);
 
-	                }
+//	                }
 	                   
-						tipoUnidad.SetLoadedState();
-				}
+//						tipoUnidad.SetLoadedState();
+//				}
 
-				return tipoUnidad;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//				return tipoUnidad;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
          
-        #endregion Implementation
+//        #endregion Implementation
           
      }
 }

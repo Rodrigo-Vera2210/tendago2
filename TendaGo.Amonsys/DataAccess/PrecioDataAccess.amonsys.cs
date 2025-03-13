@@ -26,458 +26,458 @@ namespace ER.DA
     {
     
    
-        #region << Default Methods >>
+   //     #region << Default Methods >>
 
-        /// <summary>
-        /// Create a new entity type of Precio
-        /// </summary>
-        public static PrecioEntity Insert(PrecioEntity precio, SqlConnection connection, SqlTransaction transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText =  "Precio_Insert";
+   //     /// <summary>
+   //     /// Create a new entity type of Precio
+   //     /// </summary>
+   //     public static PrecioEntity Insert(PrecioEntity precio, SqlConnection connection, SqlTransaction transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText =  "Precio_Insert";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
                  
-				mCommand.Parameters.AddWithValue("@IdProducto", precio.IdProducto);
-				mCommand.Parameters.AddWithValue("@IdTipoUnidad", precio.IdTipoUnidad);
-				mCommand.Parameters.AddWithValue("@Precio", precio.Precio);
-				mCommand.Parameters.AddWithValue("@Moneda", precio.Moneda);
-				mCommand.Parameters.AddWithValue("@IncluyeIva", precio.IncluyeIva);
-				mCommand.Parameters.AddWithValue("@IpIngreso", precio.IpIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", precio.UsuarioIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@FechaIngreso", precio.FechaIngreso);
-				if(!String.IsNullOrEmpty(precio.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", precio.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@IdProducto", precio.IdProducto);
+			//	mCommand.Parameters.AddWithValue("@IdTipoUnidad", precio.IdTipoUnidad);
+			//	mCommand.Parameters.AddWithValue("@Precio", precio.Precio);
+			//	mCommand.Parameters.AddWithValue("@Moneda", precio.Moneda);
+			//	mCommand.Parameters.AddWithValue("@IncluyeIva", precio.IncluyeIva);
+			//	mCommand.Parameters.AddWithValue("@IpIngreso", precio.IpIngreso.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", precio.UsuarioIngreso.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@FechaIngreso", precio.FechaIngreso);
+			//	if(!String.IsNullOrEmpty(precio.IpModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion", precio.IpModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(precio.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", precio.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(precio.UsuarioModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", precio.UsuarioModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+			//	}
 
-				if(precio.FechaModificacion != null && precio.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", precio.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
-				}
+			//	if(precio.FechaModificacion != null && precio.FechaModificacion != DateTime.MinValue)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion", precio.FechaModificacion);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IdEstado", precio.IdEstado);
+			//	mCommand.Parameters.AddWithValue("@IdEstado", precio.IdEstado);
 
-				// Add the primary keys columns
-				mCommand.Parameters.Add("@Id", SqlDbType.Int);
-				mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
+			//	// Add the primary keys columns
+			//	mCommand.Parameters.Add("@Id", SqlDbType.Int);
+			//	mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
 
 
-                #endregion
+   //             #endregion
                 
-                // Insert Precio
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Insert Precio
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
-				precio.Id = Convert.ToInt32(mCommand.Parameters["@Id"].Value);
+			//	precio.Id = Convert.ToInt32(mCommand.Parameters["@Id"].Value);
 
 
-                return precio;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //             return precio;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
 
-        /// <summary>
-        /// Update a entity
-        /// </summary>
-        public static void Update(PrecioEntity precio, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "Precio_Update";
+   //     /// <summary>
+   //     /// Update a entity
+   //     /// </summary>
+   //     public static void Update(PrecioEntity precio, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;;
+   //             mCommand.CommandText = "Precio_Update";
 
-                 #region << Add the params >>
+   //              #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@Id", precio.Id);
-				mCommand.Parameters.AddWithValue("@IdProducto", precio.IdProducto);
-				mCommand.Parameters.AddWithValue("@IdTipoUnidad", precio.IdTipoUnidad);
-				mCommand.Parameters.AddWithValue("@Precio", precio.Precio);
-				mCommand.Parameters.AddWithValue("@Moneda", precio.Moneda);
-				mCommand.Parameters.AddWithValue("@IncluyeIva", precio.IncluyeIva);
-				mCommand.Parameters.AddWithValue("@IpIngreso", precio.IpIngreso);
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", precio.UsuarioIngreso);
-				mCommand.Parameters.AddWithValue("@FechaIngreso", precio.FechaIngreso);
-				if(!String.IsNullOrEmpty(precio.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", precio.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@Id", precio.Id);
+			//	mCommand.Parameters.AddWithValue("@IdProducto", precio.IdProducto);
+			//	mCommand.Parameters.AddWithValue("@IdTipoUnidad", precio.IdTipoUnidad);
+			//	mCommand.Parameters.AddWithValue("@Precio", precio.Precio);
+			//	mCommand.Parameters.AddWithValue("@Moneda", precio.Moneda);
+			//	mCommand.Parameters.AddWithValue("@IncluyeIva", precio.IncluyeIva);
+			//	mCommand.Parameters.AddWithValue("@IpIngreso", precio.IpIngreso);
+			//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", precio.UsuarioIngreso);
+			//	mCommand.Parameters.AddWithValue("@FechaIngreso", precio.FechaIngreso);
+			//	if(!String.IsNullOrEmpty(precio.IpModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion", precio.IpModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(precio.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", precio.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(precio.UsuarioModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", precio.UsuarioModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+			//	}
 
-				if(precio.FechaModificacion != null && precio.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", precio.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
-				}
+			//	if(precio.FechaModificacion != null && precio.FechaModificacion != DateTime.MinValue)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion", precio.FechaModificacion);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IdEstado", precio.IdEstado);
+			//	mCommand.Parameters.AddWithValue("@IdEstado", precio.IdEstado);
                 
    
-                #endregion
+   //             #endregion
                 
-                // Update precio
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Update precio
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
 
-         /// <summary>
-        /// Delete a entity
-        /// </summary>
-        public static void Delete(PrecioEntity precio, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "Precio_Delete";
-				mCommand.Parameters.AddWithValue("@Id", precio.Id);
-				mCommand.Parameters.AddWithValue("@FechaModificacion", precio.FechaModificacion);
-				mCommand.Parameters.AddWithValue("@UsuarioModificacion", precio.UsuarioModificacion.ToUpper());
-				mCommand.Parameters.AddWithValue("@IpModificacion", precio.IpModificacion.ToUpper());
+   //      /// <summary>
+   //     /// Delete a entity
+   //     /// </summary>
+   //     public static void Delete(PrecioEntity precio, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;;
+   //             mCommand.CommandText = "Precio_Delete";
+			//	mCommand.Parameters.AddWithValue("@Id", precio.Id);
+			//	mCommand.Parameters.AddWithValue("@FechaModificacion", precio.FechaModificacion);
+			//	mCommand.Parameters.AddWithValue("@UsuarioModificacion", precio.UsuarioModificacion.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@IpModificacion", precio.IpModificacion.ToUpper());
 
                 
-                // Update precio
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Update precio
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
         
          
          
-         /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static PrecioEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction)
-        {
-        	return LoadByPK(Id,connection,transaction,1);
-        }
+   //      /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static PrecioEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //     	return LoadByPK(Id,connection,transaction,1);
+   //     }
         
-        /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static PrecioEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
-        {
-            PrecioEntity precio = new PrecioEntity();
+   //     /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static PrecioEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
+   //     {
+   //         PrecioEntity precio = new PrecioEntity();
             
-			precio.Id = Id;
+			//precio.Id = Id;
             
             
-            SqlCommand mCommand = new SqlCommand();
-            SqlDataReader reader = null;
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText = "Precio_LoadByPK";
+   //         SqlCommand mCommand = new SqlCommand();
+   //         SqlDataReader reader = null;
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText = "Precio_LoadByPK";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@Id", precio.Id);
+			//	mCommand.Parameters.AddWithValue("@Id", precio.Id);
                 
  
-                #endregion 
+   //             #endregion 
                 
-                if (connection.State != ConnectionState.Open) connection.Open();
+   //             if (connection.State != ConnectionState.Open) connection.Open();
 
-                reader = mCommand.ExecuteReader();
+   //             reader = mCommand.ExecuteReader();
 
-                if(!reader.HasRows) return null;
+   //             if(!reader.HasRows) return null;
                 
-	            while (reader.Read())
-	            {
-					#region << Deep Load >>
-                    if (deepLoadLevel == 1)
-		     		{
-						precio.IdProductoAsProducto = ProductoDataAccess.ConvertToProductoEntity(reader, "IdProducto");
-						precio.IdTipoUnidadAsTipoUnidad = TipoUnidadDataAccess.ConvertToTipoUnidadEntity(reader, "IdTipoUnidad");
+	  //          while (reader.Read())
+	  //          {
+			//		#region << Deep Load >>
+   //                 if (deepLoadLevel == 1)
+		 //    		{
+			//			precio.IdProductoAsProducto = ProductoDataAccess.ConvertToProductoEntity(reader, "IdProducto");
+			//			precio.IdTipoUnidadAsTipoUnidad = TipoUnidadDataAccess.ConvertToTipoUnidadEntity(reader, "IdTipoUnidad");
 
-                    }
-	                #endregion
+   //                 }
+	  //              #endregion
 	                
-	                #region << Load the BusinessEntity Object >>
+	  //              #region << Load the BusinessEntity Object >>
 					
-					precio.Id = Convert.ToInt32(reader["Id"]);
-					precio.IdProducto = Convert.ToInt32(reader["IdProducto"]);
-					precio.IdTipoUnidad = Convert.ToInt32(reader["IdTipoUnidad"]);
-					precio.Precio = (decimal) reader["Precio"];
-					precio.Moneda = Convert.ToInt32(reader["Moneda"]);
-					precio.IncluyeIva = Convert.ToBoolean(reader["IncluyeIva"]);
-					precio.IpIngreso = Convert.ToString(reader["IpIngreso"]);
-					precio.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
-					precio.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
-					if (reader["IpModificacion"] != DBNull.Value)
-					{
-						precio.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
-					}
-					if (reader["UsuarioModificacion"] != DBNull.Value)
-					{
-						precio.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
-					}
-					if (reader["FechaModificacion"] != DBNull.Value)
-					{
-						precio.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
-					}
-					precio.IdEstado = Convert.ToInt16(reader["IdEstado"]);
+			//		precio.Id = Convert.ToInt32(reader["Id"]);
+			//		precio.IdProducto = Convert.ToInt32(reader["IdProducto"]);
+			//		precio.IdTipoUnidad = Convert.ToInt32(reader["IdTipoUnidad"]);
+			//		precio.Precio = (decimal) reader["Precio"];
+			//		precio.Moneda = Convert.ToInt32(reader["Moneda"]);
+			//		precio.IncluyeIva = Convert.ToBoolean(reader["IncluyeIva"]);
+			//		precio.IpIngreso = Convert.ToString(reader["IpIngreso"]);
+			//		precio.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
+			//		precio.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
+			//		if (reader["IpModificacion"] != DBNull.Value)
+			//		{
+			//			precio.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
+			//		}
+			//		if (reader["UsuarioModificacion"] != DBNull.Value)
+			//		{
+			//			precio.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
+			//		}
+			//		if (reader["FechaModificacion"] != DBNull.Value)
+			//		{
+			//			precio.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
+			//		}
+			//		precio.IdEstado = Convert.ToInt16(reader["IdEstado"]);
 
-	                #endregion
-	            }
+	  //              #endregion
+	  //          }
 
-                precio.SetLoadedState();
-                return precio;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (reader != null) reader.Close();
-                mCommand.Dispose();
-            }
-        }
+   //             precio.SetLoadedState();
+   //             return precio;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             if (reader != null) reader.Close();
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
-        #endregion
-        
-        
+   //     #endregion
         
         
-        #region << Mappers >>
         
-        public static PrecioEntity ConvertToPrecioEntity (SqlDataReader reader,string fkColumnName)
-        {
-            PrecioEntity precio = new PrecioEntity();
+        
+   //     #region << Mappers >>
+        
+   //     public static PrecioEntity ConvertToPrecioEntity (SqlDataReader reader,string fkColumnName)
+   //     {
+   //         PrecioEntity precio = new PrecioEntity();
             
-            try
-            {
-                bool hasData=false;
-                string columName;
+   //         try
+   //         {
+   //             bool hasData=false;
+   //             string columName;
                 
-                #region << Load the BusinessEntity Object >>
+   //             #region << Load the BusinessEntity Object >>
                 
-				try
-				{
-					columName = String.Format("Id_PrecioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						precio.Id = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdProducto_PrecioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						precio.IdProducto = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdTipoUnidad_PrecioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						precio.IdTipoUnidad = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Precio_PrecioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						precio.Precio = (decimal) reader[columName];
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Moneda_PrecioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						precio.Moneda = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IncluyeIva_PrecioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						precio.IncluyeIva = Convert.ToBoolean(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpIngreso_PrecioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						precio.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioIngreso_PrecioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						precio.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaIngreso_PrecioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						precio.FechaIngreso = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpModificacion_PrecioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						precio.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioModificacion_PrecioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						precio.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaModificacion_PrecioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						precio.FechaModificacion = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdEstado_PrecioFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						precio.IdEstado = Convert.ToInt16(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Id_PrecioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			precio.Id = Convert.ToInt32(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdProducto_PrecioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			precio.IdProducto = Convert.ToInt32(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdTipoUnidad_PrecioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			precio.IdTipoUnidad = Convert.ToInt32(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Precio_PrecioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			precio.Precio = (decimal) reader[columName];
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Moneda_PrecioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			precio.Moneda = Convert.ToInt32(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IncluyeIva_PrecioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			precio.IncluyeIva = Convert.ToBoolean(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IpIngreso_PrecioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			precio.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("UsuarioIngreso_PrecioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			precio.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("FechaIngreso_PrecioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			precio.FechaIngreso = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IpModificacion_PrecioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			precio.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("UsuarioModificacion_PrecioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			precio.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("FechaModificacion_PrecioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			precio.FechaModificacion = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdEstado_PrecioFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			precio.IdEstado = Convert.ToInt16(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
 
                 
-                #endregion
+   //             #endregion
                 
-                precio.SetLoadedState();
-                if(hasData)
-                {
-                	return precio;
-                }
-                else return null;
-            }
-            catch (Exception exc)
-            {
-                return null;
-            }
-            finally
-            {
+   //             precio.SetLoadedState();
+   //             if(hasData)
+   //             {
+   //             	return precio;
+   //             }
+   //             else return null;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             return null;
+   //         }
+   //         finally
+   //         {
                 
-            }
-        }
+   //         }
+   //     }
         
-        #endregion
+   //     #endregion
         
    
     }

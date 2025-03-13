@@ -32,140 +32,140 @@ namespace ER.BA
     public partial class RucBussinesAction
     {
          
-       #region Implementation
+//       #region Implementation
         
-       public static RucEntity Save(RucEntity ruc )
-       {   
-            return Save(ruc,null, null);
-       }
+//       public static RucEntity Save(RucEntity ruc )
+//       {   
+//            return Save(ruc,null, null);
+//       }
        
-       public static RucEntity Save(RucEntity ruc , SqlConnection connection, SqlTransaction transaction)
-       {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true; 
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//       public static RucEntity Save(RucEntity ruc , SqlConnection connection, SqlTransaction transaction)
+//       {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true; 
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+///*
+//					if( ruc.IdEmpresaAsEmpresa != null && ruc.IdEmpresaAsEmpresa.CanSave )
+//					{
+//						ruc.IdEmpresa = EmpresaBussinesAction.Save(ruc.IdEmpresaAsEmpresa , connection,transaction).Id;
+//					}
+
+
+//*/
+//                    switch (ruc.CurrentState)
+//                    {
+//                        case EntityStatesEnum.Deleted:
+//                            RucDataAccess.Delete(ruc, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.Updated:
+//                            RucDataAccess.Update(ruc, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.New:
+//                            ruc = RucDataAccess.Insert(ruc, connection, transaction);
+//                            break;
+//                        default:
+//                            break;
+//                    }
+                    
+                    
+
+////                } 
+               
+//               //End of Transaction
+//               if (isBAParent && transaction != null)
+//               {
+//					transaction.Commit();
+//					ruc.SetState(EntityStatesEnum.SavedSuccessfully);
+//               }
+               
+//               return ruc;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
 //                {
-/*
-					if( ruc.IdEmpresaAsEmpresa != null && ruc.IdEmpresaAsEmpresa.CanSave )
-					{
-						ruc.IdEmpresa = EmpresaBussinesAction.Save(ruc.IdEmpresaAsEmpresa , connection,transaction).Id;
-					}
-
-
-*/
-                    switch (ruc.CurrentState)
-                    {
-                        case EntityStatesEnum.Deleted:
-                            RucDataAccess.Delete(ruc, connection, transaction);
-                            break;
-                        case EntityStatesEnum.Updated:
-                            RucDataAccess.Update(ruc, connection, transaction);
-                            break;
-                        case EntityStatesEnum.New:
-                            ruc = RucDataAccess.Insert(ruc, connection, transaction);
-                            break;
-                        default:
-                            break;
-                    }
+//                    transaction.Rollback();
+//                    if ( ruc != null)  ruc.RollBackState();
                     
-                    
-
-//                } 
-               
-               //End of Transaction
-               if (isBAParent && transaction != null)
-               {
-					transaction.Commit();
-					ruc.SetState(EntityStatesEnum.SavedSuccessfully);
-               }
-               
-               return ruc;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( ruc != null)  ruc.RollBackState();
-                    
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
   
          
          
          
-        public static RucEntity LoadByPK(string Ruc)
-        {
-            return LoadByPK(Ruc , null, null, 1);
-        }
-        public static RucEntity LoadByPK(string Ruc ,int deepLoadLevel)
-        {
-            return LoadByPK(Ruc , null, null, deepLoadLevel);
-        }
+//        public static RucEntity LoadByPK(string Ruc)
+//        {
+//            return LoadByPK(Ruc , null, null, 1);
+//        }
+//        public static RucEntity LoadByPK(string Ruc ,int deepLoadLevel)
+//        {
+//            return LoadByPK(Ruc , null, null, deepLoadLevel);
+//        }
         
-        public static RucEntity LoadByPK(string Ruc, SqlConnection connection,SqlTransaction  transaction)
-        {
-            return LoadByPK(Ruc , connection, transaction, 1);
-        }
+//        public static RucEntity LoadByPK(string Ruc, SqlConnection connection,SqlTransaction  transaction)
+//        {
+//            return LoadByPK(Ruc , connection, transaction, 1);
+//        }
         
-        public static RucEntity LoadByPK(string Ruc , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static RucEntity LoadByPK(string Ruc , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
             
-            try
-            {
+//            try
+//            {
 
                 
-				RucEntity ruc = RucDataAccess.LoadByPK(Ruc , connection, transaction, deepLoadLevel);
-				if(ruc!=null) 
-                {
-					if (deepLoadLevel > 1)
-	                {
-							ruc.IdEmpresaAsEmpresa = EmpresaBussinesAction.LoadByPK(ruc.IdEmpresa, connection , transaction , deepLoadLevel - 1);
+//				RucEntity ruc = RucDataAccess.LoadByPK(Ruc , connection, transaction, deepLoadLevel);
+//				if(ruc!=null) 
+//                {
+//					if (deepLoadLevel > 1)
+//	                {
+//							ruc.IdEmpresaAsEmpresa = EmpresaBussinesAction.LoadByPK(ruc.IdEmpresa, connection , transaction , deepLoadLevel - 1);
 
-	                }
+//	                }
 	                   
-						ruc.SetLoadedState();
-				}
+//						ruc.SetLoadedState();
+//				}
 
-				return ruc;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//				return ruc;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
          
-        #endregion Implementation
+//        #endregion Implementation
           
      }
 }

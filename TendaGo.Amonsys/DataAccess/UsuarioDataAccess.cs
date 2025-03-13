@@ -23,79 +23,79 @@ namespace ER.DA
         /// <summary>
         /// Load a entity by your token
         /// </summary>
-        public static UsuarioEntity LoadByToken(string Token, SqlConnection connection, SqlTransaction transaction)
-        {
-            UsuarioEntity usuario = new UsuarioEntity();
+        //public static UsuarioEntity LoadByToken(string Token, SqlConnection connection, SqlTransaction transaction)
+        //{
+        //    UsuarioEntity usuario = new UsuarioEntity();
 
-            usuario.Token = Token;
-
-
-            SqlCommand mCommand = new SqlCommand();
-            SqlDataReader reader = null;
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText = "Custom_Usuario_LoadByToken";
-
-                #region << Add the params >>
-
-                mCommand.Parameters.AddWithValue("@Token", Token);
+        //    usuario.Token = Token;
 
 
-                #endregion
+        //    SqlCommand mCommand = new SqlCommand();
+        //    SqlDataReader reader = null;
+        //    try
+        //    {
+        //        mCommand.Connection = connection;
+        //        mCommand.CommandType = CommandType.StoredProcedure;
+        //        mCommand.Transaction = transaction;
+        //        mCommand.CommandText = "Custom_Usuario_LoadByToken";
 
-                if (connection.State != ConnectionState.Open) connection.Open();
+        //        #region << Add the params >>
 
-                reader = mCommand.ExecuteReader();
+        //        mCommand.Parameters.AddWithValue("@Token", Token);
 
-                if (!reader.HasRows) return null;
 
-                while (reader.Read())
-                {
+        //        #endregion
+
+        //        if (connection.State != ConnectionState.Open) connection.Open();
+
+        //        reader = mCommand.ExecuteReader();
+
+        //        if (!reader.HasRows) return null;
+
+        //        while (reader.Read())
+        //        {
                    
 
-                    #region << Load the BusinessEntity Object >>
+        //            #region << Load the BusinessEntity Object >>
 
-                    usuario.InicioSesion = Convert.ToString(reader["InicioSesion"]);
-                    usuario.IdEmpresa = Convert.ToInt32(reader["IdEmpresa"]);
-                    usuario.IdPerifl = Convert.ToInt16(reader["IdPerifl"]);
-                    usuario.Nombres = Convert.ToString(reader["Nombres"]);
-                    usuario.Identificacion = Convert.ToString(reader["Identificacion"]);
-                    if (reader["Sexo"] != DBNull.Value)
-                    {
-                        usuario.Sexo = Convert.ToBoolean(reader["Sexo"]);
-                    }
-                    if (reader["Direccion"] != DBNull.Value)
-                    {
-                        usuario.Direccion = Convert.ToString(reader["Direccion"]).ToUpper();
-                    }
-                    usuario.Correo = Convert.ToString(reader["Correo"]);
+        //            usuario.InicioSesion = Convert.ToString(reader["InicioSesion"]);
+        //            usuario.IdEmpresa = Convert.ToInt32(reader["IdEmpresa"]);
+        //            usuario.IdPerifl = Convert.ToInt16(reader["IdPerifl"]);
+        //            usuario.Nombres = Convert.ToString(reader["Nombres"]);
+        //            usuario.Identificacion = Convert.ToString(reader["Identificacion"]);
+        //            if (reader["Sexo"] != DBNull.Value)
+        //            {
+        //                usuario.Sexo = Convert.ToBoolean(reader["Sexo"]);
+        //            }
+        //            if (reader["Direccion"] != DBNull.Value)
+        //            {
+        //                usuario.Direccion = Convert.ToString(reader["Direccion"]).ToUpper();
+        //            }
+        //            usuario.Correo = Convert.ToString(reader["Correo"]);
                    
-                    if (reader["Telefono"] != DBNull.Value)
-                    {
-                        usuario.Telefono = Convert.ToString(reader["Telefono"]).ToUpper();
-                    }
+        //            if (reader["Telefono"] != DBNull.Value)
+        //            {
+        //                usuario.Telefono = Convert.ToString(reader["Telefono"]).ToUpper();
+        //            }
 
-                    usuario.IdEstado = Convert.ToInt16(reader["IdEstado"]);
+        //            usuario.IdEstado = Convert.ToInt16(reader["IdEstado"]);
 
-                    #endregion
-                }
+        //            #endregion
+        //        }
 
-                usuario.SetLoadedState();
-                return usuario;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (reader != null) reader.Close();
-                mCommand.Dispose();
-            }
-        }
+        //        usuario.SetLoadedState();
+        //        return usuario;
+        //    }
+        //    catch (Exception exc)
+        //    {
+        //        throw exc;
+        //    }
+        //    finally
+        //    {
+        //        if (reader != null) reader.Close();
+        //        mCommand.Dispose();
+        //    }
+        //}
 
     }
 }

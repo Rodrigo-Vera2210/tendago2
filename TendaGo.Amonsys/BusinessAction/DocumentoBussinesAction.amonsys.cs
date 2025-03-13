@@ -32,156 +32,156 @@ namespace ER.BA
     public partial class DocumentoBussinesAction
     {
          
-       #region Implementation
+    //   #region Implementation
         
-       public static DocumentoEntity Save(DocumentoEntity documento )
-       {   
-            return Save(documento,null, null);
-       }
+    //   public static DocumentoEntity Save(DocumentoEntity documento )
+    //   {   
+    //        return Save(documento,null, null);
+    //   }
        
-       public static DocumentoEntity Save(DocumentoEntity documento , SqlConnection connection, SqlTransaction transaction)
-       {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true; 
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+    //   public static DocumentoEntity Save(DocumentoEntity documento , SqlConnection connection, SqlTransaction transaction)
+    //   {
+    //        bool isBAParent = false;
+    //        if (connection == null)
+    //        {
+    //            isBAParent = true; 
+    //            connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+    //            connection.Open();
+    //            transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+    //        }
 
-            try
-            {
-
-                 
-                switch (documento.CurrentState)
-                {
-                    case EntityStatesEnum.Deleted:
-                        DocumentoDataAccess.Delete(documento, connection, transaction);
-                        break;
-                    case EntityStatesEnum.Updated:
-                        DocumentoDataAccess.Update(documento, connection, transaction);
-                        break;
-                    case EntityStatesEnum.New:
-                        documento = DocumentoDataAccess.Insert(documento, connection, transaction);
-                        break;
-                    default:
-                        break;
-                }
-
-
-                if (documento.DetalleDocumentoFromIdDocumento != null)
-                {
-                    foreach (var item in documento.DetalleDocumentoFromIdDocumento)
-                    {
-                        item.IdDocumento = documento.Id;
-                        item.IdEstado = documento.IdEstado;
-
-                        if (item.CurrentState == EntityStatesEnum.New)
-                        {
-                            item.IpIngreso = documento.IpIngreso;
-                            item.UsuarioIngreso = documento.UsuarioIngreso;
-                            item.FechaIngreso = DateTime.Now;
-                        }
-                        else
-                        {
-                            item.IpModificacion = documento.IpIngreso;
-                            item.UsuarioModificacion = documento.UsuarioIngreso;
-                            item.FechaModificacion = DateTime.Now;
-                        }
-                    }
-
-                    DetalleDocumentoCollectionBussinesAction.Save(documento.DetalleDocumentoFromIdDocumento, connection, transaction);
-                }
-
-
+    //        try
+    //        {
 
                  
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Commit();
-                    documento.SetState(EntityStatesEnum.SavedSuccessfully);
-                }
+    //            switch (documento.CurrentState)
+    //            {
+    //                case EntityStatesEnum.Deleted:
+    //                    DocumentoDataAccess.Delete(documento, connection, transaction);
+    //                    break;
+    //                case EntityStatesEnum.Updated:
+    //                    DocumentoDataAccess.Update(documento, connection, transaction);
+    //                    break;
+    //                case EntityStatesEnum.New:
+    //                    documento = DocumentoDataAccess.Insert(documento, connection, transaction);
+    //                    break;
+    //                default:
+    //                    break;
+    //            }
 
-                return documento;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if (documento != null) documento.RollBackState();
 
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+    //            if (documento.DetalleDocumentoFromIdDocumento != null)
+    //            {
+    //                foreach (var item in documento.DetalleDocumentoFromIdDocumento)
+    //                {
+    //                    item.IdDocumento = documento.Id;
+    //                    item.IdEstado = documento.IdEstado;
+
+    //                    if (item.CurrentState == EntityStatesEnum.New)
+    //                    {
+    //                        item.IpIngreso = documento.IpIngreso;
+    //                        item.UsuarioIngreso = documento.UsuarioIngreso;
+    //                        item.FechaIngreso = DateTime.Now;
+    //                    }
+    //                    else
+    //                    {
+    //                        item.IpModificacion = documento.IpIngreso;
+    //                        item.UsuarioModificacion = documento.UsuarioIngreso;
+    //                        item.FechaModificacion = DateTime.Now;
+    //                    }
+    //                }
+
+    //                DetalleDocumentoCollectionBussinesAction.Save(documento.DetalleDocumentoFromIdDocumento, connection, transaction);
+    //            }
+
+
+
+                 
+    //            if (isBAParent && transaction != null)
+    //            {
+    //                transaction.Commit();
+    //                documento.SetState(EntityStatesEnum.SavedSuccessfully);
+    //            }
+
+    //            return documento;
+    //        }
+    //        catch (Exception exc)
+    //        {
+    //            if (isBAParent && transaction != null)
+    //            {
+    //                transaction.Rollback();
+    //                if (documento != null) documento.RollBackState();
+
+    //            }
+    //            throw exc;
+    //        }
+    //        finally
+    //        {
+    //            if (isBAParent) connection.Close();
+    //        }
+    //    }
 
   
          
          
          
-        public static DocumentoEntity LoadByPK(string Id)
-        {
-            return LoadByPK(Id , null, null, 1);
-        }
-        public static DocumentoEntity LoadByPK(string Id ,int deepLoadLevel)
-        {
-            return LoadByPK(Id , null, null, deepLoadLevel);
-        }
+    //    public static DocumentoEntity LoadByPK(string Id)
+    //    {
+    //        return LoadByPK(Id , null, null, 1);
+    //    }
+    //    public static DocumentoEntity LoadByPK(string Id ,int deepLoadLevel)
+    //    {
+    //        return LoadByPK(Id , null, null, deepLoadLevel);
+    //    }
         
-        public static DocumentoEntity LoadByPK(string Id, SqlConnection connection,SqlTransaction  transaction)
-        {
-            return LoadByPK(Id , connection, transaction, 1);
-        }
+    //    public static DocumentoEntity LoadByPK(string Id, SqlConnection connection,SqlTransaction  transaction)
+    //    {
+    //        return LoadByPK(Id , connection, transaction, 1);
+    //    }
         
-        public static DocumentoEntity LoadByPK(string Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+    //    public static DocumentoEntity LoadByPK(string Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
+    //    {
+    //        bool isBAParent = false;
+    //        if (connection == null)
+    //        {
+    //            isBAParent = true;
+    //            connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+    //        }
             
-            try
-            {
+    //        try
+    //        {
 
                 
-				DocumentoEntity documento = DocumentoDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
-				if(documento!=null) 
-                {
-					if (deepLoadLevel > 1)
-	                {
-							documento.IdTipoDocumentoAsTipoDocumento = TipoDocumentoBussinesAction.LoadByPK(documento.IdTipoDocumento, connection , transaction , deepLoadLevel - 1);
-						documento.IdEntidadAsEntidad = EntidadBussinesAction.LoadByPK(documento.IdEntidad, connection , transaction , deepLoadLevel - 1);
-						documento.IdMonedaAsMoneda = MonedaBussinesAction.LoadByPK(documento.IdMoneda, connection , transaction , deepLoadLevel - 1);
+				//DocumentoEntity documento = DocumentoDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
+				//if(documento!=null) 
+    //            {
+				//	if (deepLoadLevel > 1)
+	   //             {
+				//			documento.IdTipoDocumentoAsTipoDocumento = TipoDocumentoBussinesAction.LoadByPK(documento.IdTipoDocumento, connection , transaction , deepLoadLevel - 1);
+				//		documento.IdEntidadAsEntidad = EntidadBussinesAction.LoadByPK(documento.IdEntidad, connection , transaction , deepLoadLevel - 1);
+				//		documento.IdMonedaAsMoneda = MonedaBussinesAction.LoadByPK(documento.IdMoneda, connection , transaction , deepLoadLevel - 1);
 
-	                }
+	   //             }
 	                   
-						documento.SetLoadedState();
-				}
+				//		documento.SetLoadedState();
+				//}
 
-				return documento;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+				//return documento;
+    //        }
+    //        catch (Exception exc)
+    //        {
+    //            throw exc;
+    //        }
+    //        finally
+    //        {
+    //            if (isBAParent) connection.Close();
+    //        }
+    //    }
         
          
-        #endregion Implementation
+    //    #endregion Implementation
           
      }
 }

@@ -35,185 +35,185 @@ namespace ER.BA
     
   
     
-        #region << Custom Stored Procedures >>
+//        #region << Custom Stored Procedures >>
         
         
-        #endregion
+//        #endregion
         
-        #region Implementation
+//        #region Implementation
         
-        public static TipoUnidadEntityCollection Save(TipoUnidadEntityCollection tipoUnidadCollection )
-        {
-            return Save(tipoUnidadCollection, null, null);
-        }
+//        public static TipoUnidadEntityCollection Save(TipoUnidadEntityCollection tipoUnidadCollection )
+//        {
+//            return Save(tipoUnidadCollection, null, null);
+//        }
         
-        public static TipoUnidadEntityCollection Save(TipoUnidadEntityCollection tipoUnidadCollection , SqlConnection connection, SqlTransaction transaction)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//        public static TipoUnidadEntityCollection Save(TipoUnidadEntityCollection tipoUnidadCollection , SqlConnection connection, SqlTransaction transaction)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-                    foreach (TipoUnidadEntity tipoUnidad in tipoUnidadCollection)
-                    {
-                        TipoUnidadBussinesAction.Save(tipoUnidad , connection, transaction);
-                    }
+//                    foreach (TipoUnidadEntity tipoUnidad in tipoUnidadCollection)
+//                    {
+//                        TipoUnidadBussinesAction.Save(tipoUnidad , connection, transaction);
+//                    }
                     
-                    if (isBAParent && transaction != null) 
-                    {
-                    	transaction.Commit();
-                    	tipoUnidadCollection.SetState(EntityStatesEnum.SavedSuccessfully);
-                    }
+//                    if (isBAParent && transaction != null) 
+//                    {
+//                    	transaction.Commit();
+//                    	tipoUnidadCollection.SetState(EntityStatesEnum.SavedSuccessfully);
+//                    }
 
-                    return tipoUnidadCollection;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( tipoUnidadCollection != null)  tipoUnidadCollection.RollBackState();
+//                    return tipoUnidadCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
+//                {
+//                    transaction.Rollback();
+//                    if ( tipoUnidadCollection != null)  tipoUnidadCollection.RollBackState();
                     
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
-        #region << Find by All >>
+//        #region << Find by All >>
         
-        public static TipoUnidadEntityCollection FindByAll(TipoUnidadFindParameterEntity findParameter )
-        {
-        	return FindByAll(findParameter,null,null,1);
-        }
+//        public static TipoUnidadEntityCollection FindByAll(TipoUnidadFindParameterEntity findParameter )
+//        {
+//        	return FindByAll(findParameter,null,null,1);
+//        }
         
-        public static TipoUnidadEntityCollection FindByAll(TipoUnidadFindParameterEntity findParameter ,int deepLoadLevel)
-        {
-        	return FindByAll(findParameter,null,null,deepLoadLevel);
-        }
+//        public static TipoUnidadEntityCollection FindByAll(TipoUnidadFindParameterEntity findParameter ,int deepLoadLevel)
+//        {
+//        	return FindByAll(findParameter,null,null,deepLoadLevel);
+//        }
         
-        public static TipoUnidadEntityCollection FindByAll(TipoUnidadFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction)
-        {
-        	return FindByAll(findParameter,connection,transaction,1);
-        }
+//        public static TipoUnidadEntityCollection FindByAll(TipoUnidadFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction)
+//        {
+//        	return FindByAll(findParameter,connection,transaction,1);
+//        }
         
-        public static TipoUnidadEntityCollection FindByAll(TipoUnidadFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static TipoUnidadEntityCollection FindByAll(TipoUnidadFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
 
-			TipoUnidadEntityCollection tipoUnidadCollection = null; 
+//			TipoUnidadEntityCollection tipoUnidadCollection = null; 
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
-//                {
-                   tipoUnidadCollection  = TipoUnidadDataAccessCollection.FindByAll(findParameter , connection, transaction, deepLoadLevel);
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+//                   tipoUnidadCollection  = TipoUnidadDataAccessCollection.FindByAll(findParameter , connection, transaction, deepLoadLevel);
                    
-				if (tipoUnidadCollection!=null && deepLoadLevel > 1)
-                {
-                	foreach (TipoUnidadEntity tipoUnidad in tipoUnidadCollection)
-                    {
-						tipoUnidad.IdProductoAsProducto = ProductoBussinesAction.LoadByPK(tipoUnidad.IdProducto, connection, transaction, deepLoadLevel - 1);
-						tipoUnidad.UnidadMedidadAsUnidadMedida = UnidadMedidaBussinesAction.LoadByPK(tipoUnidad.UnidadMedidad, connection, transaction, deepLoadLevel - 1);
+//				if (tipoUnidadCollection!=null && deepLoadLevel > 1)
+//                {
+//                	foreach (TipoUnidadEntity tipoUnidad in tipoUnidadCollection)
+//                    {
+//						tipoUnidad.IdProductoAsProducto = ProductoBussinesAction.LoadByPK(tipoUnidad.IdProducto, connection, transaction, deepLoadLevel - 1);
+//						tipoUnidad.UnidadMedidadAsUnidadMedida = UnidadMedidaBussinesAction.LoadByPK(tipoUnidad.UnidadMedidad, connection, transaction, deepLoadLevel - 1);
 
-                    }
+//                    }
 
-                }
+//                }
 
                    
-                   tipoUnidadCollection.SetState(EntityStatesEnum.Loaded);
-//                    transactionScope.Complete();
-//
-//                }  //End of Transaction
+//                   tipoUnidadCollection.SetState(EntityStatesEnum.Loaded);
+////                    transactionScope.Complete();
+////
+////                }  //End of Transaction
 
-                return tipoUnidadCollection;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                return tipoUnidadCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
-        #endregion
+//        #endregion
         
-        #region << Find by All Paged >>
+//        #region << Find by All Paged >>
         
-        public static TipoUnidadEntityCollection FindByAllPaged(TipoUnidadFindParameterEntity findParameter, int pageNumber, int pageSize ,string orderBy)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize,orderBy, null,null,1);
-        }
+//        public static TipoUnidadEntityCollection FindByAllPaged(TipoUnidadFindParameterEntity findParameter, int pageNumber, int pageSize ,string orderBy)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize,orderBy, null,null,1);
+//        }
         
-        public static TipoUnidadEntityCollection FindByAllPaged(TipoUnidadFindParameterEntity findParameter , int pageNumber, int pageSize,string orderBy, int deepLoadLevel)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, null,null,deepLoadLevel);
-        }
+//        public static TipoUnidadEntityCollection FindByAllPaged(TipoUnidadFindParameterEntity findParameter , int pageNumber, int pageSize,string orderBy, int deepLoadLevel)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, null,null,deepLoadLevel);
+//        }
         
-        public static TipoUnidadEntityCollection FindByAllPaged(TipoUnidadFindParameterEntity findParameter , int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, connection,transaction,1);
-        }
+//        public static TipoUnidadEntityCollection FindByAllPaged(TipoUnidadFindParameterEntity findParameter , int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, connection,transaction,1);
+//        }
         
-        public static TipoUnidadEntityCollection FindByAllPaged(TipoUnidadFindParameterEntity findParameter ,int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static TipoUnidadEntityCollection FindByAllPaged(TipoUnidadFindParameterEntity findParameter ,int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
 
-			TipoUnidadEntityCollection tipoUnidadCollection = null; 
+//			TipoUnidadEntityCollection tipoUnidadCollection = null; 
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
-//                {
-                   tipoUnidadCollection  = TipoUnidadDataAccessCollection.FindByAllPaged(findParameter , pageNumber, pageSize, orderBy, connection, transaction, deepLoadLevel);
-                   tipoUnidadCollection.SetState(EntityStatesEnum.Loaded);
-//                    transactionScope.Complete();
-//
-//                }  //End of Transaction
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+//                   tipoUnidadCollection  = TipoUnidadDataAccessCollection.FindByAllPaged(findParameter , pageNumber, pageSize, orderBy, connection, transaction, deepLoadLevel);
+//                   tipoUnidadCollection.SetState(EntityStatesEnum.Loaded);
+////                    transactionScope.Complete();
+////
+////                }  //End of Transaction
 
-                return tipoUnidadCollection;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                return tipoUnidadCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
-        #endregion
+//        #endregion
 
       
-        #endregion Implementation
+//        #endregion Implementation
         
           
      }

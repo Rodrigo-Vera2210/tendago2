@@ -35,183 +35,183 @@ namespace ER.BA
     
   
     
-        #region << Custom Stored Procedures >>
+//        #region << Custom Stored Procedures >>
         
         
-        #endregion
+//        #endregion
         
-        #region Implementation
+//        #region Implementation
         
-        public static DivisionEntityCollection Save(DivisionEntityCollection divisionCollection )
-        {
-            return Save(divisionCollection, null, null);
-        }
+//        public static DivisionEntityCollection Save(DivisionEntityCollection divisionCollection )
+//        {
+//            return Save(divisionCollection, null, null);
+//        }
         
-        public static DivisionEntityCollection Save(DivisionEntityCollection divisionCollection , SqlConnection connection, SqlTransaction transaction)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//        public static DivisionEntityCollection Save(DivisionEntityCollection divisionCollection , SqlConnection connection, SqlTransaction transaction)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-                    foreach (DivisionEntity division in divisionCollection)
-                    {
-                        DivisionBussinesAction.Save(division , connection, transaction);
-                    }
+//                    foreach (DivisionEntity division in divisionCollection)
+//                    {
+//                        DivisionBussinesAction.Save(division , connection, transaction);
+//                    }
                     
-                    if (isBAParent && transaction != null) 
-                    {
-                    	transaction.Commit();
-                    	divisionCollection.SetState(EntityStatesEnum.SavedSuccessfully);
-                    }
+//                    if (isBAParent && transaction != null) 
+//                    {
+//                    	transaction.Commit();
+//                    	divisionCollection.SetState(EntityStatesEnum.SavedSuccessfully);
+//                    }
 
-                    return divisionCollection;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( divisionCollection != null)  divisionCollection.RollBackState();
+//                    return divisionCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
+//                {
+//                    transaction.Rollback();
+//                    if ( divisionCollection != null)  divisionCollection.RollBackState();
                     
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
-        #region << Find by All >>
+//        #region << Find by All >>
         
-        public static DivisionEntityCollection FindByAll(DivisionFindParameterEntity findParameter )
-        {
-        	return FindByAll(findParameter,null,null,1);
-        }
+//        public static DivisionEntityCollection FindByAll(DivisionFindParameterEntity findParameter )
+//        {
+//        	return FindByAll(findParameter,null,null,1);
+//        }
         
-        public static DivisionEntityCollection FindByAll(DivisionFindParameterEntity findParameter ,int deepLoadLevel)
-        {
-        	return FindByAll(findParameter,null,null,deepLoadLevel);
-        }
+//        public static DivisionEntityCollection FindByAll(DivisionFindParameterEntity findParameter ,int deepLoadLevel)
+//        {
+//        	return FindByAll(findParameter,null,null,deepLoadLevel);
+//        }
         
-        public static DivisionEntityCollection FindByAll(DivisionFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction)
-        {
-        	return FindByAll(findParameter,connection,transaction,1);
-        }
+//        public static DivisionEntityCollection FindByAll(DivisionFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction)
+//        {
+//        	return FindByAll(findParameter,connection,transaction,1);
+//        }
         
-        public static DivisionEntityCollection FindByAll(DivisionFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static DivisionEntityCollection FindByAll(DivisionFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
 
-			DivisionEntityCollection divisionCollection = null; 
+//			DivisionEntityCollection divisionCollection = null; 
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
-//                {
-                   divisionCollection  = DivisionDataAccessCollection.FindByAll(findParameter , connection, transaction, deepLoadLevel);
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+//                   divisionCollection  = DivisionDataAccessCollection.FindByAll(findParameter , connection, transaction, deepLoadLevel);
                    
-				if (divisionCollection!=null && deepLoadLevel > 1)
-                {
-                	foreach (DivisionEntity division in divisionCollection)
-                    {
+//				if (divisionCollection!=null && deepLoadLevel > 1)
+//                {
+//                	foreach (DivisionEntity division in divisionCollection)
+//                    {
 
-                    }
+//                    }
 
-                }
+//                }
 
                    
-                   divisionCollection.SetState(EntityStatesEnum.Loaded);
-//                    transactionScope.Complete();
-//
-//                }  //End of Transaction
+//                   divisionCollection.SetState(EntityStatesEnum.Loaded);
+////                    transactionScope.Complete();
+////
+////                }  //End of Transaction
 
-                return divisionCollection;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                return divisionCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
-        #endregion
+//        #endregion
         
-        #region << Find by All Paged >>
+//        #region << Find by All Paged >>
         
-        public static DivisionEntityCollection FindByAllPaged(DivisionFindParameterEntity findParameter, int pageNumber, int pageSize ,string orderBy)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize,orderBy, null,null,1);
-        }
+//        public static DivisionEntityCollection FindByAllPaged(DivisionFindParameterEntity findParameter, int pageNumber, int pageSize ,string orderBy)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize,orderBy, null,null,1);
+//        }
         
-        public static DivisionEntityCollection FindByAllPaged(DivisionFindParameterEntity findParameter , int pageNumber, int pageSize,string orderBy, int deepLoadLevel)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, null,null,deepLoadLevel);
-        }
+//        public static DivisionEntityCollection FindByAllPaged(DivisionFindParameterEntity findParameter , int pageNumber, int pageSize,string orderBy, int deepLoadLevel)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, null,null,deepLoadLevel);
+//        }
         
-        public static DivisionEntityCollection FindByAllPaged(DivisionFindParameterEntity findParameter , int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, connection,transaction,1);
-        }
+//        public static DivisionEntityCollection FindByAllPaged(DivisionFindParameterEntity findParameter , int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, connection,transaction,1);
+//        }
         
-        public static DivisionEntityCollection FindByAllPaged(DivisionFindParameterEntity findParameter ,int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static DivisionEntityCollection FindByAllPaged(DivisionFindParameterEntity findParameter ,int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
 
-			DivisionEntityCollection divisionCollection = null; 
+//			DivisionEntityCollection divisionCollection = null; 
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
-//                {
-                   divisionCollection  = DivisionDataAccessCollection.FindByAllPaged(findParameter , pageNumber, pageSize, orderBy, connection, transaction, deepLoadLevel);
-                   divisionCollection.SetState(EntityStatesEnum.Loaded);
-//                    transactionScope.Complete();
-//
-//                }  //End of Transaction
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+//                   divisionCollection  = DivisionDataAccessCollection.FindByAllPaged(findParameter , pageNumber, pageSize, orderBy, connection, transaction, deepLoadLevel);
+//                   divisionCollection.SetState(EntityStatesEnum.Loaded);
+////                    transactionScope.Complete();
+////
+////                }  //End of Transaction
 
-                return divisionCollection;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                return divisionCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
-        #endregion
+//        #endregion
 
       
-        #endregion Implementation
+//        #endregion Implementation
         
           
      }

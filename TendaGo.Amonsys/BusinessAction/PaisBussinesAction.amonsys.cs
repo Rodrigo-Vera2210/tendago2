@@ -32,134 +32,134 @@ namespace ER.BA
     public partial class PaisBussinesAction
     {
          
-       #region Implementation
+//       #region Implementation
         
-       public static PaisEntity Save(PaisEntity pais )
-       {   
-            return Save(pais,null, null);
-       }
+//       public static PaisEntity Save(PaisEntity pais )
+//       {   
+//            return Save(pais,null, null);
+//       }
        
-       public static PaisEntity Save(PaisEntity pais , SqlConnection connection, SqlTransaction transaction)
-       {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true; 
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//       public static PaisEntity Save(PaisEntity pais , SqlConnection connection, SqlTransaction transaction)
+//       {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true; 
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+///*
+
+//*/
+//                    switch (pais.CurrentState)
+//                    {
+//                        case EntityStatesEnum.Deleted:
+//                            PaisDataAccess.Delete(pais, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.Updated:
+//                            PaisDataAccess.Update(pais, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.New:
+//                            pais = PaisDataAccess.Insert(pais, connection, transaction);
+//                            break;
+//                        default:
+//                            break;
+//                    }
+                    
+                    
+
+////                } 
+               
+//               //End of Transaction
+//               if (isBAParent && transaction != null)
+//               {
+//					transaction.Commit();
+//					pais.SetState(EntityStatesEnum.SavedSuccessfully);
+//               }
+               
+//               return pais;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
 //                {
-/*
-
-*/
-                    switch (pais.CurrentState)
-                    {
-                        case EntityStatesEnum.Deleted:
-                            PaisDataAccess.Delete(pais, connection, transaction);
-                            break;
-                        case EntityStatesEnum.Updated:
-                            PaisDataAccess.Update(pais, connection, transaction);
-                            break;
-                        case EntityStatesEnum.New:
-                            pais = PaisDataAccess.Insert(pais, connection, transaction);
-                            break;
-                        default:
-                            break;
-                    }
+//                    transaction.Rollback();
+//                    if ( pais != null)  pais.RollBackState();
                     
-                    
-
-//                } 
-               
-               //End of Transaction
-               if (isBAParent && transaction != null)
-               {
-					transaction.Commit();
-					pais.SetState(EntityStatesEnum.SavedSuccessfully);
-               }
-               
-               return pais;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( pais != null)  pais.RollBackState();
-                    
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
   
          
          
          
-        public static PaisEntity LoadByPK(short Id)
-        {
-            return LoadByPK(Id , null, null, 1);
-        }
-        public static PaisEntity LoadByPK(short Id ,int deepLoadLevel)
-        {
-            return LoadByPK(Id , null, null, deepLoadLevel);
-        }
+//        public static PaisEntity LoadByPK(short Id)
+//        {
+//            return LoadByPK(Id , null, null, 1);
+//        }
+//        public static PaisEntity LoadByPK(short Id ,int deepLoadLevel)
+//        {
+//            return LoadByPK(Id , null, null, deepLoadLevel);
+//        }
         
-        public static PaisEntity LoadByPK(short Id, SqlConnection connection,SqlTransaction  transaction)
-        {
-            return LoadByPK(Id , connection, transaction, 1);
-        }
+//        public static PaisEntity LoadByPK(short Id, SqlConnection connection,SqlTransaction  transaction)
+//        {
+//            return LoadByPK(Id , connection, transaction, 1);
+//        }
         
-        public static PaisEntity LoadByPK(short Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static PaisEntity LoadByPK(short Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
             
-            try
-            {
+//            try
+//            {
 
                 
-				PaisEntity pais = PaisDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
-				if(pais!=null) 
-                {
-					if (deepLoadLevel > 1)
-	                {
+//				PaisEntity pais = PaisDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
+//				if(pais!=null) 
+//                {
+//					if (deepLoadLevel > 1)
+//	                {
 	
-	                }
+//	                }
 	                   
-						pais.SetLoadedState();
-				}
+//						pais.SetLoadedState();
+//				}
 
-				return pais;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//				return pais;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
          
-        #endregion Implementation
+//        #endregion Implementation
           
      }
 }

@@ -35,184 +35,184 @@ namespace ER.BA
     
   
     
-        #region << Custom Stored Procedures >>
+//        #region << Custom Stored Procedures >>
         
         
-        #endregion
+//        #endregion
         
-        #region Implementation
+//        #region Implementation
         
-        public static LocalBodegaEntityCollection Save(LocalBodegaEntityCollection localBodegaCollection )
-        {
-            return Save(localBodegaCollection, null, null);
-        }
+//        public static LocalBodegaEntityCollection Save(LocalBodegaEntityCollection localBodegaCollection )
+//        {
+//            return Save(localBodegaCollection, null, null);
+//        }
         
-        public static LocalBodegaEntityCollection Save(LocalBodegaEntityCollection localBodegaCollection , SqlConnection connection, SqlTransaction transaction)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//        public static LocalBodegaEntityCollection Save(LocalBodegaEntityCollection localBodegaCollection , SqlConnection connection, SqlTransaction transaction)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-                    foreach (LocalBodegaEntity localBodega in localBodegaCollection)
-                    {
-                        LocalBodegaBussinesAction.Save(localBodega , connection, transaction);
-                    }
+//                    foreach (LocalBodegaEntity localBodega in localBodegaCollection)
+//                    {
+//                        LocalBodegaBussinesAction.Save(localBodega , connection, transaction);
+//                    }
                     
-                    if (isBAParent && transaction != null) 
-                    {
-                    	transaction.Commit();
-                    	localBodegaCollection.SetState(EntityStatesEnum.SavedSuccessfully);
-                    }
+//                    if (isBAParent && transaction != null) 
+//                    {
+//                    	transaction.Commit();
+//                    	localBodegaCollection.SetState(EntityStatesEnum.SavedSuccessfully);
+//                    }
 
-                    return localBodegaCollection;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( localBodegaCollection != null)  localBodegaCollection.RollBackState();
+//                    return localBodegaCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
+//                {
+//                    transaction.Rollback();
+//                    if ( localBodegaCollection != null)  localBodegaCollection.RollBackState();
                     
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
-        #region << Find by All >>
+//        #region << Find by All >>
         
-        public static LocalBodegaEntityCollection FindByAll(LocalBodegaFindParameterEntity findParameter )
-        {
-        	return FindByAll(findParameter,null,null,1);
-        }
+//        public static LocalBodegaEntityCollection FindByAll(LocalBodegaFindParameterEntity findParameter )
+//        {
+//        	return FindByAll(findParameter,null,null,1);
+//        }
         
-        public static LocalBodegaEntityCollection FindByAll(LocalBodegaFindParameterEntity findParameter ,int deepLoadLevel)
-        {
-        	return FindByAll(findParameter,null,null,deepLoadLevel);
-        }
+//        public static LocalBodegaEntityCollection FindByAll(LocalBodegaFindParameterEntity findParameter ,int deepLoadLevel)
+//        {
+//        	return FindByAll(findParameter,null,null,deepLoadLevel);
+//        }
         
-        public static LocalBodegaEntityCollection FindByAll(LocalBodegaFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction)
-        {
-        	return FindByAll(findParameter,connection,transaction,1);
-        }
+//        public static LocalBodegaEntityCollection FindByAll(LocalBodegaFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction)
+//        {
+//        	return FindByAll(findParameter,connection,transaction,1);
+//        }
         
-        public static LocalBodegaEntityCollection FindByAll(LocalBodegaFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static LocalBodegaEntityCollection FindByAll(LocalBodegaFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
 
-			LocalBodegaEntityCollection localBodegaCollection = null; 
+//			LocalBodegaEntityCollection localBodegaCollection = null; 
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
-//                {
-                   localBodegaCollection  = LocalBodegaDataAccessCollection.FindByAll(findParameter , connection, transaction, deepLoadLevel);
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+//                   localBodegaCollection  = LocalBodegaDataAccessCollection.FindByAll(findParameter , connection, transaction, deepLoadLevel);
                    
-				if (localBodegaCollection!=null && deepLoadLevel > 1)
-                {
-                	foreach (LocalBodegaEntity localBodega in localBodegaCollection)
-                    {
-						localBodega.IdEmpresaAsEmpresa = EmpresaBussinesAction.LoadByPK(localBodega.IdEmpresa, connection, transaction, deepLoadLevel - 1);
+//				if (localBodegaCollection!=null && deepLoadLevel > 1)
+//                {
+//                	foreach (LocalBodegaEntity localBodega in localBodegaCollection)
+//                    {
+//						localBodega.IdEmpresaAsEmpresa = EmpresaBussinesAction.LoadByPK(localBodega.IdEmpresa, connection, transaction, deepLoadLevel - 1);
 
-                    }
+//                    }
 
-                }
+//                }
 
                    
-                   localBodegaCollection.SetState(EntityStatesEnum.Loaded);
-//                    transactionScope.Complete();
-//
-//                }  //End of Transaction
+//                   localBodegaCollection.SetState(EntityStatesEnum.Loaded);
+////                    transactionScope.Complete();
+////
+////                }  //End of Transaction
 
-                return localBodegaCollection;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                return localBodegaCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
-        #endregion
+//        #endregion
         
-        #region << Find by All Paged >>
+//        #region << Find by All Paged >>
         
-        public static LocalBodegaEntityCollection FindByAllPaged(LocalBodegaFindParameterEntity findParameter, int pageNumber, int pageSize ,string orderBy)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize,orderBy, null,null,1);
-        }
+//        public static LocalBodegaEntityCollection FindByAllPaged(LocalBodegaFindParameterEntity findParameter, int pageNumber, int pageSize ,string orderBy)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize,orderBy, null,null,1);
+//        }
         
-        public static LocalBodegaEntityCollection FindByAllPaged(LocalBodegaFindParameterEntity findParameter , int pageNumber, int pageSize,string orderBy, int deepLoadLevel)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, null,null,deepLoadLevel);
-        }
+//        public static LocalBodegaEntityCollection FindByAllPaged(LocalBodegaFindParameterEntity findParameter , int pageNumber, int pageSize,string orderBy, int deepLoadLevel)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, null,null,deepLoadLevel);
+//        }
         
-        public static LocalBodegaEntityCollection FindByAllPaged(LocalBodegaFindParameterEntity findParameter , int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, connection,transaction,1);
-        }
+//        public static LocalBodegaEntityCollection FindByAllPaged(LocalBodegaFindParameterEntity findParameter , int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, connection,transaction,1);
+//        }
         
-        public static LocalBodegaEntityCollection FindByAllPaged(LocalBodegaFindParameterEntity findParameter ,int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static LocalBodegaEntityCollection FindByAllPaged(LocalBodegaFindParameterEntity findParameter ,int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
 
-			LocalBodegaEntityCollection localBodegaCollection = null; 
+//			LocalBodegaEntityCollection localBodegaCollection = null; 
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
-//                {
-                   localBodegaCollection  = LocalBodegaDataAccessCollection.FindByAllPaged(findParameter , pageNumber, pageSize, orderBy, connection, transaction, deepLoadLevel);
-                   localBodegaCollection.SetState(EntityStatesEnum.Loaded);
-//                    transactionScope.Complete();
-//
-//                }  //End of Transaction
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+//                   localBodegaCollection  = LocalBodegaDataAccessCollection.FindByAllPaged(findParameter , pageNumber, pageSize, orderBy, connection, transaction, deepLoadLevel);
+//                   localBodegaCollection.SetState(EntityStatesEnum.Loaded);
+////                    transactionScope.Complete();
+////
+////                }  //End of Transaction
 
-                return localBodegaCollection;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                return localBodegaCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
-        #endregion
+//        #endregion
 
       
-        #endregion Implementation
+//        #endregion Implementation
         
           
      }

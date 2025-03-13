@@ -31,137 +31,137 @@ namespace ER.BA
 {
     public partial class TipoPaqueteBussinesAction
     {
-         
-       #region Implementation
-        
-       public static TipoPaqueteEntity Save(TipoPaqueteEntity tipoPaquete )
-       {   
-            return Save(tipoPaquete,null, null);
-       }
-       
-       public static TipoPaqueteEntity Save(TipoPaqueteEntity tipoPaquete , SqlConnection connection, SqlTransaction transaction)
-       {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true; 
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+        #region Implementation
 
-            try
-            {
+        //       public static TipoPaqueteEntity Save(TipoPaqueteEntity tipoPaquete )
+        //       {   
+        //            return Save(tipoPaquete,null, null);
+        //       }
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
-//                {
-/*
+        //       public static TipoPaqueteEntity Save(TipoPaqueteEntity tipoPaquete , SqlConnection connection, SqlTransaction transaction)
+        //       {
+        //            bool isBAParent = false;
+        //            if (connection == null)
+        //            {
+        //                isBAParent = true; 
+        //                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+        //                connection.Open();
+        //                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-*/
-                    switch (tipoPaquete.CurrentState)
-                    {
-                        case EntityStatesEnum.Deleted:
-                            TipoPaqueteDataAccess.Delete(tipoPaquete, connection, transaction);
-                            break;
-                        case EntityStatesEnum.Updated:
-                            TipoPaqueteDataAccess.Update(tipoPaquete, connection, transaction);
-                            break;
-                        case EntityStatesEnum.New:
-                            tipoPaquete = TipoPaqueteDataAccess.Insert(tipoPaquete, connection, transaction);
-                            break;
-                        default:
-                            break;
-                    }
-                    
-                    
+        //            }
 
-//                } 
-               
-               //End of Transaction
-               if (isBAParent && transaction != null)
-               {
-					transaction.Commit();
-					tipoPaquete.SetState(EntityStatesEnum.SavedSuccessfully);
-               }
-               
-               return tipoPaquete;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( tipoPaquete != null)  tipoPaquete.RollBackState();
-                    
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+        //            try
+        //            {
 
-  
-         
-         
-         
-        public static TipoPaqueteEntity LoadByPK(int Id)
-        {
-            return LoadByPK(Id , null, null, 1);
-        }
-        public static TipoPaqueteEntity LoadByPK(int Id ,int deepLoadLevel)
-        {
-            return LoadByPK(Id , null, null, deepLoadLevel);
-        }
-        
-        public static TipoPaqueteEntity LoadByPK(int Id, SqlConnection connection,SqlTransaction  transaction)
-        {
-            return LoadByPK(Id , connection, transaction, 1);
-        }
-        
-        public static TipoPaqueteEntity LoadByPK(int Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+        ////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+        ////                {
+        ///*
 
-            }
-            
-            try
-            {
+        //*/
+        //                    switch (tipoPaquete.CurrentState)
+        //                    {
+        //                        case EntityStatesEnum.Deleted:
+        //                            TipoPaqueteDataAccess.Delete(tipoPaquete, connection, transaction);
+        //                            break;
+        //                        case EntityStatesEnum.Updated:
+        //                            TipoPaqueteDataAccess.Update(tipoPaquete, connection, transaction);
+        //                            break;
+        //                        case EntityStatesEnum.New:
+        //                            tipoPaquete = TipoPaqueteDataAccess.Insert(tipoPaquete, connection, transaction);
+        //                            break;
+        //                        default:
+        //                            break;
+        //                    }
 
-                
-				TipoPaqueteEntity tipoPaquete = TipoPaqueteDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
-				if(tipoPaquete!=null) 
-                {
-					if (deepLoadLevel > 1)
-	                {
-	
-	                }
-	                   
-						tipoPaquete.SetLoadedState();
-				}
 
-				return tipoPaquete;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
-        
-         
+
+        ////                } 
+
+        //               //End of Transaction
+        //               if (isBAParent && transaction != null)
+        //               {
+        //					transaction.Commit();
+        //					tipoPaquete.SetState(EntityStatesEnum.SavedSuccessfully);
+        //               }
+
+        //               return tipoPaquete;
+        //            }
+        //            catch (Exception exc)
+        //            {
+        //                if (isBAParent && transaction != null)
+        //                {
+        //                    transaction.Rollback();
+        //                    if ( tipoPaquete != null)  tipoPaquete.RollBackState();
+
+        //                }
+        //                throw exc;
+        //            }
+        //            finally
+        //            {
+        //                if (isBAParent) connection.Close();
+        //            }
+        //        }
+
+
+
+
+
+        //        public static TipoPaqueteEntity LoadByPK(int Id)
+        //        {
+        //            return LoadByPK(Id , null, null, 1);
+        //        }
+        //        public static TipoPaqueteEntity LoadByPK(int Id ,int deepLoadLevel)
+        //        {
+        //            return LoadByPK(Id , null, null, deepLoadLevel);
+        //        }
+
+        //        public static TipoPaqueteEntity LoadByPK(int Id, SqlConnection connection,SqlTransaction  transaction)
+        //        {
+        //            return LoadByPK(Id , connection, transaction, 1);
+        //        }
+
+        //        public static TipoPaqueteEntity LoadByPK(int Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
+        //        {
+        //            bool isBAParent = false;
+        //            if (connection == null)
+        //            {
+        //                isBAParent = true;
+        //                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+
+        //            }
+
+        //            try
+        //            {
+
+
+        //				TipoPaqueteEntity tipoPaquete = TipoPaqueteDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
+        //				if(tipoPaquete!=null) 
+        //                {
+        //					if (deepLoadLevel > 1)
+        //	                {
+
+        //	                }
+
+        //						tipoPaquete.SetLoadedState();
+        //				}
+
+        //				return tipoPaquete;
+        //            }
+        //            catch (Exception exc)
+        //            {
+        //                throw exc;
+        //            }
+        //            finally
+        //            {
+        //                if (isBAParent) connection.Close();
+        //            }
+        //        }
+
+
         #endregion Implementation
-          
-     }
+
+    }
 }
 
 

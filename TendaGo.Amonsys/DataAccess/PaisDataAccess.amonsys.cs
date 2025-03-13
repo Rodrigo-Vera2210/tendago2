@@ -26,481 +26,481 @@ namespace ER.DA
     {
     
    
-        #region << Default Methods >>
+   //     #region << Default Methods >>
 
-        /// <summary>
-        /// Create a new entity type of Pais
-        /// </summary>
-        public static PaisEntity Insert(PaisEntity pais, SqlConnection connection, SqlTransaction transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText =  "Pais_Insert";
+   //     /// <summary>
+   //     /// Create a new entity type of Pais
+   //     /// </summary>
+   //     public static PaisEntity Insert(PaisEntity pais, SqlConnection connection, SqlTransaction transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText =  "Pais_Insert";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
                  
-				mCommand.Parameters.AddWithValue("@Codigo", pais.Codigo.ToUpper());
-				mCommand.Parameters.AddWithValue("@Pais", pais.Pais.ToUpper());
-				if(!String.IsNullOrEmpty(pais.Nacionalidad))
-				{
-					mCommand.Parameters.AddWithValue("@Nacionalidad", pais.Nacionalidad.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@Nacionalidad",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@Codigo", pais.Codigo.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@Pais", pais.Pais.ToUpper());
+			//	if(!String.IsNullOrEmpty(pais.Nacionalidad))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Nacionalidad", pais.Nacionalidad.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Nacionalidad",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(pais.CodigoNacionalidad))
-				{
-					mCommand.Parameters.AddWithValue("@CodigoNacionalidad", pais.CodigoNacionalidad.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@CodigoNacionalidad",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(pais.CodigoNacionalidad))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@CodigoNacionalidad", pais.CodigoNacionalidad.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@CodigoNacionalidad",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IpIngreso", pais.IpIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", pais.UsuarioIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@FechaIngreso", pais.FechaIngreso);
-				if(!String.IsNullOrEmpty(pais.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", pais.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@IpIngreso", pais.IpIngreso.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", pais.UsuarioIngreso.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@FechaIngreso", pais.FechaIngreso);
+			//	if(!String.IsNullOrEmpty(pais.IpModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion", pais.IpModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(pais.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", pais.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(pais.UsuarioModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", pais.UsuarioModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+			//	}
 
-				if(pais.FechaModificacion != null && pais.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", pais.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
-				}
+			//	if(pais.FechaModificacion != null && pais.FechaModificacion != DateTime.MinValue)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion", pais.FechaModificacion);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IdEstado", pais.IdEstado);
+			//	mCommand.Parameters.AddWithValue("@IdEstado", pais.IdEstado);
 
-				// Add the primary keys columns
-				mCommand.Parameters.Add("@Id", SqlDbType.SmallInt);
-				mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
+			//	// Add the primary keys columns
+			//	mCommand.Parameters.Add("@Id", SqlDbType.SmallInt);
+			//	mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
 
 
-                #endregion
+   //             #endregion
                 
-                // Insert Pais
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Insert Pais
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
-				pais.Id = Convert.ToInt16(mCommand.Parameters["@Id"].Value);
+			//	pais.Id = Convert.ToInt16(mCommand.Parameters["@Id"].Value);
 
 
-                return pais;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //             return pais;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
 
-        /// <summary>
-        /// Update a entity
-        /// </summary>
-        public static void Update(PaisEntity pais, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "Pais_Update";
+   //     /// <summary>
+   //     /// Update a entity
+   //     /// </summary>
+   //     public static void Update(PaisEntity pais, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;;
+   //             mCommand.CommandText = "Pais_Update";
 
-                 #region << Add the params >>
+   //              #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@Id", pais.Id);
-				mCommand.Parameters.AddWithValue("@Codigo", pais.Codigo);
-				mCommand.Parameters.AddWithValue("@Pais", pais.Pais);
-				if(!String.IsNullOrEmpty(pais.Nacionalidad))
-				{
-					mCommand.Parameters.AddWithValue("@Nacionalidad", pais.Nacionalidad.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@Nacionalidad",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@Id", pais.Id);
+			//	mCommand.Parameters.AddWithValue("@Codigo", pais.Codigo);
+			//	mCommand.Parameters.AddWithValue("@Pais", pais.Pais);
+			//	if(!String.IsNullOrEmpty(pais.Nacionalidad))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Nacionalidad", pais.Nacionalidad.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Nacionalidad",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(pais.CodigoNacionalidad))
-				{
-					mCommand.Parameters.AddWithValue("@CodigoNacionalidad", pais.CodigoNacionalidad.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@CodigoNacionalidad",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(pais.CodigoNacionalidad))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@CodigoNacionalidad", pais.CodigoNacionalidad.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@CodigoNacionalidad",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IpIngreso", pais.IpIngreso);
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", pais.UsuarioIngreso);
-				mCommand.Parameters.AddWithValue("@FechaIngreso", pais.FechaIngreso);
-				if(!String.IsNullOrEmpty(pais.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", pais.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@IpIngreso", pais.IpIngreso);
+			//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", pais.UsuarioIngreso);
+			//	mCommand.Parameters.AddWithValue("@FechaIngreso", pais.FechaIngreso);
+			//	if(!String.IsNullOrEmpty(pais.IpModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion", pais.IpModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(pais.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", pais.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(pais.UsuarioModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", pais.UsuarioModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+			//	}
 
-				if(pais.FechaModificacion != null && pais.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", pais.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
-				}
+			//	if(pais.FechaModificacion != null && pais.FechaModificacion != DateTime.MinValue)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion", pais.FechaModificacion);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IdEstado", pais.IdEstado);
+			//	mCommand.Parameters.AddWithValue("@IdEstado", pais.IdEstado);
                 
    
-                #endregion
+   //             #endregion
                 
-                // Update pais
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Update pais
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
 
-         /// <summary>
-        /// Delete a entity
-        /// </summary>
-        public static void Delete(PaisEntity pais, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "Pais_Delete";
-				mCommand.Parameters.AddWithValue("@Id", pais.Id);
-				mCommand.Parameters.AddWithValue("@FechaModificacion", pais.FechaModificacion);
-				mCommand.Parameters.AddWithValue("@UsuarioModificacion", pais.UsuarioModificacion.ToUpper());
-				mCommand.Parameters.AddWithValue("@IpModificacion", pais.IpModificacion.ToUpper());
+   //      /// <summary>
+   //     /// Delete a entity
+   //     /// </summary>
+   //     public static void Delete(PaisEntity pais, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;;
+   //             mCommand.CommandText = "Pais_Delete";
+			//	mCommand.Parameters.AddWithValue("@Id", pais.Id);
+			//	mCommand.Parameters.AddWithValue("@FechaModificacion", pais.FechaModificacion);
+			//	mCommand.Parameters.AddWithValue("@UsuarioModificacion", pais.UsuarioModificacion.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@IpModificacion", pais.IpModificacion.ToUpper());
 
                 
-                // Update pais
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Update pais
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
         
          
          
-         /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static PaisEntity LoadByPK(short Id, SqlConnection connection, SqlTransaction  transaction)
-        {
-        	return LoadByPK(Id,connection,transaction,1);
-        }
+   //      /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static PaisEntity LoadByPK(short Id, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //     	return LoadByPK(Id,connection,transaction,1);
+   //     }
         
-        /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static PaisEntity LoadByPK(short Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
-        {
-            PaisEntity pais = new PaisEntity();
+   //     /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static PaisEntity LoadByPK(short Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
+   //     {
+   //         PaisEntity pais = new PaisEntity();
             
-			pais.Id = Id;
+			//pais.Id = Id;
             
             
-            SqlCommand mCommand = new SqlCommand();
-            SqlDataReader reader = null;
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText = "Pais_LoadByPK";
+   //         SqlCommand mCommand = new SqlCommand();
+   //         SqlDataReader reader = null;
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText = "Pais_LoadByPK";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@Id", pais.Id);
+			//	mCommand.Parameters.AddWithValue("@Id", pais.Id);
                 
  
-                #endregion 
+   //             #endregion 
                 
-                if (connection.State != ConnectionState.Open) connection.Open();
+   //             if (connection.State != ConnectionState.Open) connection.Open();
 
-                reader = mCommand.ExecuteReader();
+   //             reader = mCommand.ExecuteReader();
 
-                if(!reader.HasRows) return null;
+   //             if(!reader.HasRows) return null;
                 
-	            while (reader.Read())
-	            {
-					#region << Deep Load >>
-                    if (deepLoadLevel == 1)
-		     		{
+	  //          while (reader.Read())
+	  //          {
+			//		#region << Deep Load >>
+   //                 if (deepLoadLevel == 1)
+		 //    		{
 
-                    }
-	                #endregion
+   //                 }
+	  //              #endregion
 	                
-	                #region << Load the BusinessEntity Object >>
+	  //              #region << Load the BusinessEntity Object >>
 					
-					pais.Id = Convert.ToInt16(reader["Id"]);
-					pais.Codigo = Convert.ToString(reader["Codigo"]);
-					pais.Pais = Convert.ToString(reader["Pais"]);
-					if (reader["Nacionalidad"] != DBNull.Value)
-					{
-						pais.Nacionalidad = Convert.ToString(reader["Nacionalidad"]).ToUpper();
-					}
-					if (reader["CodigoNacionalidad"] != DBNull.Value)
-					{
-						pais.CodigoNacionalidad = Convert.ToString(reader["CodigoNacionalidad"]).ToUpper();
-					}
-					pais.IpIngreso = Convert.ToString(reader["IpIngreso"]);
-					pais.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
-					pais.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
-					if (reader["IpModificacion"] != DBNull.Value)
-					{
-						pais.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
-					}
-					if (reader["UsuarioModificacion"] != DBNull.Value)
-					{
-						pais.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
-					}
-					if (reader["FechaModificacion"] != DBNull.Value)
-					{
-						pais.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
-					}
-					pais.IdEstado = Convert.ToInt16(reader["IdEstado"]);
+			//		pais.Id = Convert.ToInt16(reader["Id"]);
+			//		pais.Codigo = Convert.ToString(reader["Codigo"]);
+			//		pais.Pais = Convert.ToString(reader["Pais"]);
+			//		if (reader["Nacionalidad"] != DBNull.Value)
+			//		{
+			//			pais.Nacionalidad = Convert.ToString(reader["Nacionalidad"]).ToUpper();
+			//		}
+			//		if (reader["CodigoNacionalidad"] != DBNull.Value)
+			//		{
+			//			pais.CodigoNacionalidad = Convert.ToString(reader["CodigoNacionalidad"]).ToUpper();
+			//		}
+			//		pais.IpIngreso = Convert.ToString(reader["IpIngreso"]);
+			//		pais.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
+			//		pais.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
+			//		if (reader["IpModificacion"] != DBNull.Value)
+			//		{
+			//			pais.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
+			//		}
+			//		if (reader["UsuarioModificacion"] != DBNull.Value)
+			//		{
+			//			pais.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
+			//		}
+			//		if (reader["FechaModificacion"] != DBNull.Value)
+			//		{
+			//			pais.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
+			//		}
+			//		pais.IdEstado = Convert.ToInt16(reader["IdEstado"]);
 
-	                #endregion
-	            }
+	  //              #endregion
+	  //          }
 
-                pais.SetLoadedState();
-                return pais;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (reader != null) reader.Close();
-                mCommand.Dispose();
-            }
-        }
+   //             pais.SetLoadedState();
+   //             return pais;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             if (reader != null) reader.Close();
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
-        #endregion
-        
-        
+   //     #endregion
         
         
-        #region << Mappers >>
         
-        public static PaisEntity ConvertToPaisEntity (SqlDataReader reader,string fkColumnName)
-        {
-            PaisEntity pais = new PaisEntity();
+        
+   //     #region << Mappers >>
+        
+   //     public static PaisEntity ConvertToPaisEntity (SqlDataReader reader,string fkColumnName)
+   //     {
+   //         PaisEntity pais = new PaisEntity();
             
-            try
-            {
-                bool hasData=false;
-                string columName;
+   //         try
+   //         {
+   //             bool hasData=false;
+   //             string columName;
                 
-                #region << Load the BusinessEntity Object >>
+   //             #region << Load the BusinessEntity Object >>
                 
-				try
-				{
-					columName = String.Format("Id_PaisFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pais.Id = Convert.ToInt16(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Codigo_PaisFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pais.Codigo = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Pais_PaisFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pais.Pais = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Nacionalidad_PaisFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pais.Nacionalidad = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("CodigoNacionalidad_PaisFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pais.CodigoNacionalidad = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpIngreso_PaisFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pais.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioIngreso_PaisFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pais.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaIngreso_PaisFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pais.FechaIngreso = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpModificacion_PaisFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pais.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioModificacion_PaisFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pais.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaModificacion_PaisFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pais.FechaModificacion = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdEstado_PaisFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pais.IdEstado = Convert.ToInt16(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Id_PaisFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pais.Id = Convert.ToInt16(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Codigo_PaisFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pais.Codigo = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Pais_PaisFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pais.Pais = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Nacionalidad_PaisFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pais.Nacionalidad = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("CodigoNacionalidad_PaisFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pais.CodigoNacionalidad = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IpIngreso_PaisFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pais.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("UsuarioIngreso_PaisFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pais.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("FechaIngreso_PaisFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pais.FechaIngreso = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IpModificacion_PaisFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pais.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("UsuarioModificacion_PaisFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pais.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("FechaModificacion_PaisFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pais.FechaModificacion = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdEstado_PaisFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pais.IdEstado = Convert.ToInt16(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
 
                 
-                #endregion
+   //             #endregion
                 
-                pais.SetLoadedState();
-                if(hasData)
-                {
-                	return pais;
-                }
-                else return null;
-            }
-            catch (Exception exc)
-            {
-                return null;
-            }
-            finally
-            {
+   //             pais.SetLoadedState();
+   //             if(hasData)
+   //             {
+   //             	return pais;
+   //             }
+   //             else return null;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             return null;
+   //         }
+   //         finally
+   //         {
                 
-            }
-        }
+   //         }
+   //     }
         
-        #endregion
+   //     #endregion
         
    
     }

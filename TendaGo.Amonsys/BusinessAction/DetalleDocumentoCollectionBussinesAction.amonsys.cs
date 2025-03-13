@@ -35,185 +35,185 @@ namespace ER.BA
     
   
     
-        #region << Custom Stored Procedures >>
+//        #region << Custom Stored Procedures >>
         
         
-        #endregion
+//        #endregion
         
-        #region Implementation
+//        #region Implementation
         
-        public static DetalleDocumentoEntityCollection Save(DetalleDocumentoEntityCollection detalleDocumentoCollection )
-        {
-            return Save(detalleDocumentoCollection, null, null);
-        }
+//        public static DetalleDocumentoEntityCollection Save(DetalleDocumentoEntityCollection detalleDocumentoCollection )
+//        {
+//            return Save(detalleDocumentoCollection, null, null);
+//        }
         
-        public static DetalleDocumentoEntityCollection Save(DetalleDocumentoEntityCollection detalleDocumentoCollection , SqlConnection connection, SqlTransaction transaction)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//        public static DetalleDocumentoEntityCollection Save(DetalleDocumentoEntityCollection detalleDocumentoCollection , SqlConnection connection, SqlTransaction transaction)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-                    foreach (DetalleDocumentoEntity detalleDocumento in detalleDocumentoCollection)
-                    {
-                        DetalleDocumentoBussinesAction.Save(detalleDocumento , connection, transaction);
-                    }
+//                    foreach (DetalleDocumentoEntity detalleDocumento in detalleDocumentoCollection)
+//                    {
+//                        DetalleDocumentoBussinesAction.Save(detalleDocumento , connection, transaction);
+//                    }
                     
-                    if (isBAParent && transaction != null) 
-                    {
-                    	transaction.Commit();
-                    	detalleDocumentoCollection.SetState(EntityStatesEnum.SavedSuccessfully);
-                    }
+//                    if (isBAParent && transaction != null) 
+//                    {
+//                    	transaction.Commit();
+//                    	detalleDocumentoCollection.SetState(EntityStatesEnum.SavedSuccessfully);
+//                    }
 
-                    return detalleDocumentoCollection;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( detalleDocumentoCollection != null)  detalleDocumentoCollection.RollBackState();
+//                    return detalleDocumentoCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
+//                {
+//                    transaction.Rollback();
+//                    if ( detalleDocumentoCollection != null)  detalleDocumentoCollection.RollBackState();
                     
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
-        #region << Find by All >>
+//        #region << Find by All >>
         
-        public static DetalleDocumentoEntityCollection FindByAll(DetalleDocumentoFindParameterEntity findParameter )
-        {
-        	return FindByAll(findParameter,null,null,1);
-        }
+//        public static DetalleDocumentoEntityCollection FindByAll(DetalleDocumentoFindParameterEntity findParameter )
+//        {
+//        	return FindByAll(findParameter,null,null,1);
+//        }
         
-        public static DetalleDocumentoEntityCollection FindByAll(DetalleDocumentoFindParameterEntity findParameter ,int deepLoadLevel)
-        {
-        	return FindByAll(findParameter,null,null,deepLoadLevel);
-        }
+//        public static DetalleDocumentoEntityCollection FindByAll(DetalleDocumentoFindParameterEntity findParameter ,int deepLoadLevel)
+//        {
+//        	return FindByAll(findParameter,null,null,deepLoadLevel);
+//        }
         
-        public static DetalleDocumentoEntityCollection FindByAll(DetalleDocumentoFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction)
-        {
-        	return FindByAll(findParameter,connection,transaction,1);
-        }
+//        public static DetalleDocumentoEntityCollection FindByAll(DetalleDocumentoFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction)
+//        {
+//        	return FindByAll(findParameter,connection,transaction,1);
+//        }
         
-        public static DetalleDocumentoEntityCollection FindByAll(DetalleDocumentoFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static DetalleDocumentoEntityCollection FindByAll(DetalleDocumentoFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
 
-			DetalleDocumentoEntityCollection detalleDocumentoCollection = null; 
+//			DetalleDocumentoEntityCollection detalleDocumentoCollection = null; 
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
-//                {
-                   detalleDocumentoCollection  = DetalleDocumentoDataAccessCollection.FindByAll(findParameter , connection, transaction, deepLoadLevel);
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+//                   detalleDocumentoCollection  = DetalleDocumentoDataAccessCollection.FindByAll(findParameter , connection, transaction, deepLoadLevel);
                    
-				if (detalleDocumentoCollection!=null && deepLoadLevel > 1)
-                {
-                	foreach (DetalleDocumentoEntity detalleDocumento in detalleDocumentoCollection)
-                    {
-						detalleDocumento.IdDocumentoAsDocumento = DocumentoBussinesAction.LoadByPK(detalleDocumento.IdDocumento, connection, transaction, deepLoadLevel - 1);
-						detalleDocumento.IdProductoAsProducto = ProductoBussinesAction.LoadByPK(detalleDocumento.IdProducto, connection, transaction, deepLoadLevel - 1);
+//				if (detalleDocumentoCollection!=null && deepLoadLevel > 1)
+//                {
+//                	foreach (DetalleDocumentoEntity detalleDocumento in detalleDocumentoCollection)
+//                    {
+//						detalleDocumento.IdDocumentoAsDocumento = DocumentoBussinesAction.LoadByPK(detalleDocumento.IdDocumento, connection, transaction, deepLoadLevel - 1);
+//						detalleDocumento.IdProductoAsProducto = ProductoBussinesAction.LoadByPK(detalleDocumento.IdProducto, connection, transaction, deepLoadLevel - 1);
 
-                    }
+//                    }
 
-                }
+//                }
 
                    
-                   detalleDocumentoCollection.SetState(EntityStatesEnum.Loaded);
-//                    transactionScope.Complete();
-//
-//                }  //End of Transaction
+//                   detalleDocumentoCollection.SetState(EntityStatesEnum.Loaded);
+////                    transactionScope.Complete();
+////
+////                }  //End of Transaction
 
-                return detalleDocumentoCollection;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                return detalleDocumentoCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
-        #endregion
+//        #endregion
         
-        #region << Find by All Paged >>
+//        #region << Find by All Paged >>
         
-        public static DetalleDocumentoEntityCollection FindByAllPaged(DetalleDocumentoFindParameterEntity findParameter, int pageNumber, int pageSize ,string orderBy)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize,orderBy, null,null,1);
-        }
+//        public static DetalleDocumentoEntityCollection FindByAllPaged(DetalleDocumentoFindParameterEntity findParameter, int pageNumber, int pageSize ,string orderBy)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize,orderBy, null,null,1);
+//        }
         
-        public static DetalleDocumentoEntityCollection FindByAllPaged(DetalleDocumentoFindParameterEntity findParameter , int pageNumber, int pageSize,string orderBy, int deepLoadLevel)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, null,null,deepLoadLevel);
-        }
+//        public static DetalleDocumentoEntityCollection FindByAllPaged(DetalleDocumentoFindParameterEntity findParameter , int pageNumber, int pageSize,string orderBy, int deepLoadLevel)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, null,null,deepLoadLevel);
+//        }
         
-        public static DetalleDocumentoEntityCollection FindByAllPaged(DetalleDocumentoFindParameterEntity findParameter , int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, connection,transaction,1);
-        }
+//        public static DetalleDocumentoEntityCollection FindByAllPaged(DetalleDocumentoFindParameterEntity findParameter , int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, connection,transaction,1);
+//        }
         
-        public static DetalleDocumentoEntityCollection FindByAllPaged(DetalleDocumentoFindParameterEntity findParameter ,int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static DetalleDocumentoEntityCollection FindByAllPaged(DetalleDocumentoFindParameterEntity findParameter ,int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
 
-			DetalleDocumentoEntityCollection detalleDocumentoCollection = null; 
+//			DetalleDocumentoEntityCollection detalleDocumentoCollection = null; 
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
-//                {
-                   detalleDocumentoCollection  = DetalleDocumentoDataAccessCollection.FindByAllPaged(findParameter , pageNumber, pageSize, orderBy, connection, transaction, deepLoadLevel);
-                   detalleDocumentoCollection.SetState(EntityStatesEnum.Loaded);
-//                    transactionScope.Complete();
-//
-//                }  //End of Transaction
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+//                   detalleDocumentoCollection  = DetalleDocumentoDataAccessCollection.FindByAllPaged(findParameter , pageNumber, pageSize, orderBy, connection, transaction, deepLoadLevel);
+//                   detalleDocumentoCollection.SetState(EntityStatesEnum.Loaded);
+////                    transactionScope.Complete();
+////
+////                }  //End of Transaction
 
-                return detalleDocumentoCollection;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                return detalleDocumentoCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
-        #endregion
+//        #endregion
 
       
-        #endregion Implementation
+//        #endregion Implementation
         
           
      }

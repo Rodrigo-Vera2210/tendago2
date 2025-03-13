@@ -32,146 +32,146 @@ namespace ER.BA
     public partial class UsuarioLocalBodegaBussinesAction
     {
          
-       #region Implementation
+//       #region Implementation
         
-       public static UsuarioLocalBodegaEntity Save(UsuarioLocalBodegaEntity usuarioLocalBodega )
-       {   
-            return Save(usuarioLocalBodega,null, null);
-       }
+//       public static UsuarioLocalBodegaEntity Save(UsuarioLocalBodegaEntity usuarioLocalBodega )
+//       {   
+//            return Save(usuarioLocalBodega,null, null);
+//       }
        
-       public static UsuarioLocalBodegaEntity Save(UsuarioLocalBodegaEntity usuarioLocalBodega , SqlConnection connection, SqlTransaction transaction)
-       {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true; 
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//       public static UsuarioLocalBodegaEntity Save(UsuarioLocalBodegaEntity usuarioLocalBodega , SqlConnection connection, SqlTransaction transaction)
+//       {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true; 
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+///*
+//					if( usuarioLocalBodega.InicioSesionAsUsuario != null && usuarioLocalBodega.InicioSesionAsUsuario.CanSave )
+//					{
+//						usuarioLocalBodega.InicioSesion = UsuarioBussinesAction.Save(usuarioLocalBodega.InicioSesionAsUsuario , connection,transaction).InicioSesion;
+//					}
+
+//					if( usuarioLocalBodega.IdLocalBodegaAsLocalBodega != null && usuarioLocalBodega.IdLocalBodegaAsLocalBodega.CanSave )
+//					{
+//						usuarioLocalBodega.IdLocalBodega = LocalBodegaBussinesAction.Save(usuarioLocalBodega.IdLocalBodegaAsLocalBodega , connection,transaction).Id;
+//					}
+
+
+//*/
+//                    switch (usuarioLocalBodega.CurrentState)
+//                    {
+//                        case EntityStatesEnum.Deleted:
+//                            UsuarioLocalBodegaDataAccess.Delete(usuarioLocalBodega, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.Updated:
+//                            UsuarioLocalBodegaDataAccess.Update(usuarioLocalBodega, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.New:
+//                            usuarioLocalBodega = UsuarioLocalBodegaDataAccess.Insert(usuarioLocalBodega, connection, transaction);
+//                            break;
+//                        default:
+//                            break;
+//                    }
+                    
+                    
+
+////                } 
+               
+//               //End of Transaction
+//               if (isBAParent && transaction != null)
+//               {
+//					transaction.Commit();
+//					usuarioLocalBodega.SetState(EntityStatesEnum.SavedSuccessfully);
+//               }
+               
+//               return usuarioLocalBodega;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
 //                {
-/*
-					if( usuarioLocalBodega.InicioSesionAsUsuario != null && usuarioLocalBodega.InicioSesionAsUsuario.CanSave )
-					{
-						usuarioLocalBodega.InicioSesion = UsuarioBussinesAction.Save(usuarioLocalBodega.InicioSesionAsUsuario , connection,transaction).InicioSesion;
-					}
-
-					if( usuarioLocalBodega.IdLocalBodegaAsLocalBodega != null && usuarioLocalBodega.IdLocalBodegaAsLocalBodega.CanSave )
-					{
-						usuarioLocalBodega.IdLocalBodega = LocalBodegaBussinesAction.Save(usuarioLocalBodega.IdLocalBodegaAsLocalBodega , connection,transaction).Id;
-					}
-
-
-*/
-                    switch (usuarioLocalBodega.CurrentState)
-                    {
-                        case EntityStatesEnum.Deleted:
-                            UsuarioLocalBodegaDataAccess.Delete(usuarioLocalBodega, connection, transaction);
-                            break;
-                        case EntityStatesEnum.Updated:
-                            UsuarioLocalBodegaDataAccess.Update(usuarioLocalBodega, connection, transaction);
-                            break;
-                        case EntityStatesEnum.New:
-                            usuarioLocalBodega = UsuarioLocalBodegaDataAccess.Insert(usuarioLocalBodega, connection, transaction);
-                            break;
-                        default:
-                            break;
-                    }
+//                    transaction.Rollback();
+//                    if ( usuarioLocalBodega != null)  usuarioLocalBodega.RollBackState();
                     
-                    
-
-//                } 
-               
-               //End of Transaction
-               if (isBAParent && transaction != null)
-               {
-					transaction.Commit();
-					usuarioLocalBodega.SetState(EntityStatesEnum.SavedSuccessfully);
-               }
-               
-               return usuarioLocalBodega;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( usuarioLocalBodega != null)  usuarioLocalBodega.RollBackState();
-                    
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
   
          
          
          
-        public static UsuarioLocalBodegaEntity LoadByPK(int Id)
-        {
-            return LoadByPK(Id , null, null, 1);
-        }
-        public static UsuarioLocalBodegaEntity LoadByPK(int Id ,int deepLoadLevel)
-        {
-            return LoadByPK(Id , null, null, deepLoadLevel);
-        }
+//        public static UsuarioLocalBodegaEntity LoadByPK(int Id)
+//        {
+//            return LoadByPK(Id , null, null, 1);
+//        }
+//        public static UsuarioLocalBodegaEntity LoadByPK(int Id ,int deepLoadLevel)
+//        {
+//            return LoadByPK(Id , null, null, deepLoadLevel);
+//        }
         
-        public static UsuarioLocalBodegaEntity LoadByPK(int Id, SqlConnection connection,SqlTransaction  transaction)
-        {
-            return LoadByPK(Id , connection, transaction, 1);
-        }
+//        public static UsuarioLocalBodegaEntity LoadByPK(int Id, SqlConnection connection,SqlTransaction  transaction)
+//        {
+//            return LoadByPK(Id , connection, transaction, 1);
+//        }
         
-        public static UsuarioLocalBodegaEntity LoadByPK(int Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static UsuarioLocalBodegaEntity LoadByPK(int Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
             
-            try
-            {
+//            try
+//            {
 
                 
-				UsuarioLocalBodegaEntity usuarioLocalBodega = UsuarioLocalBodegaDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
-				if(usuarioLocalBodega!=null) 
-                {
-					if (deepLoadLevel > 1)
-	                {
-							usuarioLocalBodega.InicioSesionAsUsuario = UsuarioBussinesAction.LoadByPK(usuarioLocalBodega.InicioSesion, connection , transaction , deepLoadLevel - 1);
-						usuarioLocalBodega.IdLocalBodegaAsLocalBodega = LocalBodegaBussinesAction.LoadByPK(usuarioLocalBodega.IdLocalBodega, connection , transaction , deepLoadLevel - 1);
+//				UsuarioLocalBodegaEntity usuarioLocalBodega = UsuarioLocalBodegaDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
+//				if(usuarioLocalBodega!=null) 
+//                {
+//					if (deepLoadLevel > 1)
+//	                {
+//							usuarioLocalBodega.InicioSesionAsUsuario = UsuarioBussinesAction.LoadByPK(usuarioLocalBodega.InicioSesion, connection , transaction , deepLoadLevel - 1);
+//						usuarioLocalBodega.IdLocalBodegaAsLocalBodega = LocalBodegaBussinesAction.LoadByPK(usuarioLocalBodega.IdLocalBodega, connection , transaction , deepLoadLevel - 1);
 
-	                }
+//	                }
 	                   
-						usuarioLocalBodega.SetLoadedState();
-				}
+//						usuarioLocalBodega.SetLoadedState();
+//				}
 
-				return usuarioLocalBodega;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//				return usuarioLocalBodega;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
          
-        #endregion Implementation
+//        #endregion Implementation
           
      }
 }

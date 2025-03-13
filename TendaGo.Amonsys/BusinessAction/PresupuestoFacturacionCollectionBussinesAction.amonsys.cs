@@ -35,185 +35,185 @@ namespace ER.BA
     
   
     
-        #region << Custom Stored Procedures >>
+//        #region << Custom Stored Procedures >>
         
         
-        #endregion
+//        #endregion
         
-        #region Implementation
+//        #region Implementation
         
-        public static PresupuestoFacturacionEntityCollection Save(PresupuestoFacturacionEntityCollection presupuestoFacturacionCollection )
-        {
-            return Save(presupuestoFacturacionCollection, null, null);
-        }
+//        public static PresupuestoFacturacionEntityCollection Save(PresupuestoFacturacionEntityCollection presupuestoFacturacionCollection )
+//        {
+//            return Save(presupuestoFacturacionCollection, null, null);
+//        }
         
-        public static PresupuestoFacturacionEntityCollection Save(PresupuestoFacturacionEntityCollection presupuestoFacturacionCollection , SqlConnection connection, SqlTransaction transaction)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//        public static PresupuestoFacturacionEntityCollection Save(PresupuestoFacturacionEntityCollection presupuestoFacturacionCollection , SqlConnection connection, SqlTransaction transaction)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-                    foreach (PresupuestoFacturacionEntity presupuestoFacturacion in presupuestoFacturacionCollection)
-                    {
-                        PresupuestoFacturacionBussinesAction.Save(presupuestoFacturacion , connection, transaction);
-                    }
+//                    foreach (PresupuestoFacturacionEntity presupuestoFacturacion in presupuestoFacturacionCollection)
+//                    {
+//                        PresupuestoFacturacionBussinesAction.Save(presupuestoFacturacion , connection, transaction);
+//                    }
                     
-                    if (isBAParent && transaction != null) 
-                    {
-                    	transaction.Commit();
-                    	presupuestoFacturacionCollection.SetState(EntityStatesEnum.SavedSuccessfully);
-                    }
+//                    if (isBAParent && transaction != null) 
+//                    {
+//                    	transaction.Commit();
+//                    	presupuestoFacturacionCollection.SetState(EntityStatesEnum.SavedSuccessfully);
+//                    }
 
-                    return presupuestoFacturacionCollection;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( presupuestoFacturacionCollection != null)  presupuestoFacturacionCollection.RollBackState();
+//                    return presupuestoFacturacionCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
+//                {
+//                    transaction.Rollback();
+//                    if ( presupuestoFacturacionCollection != null)  presupuestoFacturacionCollection.RollBackState();
                     
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
-        #region << Find by All >>
+//        #region << Find by All >>
         
-        public static PresupuestoFacturacionEntityCollection FindByAll(PresupuestoFacturacionFindParameterEntity findParameter )
-        {
-        	return FindByAll(findParameter,null,null,1);
-        }
+//        public static PresupuestoFacturacionEntityCollection FindByAll(PresupuestoFacturacionFindParameterEntity findParameter )
+//        {
+//        	return FindByAll(findParameter,null,null,1);
+//        }
         
-        public static PresupuestoFacturacionEntityCollection FindByAll(PresupuestoFacturacionFindParameterEntity findParameter ,int deepLoadLevel)
-        {
-        	return FindByAll(findParameter,null,null,deepLoadLevel);
-        }
+//        public static PresupuestoFacturacionEntityCollection FindByAll(PresupuestoFacturacionFindParameterEntity findParameter ,int deepLoadLevel)
+//        {
+//        	return FindByAll(findParameter,null,null,deepLoadLevel);
+//        }
         
-        public static PresupuestoFacturacionEntityCollection FindByAll(PresupuestoFacturacionFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction)
-        {
-        	return FindByAll(findParameter,connection,transaction,1);
-        }
+//        public static PresupuestoFacturacionEntityCollection FindByAll(PresupuestoFacturacionFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction)
+//        {
+//        	return FindByAll(findParameter,connection,transaction,1);
+//        }
         
-        public static PresupuestoFacturacionEntityCollection FindByAll(PresupuestoFacturacionFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static PresupuestoFacturacionEntityCollection FindByAll(PresupuestoFacturacionFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
 
-			PresupuestoFacturacionEntityCollection presupuestoFacturacionCollection = null; 
+//			PresupuestoFacturacionEntityCollection presupuestoFacturacionCollection = null; 
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
-//                {
-                   presupuestoFacturacionCollection  = PresupuestoFacturacionDataAccessCollection.FindByAll(findParameter , connection, transaction, deepLoadLevel);
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+//                   presupuestoFacturacionCollection  = PresupuestoFacturacionDataAccessCollection.FindByAll(findParameter , connection, transaction, deepLoadLevel);
                    
-				if (presupuestoFacturacionCollection!=null && deepLoadLevel > 1)
-                {
-                	foreach (PresupuestoFacturacionEntity presupuestoFacturacion in presupuestoFacturacionCollection)
-                    {
-						presupuestoFacturacion.IdEmpresaAsEmpresa = EmpresaBussinesAction.LoadByPK(presupuestoFacturacion.IdEmpresa, connection, transaction, deepLoadLevel - 1);
-						presupuestoFacturacion.RucAsRuc = RucBussinesAction.LoadByPK(presupuestoFacturacion.Ruc, connection, transaction, deepLoadLevel - 1);
+//				if (presupuestoFacturacionCollection!=null && deepLoadLevel > 1)
+//                {
+//                	foreach (PresupuestoFacturacionEntity presupuestoFacturacion in presupuestoFacturacionCollection)
+//                    {
+//						presupuestoFacturacion.IdEmpresaAsEmpresa = EmpresaBussinesAction.LoadByPK(presupuestoFacturacion.IdEmpresa, connection, transaction, deepLoadLevel - 1);
+//						presupuestoFacturacion.RucAsRuc = RucBussinesAction.LoadByPK(presupuestoFacturacion.Ruc, connection, transaction, deepLoadLevel - 1);
 
-                    }
+//                    }
 
-                }
+//                }
 
                    
-                   presupuestoFacturacionCollection.SetState(EntityStatesEnum.Loaded);
-//                    transactionScope.Complete();
-//
-//                }  //End of Transaction
+//                   presupuestoFacturacionCollection.SetState(EntityStatesEnum.Loaded);
+////                    transactionScope.Complete();
+////
+////                }  //End of Transaction
 
-                return presupuestoFacturacionCollection;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                return presupuestoFacturacionCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
-        #endregion
+//        #endregion
         
-        #region << Find by All Paged >>
+//        #region << Find by All Paged >>
         
-        public static PresupuestoFacturacionEntityCollection FindByAllPaged(PresupuestoFacturacionFindParameterEntity findParameter, int pageNumber, int pageSize ,string orderBy)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize,orderBy, null,null,1);
-        }
+//        public static PresupuestoFacturacionEntityCollection FindByAllPaged(PresupuestoFacturacionFindParameterEntity findParameter, int pageNumber, int pageSize ,string orderBy)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize,orderBy, null,null,1);
+//        }
         
-        public static PresupuestoFacturacionEntityCollection FindByAllPaged(PresupuestoFacturacionFindParameterEntity findParameter , int pageNumber, int pageSize,string orderBy, int deepLoadLevel)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, null,null,deepLoadLevel);
-        }
+//        public static PresupuestoFacturacionEntityCollection FindByAllPaged(PresupuestoFacturacionFindParameterEntity findParameter , int pageNumber, int pageSize,string orderBy, int deepLoadLevel)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, null,null,deepLoadLevel);
+//        }
         
-        public static PresupuestoFacturacionEntityCollection FindByAllPaged(PresupuestoFacturacionFindParameterEntity findParameter , int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, connection,transaction,1);
-        }
+//        public static PresupuestoFacturacionEntityCollection FindByAllPaged(PresupuestoFacturacionFindParameterEntity findParameter , int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, connection,transaction,1);
+//        }
         
-        public static PresupuestoFacturacionEntityCollection FindByAllPaged(PresupuestoFacturacionFindParameterEntity findParameter ,int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static PresupuestoFacturacionEntityCollection FindByAllPaged(PresupuestoFacturacionFindParameterEntity findParameter ,int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
 
-			PresupuestoFacturacionEntityCollection presupuestoFacturacionCollection = null; 
+//			PresupuestoFacturacionEntityCollection presupuestoFacturacionCollection = null; 
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
-//                {
-                   presupuestoFacturacionCollection  = PresupuestoFacturacionDataAccessCollection.FindByAllPaged(findParameter , pageNumber, pageSize, orderBy, connection, transaction, deepLoadLevel);
-                   presupuestoFacturacionCollection.SetState(EntityStatesEnum.Loaded);
-//                    transactionScope.Complete();
-//
-//                }  //End of Transaction
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+//                   presupuestoFacturacionCollection  = PresupuestoFacturacionDataAccessCollection.FindByAllPaged(findParameter , pageNumber, pageSize, orderBy, connection, transaction, deepLoadLevel);
+//                   presupuestoFacturacionCollection.SetState(EntityStatesEnum.Loaded);
+////                    transactionScope.Complete();
+////
+////                }  //End of Transaction
 
-                return presupuestoFacturacionCollection;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                return presupuestoFacturacionCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
-        #endregion
+//        #endregion
 
       
-        #endregion Implementation
+//        #endregion Implementation
         
           
      }

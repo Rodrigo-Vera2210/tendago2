@@ -27,64 +27,64 @@ namespace ER.BA
 {
     public partial class PagoCreditoBussinesAction
     {
-        /// <summary>
-        /// Guarda un pago de cuentas por pagar con su detalle
-        /// </summary>
-        /// <param name="pagoCredito">El detalle del pago debe estar contenido en la propiedad DetallePagoFromIdPagoCredito</param>
-        /// <returns></returns>
-        public static PagoCreditoEntity Guardar(PagoCreditoEntity pagoCredito)
-        {
-            return Guardar(pagoCredito, null, null);
-        }
+        ///// <summary>
+        ///// Guarda un pago de cuentas por pagar con su detalle
+        ///// </summary>
+        ///// <param name="pagoCredito">El detalle del pago debe estar contenido en la propiedad DetallePagoFromIdPagoCredito</param>
+        ///// <returns></returns>
+        //public static PagoCreditoEntity Guardar(PagoCreditoEntity pagoCredito)
+        //{
+        //    return Guardar(pagoCredito, null, null);
+        //}
 
-        /// <summary>
-        /// Guarda un pago de cuentas por pagar con su detalle
-        /// </summary>
-        /// <param name="pagoCredito">El detalle del pago debe estar contenido en la propiedad DetallePagoFromIdPagoCredito</param>
-        /// <param name="connection">conexion</param>
-        /// <param name="transaction">transaccion</param>
-        /// <returns></returns>
-        public static PagoCreditoEntity Guardar(PagoCreditoEntity pagoCredito, SqlConnection connection, SqlTransaction transaction)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+        ///// <summary>
+        ///// Guarda un pago de cuentas por pagar con su detalle
+        ///// </summary>
+        ///// <param name="pagoCredito">El detalle del pago debe estar contenido en la propiedad DetallePagoFromIdPagoCredito</param>
+        ///// <param name="connection">conexion</param>
+        ///// <param name="transaction">transaccion</param>
+        ///// <returns></returns>
+        //public static PagoCreditoEntity Guardar(PagoCreditoEntity pagoCredito, SqlConnection connection, SqlTransaction transaction)
+        //{
+        //    bool isBAParent = false;
+        //    if (connection == null)
+        //    {
+        //        isBAParent = true;
+        //        connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+        //        connection.Open();
+        //        transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+        //    }
 
-            try
-            {
+        //    try
+        //    {
 
-                pagoCredito = Save(pagoCredito, connection, transaction);
+        //        pagoCredito = Save(pagoCredito, connection, transaction);
 
 
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Commit();
-                    pagoCredito.SetState(EntityStatesEnum.SavedSuccessfully);
-                }
+        //        if (isBAParent && transaction != null)
+        //        {
+        //            transaction.Commit();
+        //            pagoCredito.SetState(EntityStatesEnum.SavedSuccessfully);
+        //        }
 
-                return pagoCredito;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if (pagoCredito != null) pagoCredito.RollBackState();
+        //        return pagoCredito;
+        //    }
+        //    catch (Exception exc)
+        //    {
+        //        if (isBAParent && transaction != null)
+        //        {
+        //            transaction.Rollback();
+        //            if (pagoCredito != null) pagoCredito.RollBackState();
 
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+        //        }
+        //        throw exc;
+        //    }
+        //    finally
+        //    {
+        //        if (isBAParent) connection.Close();
+        //    }
+        //}
     }
 }
 

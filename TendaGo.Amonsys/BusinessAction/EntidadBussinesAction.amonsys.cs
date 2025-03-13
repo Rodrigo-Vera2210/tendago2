@@ -32,158 +32,158 @@ namespace ER.BA
     public partial class EntidadBussinesAction
     {
          
-       #region Implementation
+//       #region Implementation
         
-       public static EntidadEntity Save(EntidadEntity entidad )
-       {   
-            return Save(entidad,null, null);
-       }
+//       public static EntidadEntity Save(EntidadEntity entidad )
+//       {   
+//            return Save(entidad,null, null);
+//       }
        
-       public static EntidadEntity Save(EntidadEntity entidad , SqlConnection connection, SqlTransaction transaction)
-       {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true; 
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//       public static EntidadEntity Save(EntidadEntity entidad , SqlConnection connection, SqlTransaction transaction)
+//       {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true; 
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+///*
+//					if( entidad.IdPaisAsPais != null && entidad.IdPaisAsPais.CanSave )
+//					{
+//						entidad.IdPais = PaisBussinesAction.Save(entidad.IdPaisAsPais , connection,transaction).Id;
+//					}
+
+//					if( entidad.IdProvinciaAsProvincia != null && entidad.IdProvinciaAsProvincia.CanSave )
+//					{
+//						entidad.IdProvincia = ProvinciaBussinesAction.Save(entidad.IdProvinciaAsProvincia , connection,transaction).Id;
+//					}
+
+//					if( entidad.IdCiudadAsCiudad != null && entidad.IdCiudadAsCiudad.CanSave )
+//					{
+//						entidad.IdCiudad = CiudadBussinesAction.Save(entidad.IdCiudadAsCiudad , connection,transaction).Id;
+//					}
+
+//					if( entidad.IdSectorAsSector != null && entidad.IdSectorAsSector.CanSave )
+//					{
+//						entidad.IdSector = SectorBussinesAction.Save(entidad.IdSectorAsSector , connection,transaction).Id;
+//					}
+
+
+//*/
+//                    switch (entidad.CurrentState)
+//                    {
+//                        case EntityStatesEnum.Deleted:
+//                            EntidadDataAccess.Delete(entidad, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.Updated:
+//                            EntidadDataAccess.Update(entidad, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.New:
+//                            entidad = EntidadDataAccess.Insert(entidad, connection, transaction);
+//                            break;
+//                        default:
+//                            break;
+//                    }
+                    
+                    
+
+////                } 
+               
+//               //End of Transaction
+//               if (isBAParent && transaction != null)
+//               {
+//					transaction.Commit();
+//					entidad.SetState(EntityStatesEnum.SavedSuccessfully);
+//               }
+               
+//               return entidad;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
 //                {
-/*
-					if( entidad.IdPaisAsPais != null && entidad.IdPaisAsPais.CanSave )
-					{
-						entidad.IdPais = PaisBussinesAction.Save(entidad.IdPaisAsPais , connection,transaction).Id;
-					}
-
-					if( entidad.IdProvinciaAsProvincia != null && entidad.IdProvinciaAsProvincia.CanSave )
-					{
-						entidad.IdProvincia = ProvinciaBussinesAction.Save(entidad.IdProvinciaAsProvincia , connection,transaction).Id;
-					}
-
-					if( entidad.IdCiudadAsCiudad != null && entidad.IdCiudadAsCiudad.CanSave )
-					{
-						entidad.IdCiudad = CiudadBussinesAction.Save(entidad.IdCiudadAsCiudad , connection,transaction).Id;
-					}
-
-					if( entidad.IdSectorAsSector != null && entidad.IdSectorAsSector.CanSave )
-					{
-						entidad.IdSector = SectorBussinesAction.Save(entidad.IdSectorAsSector , connection,transaction).Id;
-					}
-
-
-*/
-                    switch (entidad.CurrentState)
-                    {
-                        case EntityStatesEnum.Deleted:
-                            EntidadDataAccess.Delete(entidad, connection, transaction);
-                            break;
-                        case EntityStatesEnum.Updated:
-                            EntidadDataAccess.Update(entidad, connection, transaction);
-                            break;
-                        case EntityStatesEnum.New:
-                            entidad = EntidadDataAccess.Insert(entidad, connection, transaction);
-                            break;
-                        default:
-                            break;
-                    }
+//                    transaction.Rollback();
+//                    if ( entidad != null)  entidad.RollBackState();
                     
-                    
-
-//                } 
-               
-               //End of Transaction
-               if (isBAParent && transaction != null)
-               {
-					transaction.Commit();
-					entidad.SetState(EntityStatesEnum.SavedSuccessfully);
-               }
-               
-               return entidad;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( entidad != null)  entidad.RollBackState();
-                    
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
   
          
          
          
-        public static EntidadEntity LoadByPK(int Id)
-        {
-            return LoadByPK(Id , null, null, 1);
-        }
-        public static EntidadEntity LoadByPK(int Id ,int deepLoadLevel)
-        {
-            return LoadByPK(Id , null, null, deepLoadLevel);
-        }
+//        public static EntidadEntity LoadByPK(int Id)
+//        {
+//            return LoadByPK(Id , null, null, 1);
+//        }
+//        public static EntidadEntity LoadByPK(int Id ,int deepLoadLevel)
+//        {
+//            return LoadByPK(Id , null, null, deepLoadLevel);
+//        }
         
-        public static EntidadEntity LoadByPK(int Id, SqlConnection connection,SqlTransaction  transaction)
-        {
-            return LoadByPK(Id , connection, transaction, 1);
-        }
+//        public static EntidadEntity LoadByPK(int Id, SqlConnection connection,SqlTransaction  transaction)
+//        {
+//            return LoadByPK(Id , connection, transaction, 1);
+//        }
         
-        public static EntidadEntity LoadByPK(int Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static EntidadEntity LoadByPK(int Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
             
-            try
-            {
+//            try
+//            {
 
                 
-				EntidadEntity entidad = EntidadDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
-				if(entidad!=null) 
-                {
-					if (deepLoadLevel > 1)
-	                {
-							entidad.IdPaisAsPais = PaisBussinesAction.LoadByPK(entidad.IdPais, connection , transaction , deepLoadLevel - 1);
-						entidad.IdProvinciaAsProvincia = ProvinciaBussinesAction.LoadByPK(entidad.IdProvincia, connection , transaction , deepLoadLevel - 1);
-						entidad.IdCiudadAsCiudad = CiudadBussinesAction.LoadByPK(entidad.IdCiudad, connection , transaction , deepLoadLevel - 1);
-						entidad.IdSectorAsSector = SectorBussinesAction.LoadByPK(entidad.IdSector, connection , transaction , deepLoadLevel - 1);
+//				EntidadEntity entidad = EntidadDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
+//				if(entidad!=null) 
+//                {
+//					if (deepLoadLevel > 1)
+//	                {
+//							entidad.IdPaisAsPais = PaisBussinesAction.LoadByPK(entidad.IdPais, connection , transaction , deepLoadLevel - 1);
+//						entidad.IdProvinciaAsProvincia = ProvinciaBussinesAction.LoadByPK(entidad.IdProvincia, connection , transaction , deepLoadLevel - 1);
+//						entidad.IdCiudadAsCiudad = CiudadBussinesAction.LoadByPK(entidad.IdCiudad, connection , transaction , deepLoadLevel - 1);
+//						entidad.IdSectorAsSector = SectorBussinesAction.LoadByPK(entidad.IdSector, connection , transaction , deepLoadLevel - 1);
 
-	                }
+//	                }
 	                   
-						entidad.SetLoadedState();
-				}
+//						entidad.SetLoadedState();
+//				}
 
-				return entidad;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//				return entidad;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
          
-        #endregion Implementation
+//        #endregion Implementation
           
      }
 }

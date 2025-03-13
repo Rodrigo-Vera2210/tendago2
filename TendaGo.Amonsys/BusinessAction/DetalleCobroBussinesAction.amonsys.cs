@@ -32,146 +32,146 @@ namespace ER.BA
     public partial class DetalleCobroBussinesAction
     {
          
-       #region Implementation
+//       #region Implementation
         
-       public static DetalleCobroEntity Save(DetalleCobroEntity detalleCobro )
-       {   
-            return Save(detalleCobro,null, null);
-       }
+//       public static DetalleCobroEntity Save(DetalleCobroEntity detalleCobro )
+//       {   
+//            return Save(detalleCobro,null, null);
+//       }
        
-       public static DetalleCobroEntity Save(DetalleCobroEntity detalleCobro , SqlConnection connection, SqlTransaction transaction)
-       {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true; 
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//       public static DetalleCobroEntity Save(DetalleCobroEntity detalleCobro , SqlConnection connection, SqlTransaction transaction)
+//       {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true; 
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+///*
+//					if( detalleCobro.IdCobroDebitoAsCobroDebito != null && detalleCobro.IdCobroDebitoAsCobroDebito.CanSave )
+//					{
+//						detalleCobro.IdCobroDebito = CobroDebitoBussinesAction.Save(detalleCobro.IdCobroDebitoAsCobroDebito , connection,transaction).Id;
+//					}
+
+//					if( detalleCobro.IdCuentaPorCobrarAsCuentaPorCobrar != null && detalleCobro.IdCuentaPorCobrarAsCuentaPorCobrar.CanSave )
+//					{
+//						detalleCobro.IdCuentaPorCobrar = CuentaPorCobrarBussinesAction.Save(detalleCobro.IdCuentaPorCobrarAsCuentaPorCobrar , connection,transaction).Id;
+//					}
+
+
+//*/
+//                    switch (detalleCobro.CurrentState)
+//                    {
+//                        case EntityStatesEnum.Deleted:
+//                            DetalleCobroDataAccess.Delete(detalleCobro, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.Updated:
+//                            DetalleCobroDataAccess.Update(detalleCobro, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.New:
+//                            detalleCobro = DetalleCobroDataAccess.Insert(detalleCobro, connection, transaction);
+//                            break;
+//                        default:
+//                            break;
+//                    }
+                    
+                    
+
+////                } 
+               
+//               //End of Transaction
+//               if (isBAParent && transaction != null)
+//               {
+//					transaction.Commit();
+//					detalleCobro.SetState(EntityStatesEnum.SavedSuccessfully);
+//               }
+               
+//               return detalleCobro;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
 //                {
-/*
-					if( detalleCobro.IdCobroDebitoAsCobroDebito != null && detalleCobro.IdCobroDebitoAsCobroDebito.CanSave )
-					{
-						detalleCobro.IdCobroDebito = CobroDebitoBussinesAction.Save(detalleCobro.IdCobroDebitoAsCobroDebito , connection,transaction).Id;
-					}
-
-					if( detalleCobro.IdCuentaPorCobrarAsCuentaPorCobrar != null && detalleCobro.IdCuentaPorCobrarAsCuentaPorCobrar.CanSave )
-					{
-						detalleCobro.IdCuentaPorCobrar = CuentaPorCobrarBussinesAction.Save(detalleCobro.IdCuentaPorCobrarAsCuentaPorCobrar , connection,transaction).Id;
-					}
-
-
-*/
-                    switch (detalleCobro.CurrentState)
-                    {
-                        case EntityStatesEnum.Deleted:
-                            DetalleCobroDataAccess.Delete(detalleCobro, connection, transaction);
-                            break;
-                        case EntityStatesEnum.Updated:
-                            DetalleCobroDataAccess.Update(detalleCobro, connection, transaction);
-                            break;
-                        case EntityStatesEnum.New:
-                            detalleCobro = DetalleCobroDataAccess.Insert(detalleCobro, connection, transaction);
-                            break;
-                        default:
-                            break;
-                    }
+//                    transaction.Rollback();
+//                    if ( detalleCobro != null)  detalleCobro.RollBackState();
                     
-                    
-
-//                } 
-               
-               //End of Transaction
-               if (isBAParent && transaction != null)
-               {
-					transaction.Commit();
-					detalleCobro.SetState(EntityStatesEnum.SavedSuccessfully);
-               }
-               
-               return detalleCobro;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( detalleCobro != null)  detalleCobro.RollBackState();
-                    
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
   
          
          
          
-        public static DetalleCobroEntity LoadByPK(int Id)
-        {
-            return LoadByPK(Id , null, null, 1);
-        }
-        public static DetalleCobroEntity LoadByPK(int Id ,int deepLoadLevel)
-        {
-            return LoadByPK(Id , null, null, deepLoadLevel);
-        }
+//        public static DetalleCobroEntity LoadByPK(int Id)
+//        {
+//            return LoadByPK(Id , null, null, 1);
+//        }
+//        public static DetalleCobroEntity LoadByPK(int Id ,int deepLoadLevel)
+//        {
+//            return LoadByPK(Id , null, null, deepLoadLevel);
+//        }
         
-        public static DetalleCobroEntity LoadByPK(int Id, SqlConnection connection,SqlTransaction  transaction)
-        {
-            return LoadByPK(Id , connection, transaction, 1);
-        }
+//        public static DetalleCobroEntity LoadByPK(int Id, SqlConnection connection,SqlTransaction  transaction)
+//        {
+//            return LoadByPK(Id , connection, transaction, 1);
+//        }
         
-        public static DetalleCobroEntity LoadByPK(int Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static DetalleCobroEntity LoadByPK(int Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
             
-            try
-            {
+//            try
+//            {
 
                 
-				DetalleCobroEntity detalleCobro = DetalleCobroDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
-				if(detalleCobro!=null) 
-                {
-					if (deepLoadLevel > 1)
-	                {
-							detalleCobro.IdCobroDebitoAsCobroDebito = CobroDebitoBussinesAction.LoadByPK(detalleCobro.IdCobroDebito, connection , transaction , deepLoadLevel - 1);
-						detalleCobro.IdCuentaPorCobrarAsCuentaPorCobrar = CuentaPorCobrarBussinesAction.LoadByPK(detalleCobro.IdCuentaPorCobrar, connection , transaction , deepLoadLevel - 1);
+//				DetalleCobroEntity detalleCobro = DetalleCobroDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
+//				if(detalleCobro!=null) 
+//                {
+//					if (deepLoadLevel > 1)
+//	                {
+//							detalleCobro.IdCobroDebitoAsCobroDebito = CobroDebitoBussinesAction.LoadByPK(detalleCobro.IdCobroDebito, connection , transaction , deepLoadLevel - 1);
+//						detalleCobro.IdCuentaPorCobrarAsCuentaPorCobrar = CuentaPorCobrarBussinesAction.LoadByPK(detalleCobro.IdCuentaPorCobrar, connection , transaction , deepLoadLevel - 1);
 
-	                }
+//	                }
 	                   
-						detalleCobro.SetLoadedState();
-				}
+//						detalleCobro.SetLoadedState();
+//				}
 
-				return detalleCobro;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//				return detalleCobro;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
          
-        #endregion Implementation
+//        #endregion Implementation
           
      }
 }

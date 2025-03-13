@@ -39,6 +39,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TendaGo.Common", "TendaGo.Common\TendaGo.Common.csproj", "{DEB4F781-DE8F-45E9-BB73-72377A6CC6D7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{C6C6DE93-435B-4681-94EA-04C044C485B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TendaGo.Domain", "TendaGo.Domain\TendaGo.Domain.csproj", "{E37F4571-A148-4F78-ACF8-B59CC7FDC555}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TendaGo.BusinessLogic", "TendaGo.BusinessLogic\TendaGo.BusinessLogic.csproj", "{938DF4D1-8D19-400D-B415-3BD827986F5D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -82,6 +88,18 @@ Global
 		{DEB4F781-DE8F-45E9-BB73-72377A6CC6D7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DEB4F781-DE8F-45E9-BB73-72377A6CC6D7}.TendaGO|Any CPU.ActiveCfg = Release|Any CPU
 		{DEB4F781-DE8F-45E9-BB73-72377A6CC6D7}.TendaGO|Any CPU.Build.0 = Release|Any CPU
+		{E37F4571-A148-4F78-ACF8-B59CC7FDC555}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E37F4571-A148-4F78-ACF8-B59CC7FDC555}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E37F4571-A148-4F78-ACF8-B59CC7FDC555}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E37F4571-A148-4F78-ACF8-B59CC7FDC555}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E37F4571-A148-4F78-ACF8-B59CC7FDC555}.TendaGO|Any CPU.ActiveCfg = Debug|Any CPU
+		{E37F4571-A148-4F78-ACF8-B59CC7FDC555}.TendaGO|Any CPU.Build.0 = Debug|Any CPU
+		{938DF4D1-8D19-400D-B415-3BD827986F5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{938DF4D1-8D19-400D-B415-3BD827986F5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{938DF4D1-8D19-400D-B415-3BD827986F5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{938DF4D1-8D19-400D-B415-3BD827986F5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{938DF4D1-8D19-400D-B415-3BD827986F5D}.TendaGO|Any CPU.ActiveCfg = Debug|Any CPU
+		{938DF4D1-8D19-400D-B415-3BD827986F5D}.TendaGO|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -96,38 +114,10 @@ Global
 		{BD4ECF1E-BBDE-4FF2-9489-DC1D321E78F3} = {B3BA6641-32E0-49EA-AD22-4DAFA2BAB678}
 		{A9BA3F30-7125-49C6-A6A3-EBCD0D234F9E} = {F35540F9-2203-4BDD-ABBC-18C7BC8FF21D}
 		{DEB4F781-DE8F-45E9-BB73-72377A6CC6D7} = {F35540F9-2203-4BDD-ABBC-18C7BC8FF21D}
+		{E37F4571-A148-4F78-ACF8-B59CC7FDC555} = {C6C6DE93-435B-4681-94EA-04C044C485B3}
+		{938DF4D1-8D19-400D-B415-3BD827986F5D} = {C6C6DE93-435B-4681-94EA-04C044C485B3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {510A61EA-422B-416B-997C-747B5EC7C104}
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 7
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://binasystem.visualstudio.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = TendaGo.Amonsys\\BusinessEntities\\BusinessEntities.csproj
-		SccProjectTopLevelParentUniqueName1 = TendaGo.sln
-		SccProjectName1 = TendaGo.Amonsys/BusinessEntities
-		SccLocalPath1 = TendaGo.Amonsys\\BusinessEntities
-		SccProjectUniqueName2 = TendaGo.Amonsys\\DataAccess\\DataAccess.csproj
-		SccProjectTopLevelParentUniqueName2 = TendaGo.sln
-		SccProjectName2 = TendaGo.Amonsys/DataAccess
-		SccLocalPath2 = TendaGo.Amonsys\\DataAccess
-		SccProjectUniqueName3 = TendaGo.Amonsys\\BusinessAction\\BusinessAction.csproj
-		SccProjectTopLevelParentUniqueName3 = TendaGo.sln
-		SccProjectName3 = TendaGo.Amonsys/BusinessAction
-		SccLocalPath3 = TendaGo.Amonsys\\BusinessAction
-		SccProjectUniqueName4 = TendaGo.Api\\TendaGo.Api.csproj
-		SccProjectTopLevelParentUniqueName4 = TendaGo.sln
-		SccProjectName4 = TendaGo.Api
-		SccLocalPath4 = TendaGo.Api
-		SccProjectUniqueName5 = TendaGo.Common\\TendaGo.Common.csproj
-		SccProjectTopLevelParentUniqueName5 = TendaGo.sln
-		SccProjectName5 = TendaGo.Common
-		SccLocalPath5 = TendaGo.Common
-		SccProjectUniqueName6 = TendaGo.Web\\TendaGo.Web.csproj
-		SccProjectTopLevelParentUniqueName6 = TendaGo.sln
-		SccProjectName6 = TendaGo.Web
-		SccLocalPath6 = TendaGo.Web
 	EndGlobalSection
 EndGlobal

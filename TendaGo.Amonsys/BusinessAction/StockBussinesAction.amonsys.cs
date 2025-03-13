@@ -32,134 +32,134 @@ namespace ER.BA
     public partial class StockBussinesAction
     {
          
-       #region Implementation
+//       #region Implementation
         
-       public static StockEntity Save(StockEntity stock )
-       {   
-            return Save(stock,null, null);
-       }
+//       public static StockEntity Save(StockEntity stock )
+//       {   
+//            return Save(stock,null, null);
+//       }
        
-       public static StockEntity Save(StockEntity stock , SqlConnection connection, SqlTransaction transaction)
-       {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true; 
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//       public static StockEntity Save(StockEntity stock , SqlConnection connection, SqlTransaction transaction)
+//       {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true; 
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+///*
+
+//*/
+//                    switch (stock.CurrentState)
+//                    {
+//                        case EntityStatesEnum.Deleted:
+//                            StockDataAccess.Delete(stock, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.Updated:
+//                            StockDataAccess.Update(stock, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.New:
+//                            stock = StockDataAccess.Insert(stock, connection, transaction);
+//                            break;
+//                        default:
+//                            break;
+//                    }
+                    
+                    
+
+////                } 
+               
+//               //End of Transaction
+//               if (isBAParent && transaction != null)
+//               {
+//					transaction.Commit();
+//					stock.SetState(EntityStatesEnum.SavedSuccessfully);
+//               }
+               
+//               return stock;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
 //                {
-/*
-
-*/
-                    switch (stock.CurrentState)
-                    {
-                        case EntityStatesEnum.Deleted:
-                            StockDataAccess.Delete(stock, connection, transaction);
-                            break;
-                        case EntityStatesEnum.Updated:
-                            StockDataAccess.Update(stock, connection, transaction);
-                            break;
-                        case EntityStatesEnum.New:
-                            stock = StockDataAccess.Insert(stock, connection, transaction);
-                            break;
-                        default:
-                            break;
-                    }
+//                    transaction.Rollback();
+//                    if ( stock != null)  stock.RollBackState();
                     
-                    
-
-//                } 
-               
-               //End of Transaction
-               if (isBAParent && transaction != null)
-               {
-					transaction.Commit();
-					stock.SetState(EntityStatesEnum.SavedSuccessfully);
-               }
-               
-               return stock;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( stock != null)  stock.RollBackState();
-                    
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
   
          
          
          
-        public static StockEntity LoadByPK(string Id)
-        {
-            return LoadByPK(Id , null, null, 1);
-        }
-        public static StockEntity LoadByPK(string Id ,int deepLoadLevel)
-        {
-            return LoadByPK(Id , null, null, deepLoadLevel);
-        }
+//        public static StockEntity LoadByPK(string Id)
+//        {
+//            return LoadByPK(Id , null, null, 1);
+//        }
+//        public static StockEntity LoadByPK(string Id ,int deepLoadLevel)
+//        {
+//            return LoadByPK(Id , null, null, deepLoadLevel);
+//        }
         
-        public static StockEntity LoadByPK(string Id, SqlConnection connection,SqlTransaction  transaction)
-        {
-            return LoadByPK(Id , connection, transaction, 1);
-        }
+//        public static StockEntity LoadByPK(string Id, SqlConnection connection,SqlTransaction  transaction)
+//        {
+//            return LoadByPK(Id , connection, transaction, 1);
+//        }
         
-        public static StockEntity LoadByPK(string Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static StockEntity LoadByPK(string Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
             
-            try
-            {
+//            try
+//            {
 
                 
-				StockEntity stock = StockDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
-				if(stock!=null) 
-                {
-					if (deepLoadLevel > 1)
-	                {
+//				StockEntity stock = StockDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
+//				if(stock!=null) 
+//                {
+//					if (deepLoadLevel > 1)
+//	                {
 	
-	                }
+//	                }
 	                   
-						stock.SetLoadedState();
-				}
+//						stock.SetLoadedState();
+//				}
 
-				return stock;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//				return stock;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
          
-        #endregion Implementation
+//        #endregion Implementation
           
      }
 }

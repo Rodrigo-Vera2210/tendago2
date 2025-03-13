@@ -32,134 +32,134 @@ namespace ER.BA
     public partial class MedioPagoBussinesAction
     {
          
-       #region Implementation
+//       #region Implementation
         
-       public static MedioPagoEntity Save(MedioPagoEntity medioPago )
-       {   
-            return Save(medioPago,null, null);
-       }
+//       public static MedioPagoEntity Save(MedioPagoEntity medioPago )
+//       {   
+//            return Save(medioPago,null, null);
+//       }
        
-       public static MedioPagoEntity Save(MedioPagoEntity medioPago , SqlConnection connection, SqlTransaction transaction)
-       {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true; 
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//       public static MedioPagoEntity Save(MedioPagoEntity medioPago , SqlConnection connection, SqlTransaction transaction)
+//       {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true; 
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+///*
+
+//*/
+//                    switch (medioPago.CurrentState)
+//                    {
+//                        case EntityStatesEnum.Deleted:
+//                            MedioPagoDataAccess.Delete(medioPago, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.Updated:
+//                            MedioPagoDataAccess.Update(medioPago, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.New:
+//                            medioPago = MedioPagoDataAccess.Insert(medioPago, connection, transaction);
+//                            break;
+//                        default:
+//                            break;
+//                    }
+                    
+                    
+
+////                } 
+               
+//               //End of Transaction
+//               if (isBAParent && transaction != null)
+//               {
+//					transaction.Commit();
+//					medioPago.SetState(EntityStatesEnum.SavedSuccessfully);
+//               }
+               
+//               return medioPago;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
 //                {
-/*
-
-*/
-                    switch (medioPago.CurrentState)
-                    {
-                        case EntityStatesEnum.Deleted:
-                            MedioPagoDataAccess.Delete(medioPago, connection, transaction);
-                            break;
-                        case EntityStatesEnum.Updated:
-                            MedioPagoDataAccess.Update(medioPago, connection, transaction);
-                            break;
-                        case EntityStatesEnum.New:
-                            medioPago = MedioPagoDataAccess.Insert(medioPago, connection, transaction);
-                            break;
-                        default:
-                            break;
-                    }
+//                    transaction.Rollback();
+//                    if ( medioPago != null)  medioPago.RollBackState();
                     
-                    
-
-//                } 
-               
-               //End of Transaction
-               if (isBAParent && transaction != null)
-               {
-					transaction.Commit();
-					medioPago.SetState(EntityStatesEnum.SavedSuccessfully);
-               }
-               
-               return medioPago;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( medioPago != null)  medioPago.RollBackState();
-                    
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
   
          
          
          
-        public static MedioPagoEntity LoadByPK(int Id)
-        {
-            return LoadByPK(Id , null, null, 1);
-        }
-        public static MedioPagoEntity LoadByPK(int Id ,int deepLoadLevel)
-        {
-            return LoadByPK(Id , null, null, deepLoadLevel);
-        }
+//        public static MedioPagoEntity LoadByPK(int Id)
+//        {
+//            return LoadByPK(Id , null, null, 1);
+//        }
+//        public static MedioPagoEntity LoadByPK(int Id ,int deepLoadLevel)
+//        {
+//            return LoadByPK(Id , null, null, deepLoadLevel);
+//        }
         
-        public static MedioPagoEntity LoadByPK(int Id, SqlConnection connection,SqlTransaction  transaction)
-        {
-            return LoadByPK(Id , connection, transaction, 1);
-        }
+//        public static MedioPagoEntity LoadByPK(int Id, SqlConnection connection,SqlTransaction  transaction)
+//        {
+//            return LoadByPK(Id , connection, transaction, 1);
+//        }
         
-        public static MedioPagoEntity LoadByPK(int Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static MedioPagoEntity LoadByPK(int Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
             
-            try
-            {
+//            try
+//            {
 
                 
-				MedioPagoEntity medioPago = MedioPagoDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
-				if(medioPago!=null) 
-                {
-					if (deepLoadLevel > 1)
-	                {
+//				MedioPagoEntity medioPago = MedioPagoDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
+//				if(medioPago!=null) 
+//                {
+//					if (deepLoadLevel > 1)
+//	                {
 	
-	                }
+//	                }
 	                   
-						medioPago.SetLoadedState();
-				}
+//						medioPago.SetLoadedState();
+//				}
 
-				return medioPago;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//				return medioPago;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
          
-        #endregion Implementation
+//        #endregion Implementation
           
      }
 }

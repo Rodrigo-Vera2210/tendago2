@@ -32,134 +32,134 @@ namespace ER.BA
     public partial class PagoCreditoBussinesAction
     {
          
-       #region Implementation
+//       #region Implementation
         
-       public static PagoCreditoEntity Save(PagoCreditoEntity pagoCredito )
-       {   
-            return Save(pagoCredito,null, null);
-       }
+//       public static PagoCreditoEntity Save(PagoCreditoEntity pagoCredito )
+//       {   
+//            return Save(pagoCredito,null, null);
+//       }
        
-       public static PagoCreditoEntity Save(PagoCreditoEntity pagoCredito , SqlConnection connection, SqlTransaction transaction)
-       {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true; 
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//       public static PagoCreditoEntity Save(PagoCreditoEntity pagoCredito , SqlConnection connection, SqlTransaction transaction)
+//       {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true; 
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+///*
+
+//*/
+//                    switch (pagoCredito.CurrentState)
+//                    {
+//                        case EntityStatesEnum.Deleted:
+//                            PagoCreditoDataAccess.Delete(pagoCredito, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.Updated:
+//                            PagoCreditoDataAccess.Update(pagoCredito, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.New:
+//                            pagoCredito = PagoCreditoDataAccess.Insert(pagoCredito, connection, transaction);
+//                            break;
+//                        default:
+//                            break;
+//                    }
+                    
+                    
+
+////                } 
+               
+//               //End of Transaction
+//               if (isBAParent && transaction != null)
+//               {
+//					transaction.Commit();
+//					pagoCredito.SetState(EntityStatesEnum.SavedSuccessfully);
+//               }
+               
+//               return pagoCredito;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
 //                {
-/*
-
-*/
-                    switch (pagoCredito.CurrentState)
-                    {
-                        case EntityStatesEnum.Deleted:
-                            PagoCreditoDataAccess.Delete(pagoCredito, connection, transaction);
-                            break;
-                        case EntityStatesEnum.Updated:
-                            PagoCreditoDataAccess.Update(pagoCredito, connection, transaction);
-                            break;
-                        case EntityStatesEnum.New:
-                            pagoCredito = PagoCreditoDataAccess.Insert(pagoCredito, connection, transaction);
-                            break;
-                        default:
-                            break;
-                    }
+//                    transaction.Rollback();
+//                    if ( pagoCredito != null)  pagoCredito.RollBackState();
                     
-                    
-
-//                } 
-               
-               //End of Transaction
-               if (isBAParent && transaction != null)
-               {
-					transaction.Commit();
-					pagoCredito.SetState(EntityStatesEnum.SavedSuccessfully);
-               }
-               
-               return pagoCredito;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( pagoCredito != null)  pagoCredito.RollBackState();
-                    
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
   
          
          
          
-        public static PagoCreditoEntity LoadByPK(string Id)
-        {
-            return LoadByPK(Id , null, null, 1);
-        }
-        public static PagoCreditoEntity LoadByPK(string Id ,int deepLoadLevel)
-        {
-            return LoadByPK(Id , null, null, deepLoadLevel);
-        }
+//        public static PagoCreditoEntity LoadByPK(string Id)
+//        {
+//            return LoadByPK(Id , null, null, 1);
+//        }
+//        public static PagoCreditoEntity LoadByPK(string Id ,int deepLoadLevel)
+//        {
+//            return LoadByPK(Id , null, null, deepLoadLevel);
+//        }
         
-        public static PagoCreditoEntity LoadByPK(string Id, SqlConnection connection,SqlTransaction  transaction)
-        {
-            return LoadByPK(Id , connection, transaction, 1);
-        }
+//        public static PagoCreditoEntity LoadByPK(string Id, SqlConnection connection,SqlTransaction  transaction)
+//        {
+//            return LoadByPK(Id , connection, transaction, 1);
+//        }
         
-        public static PagoCreditoEntity LoadByPK(string Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static PagoCreditoEntity LoadByPK(string Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
             
-            try
-            {
+//            try
+//            {
 
                 
-				PagoCreditoEntity pagoCredito = PagoCreditoDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
-				if(pagoCredito!=null) 
-                {
-					if (deepLoadLevel > 1)
-	                {
+//				PagoCreditoEntity pagoCredito = PagoCreditoDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
+//				if(pagoCredito!=null) 
+//                {
+//					if (deepLoadLevel > 1)
+//	                {
 	
-	                }
+//	                }
 	                   
-						pagoCredito.SetLoadedState();
-				}
+//						pagoCredito.SetLoadedState();
+//				}
 
-				return pagoCredito;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//				return pagoCredito;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
          
-        #endregion Implementation
+//        #endregion Implementation
           
      }
 }

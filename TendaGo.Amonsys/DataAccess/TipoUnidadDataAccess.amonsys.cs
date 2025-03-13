@@ -26,566 +26,566 @@ namespace ER.DA
     {
     
    
-        #region << Default Methods >>
+   //     #region << Default Methods >>
 
-        /// <summary>
-        /// Create a new entity type of TipoUnidad
-        /// </summary>
-        public static TipoUnidadEntity Insert(TipoUnidadEntity tipoUnidad, SqlConnection connection, SqlTransaction transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText =  "TipoUnidad_Insert";
+   //     /// <summary>
+   //     /// Create a new entity type of TipoUnidad
+   //     /// </summary>
+   //     public static TipoUnidadEntity Insert(TipoUnidadEntity tipoUnidad, SqlConnection connection, SqlTransaction transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText =  "TipoUnidad_Insert";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
                  
-				mCommand.Parameters.AddWithValue("@IdEmpresa", tipoUnidad.IdEmpresa);
-				mCommand.Parameters.AddWithValue("@IdProducto", tipoUnidad.IdProducto);
-				mCommand.Parameters.AddWithValue("@TipoUnidad", tipoUnidad.TipoUnidad.ToUpper());
-				mCommand.Parameters.AddWithValue("@Cantidad", tipoUnidad.Cantidad);
-				mCommand.Parameters.AddWithValue("@UnidadMedidad", tipoUnidad.UnidadMedidad);
-                if (tipoUnidad.CantidadMinima != 0)
-                {
-                    mCommand.Parameters.AddWithValue("@CantidadMinima", tipoUnidad.CantidadMinima);
-                }
-                else
-                {
-                    mCommand.Parameters.AddWithValue("@CantidadMinima", DBNull.Value);
-                }
-    //            if (tipoUnidad.Precio != 0)
-				//{
-					mCommand.Parameters.AddWithValue("@Precio", tipoUnidad.Precio);
-				//}
-				//else
-				//{
-				//	mCommand.Parameters.AddWithValue("@Precio",DBNull.Value);
-				//}
+			//	mCommand.Parameters.AddWithValue("@IdEmpresa", tipoUnidad.IdEmpresa);
+			//	mCommand.Parameters.AddWithValue("@IdProducto", tipoUnidad.IdProducto);
+			//	mCommand.Parameters.AddWithValue("@TipoUnidad", tipoUnidad.TipoUnidad.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@Cantidad", tipoUnidad.Cantidad);
+			//	mCommand.Parameters.AddWithValue("@UnidadMedidad", tipoUnidad.UnidadMedidad);
+   //             if (tipoUnidad.CantidadMinima != 0)
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@CantidadMinima", tipoUnidad.CantidadMinima);
+   //             }
+   //             else
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@CantidadMinima", DBNull.Value);
+   //             }
+   // //            if (tipoUnidad.Precio != 0)
+			//	//{
+			//		mCommand.Parameters.AddWithValue("@Precio", tipoUnidad.Precio);
+			//	//}
+			//	//else
+			//	//{
+			//	//	mCommand.Parameters.AddWithValue("@Precio",DBNull.Value);
+			//	//}
 
-				mCommand.Parameters.AddWithValue("@IncluyeIva", tipoUnidad.IncluyeIva);
-				mCommand.Parameters.AddWithValue("@IpIngreso", tipoUnidad.IpIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", tipoUnidad.UsuarioIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@FechaIngreso", tipoUnidad.FechaIngreso);
-				if(!String.IsNullOrEmpty(tipoUnidad.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", tipoUnidad.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@IncluyeIva", tipoUnidad.IncluyeIva);
+			//	mCommand.Parameters.AddWithValue("@IpIngreso", tipoUnidad.IpIngreso.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", tipoUnidad.UsuarioIngreso.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@FechaIngreso", tipoUnidad.FechaIngreso);
+			//	if(!String.IsNullOrEmpty(tipoUnidad.IpModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion", tipoUnidad.IpModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(tipoUnidad.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", tipoUnidad.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(tipoUnidad.UsuarioModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", tipoUnidad.UsuarioModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+			//	}
 
-				if(tipoUnidad.FechaModificacion != null && tipoUnidad.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", tipoUnidad.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
-				}
+			//	if(tipoUnidad.FechaModificacion != null && tipoUnidad.FechaModificacion != DateTime.MinValue)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion", tipoUnidad.FechaModificacion);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IdEstado", tipoUnidad.IdEstado);
+			//	mCommand.Parameters.AddWithValue("@IdEstado", tipoUnidad.IdEstado);
 
-				if (tipoUnidad.Costo != 0)
-				{
-					mCommand.Parameters.AddWithValue("@Costo", tipoUnidad.Costo);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@Costo", DBNull.Value);
-				}
-
-
-                mCommand.Parameters.AddWithValue("@Plantilla", tipoUnidad.Plantilla);
-
-                // Add the primary keys columns
-                mCommand.Parameters.Add("@Id", SqlDbType.Int);
-				mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
+			//	if (tipoUnidad.Costo != 0)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Costo", tipoUnidad.Costo);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Costo", DBNull.Value);
+			//	}
 
 
-                #endregion
+   //             mCommand.Parameters.AddWithValue("@Plantilla", tipoUnidad.Plantilla);
+
+   //             // Add the primary keys columns
+   //             mCommand.Parameters.Add("@Id", SqlDbType.Int);
+			//	mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
+
+
+   //             #endregion
                 
-                // Insert TipoUnidad
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Insert TipoUnidad
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
-				tipoUnidad.Id = Convert.ToInt32(mCommand.Parameters["@Id"].Value);
+			//	tipoUnidad.Id = Convert.ToInt32(mCommand.Parameters["@Id"].Value);
 
 
-                return tipoUnidad;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //             return tipoUnidad;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
 
-        /// <summary>
-        /// Update a entity
-        /// </summary>
-        public static void Update(TipoUnidadEntity tipoUnidad, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "TipoUnidad_Update";
+   //     /// <summary>
+   //     /// Update a entity
+   //     /// </summary>
+   //     public static void Update(TipoUnidadEntity tipoUnidad, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;;
+   //             mCommand.CommandText = "TipoUnidad_Update";
 
-                 #region << Add the params >>
+   //              #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@Id", tipoUnidad.Id);
-				mCommand.Parameters.AddWithValue("@IdEmpresa", tipoUnidad.IdEmpresa);
-				mCommand.Parameters.AddWithValue("@IdProducto", tipoUnidad.IdProducto);
-				mCommand.Parameters.AddWithValue("@TipoUnidad", tipoUnidad.TipoUnidad);
-				mCommand.Parameters.AddWithValue("@Cantidad", tipoUnidad.Cantidad);
-				mCommand.Parameters.AddWithValue("@UnidadMedidad", tipoUnidad.UnidadMedidad);
-                if (tipoUnidad.CantidadMinima != 0)
-                {
-                    mCommand.Parameters.AddWithValue("@CantidadMinima", tipoUnidad.CantidadMinima);
-                }
-                else
-                {
-                    mCommand.Parameters.AddWithValue("@CantidadMinima", DBNull.Value);
-                }
-    //            if (tipoUnidad.Precio != 0)
-				//{
-					mCommand.Parameters.AddWithValue("@Precio", tipoUnidad.Precio);
-				//}
-				//else
-				//{
-				//	mCommand.Parameters.AddWithValue("@Precio",DBNull.Value);
-				//}
+			//	mCommand.Parameters.AddWithValue("@Id", tipoUnidad.Id);
+			//	mCommand.Parameters.AddWithValue("@IdEmpresa", tipoUnidad.IdEmpresa);
+			//	mCommand.Parameters.AddWithValue("@IdProducto", tipoUnidad.IdProducto);
+			//	mCommand.Parameters.AddWithValue("@TipoUnidad", tipoUnidad.TipoUnidad);
+			//	mCommand.Parameters.AddWithValue("@Cantidad", tipoUnidad.Cantidad);
+			//	mCommand.Parameters.AddWithValue("@UnidadMedidad", tipoUnidad.UnidadMedidad);
+   //             if (tipoUnidad.CantidadMinima != 0)
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@CantidadMinima", tipoUnidad.CantidadMinima);
+   //             }
+   //             else
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@CantidadMinima", DBNull.Value);
+   //             }
+   // //            if (tipoUnidad.Precio != 0)
+			//	//{
+			//		mCommand.Parameters.AddWithValue("@Precio", tipoUnidad.Precio);
+			//	//}
+			//	//else
+			//	//{
+			//	//	mCommand.Parameters.AddWithValue("@Precio",DBNull.Value);
+			//	//}
 
-				mCommand.Parameters.AddWithValue("@IncluyeIva", tipoUnidad.IncluyeIva);
-				mCommand.Parameters.AddWithValue("@IpIngreso", tipoUnidad.IpIngreso);
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", tipoUnidad.UsuarioIngreso);
-				mCommand.Parameters.AddWithValue("@FechaIngreso", tipoUnidad.FechaIngreso);
-				if(!String.IsNullOrEmpty(tipoUnidad.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", tipoUnidad.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@IncluyeIva", tipoUnidad.IncluyeIva);
+			//	mCommand.Parameters.AddWithValue("@IpIngreso", tipoUnidad.IpIngreso);
+			//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", tipoUnidad.UsuarioIngreso);
+			//	mCommand.Parameters.AddWithValue("@FechaIngreso", tipoUnidad.FechaIngreso);
+			//	if(!String.IsNullOrEmpty(tipoUnidad.IpModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion", tipoUnidad.IpModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(tipoUnidad.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", tipoUnidad.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(tipoUnidad.UsuarioModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", tipoUnidad.UsuarioModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+			//	}
 
-				if(tipoUnidad.FechaModificacion != null && tipoUnidad.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", tipoUnidad.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
-				}
+			//	if(tipoUnidad.FechaModificacion != null && tipoUnidad.FechaModificacion != DateTime.MinValue)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion", tipoUnidad.FechaModificacion);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IdEstado", tipoUnidad.IdEstado);
+			//	mCommand.Parameters.AddWithValue("@IdEstado", tipoUnidad.IdEstado);
 				
-				if (tipoUnidad.Costo != 0)
-				{
-					mCommand.Parameters.AddWithValue("@Costo", tipoUnidad.Costo);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@Costo", DBNull.Value);
-				}
+			//	if (tipoUnidad.Costo != 0)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Costo", tipoUnidad.Costo);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Costo", DBNull.Value);
+			//	}
 
 
-                mCommand.Parameters.AddWithValue("@Plantilla", tipoUnidad.Plantilla);
+   //             mCommand.Parameters.AddWithValue("@Plantilla", tipoUnidad.Plantilla);
 
-                #endregion
+   //             #endregion
 
-                // Update tipoUnidad
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Update tipoUnidad
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
 
-         /// <summary>
-        /// Delete a entity
-        /// </summary>
-        public static void Delete(TipoUnidadEntity tipoUnidad, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "TipoUnidad_Delete";
-				mCommand.Parameters.AddWithValue("@Id", tipoUnidad.Id);
-				mCommand.Parameters.AddWithValue("@FechaModificacion", tipoUnidad.FechaModificacion);
-				mCommand.Parameters.AddWithValue("@UsuarioModificacion", tipoUnidad.UsuarioModificacion.ToUpper());
-				mCommand.Parameters.AddWithValue("@IpModificacion", tipoUnidad.IpModificacion.ToUpper());
+   //      /// <summary>
+   //     /// Delete a entity
+   //     /// </summary>
+   //     public static void Delete(TipoUnidadEntity tipoUnidad, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;;
+   //             mCommand.CommandText = "TipoUnidad_Delete";
+			//	mCommand.Parameters.AddWithValue("@Id", tipoUnidad.Id);
+			//	mCommand.Parameters.AddWithValue("@FechaModificacion", tipoUnidad.FechaModificacion);
+			//	mCommand.Parameters.AddWithValue("@UsuarioModificacion", tipoUnidad.UsuarioModificacion.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@IpModificacion", tipoUnidad.IpModificacion.ToUpper());
 
                 
-                // Update tipoUnidad
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Update tipoUnidad
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
         
          
          
-         /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static TipoUnidadEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction)
-        {
-        	return LoadByPK(Id,connection,transaction,1);
-        }
+   //      /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static TipoUnidadEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //     	return LoadByPK(Id,connection,transaction,1);
+   //     }
         
-        /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static TipoUnidadEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
-        {
-            TipoUnidadEntity tipoUnidad = new TipoUnidadEntity();
+   //     /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static TipoUnidadEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
+   //     {
+   //         TipoUnidadEntity tipoUnidad = new TipoUnidadEntity();
             
-			tipoUnidad.Id = Id;
+			//tipoUnidad.Id = Id;
             
             
-            SqlCommand mCommand = new SqlCommand();
-            SqlDataReader reader = null;
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText = "TipoUnidad_LoadByPK";
+   //         SqlCommand mCommand = new SqlCommand();
+   //         SqlDataReader reader = null;
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText = "TipoUnidad_LoadByPK";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@Id", tipoUnidad.Id);
+			//	mCommand.Parameters.AddWithValue("@Id", tipoUnidad.Id);
                 
  
-                #endregion 
+   //             #endregion 
                 
-                if (connection.State != ConnectionState.Open) connection.Open();
+   //             if (connection.State != ConnectionState.Open) connection.Open();
 
-                reader = mCommand.ExecuteReader();
+   //             reader = mCommand.ExecuteReader();
 
-                if(!reader.HasRows) return null;
+   //             if(!reader.HasRows) return null;
                 
-	            while (reader.Read())
-	            {
-					#region << Deep Load >>
-                    if (deepLoadLevel == 1)
-		     		{
-						tipoUnidad.IdProductoAsProducto = ProductoDataAccess.ConvertToProductoEntity(reader, "IdProducto");
-						tipoUnidad.UnidadMedidadAsUnidadMedida = UnidadMedidaDataAccess.ConvertToUnidadMedidaEntity(reader, "UnidadMedidad");
+	  //          while (reader.Read())
+	  //          {
+			//		#region << Deep Load >>
+   //                 if (deepLoadLevel == 1)
+		 //    		{
+			//			tipoUnidad.IdProductoAsProducto = ProductoDataAccess.ConvertToProductoEntity(reader, "IdProducto");
+			//			tipoUnidad.UnidadMedidadAsUnidadMedida = UnidadMedidaDataAccess.ConvertToUnidadMedidaEntity(reader, "UnidadMedidad");
 
-                    }
-	                #endregion
+   //                 }
+	  //              #endregion
 	                
-	                #region << Load the BusinessEntity Object >>
+	  //              #region << Load the BusinessEntity Object >>
 					
-					tipoUnidad.Id = Convert.ToInt32(reader["Id"]);
-					tipoUnidad.IdEmpresa = Convert.ToInt16(reader["IdEmpresa"]);
-					tipoUnidad.IdProducto = Convert.ToInt32(reader["IdProducto"]);
-					tipoUnidad.TipoUnidad = Convert.ToString(reader["TipoUnidad"]);
-					tipoUnidad.Cantidad = (decimal) reader["Cantidad"];
-                    if (reader["CantidadMinima"] != DBNull.Value)
-                    {
-                        tipoUnidad.CantidadMinima = (decimal)reader["CantidadMinima"];
-                    }
-                    tipoUnidad.UnidadMedidad = Convert.ToInt32(reader["UnidadMedidad"]);
-					if (reader["Precio"] != DBNull.Value)
-					{
-						tipoUnidad.Precio = (decimal) reader["Precio"];
-					}
-					if (reader["Costo"] != DBNull.Value)
-					{
-						tipoUnidad.Costo = (decimal)reader["Costo"];
-					}
+			//		tipoUnidad.Id = Convert.ToInt32(reader["Id"]);
+			//		tipoUnidad.IdEmpresa = Convert.ToInt16(reader["IdEmpresa"]);
+			//		tipoUnidad.IdProducto = Convert.ToInt32(reader["IdProducto"]);
+			//		tipoUnidad.TipoUnidad = Convert.ToString(reader["TipoUnidad"]);
+			//		tipoUnidad.Cantidad = (decimal) reader["Cantidad"];
+   //                 if (reader["CantidadMinima"] != DBNull.Value)
+   //                 {
+   //                     tipoUnidad.CantidadMinima = (decimal)reader["CantidadMinima"];
+   //                 }
+   //                 tipoUnidad.UnidadMedidad = Convert.ToInt32(reader["UnidadMedidad"]);
+			//		if (reader["Precio"] != DBNull.Value)
+			//		{
+			//			tipoUnidad.Precio = (decimal) reader["Precio"];
+			//		}
+			//		if (reader["Costo"] != DBNull.Value)
+			//		{
+			//			tipoUnidad.Costo = (decimal)reader["Costo"];
+			//		}
 
-                    tipoUnidad.Plantilla = Convert.ToBoolean(reader["Plantilla"]);
+   //                 tipoUnidad.Plantilla = Convert.ToBoolean(reader["Plantilla"]);
 
-                    if (reader["IncluyeIva"] != DBNull.Value)
-					{
-						tipoUnidad.IncluyeIva = Convert.ToBoolean(reader["IncluyeIva"]);
-					}
-					tipoUnidad.IpIngreso = Convert.ToString(reader["IpIngreso"]);
-					tipoUnidad.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
-					tipoUnidad.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
-					if (reader["IpModificacion"] != DBNull.Value)
-					{
-						tipoUnidad.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
-					}
-					if (reader["UsuarioModificacion"] != DBNull.Value)
-					{
-						tipoUnidad.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
-					}
-					if (reader["FechaModificacion"] != DBNull.Value)
-					{
-						tipoUnidad.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
-					}
-					tipoUnidad.IdEstado = Convert.ToInt16(reader["IdEstado"]);
+   //                 if (reader["IncluyeIva"] != DBNull.Value)
+			//		{
+			//			tipoUnidad.IncluyeIva = Convert.ToBoolean(reader["IncluyeIva"]);
+			//		}
+			//		tipoUnidad.IpIngreso = Convert.ToString(reader["IpIngreso"]);
+			//		tipoUnidad.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
+			//		tipoUnidad.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
+			//		if (reader["IpModificacion"] != DBNull.Value)
+			//		{
+			//			tipoUnidad.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
+			//		}
+			//		if (reader["UsuarioModificacion"] != DBNull.Value)
+			//		{
+			//			tipoUnidad.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
+			//		}
+			//		if (reader["FechaModificacion"] != DBNull.Value)
+			//		{
+			//			tipoUnidad.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
+			//		}
+			//		tipoUnidad.IdEstado = Convert.ToInt16(reader["IdEstado"]);
 
-	                #endregion
-	            }
+	  //              #endregion
+	  //          }
 
-                tipoUnidad.SetLoadedState();
-                return tipoUnidad;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (reader != null) reader.Close();
-                mCommand.Dispose();
-            }
-        }
+   //             tipoUnidad.SetLoadedState();
+   //             return tipoUnidad;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             if (reader != null) reader.Close();
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
-        #endregion
-        
-        
+   //     #endregion
         
         
-        #region << Mappers >>
         
-        public static TipoUnidadEntity ConvertToTipoUnidadEntity (SqlDataReader reader,string fkColumnName)
-        {
-            TipoUnidadEntity tipoUnidad = new TipoUnidadEntity();
+        
+   //     #region << Mappers >>
+        
+   //     public static TipoUnidadEntity ConvertToTipoUnidadEntity (SqlDataReader reader,string fkColumnName)
+   //     {
+   //         TipoUnidadEntity tipoUnidad = new TipoUnidadEntity();
             
-            try
-            {
-                bool hasData=false;
-                string columName;
+   //         try
+   //         {
+   //             bool hasData=false;
+   //             string columName;
                 
-                #region << Load the BusinessEntity Object >>
+   //             #region << Load the BusinessEntity Object >>
                 
-				try
-				{
-					columName = String.Format("Id_TipoUnidadFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						tipoUnidad.Id = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdEmpresa_TipoUnidadFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						tipoUnidad.IdEmpresa = Convert.ToInt16(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdProducto_TipoUnidadFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						tipoUnidad.IdProducto = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("TipoUnidad_TipoUnidadFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						tipoUnidad.TipoUnidad = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Cantidad_TipoUnidadFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						tipoUnidad.Cantidad = (decimal) reader[columName];
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UnidadMedidad_TipoUnidadFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						tipoUnidad.UnidadMedidad = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Precio_TipoUnidadFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						tipoUnidad.Precio = (decimal) reader[columName];
-						hasData = true;
-					}
-				}
-				catch{}
-                try
-                {
-                    columName = String.Format("CantidadMinima_TipoUnidadFrom{0}", fkColumnName);
-                    if (reader[columName] != DBNull.Value)
-                    {
-                        tipoUnidad.CantidadMinima = (decimal)reader[columName];
-                        hasData = true;
-                    }
-                }
-                catch { }
-                try
-				{
-					columName = String.Format("IncluyeIva_TipoUnidadFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						tipoUnidad.IncluyeIva = Convert.ToBoolean(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpIngreso_TipoUnidadFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						tipoUnidad.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioIngreso_TipoUnidadFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						tipoUnidad.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaIngreso_TipoUnidadFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						tipoUnidad.FechaIngreso = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpModificacion_TipoUnidadFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						tipoUnidad.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioModificacion_TipoUnidadFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						tipoUnidad.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaModificacion_TipoUnidadFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						tipoUnidad.FechaModificacion = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdEstado_TipoUnidadFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						tipoUnidad.IdEstado = Convert.ToInt16(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Id_TipoUnidadFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			tipoUnidad.Id = Convert.ToInt32(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdEmpresa_TipoUnidadFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			tipoUnidad.IdEmpresa = Convert.ToInt16(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdProducto_TipoUnidadFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			tipoUnidad.IdProducto = Convert.ToInt32(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("TipoUnidad_TipoUnidadFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			tipoUnidad.TipoUnidad = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Cantidad_TipoUnidadFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			tipoUnidad.Cantidad = (decimal) reader[columName];
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("UnidadMedidad_TipoUnidadFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			tipoUnidad.UnidadMedidad = Convert.ToInt32(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Precio_TipoUnidadFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			tipoUnidad.Precio = (decimal) reader[columName];
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+   //             try
+   //             {
+   //                 columName = String.Format("CantidadMinima_TipoUnidadFrom{0}", fkColumnName);
+   //                 if (reader[columName] != DBNull.Value)
+   //                 {
+   //                     tipoUnidad.CantidadMinima = (decimal)reader[columName];
+   //                     hasData = true;
+   //                 }
+   //             }
+   //             catch { }
+   //             try
+			//	{
+			//		columName = String.Format("IncluyeIva_TipoUnidadFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			tipoUnidad.IncluyeIva = Convert.ToBoolean(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IpIngreso_TipoUnidadFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			tipoUnidad.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("UsuarioIngreso_TipoUnidadFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			tipoUnidad.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("FechaIngreso_TipoUnidadFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			tipoUnidad.FechaIngreso = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IpModificacion_TipoUnidadFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			tipoUnidad.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("UsuarioModificacion_TipoUnidadFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			tipoUnidad.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("FechaModificacion_TipoUnidadFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			tipoUnidad.FechaModificacion = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdEstado_TipoUnidadFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			tipoUnidad.IdEstado = Convert.ToInt16(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
 
                 
-                #endregion
+   //             #endregion
                 
-                tipoUnidad.SetLoadedState();
-                if(hasData)
-                {
-                	return tipoUnidad;
-                }
-                else return null;
-            }
-            catch (Exception exc)
-            {
-                return null;
-            }
-            finally
-            {
+   //             tipoUnidad.SetLoadedState();
+   //             if(hasData)
+   //             {
+   //             	return tipoUnidad;
+   //             }
+   //             else return null;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             return null;
+   //         }
+   //         finally
+   //         {
                 
-            }
-        }
+   //         }
+   //     }
         
-        #endregion
+   //     #endregion
         
    
     }

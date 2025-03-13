@@ -32,140 +32,140 @@ namespace ER.BA
     public partial class CiudadBussinesAction
     {
          
-       #region Implementation
+//       #region Implementation
         
-       public static CiudadEntity Save(CiudadEntity ciudad )
-       {   
-            return Save(ciudad,null, null);
-       }
+//       public static CiudadEntity Save(CiudadEntity ciudad )
+//       {   
+//            return Save(ciudad,null, null);
+//       }
        
-       public static CiudadEntity Save(CiudadEntity ciudad , SqlConnection connection, SqlTransaction transaction)
-       {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true; 
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//       public static CiudadEntity Save(CiudadEntity ciudad , SqlConnection connection, SqlTransaction transaction)
+//       {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true; 
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+///*
+//					if( ciudad.IdProvinciaAsProvincia != null && ciudad.IdProvinciaAsProvincia.CanSave )
+//					{
+//						ciudad.IdProvincia = ProvinciaBussinesAction.Save(ciudad.IdProvinciaAsProvincia , connection,transaction).Id;
+//					}
+
+
+//*/
+//                    switch (ciudad.CurrentState)
+//                    {
+//                        case EntityStatesEnum.Deleted:
+//                            CiudadDataAccess.Delete(ciudad, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.Updated:
+//                            CiudadDataAccess.Update(ciudad, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.New:
+//                            ciudad = CiudadDataAccess.Insert(ciudad, connection, transaction);
+//                            break;
+//                        default:
+//                            break;
+//                    }
+                    
+                    
+
+////                } 
+               
+//               //End of Transaction
+//               if (isBAParent && transaction != null)
+//               {
+//					transaction.Commit();
+//					ciudad.SetState(EntityStatesEnum.SavedSuccessfully);
+//               }
+               
+//               return ciudad;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
 //                {
-/*
-					if( ciudad.IdProvinciaAsProvincia != null && ciudad.IdProvinciaAsProvincia.CanSave )
-					{
-						ciudad.IdProvincia = ProvinciaBussinesAction.Save(ciudad.IdProvinciaAsProvincia , connection,transaction).Id;
-					}
-
-
-*/
-                    switch (ciudad.CurrentState)
-                    {
-                        case EntityStatesEnum.Deleted:
-                            CiudadDataAccess.Delete(ciudad, connection, transaction);
-                            break;
-                        case EntityStatesEnum.Updated:
-                            CiudadDataAccess.Update(ciudad, connection, transaction);
-                            break;
-                        case EntityStatesEnum.New:
-                            ciudad = CiudadDataAccess.Insert(ciudad, connection, transaction);
-                            break;
-                        default:
-                            break;
-                    }
+//                    transaction.Rollback();
+//                    if ( ciudad != null)  ciudad.RollBackState();
                     
-                    
-
-//                } 
-               
-               //End of Transaction
-               if (isBAParent && transaction != null)
-               {
-					transaction.Commit();
-					ciudad.SetState(EntityStatesEnum.SavedSuccessfully);
-               }
-               
-               return ciudad;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( ciudad != null)  ciudad.RollBackState();
-                    
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
   
          
          
          
-        public static CiudadEntity LoadByPK(int Id)
-        {
-            return LoadByPK(Id , null, null, 1);
-        }
-        public static CiudadEntity LoadByPK(int Id ,int deepLoadLevel)
-        {
-            return LoadByPK(Id , null, null, deepLoadLevel);
-        }
+//        public static CiudadEntity LoadByPK(int Id)
+//        {
+//            return LoadByPK(Id , null, null, 1);
+//        }
+//        public static CiudadEntity LoadByPK(int Id ,int deepLoadLevel)
+//        {
+//            return LoadByPK(Id , null, null, deepLoadLevel);
+//        }
         
-        public static CiudadEntity LoadByPK(int Id, SqlConnection connection,SqlTransaction  transaction)
-        {
-            return LoadByPK(Id , connection, transaction, 1);
-        }
+//        public static CiudadEntity LoadByPK(int Id, SqlConnection connection,SqlTransaction  transaction)
+//        {
+//            return LoadByPK(Id , connection, transaction, 1);
+//        }
         
-        public static CiudadEntity LoadByPK(int Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static CiudadEntity LoadByPK(int Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
             
-            try
-            {
+//            try
+//            {
 
                 
-				CiudadEntity ciudad = CiudadDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
-				if(ciudad!=null) 
-                {
-					if (deepLoadLevel > 1)
-	                {
-							ciudad.IdProvinciaAsProvincia = ProvinciaBussinesAction.LoadByPK(ciudad.IdProvincia, connection , transaction , deepLoadLevel - 1);
+//				CiudadEntity ciudad = CiudadDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
+//				if(ciudad!=null) 
+//                {
+//					if (deepLoadLevel > 1)
+//	                {
+//							ciudad.IdProvinciaAsProvincia = ProvinciaBussinesAction.LoadByPK(ciudad.IdProvincia, connection , transaction , deepLoadLevel - 1);
 
-	                }
+//	                }
 	                   
-						ciudad.SetLoadedState();
-				}
+//						ciudad.SetLoadedState();
+//				}
 
-				return ciudad;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//				return ciudad;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
          
-        #endregion Implementation
+//        #endregion Implementation
           
      }
 }

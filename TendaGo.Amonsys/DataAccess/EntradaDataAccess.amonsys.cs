@@ -26,885 +26,885 @@ namespace ER.DA
     {
     
    
-        #region << Default Methods >>
+   //     #region << Default Methods >>
 
-        /// <summary>
-        /// Create a new entity type of Entrada
-        /// </summary>
-        public static EntradaEntity Insert(EntradaEntity entrada, SqlConnection connection, SqlTransaction transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText =  "Entrada_Insert";
+   //     /// <summary>
+   //     /// Create a new entity type of Entrada
+   //     /// </summary>
+   //     public static EntradaEntity Insert(EntradaEntity entrada, SqlConnection connection, SqlTransaction transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText =  "Entrada_Insert";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
                  
-				mCommand.Parameters.AddWithValue("@IdEmpresa", entrada.IdEmpresa);
-				mCommand.Parameters.AddWithValue("@IdLocal", entrada.IdLocal);
-				mCommand.Parameters.AddWithValue("@Periodo", entrada.Periodo.ToUpper());
-				mCommand.Parameters.AddWithValue("@Fecha", entrada.Fecha);
-				mCommand.Parameters.AddWithValue("@TipoTransaccion", entrada.TipoTransaccion.ToUpper());
-				mCommand.Parameters.AddWithValue("@IdProveedor", entrada.IdProveedor);
-				if(entrada.Subtotal0 != 0)
-				{
-					mCommand.Parameters.AddWithValue("@Subtotal0", entrada.Subtotal0);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@Subtotal0",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@IdEmpresa", entrada.IdEmpresa);
+			//	mCommand.Parameters.AddWithValue("@IdLocal", entrada.IdLocal);
+			//	mCommand.Parameters.AddWithValue("@Periodo", entrada.Periodo.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@Fecha", entrada.Fecha);
+			//	mCommand.Parameters.AddWithValue("@TipoTransaccion", entrada.TipoTransaccion.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@IdProveedor", entrada.IdProveedor);
+			//	if(entrada.Subtotal0 != 0)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Subtotal0", entrada.Subtotal0);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Subtotal0",DBNull.Value);
+			//	}
 
-				if(entrada.Subtotal12 != 0)
-				{
-					mCommand.Parameters.AddWithValue("@Subtotal12", entrada.Subtotal12);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@Subtotal12",DBNull.Value);
-				}
+			//	if(entrada.Subtotal12 != 0)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Subtotal12", entrada.Subtotal12);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Subtotal12",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@Total", entrada.Total);
-				mCommand.Parameters.AddWithValue("@Saldo", entrada.Saldo);
-				if(!String.IsNullOrEmpty(entrada.NumeroFacturaPedido))
-				{
-					mCommand.Parameters.AddWithValue("@NumeroFacturaPedido", entrada.NumeroFacturaPedido.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@NumeroFacturaPedido",DBNull.Value);
-				}
-                if (!String.IsNullOrEmpty(entrada.TransaccionPadre))
-                {
-                    mCommand.Parameters.AddWithValue("@TransaccionPadre", entrada.TransaccionPadre.ToUpper());
-                }
-                else
-                {
-                    mCommand.Parameters.AddWithValue("@TransaccionPadre", DBNull.Value);
-                }
-                if (!String.IsNullOrEmpty(entrada.TipoTransaccionPadre))
-                {
-                    mCommand.Parameters.AddWithValue("@TipoTransaccionPadre", entrada.TipoTransaccionPadre.ToUpper());
-                }
-                else
-                {
-                    mCommand.Parameters.AddWithValue("@TipoTransaccionPadre", DBNull.Value);
-                }
-                if (!String.IsNullOrEmpty(entrada.EstadoActual))
-                {
-                    mCommand.Parameters.AddWithValue("@EstadoActual", entrada.EstadoActual.ToUpper());
-                }
-                else
-                {
-                    mCommand.Parameters.AddWithValue("@EstadoActual", DBNull.Value);
-                }
-                if (entrada.FechaHoraEntrega != null && entrada.FechaHoraEntrega != DateTime.MinValue)
-                {
-                    mCommand.Parameters.AddWithValue("@FechaHoraEntrega", entrada.FechaHoraEntrega);
-                }
-                else
-                {
-                    mCommand.Parameters.AddWithValue("@FechaHoraEntrega", DBNull.Value);
-                }
-                if (entrada.ValorAdicional != 0)
-                {
-                    mCommand.Parameters.AddWithValue("@ValorAdicional", entrada.ValorAdicional);
-                }
-                else
-                {
-                    mCommand.Parameters.AddWithValue("@ValorAdicional", DBNull.Value);
-                }
-                if (!String.IsNullOrEmpty(entrada.Ruc))
-                {
-                    mCommand.Parameters.AddWithValue("@Ruc", entrada.Ruc.ToUpper());
-                }
-                else
-                {
-                    mCommand.Parameters.AddWithValue("@Ruc", DBNull.Value);
-                }
-                mCommand.Parameters.AddWithValue("@IdFormaPago", entrada.IdFormaPago);
-                if (entrada.Tasa != 0)
-                {
-                    mCommand.Parameters.AddWithValue("@Tasa", entrada.Tasa);
-                }
-                else
-                {
-                    mCommand.Parameters.AddWithValue("@Tasa", DBNull.Value);
-                }
-                if (entrada.IdMonedaOrigen != 0)
-                {
-                    mCommand.Parameters.AddWithValue("@IdMonedaOrigen", entrada.IdMonedaOrigen);
-                }
-                else
-                {
-                    mCommand.Parameters.AddWithValue("@IdMonedaOrigen", DBNull.Value);
-                }
-                mCommand.Parameters.AddWithValue("@IpIngreso", entrada.IpIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", entrada.UsuarioIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@FechaIngreso", entrada.FechaIngreso);
-				if(!String.IsNullOrEmpty(entrada.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", entrada.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@Total", entrada.Total);
+			//	mCommand.Parameters.AddWithValue("@Saldo", entrada.Saldo);
+			//	if(!String.IsNullOrEmpty(entrada.NumeroFacturaPedido))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@NumeroFacturaPedido", entrada.NumeroFacturaPedido.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@NumeroFacturaPedido",DBNull.Value);
+			//	}
+   //             if (!String.IsNullOrEmpty(entrada.TransaccionPadre))
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@TransaccionPadre", entrada.TransaccionPadre.ToUpper());
+   //             }
+   //             else
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@TransaccionPadre", DBNull.Value);
+   //             }
+   //             if (!String.IsNullOrEmpty(entrada.TipoTransaccionPadre))
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@TipoTransaccionPadre", entrada.TipoTransaccionPadre.ToUpper());
+   //             }
+   //             else
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@TipoTransaccionPadre", DBNull.Value);
+   //             }
+   //             if (!String.IsNullOrEmpty(entrada.EstadoActual))
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@EstadoActual", entrada.EstadoActual.ToUpper());
+   //             }
+   //             else
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@EstadoActual", DBNull.Value);
+   //             }
+   //             if (entrada.FechaHoraEntrega != null && entrada.FechaHoraEntrega != DateTime.MinValue)
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@FechaHoraEntrega", entrada.FechaHoraEntrega);
+   //             }
+   //             else
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@FechaHoraEntrega", DBNull.Value);
+   //             }
+   //             if (entrada.ValorAdicional != 0)
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@ValorAdicional", entrada.ValorAdicional);
+   //             }
+   //             else
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@ValorAdicional", DBNull.Value);
+   //             }
+   //             if (!String.IsNullOrEmpty(entrada.Ruc))
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@Ruc", entrada.Ruc.ToUpper());
+   //             }
+   //             else
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@Ruc", DBNull.Value);
+   //             }
+   //             mCommand.Parameters.AddWithValue("@IdFormaPago", entrada.IdFormaPago);
+   //             if (entrada.Tasa != 0)
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@Tasa", entrada.Tasa);
+   //             }
+   //             else
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@Tasa", DBNull.Value);
+   //             }
+   //             if (entrada.IdMonedaOrigen != 0)
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@IdMonedaOrigen", entrada.IdMonedaOrigen);
+   //             }
+   //             else
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@IdMonedaOrigen", DBNull.Value);
+   //             }
+   //             mCommand.Parameters.AddWithValue("@IpIngreso", entrada.IpIngreso.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", entrada.UsuarioIngreso.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@FechaIngreso", entrada.FechaIngreso);
+			//	if(!String.IsNullOrEmpty(entrada.IpModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion", entrada.IpModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(entrada.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", entrada.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(entrada.UsuarioModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", entrada.UsuarioModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+			//	}
 
-				if(entrada.FechaModificacion != null && entrada.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", entrada.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
-				}
+			//	if(entrada.FechaModificacion != null && entrada.FechaModificacion != DateTime.MinValue)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion", entrada.FechaModificacion);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
+			//	}
 
-                if (!String.IsNullOrEmpty(entrada.Observaciones))
-                {
-                    mCommand.Parameters.AddWithValue("@Observaciones", entrada.Observaciones.ToUpper());
-                }
-                else
-                {
-                    mCommand.Parameters.AddWithValue("@Observaciones", DBNull.Value);
-                }
+   //             if (!String.IsNullOrEmpty(entrada.Observaciones))
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@Observaciones", entrada.Observaciones.ToUpper());
+   //             }
+   //             else
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@Observaciones", DBNull.Value);
+   //             }
 
-                mCommand.Parameters.AddWithValue("@IdEstado", entrada.IdEstado);
+   //             mCommand.Parameters.AddWithValue("@IdEstado", entrada.IdEstado);
 
-				// Add the primary keys columns
-				mCommand.Parameters.Add("@Id", SqlDbType.VarChar, 50);
-				mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
+			//	// Add the primary keys columns
+			//	mCommand.Parameters.Add("@Id", SqlDbType.VarChar, 50);
+			//	mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
 
 
-                #endregion
+   //             #endregion
                 
-                // Insert Entrada
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Insert Entrada
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
-				entrada.Id = Convert.ToString(mCommand.Parameters["@Id"].Value);
+			//	entrada.Id = Convert.ToString(mCommand.Parameters["@Id"].Value);
 
 
-                return entrada;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //             return entrada;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
 
-        /// <summary>
-        /// Update a entity
-        /// </summary>
-        public static void Update(EntradaEntity entrada, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "Entrada_Update";
+   //     /// <summary>
+   //     /// Update a entity
+   //     /// </summary>
+   //     public static void Update(EntradaEntity entrada, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;;
+   //             mCommand.CommandText = "Entrada_Update";
 
-                 #region << Add the params >>
+   //              #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@Id", entrada.Id);
-				mCommand.Parameters.AddWithValue("@IdEmpresa", entrada.IdEmpresa);
-				mCommand.Parameters.AddWithValue("@IdLocal", entrada.IdLocal);
-				mCommand.Parameters.AddWithValue("@Periodo", entrada.Periodo);
-				mCommand.Parameters.AddWithValue("@Fecha", entrada.Fecha);
-				mCommand.Parameters.AddWithValue("@TipoTransaccion", entrada.TipoTransaccion);
-				mCommand.Parameters.AddWithValue("@IdProveedor", entrada.IdProveedor);
-				if(entrada.Subtotal0 != 0)
-				{
-					mCommand.Parameters.AddWithValue("@Subtotal0", entrada.Subtotal0);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@Subtotal0",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@Id", entrada.Id);
+			//	mCommand.Parameters.AddWithValue("@IdEmpresa", entrada.IdEmpresa);
+			//	mCommand.Parameters.AddWithValue("@IdLocal", entrada.IdLocal);
+			//	mCommand.Parameters.AddWithValue("@Periodo", entrada.Periodo);
+			//	mCommand.Parameters.AddWithValue("@Fecha", entrada.Fecha);
+			//	mCommand.Parameters.AddWithValue("@TipoTransaccion", entrada.TipoTransaccion);
+			//	mCommand.Parameters.AddWithValue("@IdProveedor", entrada.IdProveedor);
+			//	if(entrada.Subtotal0 != 0)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Subtotal0", entrada.Subtotal0);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Subtotal0",DBNull.Value);
+			//	}
 
-				if(entrada.Subtotal12 != 0)
-				{
-					mCommand.Parameters.AddWithValue("@Subtotal12", entrada.Subtotal12);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@Subtotal12",DBNull.Value);
-				}
-                if (!String.IsNullOrEmpty(entrada.Ruc))
-                {
-                    mCommand.Parameters.AddWithValue("@Ruc", entrada.Ruc.ToUpper());
-                }
-                else
-                {
-                    mCommand.Parameters.AddWithValue("@Ruc", DBNull.Value);
-                }
-                mCommand.Parameters.AddWithValue("@Total", entrada.Total);
-				mCommand.Parameters.AddWithValue("@Saldo", entrada.Saldo);
-				if(!String.IsNullOrEmpty(entrada.NumeroFacturaPedido))
-				{
-					mCommand.Parameters.AddWithValue("@NumeroFacturaPedido", entrada.NumeroFacturaPedido.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@NumeroFacturaPedido",DBNull.Value);
-				}
-                if (!String.IsNullOrEmpty(entrada.TransaccionPadre))
-                {
-                    mCommand.Parameters.AddWithValue("@TransaccionPadre", entrada.TransaccionPadre.ToUpper());
-                }
-                else
-                {
-                    mCommand.Parameters.AddWithValue("@TransaccionPadre", DBNull.Value);
-                }
-                if (!String.IsNullOrEmpty(entrada.TipoTransaccionPadre))
-                {
-                    mCommand.Parameters.AddWithValue("@TipoTransaccionPadre", entrada.TipoTransaccionPadre.ToUpper());
-                }
-                else
-                {
-                    mCommand.Parameters.AddWithValue("@TipoTransaccionPadre", DBNull.Value);
-                }
-                if (!String.IsNullOrEmpty(entrada.EstadoActual))
-                {
-                    mCommand.Parameters.AddWithValue("@EstadoActual", entrada.EstadoActual.ToUpper());
-                }
-                else
-                {
-                    mCommand.Parameters.AddWithValue("@EstadoActual", DBNull.Value);
-                }
-                if (entrada.FechaHoraEntrega != null && entrada.FechaHoraEntrega != DateTime.MinValue)
-                {
-                    mCommand.Parameters.AddWithValue("@FechaHoraEntrega", entrada.FechaHoraEntrega);
-                }
-                else
-                {
-                    mCommand.Parameters.AddWithValue("@FechaHoraEntrega", DBNull.Value);
-                }
-                if (entrada.ValorAdicional != 0)
-                {
-                    mCommand.Parameters.AddWithValue("@ValorAdicional", entrada.ValorAdicional);
-                }
-                else
-                {
-                    mCommand.Parameters.AddWithValue("@ValorAdicional", DBNull.Value);
-                }
-                if (entrada.Tasa != 0)
-                {
-                    mCommand.Parameters.AddWithValue("@Tasa", entrada.Tasa);
-                }
-                else
-                {
-                    mCommand.Parameters.AddWithValue("@Tasa", DBNull.Value);
-                }
-                if (entrada.IdMonedaOrigen != 0)
-                {
-                    mCommand.Parameters.AddWithValue("@IdMonedaOrigen", entrada.IdMonedaOrigen);
-                }
-                else
-                {
-                    mCommand.Parameters.AddWithValue("@IdMonedaOrigen", DBNull.Value);
-                }
-                mCommand.Parameters.AddWithValue("@IdFormaPago", entrada.IdFormaPago);
-				mCommand.Parameters.AddWithValue("@IpIngreso", entrada.IpIngreso);
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", entrada.UsuarioIngreso);
-				mCommand.Parameters.AddWithValue("@FechaIngreso", entrada.FechaIngreso);
-				if(!String.IsNullOrEmpty(entrada.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", entrada.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+			//	if(entrada.Subtotal12 != 0)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Subtotal12", entrada.Subtotal12);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Subtotal12",DBNull.Value);
+			//	}
+   //             if (!String.IsNullOrEmpty(entrada.Ruc))
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@Ruc", entrada.Ruc.ToUpper());
+   //             }
+   //             else
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@Ruc", DBNull.Value);
+   //             }
+   //             mCommand.Parameters.AddWithValue("@Total", entrada.Total);
+			//	mCommand.Parameters.AddWithValue("@Saldo", entrada.Saldo);
+			//	if(!String.IsNullOrEmpty(entrada.NumeroFacturaPedido))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@NumeroFacturaPedido", entrada.NumeroFacturaPedido.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@NumeroFacturaPedido",DBNull.Value);
+			//	}
+   //             if (!String.IsNullOrEmpty(entrada.TransaccionPadre))
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@TransaccionPadre", entrada.TransaccionPadre.ToUpper());
+   //             }
+   //             else
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@TransaccionPadre", DBNull.Value);
+   //             }
+   //             if (!String.IsNullOrEmpty(entrada.TipoTransaccionPadre))
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@TipoTransaccionPadre", entrada.TipoTransaccionPadre.ToUpper());
+   //             }
+   //             else
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@TipoTransaccionPadre", DBNull.Value);
+   //             }
+   //             if (!String.IsNullOrEmpty(entrada.EstadoActual))
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@EstadoActual", entrada.EstadoActual.ToUpper());
+   //             }
+   //             else
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@EstadoActual", DBNull.Value);
+   //             }
+   //             if (entrada.FechaHoraEntrega != null && entrada.FechaHoraEntrega != DateTime.MinValue)
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@FechaHoraEntrega", entrada.FechaHoraEntrega);
+   //             }
+   //             else
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@FechaHoraEntrega", DBNull.Value);
+   //             }
+   //             if (entrada.ValorAdicional != 0)
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@ValorAdicional", entrada.ValorAdicional);
+   //             }
+   //             else
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@ValorAdicional", DBNull.Value);
+   //             }
+   //             if (entrada.Tasa != 0)
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@Tasa", entrada.Tasa);
+   //             }
+   //             else
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@Tasa", DBNull.Value);
+   //             }
+   //             if (entrada.IdMonedaOrigen != 0)
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@IdMonedaOrigen", entrada.IdMonedaOrigen);
+   //             }
+   //             else
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@IdMonedaOrigen", DBNull.Value);
+   //             }
+   //             mCommand.Parameters.AddWithValue("@IdFormaPago", entrada.IdFormaPago);
+			//	mCommand.Parameters.AddWithValue("@IpIngreso", entrada.IpIngreso);
+			//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", entrada.UsuarioIngreso);
+			//	mCommand.Parameters.AddWithValue("@FechaIngreso", entrada.FechaIngreso);
+			//	if(!String.IsNullOrEmpty(entrada.IpModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion", entrada.IpModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(entrada.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", entrada.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(entrada.UsuarioModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", entrada.UsuarioModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+			//	}
 
-				if(entrada.FechaModificacion != null && entrada.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", entrada.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
-				}
+			//	if(entrada.FechaModificacion != null && entrada.FechaModificacion != DateTime.MinValue)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion", entrada.FechaModificacion);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
+			//	}
 
-                if (!String.IsNullOrEmpty(entrada.Observaciones))
-                {
-                    mCommand.Parameters.AddWithValue("@Observaciones", entrada.Observaciones.ToUpper());
-                }
-                else
-                {
-                    mCommand.Parameters.AddWithValue("@Observaciones", DBNull.Value);
-                }
+   //             if (!String.IsNullOrEmpty(entrada.Observaciones))
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@Observaciones", entrada.Observaciones.ToUpper());
+   //             }
+   //             else
+   //             {
+   //                 mCommand.Parameters.AddWithValue("@Observaciones", DBNull.Value);
+   //             }
 
-                mCommand.Parameters.AddWithValue("@IdEstado", entrada.IdEstado);
+   //             mCommand.Parameters.AddWithValue("@IdEstado", entrada.IdEstado);
                 
    
-                #endregion
+   //             #endregion
                 
-                // Update entrada
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Update entrada
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
 
-         /// <summary>
-        /// Delete a entity
-        /// </summary>
-        public static void Delete(EntradaEntity entrada, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "Entrada_Delete";
-				mCommand.Parameters.AddWithValue("@Id", entrada.Id.ToUpper());
-				mCommand.Parameters.AddWithValue("@FechaModificacion", entrada.FechaModificacion);
-				mCommand.Parameters.AddWithValue("@UsuarioModificacion", entrada.UsuarioModificacion.ToUpper());
-				mCommand.Parameters.AddWithValue("@IpModificacion", entrada.IpModificacion.ToUpper());
+   //      /// <summary>
+   //     /// Delete a entity
+   //     /// </summary>
+   //     public static void Delete(EntradaEntity entrada, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;;
+   //             mCommand.CommandText = "Entrada_Delete";
+			//	mCommand.Parameters.AddWithValue("@Id", entrada.Id.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@FechaModificacion", entrada.FechaModificacion);
+			//	mCommand.Parameters.AddWithValue("@UsuarioModificacion", entrada.UsuarioModificacion.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@IpModificacion", entrada.IpModificacion.ToUpper());
 
                 
-                // Update entrada
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Update entrada
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
         
          
          
-         /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static EntradaEntity LoadByPK(string Id, SqlConnection connection, SqlTransaction  transaction)
-        {
-        	return LoadByPK(Id,connection,transaction,1);
-        }
+   //      /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static EntradaEntity LoadByPK(string Id, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //     	return LoadByPK(Id,connection,transaction,1);
+   //     }
         
-        /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static EntradaEntity LoadByPK(string Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
-        {
-            EntradaEntity entrada = new EntradaEntity();
+   //     /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static EntradaEntity LoadByPK(string Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
+   //     {
+   //         EntradaEntity entrada = new EntradaEntity();
             
-			entrada.Id = Id.ToUpper();
+			//entrada.Id = Id.ToUpper();
             
             
-            SqlCommand mCommand = new SqlCommand();
-            SqlDataReader reader = null;
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText = "Entrada_LoadByPK";
+   //         SqlCommand mCommand = new SqlCommand();
+   //         SqlDataReader reader = null;
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText = "Entrada_LoadByPK";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@Id", entrada.Id.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@Id", entrada.Id.ToUpper());
                 
  
-                #endregion 
+   //             #endregion 
                 
-                if (connection.State != ConnectionState.Open) connection.Open();
+   //             if (connection.State != ConnectionState.Open) connection.Open();
 
-                reader = mCommand.ExecuteReader();
+   //             reader = mCommand.ExecuteReader();
 
-                if(!reader.HasRows) return null;
+   //             if(!reader.HasRows) return null;
                 
-	            while (reader.Read())
-	            {
-					#region << Deep Load >>
-                    if (deepLoadLevel > 0)
-		     		{
-                        entrada.IdLocalAsLocalBodega = LocalBodegaDataAccess.ConvertToLocalBodegaEntity(reader, "IdLocal");
-						entrada.IdProveedorAsEntidad = EntidadDataAccess.ConvertToEntidadEntity(reader, "IdProveedor");
-                        entrada.IdMonedaOrigenAsMoneda = MonedaDataAccess.ConvertToMonedaEntity(reader, "IdMonedaOrigen");
-                    }
-	                #endregion
+	  //          while (reader.Read())
+	  //          {
+			//		#region << Deep Load >>
+   //                 if (deepLoadLevel > 0)
+		 //    		{
+   //                     entrada.IdLocalAsLocalBodega = LocalBodegaDataAccess.ConvertToLocalBodegaEntity(reader, "IdLocal");
+			//			entrada.IdProveedorAsEntidad = EntidadDataAccess.ConvertToEntidadEntity(reader, "IdProveedor");
+   //                     entrada.IdMonedaOrigenAsMoneda = MonedaDataAccess.ConvertToMonedaEntity(reader, "IdMonedaOrigen");
+   //                 }
+	  //              #endregion
 	                
-	                #region << Load the BusinessEntity Object >>
+	  //              #region << Load the BusinessEntity Object >>
 					
-					entrada.Id = Convert.ToString(reader["Id"]);
-					entrada.IdEmpresa = Convert.ToInt32(reader["IdEmpresa"]);
-					entrada.IdLocal = Convert.ToInt32(reader["IdLocal"]);
-					entrada.Periodo = Convert.ToString(reader["Periodo"]);
-					entrada.Fecha = Convert.ToDateTime(reader["Fecha"]);
-					entrada.TipoTransaccion = Convert.ToString(reader["TipoTransaccion"]);
-					entrada.IdProveedor = Convert.ToInt32(reader["IdProveedor"]);
-					if (reader["Subtotal0"] != DBNull.Value)
-					{
-						entrada.Subtotal0 = (decimal) reader["Subtotal0"];
-					}
-					if (reader["Subtotal12"] != DBNull.Value)
-					{
-						entrada.Subtotal12 = (decimal) reader["Subtotal12"];
-					}
-					entrada.Total = (decimal) reader["Total"];
-					entrada.Saldo = (decimal) reader["Saldo"];
-					if (reader["NumeroFacturaPedido"] != DBNull.Value)
-					{
-						entrada.NumeroFacturaPedido = Convert.ToString(reader["NumeroFacturaPedido"]).ToUpper();
-					}
-                    if (reader["TransaccionPadre"] != DBNull.Value)
-                    {
-                        entrada.TransaccionPadre = Convert.ToString(reader["TransaccionPadre"]).ToUpper();
-                    }
-                    if (reader["TipoTransaccionPadre"] != DBNull.Value)
-                    {
-                        entrada.TipoTransaccionPadre = Convert.ToString(reader["TipoTransaccionPadre"]).ToUpper();
-                    }
-                    if (reader["EstadoActual"] != DBNull.Value)
-                    {
-                        entrada.EstadoActual = Convert.ToString(reader["EstadoActual"]).ToUpper();
-                    }
-                    if (reader["FechaHoraEntrega"] != DBNull.Value)
-                    {
-                        entrada.FechaHoraEntrega = Convert.ToDateTime(reader["FechaHoraEntrega"]);
-                    }
-                    if (reader["ValorAdicional"] != DBNull.Value)
-                    {
-                        entrada.ValorAdicional = (decimal)(reader["ValorAdicional"]);
-                    }
-                    if (reader["Ruc"] != DBNull.Value)
-                    {
-                        entrada.Ruc = Convert.ToString(reader["Ruc"]).ToUpper();
-                    }
-                    entrada.IdFormaPago = Convert.ToInt32(reader["IdFormaPago"]);
-                    if (reader["Tasa"] != DBNull.Value)
-                    {
-                        entrada.Tasa = (decimal)reader["Tasa"];
-                    }
-                    if (reader["IdMonedaOrigen"] != DBNull.Value)
-                    {
-                        entrada.IdMonedaOrigen = Convert.ToInt16(reader["IdMonedaOrigen"]);
-                    }
-                    entrada.IpIngreso = Convert.ToString(reader["IpIngreso"]);
-					entrada.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
-					entrada.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
-					if (reader["IpModificacion"] != DBNull.Value)
-					{
-						entrada.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
-					}
-					if (reader["UsuarioModificacion"] != DBNull.Value)
-					{
-						entrada.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
-					}
-					if (reader["FechaModificacion"] != DBNull.Value)
-					{
-						entrada.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
-					}
-					entrada.IdEstado = Convert.ToInt16(reader["IdEstado"]);
-                    if (reader["Observaciones"] != DBNull.Value)
-                    {
-                        entrada.Observaciones = Convert.ToString(reader["Observaciones"]);
-                    }
-                    entrada.TransaccionPadre = (reader["TransaccionPadre"] != DBNull.Value) ? Convert.ToString(reader["TransaccionPadre"]) : default;
-                    entrada.TipoTransaccionPadre = (reader["TipoTransaccionPadre"] != DBNull.Value) ? Convert.ToString(reader["TipoTransaccionPadre"]) : default;
+			//		entrada.Id = Convert.ToString(reader["Id"]);
+			//		entrada.IdEmpresa = Convert.ToInt32(reader["IdEmpresa"]);
+			//		entrada.IdLocal = Convert.ToInt32(reader["IdLocal"]);
+			//		entrada.Periodo = Convert.ToString(reader["Periodo"]);
+			//		entrada.Fecha = Convert.ToDateTime(reader["Fecha"]);
+			//		entrada.TipoTransaccion = Convert.ToString(reader["TipoTransaccion"]);
+			//		entrada.IdProveedor = Convert.ToInt32(reader["IdProveedor"]);
+			//		if (reader["Subtotal0"] != DBNull.Value)
+			//		{
+			//			entrada.Subtotal0 = (decimal) reader["Subtotal0"];
+			//		}
+			//		if (reader["Subtotal12"] != DBNull.Value)
+			//		{
+			//			entrada.Subtotal12 = (decimal) reader["Subtotal12"];
+			//		}
+			//		entrada.Total = (decimal) reader["Total"];
+			//		entrada.Saldo = (decimal) reader["Saldo"];
+			//		if (reader["NumeroFacturaPedido"] != DBNull.Value)
+			//		{
+			//			entrada.NumeroFacturaPedido = Convert.ToString(reader["NumeroFacturaPedido"]).ToUpper();
+			//		}
+   //                 if (reader["TransaccionPadre"] != DBNull.Value)
+   //                 {
+   //                     entrada.TransaccionPadre = Convert.ToString(reader["TransaccionPadre"]).ToUpper();
+   //                 }
+   //                 if (reader["TipoTransaccionPadre"] != DBNull.Value)
+   //                 {
+   //                     entrada.TipoTransaccionPadre = Convert.ToString(reader["TipoTransaccionPadre"]).ToUpper();
+   //                 }
+   //                 if (reader["EstadoActual"] != DBNull.Value)
+   //                 {
+   //                     entrada.EstadoActual = Convert.ToString(reader["EstadoActual"]).ToUpper();
+   //                 }
+   //                 if (reader["FechaHoraEntrega"] != DBNull.Value)
+   //                 {
+   //                     entrada.FechaHoraEntrega = Convert.ToDateTime(reader["FechaHoraEntrega"]);
+   //                 }
+   //                 if (reader["ValorAdicional"] != DBNull.Value)
+   //                 {
+   //                     entrada.ValorAdicional = (decimal)(reader["ValorAdicional"]);
+   //                 }
+   //                 if (reader["Ruc"] != DBNull.Value)
+   //                 {
+   //                     entrada.Ruc = Convert.ToString(reader["Ruc"]).ToUpper();
+   //                 }
+   //                 entrada.IdFormaPago = Convert.ToInt32(reader["IdFormaPago"]);
+   //                 if (reader["Tasa"] != DBNull.Value)
+   //                 {
+   //                     entrada.Tasa = (decimal)reader["Tasa"];
+   //                 }
+   //                 if (reader["IdMonedaOrigen"] != DBNull.Value)
+   //                 {
+   //                     entrada.IdMonedaOrigen = Convert.ToInt16(reader["IdMonedaOrigen"]);
+   //                 }
+   //                 entrada.IpIngreso = Convert.ToString(reader["IpIngreso"]);
+			//		entrada.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
+			//		entrada.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
+			//		if (reader["IpModificacion"] != DBNull.Value)
+			//		{
+			//			entrada.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
+			//		}
+			//		if (reader["UsuarioModificacion"] != DBNull.Value)
+			//		{
+			//			entrada.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
+			//		}
+			//		if (reader["FechaModificacion"] != DBNull.Value)
+			//		{
+			//			entrada.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
+			//		}
+			//		entrada.IdEstado = Convert.ToInt16(reader["IdEstado"]);
+   //                 if (reader["Observaciones"] != DBNull.Value)
+   //                 {
+   //                     entrada.Observaciones = Convert.ToString(reader["Observaciones"]);
+   //                 }
+   //                 entrada.TransaccionPadre = (reader["TransaccionPadre"] != DBNull.Value) ? Convert.ToString(reader["TransaccionPadre"]) : default;
+   //                 entrada.TipoTransaccionPadre = (reader["TipoTransaccionPadre"] != DBNull.Value) ? Convert.ToString(reader["TipoTransaccionPadre"]) : default;
 
-                    #endregion
-                }
+   //                 #endregion
+   //             }
 
-                entrada.SetLoadedState();
-                return entrada;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (reader != null) reader.Close();
-                mCommand.Dispose();
-            }
-        }
+   //             entrada.SetLoadedState();
+   //             return entrada;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             if (reader != null) reader.Close();
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
-        #endregion
-        
-        
+   //     #endregion
         
         
-        #region << Mappers >>
         
-        public static EntradaEntity ConvertToEntradaEntity (SqlDataReader reader,string fkColumnName)
-        {
-            EntradaEntity entrada = new EntradaEntity();
+        
+   //     #region << Mappers >>
+        
+   //     public static EntradaEntity ConvertToEntradaEntity (SqlDataReader reader,string fkColumnName)
+   //     {
+   //         EntradaEntity entrada = new EntradaEntity();
             
-            try
-            {
-                bool hasData=false;
-                string columName;
+   //         try
+   //         {
+   //             bool hasData=false;
+   //             string columName;
                 
-                #region << Load the BusinessEntity Object >>
+   //             #region << Load the BusinessEntity Object >>
                 
-				try
-				{
-					columName = String.Format("Id_EntradaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						entrada.Id = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdEmpresa_EntradaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						entrada.IdEmpresa = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdLocal_EntradaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						entrada.IdLocal = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Periodo_EntradaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						entrada.Periodo = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Fecha_EntradaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						entrada.Fecha = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("TipoTransaccion_EntradaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						entrada.TipoTransaccion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdProveedor_EntradaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						entrada.IdProveedor = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Subtotal0_EntradaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						entrada.Subtotal0 = (decimal) reader[columName];
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Subtotal12_EntradaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						entrada.Subtotal12 = (decimal) reader[columName];
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Total_EntradaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						entrada.Total = (decimal) reader[columName];
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Saldo_EntradaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						entrada.Saldo = (decimal) reader[columName];
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("NumeroFacturaPedido_EntradaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						entrada.NumeroFacturaPedido = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-                try
-                {
-                    columName = String.Format("TransaccionPadre_EntradaFrom{0}", fkColumnName);
-                    if (reader[columName] != DBNull.Value)
-                    {
-                        entrada.TransaccionPadre = Convert.ToString(reader[columName]).ToUpper();
-                        hasData = true;
-                    }
-                }
-                catch { }
-                try
-                {
-                    columName = String.Format("TipoTransaccionPadre_EntradaFrom{0}", fkColumnName);
-                    if (reader[columName] != DBNull.Value)
-                    {
-                        entrada.TipoTransaccionPadre = Convert.ToString(reader[columName]).ToUpper();
-                        hasData = true;
-                    }
-                }
-                catch { }
-                try
-                {
-                    columName = String.Format("EstadoActual_EntradaFrom{0}", fkColumnName);
-                    if (reader[columName] != DBNull.Value)
-                    {
-                        entrada.EstadoActual = Convert.ToString(reader[columName]).ToUpper();
-                        hasData = true;
-                    }
-                }
-                catch { }
-                try
-                {
-                    columName = String.Format("Ruc_EntradaFrom{0}", fkColumnName);
-                    if (reader[columName] != DBNull.Value)
-                    {
-                        entrada.Ruc = Convert.ToString(reader[columName]).ToUpper();
-                        hasData = true;
-                    }
-                }
-                catch { }
-                try
-				{
-					columName = String.Format("IdFormaPago_EntradaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						entrada.IdFormaPago = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-                catch {}
-                try
-                {
-                    columName = String.Format("Tasa_EntradaFrom{0}", fkColumnName);
-                    if (reader[columName] != DBNull.Value)
-                    {
-                        entrada.Tasa = (decimal)reader[columName];
-                        hasData = true;
-                    }
-                }
-                catch { }
-                try
-                {
-                    columName = String.Format("ValorAdicional_EntradaFrom{0}", fkColumnName);
-                    if (reader[columName] != DBNull.Value)
-                    {
-                        entrada.ValorAdicional = (decimal)reader[columName];
-                        hasData = true;
-                    }
-                }
-                catch { }
-                try
-                {
-                    columName = String.Format("IdMonedaOrigen_EntradaFrom{0}", fkColumnName);
-                    if (reader[columName] != DBNull.Value)
-                    {
-                        entrada.IdMonedaOrigen = Convert.ToInt16(reader[columName]);
-                        hasData = true;
-                    }
-                }
-                catch { }
-                try
-				{
-					columName = String.Format("IpIngreso_EntradaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						entrada.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioIngreso_EntradaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						entrada.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaIngreso_EntradaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						entrada.FechaIngreso = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-                try
-                {
-                    columName = String.Format("FechaHoraEntrega_EntradaFrom{0}", fkColumnName);
-                    if (reader[columName] != DBNull.Value)
-                    {
-                        entrada.FechaHoraEntrega = Convert.ToDateTime(reader[columName]);
-                        hasData = true;
-                    }
-                }
-                catch { }
-                try
-				{
-					columName = String.Format("IpModificacion_EntradaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						entrada.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioModificacion_EntradaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						entrada.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaModificacion_EntradaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						entrada.FechaModificacion = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdEstado_EntradaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						entrada.IdEstado = Convert.ToInt16(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-                try
-                {
-                    columName = String.Format("TransaccionPadre_EntradaFrom{0}", fkColumnName);
-                    if (reader[columName] != DBNull.Value)
-                    {
-                        entrada.TransaccionPadre = Convert.ToString(reader[columName]);
-                        hasData = true;
-                    }
-                }
-                catch { }
-                try
-                {
-                    columName = String.Format("TipoTransaccionPadre_EntradaFrom{0}", fkColumnName);
-                    if (reader[columName] != DBNull.Value)
-                    {
-                        entrada.TipoTransaccionPadre = Convert.ToString(reader[columName]);
-                        hasData = true;
-                    }
-                }
-                catch { }
-                #endregion
+			//	try
+			//	{
+			//		columName = String.Format("Id_EntradaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			entrada.Id = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdEmpresa_EntradaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			entrada.IdEmpresa = Convert.ToInt32(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdLocal_EntradaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			entrada.IdLocal = Convert.ToInt32(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Periodo_EntradaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			entrada.Periodo = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Fecha_EntradaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			entrada.Fecha = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("TipoTransaccion_EntradaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			entrada.TipoTransaccion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdProveedor_EntradaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			entrada.IdProveedor = Convert.ToInt32(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Subtotal0_EntradaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			entrada.Subtotal0 = (decimal) reader[columName];
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Subtotal12_EntradaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			entrada.Subtotal12 = (decimal) reader[columName];
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Total_EntradaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			entrada.Total = (decimal) reader[columName];
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Saldo_EntradaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			entrada.Saldo = (decimal) reader[columName];
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("NumeroFacturaPedido_EntradaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			entrada.NumeroFacturaPedido = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+   //             try
+   //             {
+   //                 columName = String.Format("TransaccionPadre_EntradaFrom{0}", fkColumnName);
+   //                 if (reader[columName] != DBNull.Value)
+   //                 {
+   //                     entrada.TransaccionPadre = Convert.ToString(reader[columName]).ToUpper();
+   //                     hasData = true;
+   //                 }
+   //             }
+   //             catch { }
+   //             try
+   //             {
+   //                 columName = String.Format("TipoTransaccionPadre_EntradaFrom{0}", fkColumnName);
+   //                 if (reader[columName] != DBNull.Value)
+   //                 {
+   //                     entrada.TipoTransaccionPadre = Convert.ToString(reader[columName]).ToUpper();
+   //                     hasData = true;
+   //                 }
+   //             }
+   //             catch { }
+   //             try
+   //             {
+   //                 columName = String.Format("EstadoActual_EntradaFrom{0}", fkColumnName);
+   //                 if (reader[columName] != DBNull.Value)
+   //                 {
+   //                     entrada.EstadoActual = Convert.ToString(reader[columName]).ToUpper();
+   //                     hasData = true;
+   //                 }
+   //             }
+   //             catch { }
+   //             try
+   //             {
+   //                 columName = String.Format("Ruc_EntradaFrom{0}", fkColumnName);
+   //                 if (reader[columName] != DBNull.Value)
+   //                 {
+   //                     entrada.Ruc = Convert.ToString(reader[columName]).ToUpper();
+   //                     hasData = true;
+   //                 }
+   //             }
+   //             catch { }
+   //             try
+			//	{
+			//		columName = String.Format("IdFormaPago_EntradaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			entrada.IdFormaPago = Convert.ToInt32(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+   //             catch {}
+   //             try
+   //             {
+   //                 columName = String.Format("Tasa_EntradaFrom{0}", fkColumnName);
+   //                 if (reader[columName] != DBNull.Value)
+   //                 {
+   //                     entrada.Tasa = (decimal)reader[columName];
+   //                     hasData = true;
+   //                 }
+   //             }
+   //             catch { }
+   //             try
+   //             {
+   //                 columName = String.Format("ValorAdicional_EntradaFrom{0}", fkColumnName);
+   //                 if (reader[columName] != DBNull.Value)
+   //                 {
+   //                     entrada.ValorAdicional = (decimal)reader[columName];
+   //                     hasData = true;
+   //                 }
+   //             }
+   //             catch { }
+   //             try
+   //             {
+   //                 columName = String.Format("IdMonedaOrigen_EntradaFrom{0}", fkColumnName);
+   //                 if (reader[columName] != DBNull.Value)
+   //                 {
+   //                     entrada.IdMonedaOrigen = Convert.ToInt16(reader[columName]);
+   //                     hasData = true;
+   //                 }
+   //             }
+   //             catch { }
+   //             try
+			//	{
+			//		columName = String.Format("IpIngreso_EntradaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			entrada.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("UsuarioIngreso_EntradaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			entrada.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("FechaIngreso_EntradaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			entrada.FechaIngreso = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+   //             try
+   //             {
+   //                 columName = String.Format("FechaHoraEntrega_EntradaFrom{0}", fkColumnName);
+   //                 if (reader[columName] != DBNull.Value)
+   //                 {
+   //                     entrada.FechaHoraEntrega = Convert.ToDateTime(reader[columName]);
+   //                     hasData = true;
+   //                 }
+   //             }
+   //             catch { }
+   //             try
+			//	{
+			//		columName = String.Format("IpModificacion_EntradaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			entrada.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("UsuarioModificacion_EntradaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			entrada.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("FechaModificacion_EntradaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			entrada.FechaModificacion = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdEstado_EntradaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			entrada.IdEstado = Convert.ToInt16(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+   //             try
+   //             {
+   //                 columName = String.Format("TransaccionPadre_EntradaFrom{0}", fkColumnName);
+   //                 if (reader[columName] != DBNull.Value)
+   //                 {
+   //                     entrada.TransaccionPadre = Convert.ToString(reader[columName]);
+   //                     hasData = true;
+   //                 }
+   //             }
+   //             catch { }
+   //             try
+   //             {
+   //                 columName = String.Format("TipoTransaccionPadre_EntradaFrom{0}", fkColumnName);
+   //                 if (reader[columName] != DBNull.Value)
+   //                 {
+   //                     entrada.TipoTransaccionPadre = Convert.ToString(reader[columName]);
+   //                     hasData = true;
+   //                 }
+   //             }
+   //             catch { }
+   //             #endregion
 
-                entrada.SetLoadedState();
-                if(hasData)
-                {
-                	return entrada;
-                }
-                else return null;
-            }
-            catch (Exception exc)
-            {
-                return null;
-            }
-            finally
-            {
+   //             entrada.SetLoadedState();
+   //             if(hasData)
+   //             {
+   //             	return entrada;
+   //             }
+   //             else return null;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             return null;
+   //         }
+   //         finally
+   //         {
                 
-            }
-        }
+   //         }
+   //     }
         
-        #endregion
+   //     #endregion
         
    
     }

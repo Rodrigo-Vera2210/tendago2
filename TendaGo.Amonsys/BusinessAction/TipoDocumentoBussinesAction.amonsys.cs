@@ -32,164 +32,164 @@ namespace ER.BA
     public partial class TipoDocumentoBussinesAction
     {
 
-        public static SecuencialEntity GetDocumentSecuential(string ruc, string idTipoDocumento, SqlConnection connection = null, SqlTransaction transaction = null)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-            }
+//        public static SecuencialEntity GetDocumentSecuential(string ruc, string idTipoDocumento, SqlConnection connection = null, SqlTransaction transaction = null)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//            }
 
-            try
-            {
-                SecuencialEntity tipoDocumento = TipoDocumentoDataAccess.GetDocumentSecuential(ruc, idTipoDocumento, connection, transaction);
+//            try
+//            {
+//                SecuencialEntity tipoDocumento = TipoDocumentoDataAccess.GetDocumentSecuential(ruc, idTipoDocumento, connection, transaction);
 
-                if (tipoDocumento != null)
-                {
-                    tipoDocumento.SetLoadedState();
-                }
-
-                return tipoDocumento;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
-
-       #region Implementation
-
-        public static TipoDocumentoEntity Save(TipoDocumentoEntity tipoDocumento )
-       {   
-            return Save(tipoDocumento,null, null);
-       }
-       
-       public static TipoDocumentoEntity Save(TipoDocumentoEntity tipoDocumento , SqlConnection connection, SqlTransaction transaction)
-       {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true; 
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
-
-            }
-
-            try
-            {
-
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+//                if (tipoDocumento != null)
 //                {
-/*
+//                    tipoDocumento.SetLoadedState();
+//                }
 
-*/
-                    switch (tipoDocumento.CurrentState)
-                    {
-                        case EntityStatesEnum.Deleted:
-                            TipoDocumentoDataAccess.Delete(tipoDocumento, connection, transaction);
-                            break;
-                        case EntityStatesEnum.Updated:
-                            TipoDocumentoDataAccess.Update(tipoDocumento, connection, transaction);
-                            break;
-                        case EntityStatesEnum.New:
-                            tipoDocumento = TipoDocumentoDataAccess.Insert(tipoDocumento, connection, transaction);
-                            break;
-                        default:
-                            break;
-                    }
+//                return tipoDocumento;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
+
+//       #region Implementation
+
+//        public static TipoDocumentoEntity Save(TipoDocumentoEntity tipoDocumento )
+//       {   
+//            return Save(tipoDocumento,null, null);
+//       }
+       
+//       public static TipoDocumentoEntity Save(TipoDocumentoEntity tipoDocumento , SqlConnection connection, SqlTransaction transaction)
+//       {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true; 
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+
+//            }
+
+//            try
+//            {
+
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+///*
+
+//*/
+//                    switch (tipoDocumento.CurrentState)
+//                    {
+//                        case EntityStatesEnum.Deleted:
+//                            TipoDocumentoDataAccess.Delete(tipoDocumento, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.Updated:
+//                            TipoDocumentoDataAccess.Update(tipoDocumento, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.New:
+//                            tipoDocumento = TipoDocumentoDataAccess.Insert(tipoDocumento, connection, transaction);
+//                            break;
+//                        default:
+//                            break;
+//                    }
                     
                     
 
-//                } 
+////                } 
                
-               //End of Transaction
-               if (isBAParent && transaction != null)
-               {
-					transaction.Commit();
-					tipoDocumento.SetState(EntityStatesEnum.SavedSuccessfully);
-               }
+//               //End of Transaction
+//               if (isBAParent && transaction != null)
+//               {
+//					transaction.Commit();
+//					tipoDocumento.SetState(EntityStatesEnum.SavedSuccessfully);
+//               }
                
-               return tipoDocumento;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( tipoDocumento != null)  tipoDocumento.RollBackState();
+//               return tipoDocumento;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
+//                {
+//                    transaction.Rollback();
+//                    if ( tipoDocumento != null)  tipoDocumento.RollBackState();
                     
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
   
          
          
          
-        public static TipoDocumentoEntity LoadByPK(string Id)
-        {
-            return LoadByPK(Id , null, null, 1);
-        }
-        public static TipoDocumentoEntity LoadByPK(string Id ,int deepLoadLevel)
-        {
-            return LoadByPK(Id , null, null, deepLoadLevel);
-        }
+//        public static TipoDocumentoEntity LoadByPK(string Id)
+//        {
+//            return LoadByPK(Id , null, null, 1);
+//        }
+//        public static TipoDocumentoEntity LoadByPK(string Id ,int deepLoadLevel)
+//        {
+//            return LoadByPK(Id , null, null, deepLoadLevel);
+//        }
         
-        public static TipoDocumentoEntity LoadByPK(string Id, SqlConnection connection,SqlTransaction  transaction)
-        {
-            return LoadByPK(Id , connection, transaction, 1);
-        }
+//        public static TipoDocumentoEntity LoadByPK(string Id, SqlConnection connection,SqlTransaction  transaction)
+//        {
+//            return LoadByPK(Id , connection, transaction, 1);
+//        }
         
-        public static TipoDocumentoEntity LoadByPK(string Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static TipoDocumentoEntity LoadByPK(string Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
             
-            try
-            {
+//            try
+//            {
 
                 
-				TipoDocumentoEntity tipoDocumento = TipoDocumentoDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
-				if(tipoDocumento!=null) 
-                {
-					if (deepLoadLevel > 1)
-	                {
+//				TipoDocumentoEntity tipoDocumento = TipoDocumentoDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
+//				if(tipoDocumento!=null) 
+//                {
+//					if (deepLoadLevel > 1)
+//	                {
 	
-	                }
+//	                }
 	                   
-						tipoDocumento.SetLoadedState();
-				}
+//						tipoDocumento.SetLoadedState();
+//				}
 
-				return tipoDocumento;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//				return tipoDocumento;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
          
-        #endregion Implementation
+//        #endregion Implementation
           
      }
 }

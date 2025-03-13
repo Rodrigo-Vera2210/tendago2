@@ -1,5 +1,6 @@
 ﻿using ER.BA;
 using ER.BE;
+using Microsoft.AspNetCore.Authorization;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,8 +10,6 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
-using System.Web;
-using System.Web.Http;
 using System.Web.Http.Controllers;
 using TendaGo.Common;
 
@@ -18,6 +17,7 @@ namespace TendaGo.Api
 {
     public class TokenAuthorizeAttribute : AuthorizeAttribute
     {
+
         public override void OnAuthorization(HttpActionContext actionContext)
         {
             if (!IsAnonymous(actionContext) && !IsApiKey(actionContext))

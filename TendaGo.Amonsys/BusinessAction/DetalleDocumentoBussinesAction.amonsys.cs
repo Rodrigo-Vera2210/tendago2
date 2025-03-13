@@ -32,146 +32,146 @@ namespace ER.BA
     public partial class DetalleDocumentoBussinesAction
     {
          
-       #region Implementation
+//       #region Implementation
         
-       public static DetalleDocumentoEntity Save(DetalleDocumentoEntity detalleDocumento )
-       {   
-            return Save(detalleDocumento,null, null);
-       }
+//       public static DetalleDocumentoEntity Save(DetalleDocumentoEntity detalleDocumento )
+//       {   
+//            return Save(detalleDocumento,null, null);
+//       }
        
-       public static DetalleDocumentoEntity Save(DetalleDocumentoEntity detalleDocumento , SqlConnection connection, SqlTransaction transaction)
-       {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true; 
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//       public static DetalleDocumentoEntity Save(DetalleDocumentoEntity detalleDocumento , SqlConnection connection, SqlTransaction transaction)
+//       {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true; 
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+///*
+//					if( detalleDocumento.IdDocumentoAsDocumento != null && detalleDocumento.IdDocumentoAsDocumento.CanSave )
+//					{
+//						detalleDocumento.IdDocumento = DocumentoBussinesAction.Save(detalleDocumento.IdDocumentoAsDocumento , connection,transaction).Id;
+//					}
+
+//					if( detalleDocumento.IdProductoAsProducto != null && detalleDocumento.IdProductoAsProducto.CanSave )
+//					{
+//						detalleDocumento.IdProducto = ProductoBussinesAction.Save(detalleDocumento.IdProductoAsProducto , connection,transaction).Id;
+//					}
+
+
+//*/
+//                    switch (detalleDocumento.CurrentState)
+//                    {
+//                        case EntityStatesEnum.Deleted:
+//                            DetalleDocumentoDataAccess.Delete(detalleDocumento, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.Updated:
+//                            DetalleDocumentoDataAccess.Update(detalleDocumento, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.New:
+//                            detalleDocumento = DetalleDocumentoDataAccess.Insert(detalleDocumento, connection, transaction);
+//                            break;
+//                        default:
+//                            break;
+//                    }
+                    
+                    
+
+////                } 
+               
+//               //End of Transaction
+//               if (isBAParent && transaction != null)
+//               {
+//					transaction.Commit();
+//					detalleDocumento.SetState(EntityStatesEnum.SavedSuccessfully);
+//               }
+               
+//               return detalleDocumento;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
 //                {
-/*
-					if( detalleDocumento.IdDocumentoAsDocumento != null && detalleDocumento.IdDocumentoAsDocumento.CanSave )
-					{
-						detalleDocumento.IdDocumento = DocumentoBussinesAction.Save(detalleDocumento.IdDocumentoAsDocumento , connection,transaction).Id;
-					}
-
-					if( detalleDocumento.IdProductoAsProducto != null && detalleDocumento.IdProductoAsProducto.CanSave )
-					{
-						detalleDocumento.IdProducto = ProductoBussinesAction.Save(detalleDocumento.IdProductoAsProducto , connection,transaction).Id;
-					}
-
-
-*/
-                    switch (detalleDocumento.CurrentState)
-                    {
-                        case EntityStatesEnum.Deleted:
-                            DetalleDocumentoDataAccess.Delete(detalleDocumento, connection, transaction);
-                            break;
-                        case EntityStatesEnum.Updated:
-                            DetalleDocumentoDataAccess.Update(detalleDocumento, connection, transaction);
-                            break;
-                        case EntityStatesEnum.New:
-                            detalleDocumento = DetalleDocumentoDataAccess.Insert(detalleDocumento, connection, transaction);
-                            break;
-                        default:
-                            break;
-                    }
+//                    transaction.Rollback();
+//                    if ( detalleDocumento != null)  detalleDocumento.RollBackState();
                     
-                    
-
-//                } 
-               
-               //End of Transaction
-               if (isBAParent && transaction != null)
-               {
-					transaction.Commit();
-					detalleDocumento.SetState(EntityStatesEnum.SavedSuccessfully);
-               }
-               
-               return detalleDocumento;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( detalleDocumento != null)  detalleDocumento.RollBackState();
-                    
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
   
          
          
          
-        public static DetalleDocumentoEntity LoadByPK(long Id)
-        {
-            return LoadByPK(Id , null, null, 1);
-        }
-        public static DetalleDocumentoEntity LoadByPK(long Id ,int deepLoadLevel)
-        {
-            return LoadByPK(Id , null, null, deepLoadLevel);
-        }
+//        public static DetalleDocumentoEntity LoadByPK(long Id)
+//        {
+//            return LoadByPK(Id , null, null, 1);
+//        }
+//        public static DetalleDocumentoEntity LoadByPK(long Id ,int deepLoadLevel)
+//        {
+//            return LoadByPK(Id , null, null, deepLoadLevel);
+//        }
         
-        public static DetalleDocumentoEntity LoadByPK(long Id, SqlConnection connection,SqlTransaction  transaction)
-        {
-            return LoadByPK(Id , connection, transaction, 1);
-        }
+//        public static DetalleDocumentoEntity LoadByPK(long Id, SqlConnection connection,SqlTransaction  transaction)
+//        {
+//            return LoadByPK(Id , connection, transaction, 1);
+//        }
         
-        public static DetalleDocumentoEntity LoadByPK(long Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static DetalleDocumentoEntity LoadByPK(long Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
             
-            try
-            {
+//            try
+//            {
 
                 
-				DetalleDocumentoEntity detalleDocumento = DetalleDocumentoDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
-				if(detalleDocumento!=null) 
-                {
-					if (deepLoadLevel > 1)
-	                {
-							detalleDocumento.IdDocumentoAsDocumento = DocumentoBussinesAction.LoadByPK(detalleDocumento.IdDocumento, connection , transaction , deepLoadLevel - 1);
-						detalleDocumento.IdProductoAsProducto = ProductoBussinesAction.LoadByPK(detalleDocumento.IdProducto, connection , transaction , deepLoadLevel - 1);
+//				DetalleDocumentoEntity detalleDocumento = DetalleDocumentoDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
+//				if(detalleDocumento!=null) 
+//                {
+//					if (deepLoadLevel > 1)
+//	                {
+//							detalleDocumento.IdDocumentoAsDocumento = DocumentoBussinesAction.LoadByPK(detalleDocumento.IdDocumento, connection , transaction , deepLoadLevel - 1);
+//						detalleDocumento.IdProductoAsProducto = ProductoBussinesAction.LoadByPK(detalleDocumento.IdProducto, connection , transaction , deepLoadLevel - 1);
 
-	                }
+//	                }
 	                   
-						detalleDocumento.SetLoadedState();
-				}
+//						detalleDocumento.SetLoadedState();
+//				}
 
-				return detalleDocumento;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//				return detalleDocumento;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
          
-        #endregion Implementation
+//        #endregion Implementation
           
      }
 }

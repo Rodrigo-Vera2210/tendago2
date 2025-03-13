@@ -32,146 +32,146 @@ namespace ER.BA
     public partial class PantallaBussinesAction
     {
          
-       #region Implementation
+//       #region Implementation
         
-       public static PantallaEntity Save(PantallaEntity pantalla )
-       {   
-            return Save(pantalla,null, null);
-       }
+//       public static PantallaEntity Save(PantallaEntity pantalla )
+//       {   
+//            return Save(pantalla,null, null);
+//       }
        
-       public static PantallaEntity Save(PantallaEntity pantalla , SqlConnection connection, SqlTransaction transaction)
-       {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true; 
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//       public static PantallaEntity Save(PantallaEntity pantalla , SqlConnection connection, SqlTransaction transaction)
+//       {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true; 
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+///*
+//					if( pantalla.IdModuloAsModulo != null && pantalla.IdModuloAsModulo.CanSave )
+//					{
+//						pantalla.IdModulo = ModuloBussinesAction.Save(pantalla.IdModuloAsModulo , connection,transaction).Id;
+//					}
+
+//					if( pantalla.IdGrupoAsPantalla != null && pantalla.IdGrupoAsPantalla.CanSave )
+//					{
+//						pantalla.IdGrupo = PantallaBussinesAction.Save(pantalla.IdGrupoAsPantalla , connection,transaction).Id;
+//					}
+
+
+//*/
+//                    switch (pantalla.CurrentState)
+//                    {
+//                        case EntityStatesEnum.Deleted:
+//                            PantallaDataAccess.Delete(pantalla, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.Updated:
+//                            PantallaDataAccess.Update(pantalla, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.New:
+//                            pantalla = PantallaDataAccess.Insert(pantalla, connection, transaction);
+//                            break;
+//                        default:
+//                            break;
+//                    }
+                    
+                    
+
+////                } 
+               
+//               //End of Transaction
+//               if (isBAParent && transaction != null)
+//               {
+//					transaction.Commit();
+//					pantalla.SetState(EntityStatesEnum.SavedSuccessfully);
+//               }
+               
+//               return pantalla;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
 //                {
-/*
-					if( pantalla.IdModuloAsModulo != null && pantalla.IdModuloAsModulo.CanSave )
-					{
-						pantalla.IdModulo = ModuloBussinesAction.Save(pantalla.IdModuloAsModulo , connection,transaction).Id;
-					}
-
-					if( pantalla.IdGrupoAsPantalla != null && pantalla.IdGrupoAsPantalla.CanSave )
-					{
-						pantalla.IdGrupo = PantallaBussinesAction.Save(pantalla.IdGrupoAsPantalla , connection,transaction).Id;
-					}
-
-
-*/
-                    switch (pantalla.CurrentState)
-                    {
-                        case EntityStatesEnum.Deleted:
-                            PantallaDataAccess.Delete(pantalla, connection, transaction);
-                            break;
-                        case EntityStatesEnum.Updated:
-                            PantallaDataAccess.Update(pantalla, connection, transaction);
-                            break;
-                        case EntityStatesEnum.New:
-                            pantalla = PantallaDataAccess.Insert(pantalla, connection, transaction);
-                            break;
-                        default:
-                            break;
-                    }
+//                    transaction.Rollback();
+//                    if ( pantalla != null)  pantalla.RollBackState();
                     
-                    
-
-//                } 
-               
-               //End of Transaction
-               if (isBAParent && transaction != null)
-               {
-					transaction.Commit();
-					pantalla.SetState(EntityStatesEnum.SavedSuccessfully);
-               }
-               
-               return pantalla;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( pantalla != null)  pantalla.RollBackState();
-                    
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
   
          
          
          
-        public static PantallaEntity LoadByPK(short Id)
-        {
-            return LoadByPK(Id , null, null, 1);
-        }
-        public static PantallaEntity LoadByPK(short Id ,int deepLoadLevel)
-        {
-            return LoadByPK(Id , null, null, deepLoadLevel);
-        }
+//        public static PantallaEntity LoadByPK(short Id)
+//        {
+//            return LoadByPK(Id , null, null, 1);
+//        }
+//        public static PantallaEntity LoadByPK(short Id ,int deepLoadLevel)
+//        {
+//            return LoadByPK(Id , null, null, deepLoadLevel);
+//        }
         
-        public static PantallaEntity LoadByPK(short Id, SqlConnection connection,SqlTransaction  transaction)
-        {
-            return LoadByPK(Id , connection, transaction, 1);
-        }
+//        public static PantallaEntity LoadByPK(short Id, SqlConnection connection,SqlTransaction  transaction)
+//        {
+//            return LoadByPK(Id , connection, transaction, 1);
+//        }
         
-        public static PantallaEntity LoadByPK(short Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static PantallaEntity LoadByPK(short Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
             
-            try
-            {
+//            try
+//            {
 
                 
-				PantallaEntity pantalla = PantallaDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
-				if(pantalla!=null) 
-                {
-					if (deepLoadLevel > 1)
-	                {
-							pantalla.IdModuloAsModulo = ModuloBussinesAction.LoadByPK(pantalla.IdModulo, connection , transaction , deepLoadLevel - 1);
-						pantalla.IdGrupoAsPantalla = PantallaBussinesAction.LoadByPK(pantalla.IdGrupo, connection , transaction , deepLoadLevel - 1);
+//				PantallaEntity pantalla = PantallaDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
+//				if(pantalla!=null) 
+//                {
+//					if (deepLoadLevel > 1)
+//	                {
+//							pantalla.IdModuloAsModulo = ModuloBussinesAction.LoadByPK(pantalla.IdModulo, connection , transaction , deepLoadLevel - 1);
+//						pantalla.IdGrupoAsPantalla = PantallaBussinesAction.LoadByPK(pantalla.IdGrupo, connection , transaction , deepLoadLevel - 1);
 
-	                }
+//	                }
 	                   
-						pantalla.SetLoadedState();
-				}
+//						pantalla.SetLoadedState();
+//				}
 
-				return pantalla;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//				return pantalla;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
          
-        #endregion Implementation
+//        #endregion Implementation
           
      }
 }

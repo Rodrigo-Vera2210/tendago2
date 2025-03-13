@@ -26,419 +26,419 @@ namespace ER.DA
     {
     
    
-        #region << Default Methods >>
+   //     #region << Default Methods >>
 
-        /// <summary>
-        /// Create a new entity type of UsuarioLocalBodega
-        /// </summary>
-        public static UsuarioLocalBodegaEntity Insert(UsuarioLocalBodegaEntity usuarioLocalBodega, SqlConnection connection, SqlTransaction transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText =  "UsuarioLocalBodega_Insert";
+   //     /// <summary>
+   //     /// Create a new entity type of UsuarioLocalBodega
+   //     /// </summary>
+   //     public static UsuarioLocalBodegaEntity Insert(UsuarioLocalBodegaEntity usuarioLocalBodega, SqlConnection connection, SqlTransaction transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText =  "UsuarioLocalBodega_Insert";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
                  
-				mCommand.Parameters.AddWithValue("@InicioSesion", usuarioLocalBodega.InicioSesion.ToUpper());
-				mCommand.Parameters.AddWithValue("@IdLocalBodega", usuarioLocalBodega.IdLocalBodega);
-				mCommand.Parameters.AddWithValue("@IpIngreso", usuarioLocalBodega.IpIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", usuarioLocalBodega.UsuarioIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@FechaIngreso", usuarioLocalBodega.FechaIngreso);
-				if(!String.IsNullOrEmpty(usuarioLocalBodega.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", usuarioLocalBodega.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@InicioSesion", usuarioLocalBodega.InicioSesion.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@IdLocalBodega", usuarioLocalBodega.IdLocalBodega);
+			//	mCommand.Parameters.AddWithValue("@IpIngreso", usuarioLocalBodega.IpIngreso.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", usuarioLocalBodega.UsuarioIngreso.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@FechaIngreso", usuarioLocalBodega.FechaIngreso);
+			//	if(!String.IsNullOrEmpty(usuarioLocalBodega.IpModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion", usuarioLocalBodega.IpModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(usuarioLocalBodega.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", usuarioLocalBodega.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(usuarioLocalBodega.UsuarioModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", usuarioLocalBodega.UsuarioModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+			//	}
 
-				if(usuarioLocalBodega.FechaModificacion != null && usuarioLocalBodega.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", usuarioLocalBodega.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
-				}
+			//	if(usuarioLocalBodega.FechaModificacion != null && usuarioLocalBodega.FechaModificacion != DateTime.MinValue)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion", usuarioLocalBodega.FechaModificacion);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IdEstado", usuarioLocalBodega.IdEstado);
+			//	mCommand.Parameters.AddWithValue("@IdEstado", usuarioLocalBodega.IdEstado);
 
-				// Add the primary keys columns
-				mCommand.Parameters.Add("@Id", SqlDbType.Int);
-				mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
+			//	// Add the primary keys columns
+			//	mCommand.Parameters.Add("@Id", SqlDbType.Int);
+			//	mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
 
 
-                #endregion
+   //             #endregion
                 
-                // Insert UsuarioLocalBodega
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Insert UsuarioLocalBodega
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
-				usuarioLocalBodega.Id = Convert.ToInt32(mCommand.Parameters["@Id"].Value);
+			//	usuarioLocalBodega.Id = Convert.ToInt32(mCommand.Parameters["@Id"].Value);
 
 
-                return usuarioLocalBodega;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //             return usuarioLocalBodega;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
 
-        /// <summary>
-        /// Update a entity
-        /// </summary>
-        public static void Update(UsuarioLocalBodegaEntity usuarioLocalBodega, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "UsuarioLocalBodega_Update";
+   //     /// <summary>
+   //     /// Update a entity
+   //     /// </summary>
+   //     public static void Update(UsuarioLocalBodegaEntity usuarioLocalBodega, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;;
+   //             mCommand.CommandText = "UsuarioLocalBodega_Update";
 
-                 #region << Add the params >>
+   //              #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@Id", usuarioLocalBodega.Id);
-				mCommand.Parameters.AddWithValue("@InicioSesion", usuarioLocalBodega.InicioSesion);
-				mCommand.Parameters.AddWithValue("@IdLocalBodega", usuarioLocalBodega.IdLocalBodega);
-				mCommand.Parameters.AddWithValue("@IpIngreso", usuarioLocalBodega.IpIngreso);
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", usuarioLocalBodega.UsuarioIngreso);
-				mCommand.Parameters.AddWithValue("@FechaIngreso", usuarioLocalBodega.FechaIngreso);
-				if(!String.IsNullOrEmpty(usuarioLocalBodega.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", usuarioLocalBodega.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@Id", usuarioLocalBodega.Id);
+			//	mCommand.Parameters.AddWithValue("@InicioSesion", usuarioLocalBodega.InicioSesion);
+			//	mCommand.Parameters.AddWithValue("@IdLocalBodega", usuarioLocalBodega.IdLocalBodega);
+			//	mCommand.Parameters.AddWithValue("@IpIngreso", usuarioLocalBodega.IpIngreso);
+			//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", usuarioLocalBodega.UsuarioIngreso);
+			//	mCommand.Parameters.AddWithValue("@FechaIngreso", usuarioLocalBodega.FechaIngreso);
+			//	if(!String.IsNullOrEmpty(usuarioLocalBodega.IpModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion", usuarioLocalBodega.IpModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(usuarioLocalBodega.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", usuarioLocalBodega.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(usuarioLocalBodega.UsuarioModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", usuarioLocalBodega.UsuarioModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+			//	}
 
-				if(usuarioLocalBodega.FechaModificacion != null && usuarioLocalBodega.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", usuarioLocalBodega.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
-				}
+			//	if(usuarioLocalBodega.FechaModificacion != null && usuarioLocalBodega.FechaModificacion != DateTime.MinValue)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion", usuarioLocalBodega.FechaModificacion);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IdEstado", usuarioLocalBodega.IdEstado);
+			//	mCommand.Parameters.AddWithValue("@IdEstado", usuarioLocalBodega.IdEstado);
                 
    
-                #endregion
+   //             #endregion
                 
-                // Update usuarioLocalBodega
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Update usuarioLocalBodega
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
 
-         /// <summary>
-        /// Delete a entity
-        /// </summary>
-        public static void Delete(UsuarioLocalBodegaEntity usuarioLocalBodega, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "UsuarioLocalBodega_Delete";
-				mCommand.Parameters.AddWithValue("@Id", usuarioLocalBodega.Id);
-				mCommand.Parameters.AddWithValue("@FechaModificacion", usuarioLocalBodega.FechaModificacion);
-				mCommand.Parameters.AddWithValue("@UsuarioModificacion", usuarioLocalBodega.UsuarioModificacion.ToUpper());
-				mCommand.Parameters.AddWithValue("@IpModificacion", usuarioLocalBodega.IpModificacion.ToUpper());
+   //      /// <summary>
+   //     /// Delete a entity
+   //     /// </summary>
+   //     public static void Delete(UsuarioLocalBodegaEntity usuarioLocalBodega, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;;
+   //             mCommand.CommandText = "UsuarioLocalBodega_Delete";
+			//	mCommand.Parameters.AddWithValue("@Id", usuarioLocalBodega.Id);
+			//	mCommand.Parameters.AddWithValue("@FechaModificacion", usuarioLocalBodega.FechaModificacion);
+			//	mCommand.Parameters.AddWithValue("@UsuarioModificacion", usuarioLocalBodega.UsuarioModificacion.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@IpModificacion", usuarioLocalBodega.IpModificacion.ToUpper());
 
                 
-                // Update usuarioLocalBodega
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Update usuarioLocalBodega
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
         
          
          
-         /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static UsuarioLocalBodegaEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction)
-        {
-        	return LoadByPK(Id,connection,transaction,1);
-        }
+   //      /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static UsuarioLocalBodegaEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //     	return LoadByPK(Id,connection,transaction,1);
+   //     }
         
-        /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static UsuarioLocalBodegaEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
-        {
-            UsuarioLocalBodegaEntity usuarioLocalBodega = new UsuarioLocalBodegaEntity();
+   //     /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static UsuarioLocalBodegaEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
+   //     {
+   //         UsuarioLocalBodegaEntity usuarioLocalBodega = new UsuarioLocalBodegaEntity();
             
-			usuarioLocalBodega.Id = Id;
+			//usuarioLocalBodega.Id = Id;
             
             
-            SqlCommand mCommand = new SqlCommand();
-            SqlDataReader reader = null;
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText = "UsuarioLocalBodega_LoadByPK";
+   //         SqlCommand mCommand = new SqlCommand();
+   //         SqlDataReader reader = null;
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText = "UsuarioLocalBodega_LoadByPK";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@Id", usuarioLocalBodega.Id);
+			//	mCommand.Parameters.AddWithValue("@Id", usuarioLocalBodega.Id);
                 
  
-                #endregion 
+   //             #endregion 
                 
-                if (connection.State != ConnectionState.Open) connection.Open();
+   //             if (connection.State != ConnectionState.Open) connection.Open();
 
-                reader = mCommand.ExecuteReader();
+   //             reader = mCommand.ExecuteReader();
 
-                if(!reader.HasRows) return null;
+   //             if(!reader.HasRows) return null;
                 
-	            while (reader.Read())
-	            {
-					#region << Deep Load >>
-                    if (deepLoadLevel == 1)
-		     		{
-						usuarioLocalBodega.InicioSesionAsUsuario = UsuarioDataAccess.ConvertToUsuarioEntity(reader, "InicioSesion");
-						usuarioLocalBodega.IdLocalBodegaAsLocalBodega = LocalBodegaDataAccess.ConvertToLocalBodegaEntity(reader, "IdLocalBodega");
+	  //          while (reader.Read())
+	  //          {
+			//		#region << Deep Load >>
+   //                 if (deepLoadLevel == 1)
+		 //    		{
+			//			usuarioLocalBodega.InicioSesionAsUsuario = UsuarioDataAccess.ConvertToUsuarioEntity(reader, "InicioSesion");
+			//			usuarioLocalBodega.IdLocalBodegaAsLocalBodega = LocalBodegaDataAccess.ConvertToLocalBodegaEntity(reader, "IdLocalBodega");
 
-                    }
-	                #endregion
+   //                 }
+	  //              #endregion
 	                
-	                #region << Load the BusinessEntity Object >>
+	  //              #region << Load the BusinessEntity Object >>
 					
-					usuarioLocalBodega.Id = Convert.ToInt32(reader["Id"]);
-					usuarioLocalBodega.InicioSesion = Convert.ToString(reader["InicioSesion"]);
-					usuarioLocalBodega.IdLocalBodega = Convert.ToInt32(reader["IdLocalBodega"]);
-					usuarioLocalBodega.IpIngreso = Convert.ToString(reader["IpIngreso"]);
-					usuarioLocalBodega.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
-					usuarioLocalBodega.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
-					if (reader["IpModificacion"] != DBNull.Value)
-					{
-						usuarioLocalBodega.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
-					}
-					if (reader["UsuarioModificacion"] != DBNull.Value)
-					{
-						usuarioLocalBodega.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
-					}
-					if (reader["FechaModificacion"] != DBNull.Value)
-					{
-						usuarioLocalBodega.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
-					}
-					usuarioLocalBodega.IdEstado = Convert.ToInt16(reader["IdEstado"]);
+			//		usuarioLocalBodega.Id = Convert.ToInt32(reader["Id"]);
+			//		usuarioLocalBodega.InicioSesion = Convert.ToString(reader["InicioSesion"]);
+			//		usuarioLocalBodega.IdLocalBodega = Convert.ToInt32(reader["IdLocalBodega"]);
+			//		usuarioLocalBodega.IpIngreso = Convert.ToString(reader["IpIngreso"]);
+			//		usuarioLocalBodega.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
+			//		usuarioLocalBodega.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
+			//		if (reader["IpModificacion"] != DBNull.Value)
+			//		{
+			//			usuarioLocalBodega.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
+			//		}
+			//		if (reader["UsuarioModificacion"] != DBNull.Value)
+			//		{
+			//			usuarioLocalBodega.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
+			//		}
+			//		if (reader["FechaModificacion"] != DBNull.Value)
+			//		{
+			//			usuarioLocalBodega.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
+			//		}
+			//		usuarioLocalBodega.IdEstado = Convert.ToInt16(reader["IdEstado"]);
 
-	                #endregion
-	            }
+	  //              #endregion
+	  //          }
 
-                usuarioLocalBodega.SetLoadedState();
-                return usuarioLocalBodega;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (reader != null) reader.Close();
-                mCommand.Dispose();
-            }
-        }
+   //             usuarioLocalBodega.SetLoadedState();
+   //             return usuarioLocalBodega;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             if (reader != null) reader.Close();
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
-        #endregion
-        
-        
+   //     #endregion
         
         
-        #region << Mappers >>
         
-        public static UsuarioLocalBodegaEntity ConvertToUsuarioLocalBodegaEntity (SqlDataReader reader,string fkColumnName)
-        {
-            UsuarioLocalBodegaEntity usuarioLocalBodega = new UsuarioLocalBodegaEntity();
+        
+   //     #region << Mappers >>
+        
+   //     public static UsuarioLocalBodegaEntity ConvertToUsuarioLocalBodegaEntity (SqlDataReader reader,string fkColumnName)
+   //     {
+   //         UsuarioLocalBodegaEntity usuarioLocalBodega = new UsuarioLocalBodegaEntity();
             
-            try
-            {
-                bool hasData=false;
-                string columName;
+   //         try
+   //         {
+   //             bool hasData=false;
+   //             string columName;
                 
-                #region << Load the BusinessEntity Object >>
+   //             #region << Load the BusinessEntity Object >>
                 
-				try
-				{
-					columName = String.Format("Id_UsuarioLocalBodegaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						usuarioLocalBodega.Id = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("InicioSesion_UsuarioLocalBodegaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						usuarioLocalBodega.InicioSesion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdLocalBodega_UsuarioLocalBodegaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						usuarioLocalBodega.IdLocalBodega = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpIngreso_UsuarioLocalBodegaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						usuarioLocalBodega.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioIngreso_UsuarioLocalBodegaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						usuarioLocalBodega.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaIngreso_UsuarioLocalBodegaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						usuarioLocalBodega.FechaIngreso = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpModificacion_UsuarioLocalBodegaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						usuarioLocalBodega.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioModificacion_UsuarioLocalBodegaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						usuarioLocalBodega.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaModificacion_UsuarioLocalBodegaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						usuarioLocalBodega.FechaModificacion = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdEstado_UsuarioLocalBodegaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						usuarioLocalBodega.IdEstado = Convert.ToInt16(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Id_UsuarioLocalBodegaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			usuarioLocalBodega.Id = Convert.ToInt32(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("InicioSesion_UsuarioLocalBodegaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			usuarioLocalBodega.InicioSesion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdLocalBodega_UsuarioLocalBodegaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			usuarioLocalBodega.IdLocalBodega = Convert.ToInt32(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IpIngreso_UsuarioLocalBodegaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			usuarioLocalBodega.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("UsuarioIngreso_UsuarioLocalBodegaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			usuarioLocalBodega.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("FechaIngreso_UsuarioLocalBodegaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			usuarioLocalBodega.FechaIngreso = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IpModificacion_UsuarioLocalBodegaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			usuarioLocalBodega.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("UsuarioModificacion_UsuarioLocalBodegaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			usuarioLocalBodega.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("FechaModificacion_UsuarioLocalBodegaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			usuarioLocalBodega.FechaModificacion = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdEstado_UsuarioLocalBodegaFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			usuarioLocalBodega.IdEstado = Convert.ToInt16(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
 
                 
-                #endregion
+   //             #endregion
                 
-                usuarioLocalBodega.SetLoadedState();
-                if(hasData)
-                {
-                	return usuarioLocalBodega;
-                }
-                else return null;
-            }
-            catch (Exception exc)
-            {
-                return null;
-            }
-            finally
-            {
+   //             usuarioLocalBodega.SetLoadedState();
+   //             if(hasData)
+   //             {
+   //             	return usuarioLocalBodega;
+   //             }
+   //             else return null;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             return null;
+   //         }
+   //         finally
+   //         {
                 
-            }
-        }
+   //         }
+   //     }
         
-        #endregion
+   //     #endregion
         
    
     }

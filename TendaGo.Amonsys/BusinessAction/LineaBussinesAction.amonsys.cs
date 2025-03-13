@@ -32,140 +32,140 @@ namespace ER.BA
     public partial class LineaBussinesAction
     {
          
-       #region Implementation
+//       #region Implementation
         
-       public static LineaEntity Save(LineaEntity linea )
-       {   
-            return Save(linea,null, null);
-       }
+//       public static LineaEntity Save(LineaEntity linea )
+//       {   
+//            return Save(linea,null, null);
+//       }
        
-       public static LineaEntity Save(LineaEntity linea , SqlConnection connection, SqlTransaction transaction)
-       {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true; 
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//       public static LineaEntity Save(LineaEntity linea , SqlConnection connection, SqlTransaction transaction)
+//       {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true; 
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+///*
+//					if( linea.IdDivisionAsDivision != null && linea.IdDivisionAsDivision.CanSave )
+//					{
+//						linea.IdDivision = DivisionBussinesAction.Save(linea.IdDivisionAsDivision , connection,transaction).Id;
+//					}
+
+
+//*/
+//                    switch (linea.CurrentState)
+//                    {
+//                        case EntityStatesEnum.Deleted:
+//                            LineaDataAccess.Delete(linea, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.Updated:
+//                            LineaDataAccess.Update(linea, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.New:
+//                            linea = LineaDataAccess.Insert(linea, connection, transaction);
+//                            break;
+//                        default:
+//                            break;
+//                    }
+                    
+                    
+
+////                } 
+               
+//               //End of Transaction
+//               if (isBAParent && transaction != null)
+//               {
+//					transaction.Commit();
+//					linea.SetState(EntityStatesEnum.SavedSuccessfully);
+//               }
+               
+//               return linea;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
 //                {
-/*
-					if( linea.IdDivisionAsDivision != null && linea.IdDivisionAsDivision.CanSave )
-					{
-						linea.IdDivision = DivisionBussinesAction.Save(linea.IdDivisionAsDivision , connection,transaction).Id;
-					}
-
-
-*/
-                    switch (linea.CurrentState)
-                    {
-                        case EntityStatesEnum.Deleted:
-                            LineaDataAccess.Delete(linea, connection, transaction);
-                            break;
-                        case EntityStatesEnum.Updated:
-                            LineaDataAccess.Update(linea, connection, transaction);
-                            break;
-                        case EntityStatesEnum.New:
-                            linea = LineaDataAccess.Insert(linea, connection, transaction);
-                            break;
-                        default:
-                            break;
-                    }
+//                    transaction.Rollback();
+//                    if ( linea != null)  linea.RollBackState();
                     
-                    
-
-//                } 
-               
-               //End of Transaction
-               if (isBAParent && transaction != null)
-               {
-					transaction.Commit();
-					linea.SetState(EntityStatesEnum.SavedSuccessfully);
-               }
-               
-               return linea;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( linea != null)  linea.RollBackState();
-                    
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
   
          
          
          
-        public static LineaEntity LoadByPK(int Id)
-        {
-            return LoadByPK(Id , null, null, 1);
-        }
-        public static LineaEntity LoadByPK(int Id ,int deepLoadLevel)
-        {
-            return LoadByPK(Id , null, null, deepLoadLevel);
-        }
+//        public static LineaEntity LoadByPK(int Id)
+//        {
+//            return LoadByPK(Id , null, null, 1);
+//        }
+//        public static LineaEntity LoadByPK(int Id ,int deepLoadLevel)
+//        {
+//            return LoadByPK(Id , null, null, deepLoadLevel);
+//        }
         
-        public static LineaEntity LoadByPK(int Id, SqlConnection connection,SqlTransaction  transaction)
-        {
-            return LoadByPK(Id , connection, transaction, 1);
-        }
+//        public static LineaEntity LoadByPK(int Id, SqlConnection connection,SqlTransaction  transaction)
+//        {
+//            return LoadByPK(Id , connection, transaction, 1);
+//        }
         
-        public static LineaEntity LoadByPK(int Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static LineaEntity LoadByPK(int Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
             
-            try
-            {
+//            try
+//            {
 
                 
-				LineaEntity linea = LineaDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
-				if(linea!=null) 
-                {
-					if (deepLoadLevel > 1)
-	                {
-							linea.IdDivisionAsDivision = DivisionBussinesAction.LoadByPK(linea.IdDivision, connection , transaction , deepLoadLevel - 1);
+//				LineaEntity linea = LineaDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
+//				if(linea!=null) 
+//                {
+//					if (deepLoadLevel > 1)
+//	                {
+//							linea.IdDivisionAsDivision = DivisionBussinesAction.LoadByPK(linea.IdDivision, connection , transaction , deepLoadLevel - 1);
 
-	                }
+//	                }
 	                   
-						linea.SetLoadedState();
-				}
+//						linea.SetLoadedState();
+//				}
 
-				return linea;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//				return linea;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
          
-        #endregion Implementation
+//        #endregion Implementation
           
      }
 }

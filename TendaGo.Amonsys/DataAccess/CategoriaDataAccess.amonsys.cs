@@ -122,92 +122,92 @@ namespace ER.DA
          /// <summary>
         /// Load a entity by your Primary Key
         /// </summary>
-        public static CategoriaEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction)
-        {
-        	return LoadByPK(Id,connection,transaction,1);
-        }
+   //     public static CategoriaEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //     	return LoadByPK(Id,connection,transaction,1);
+   //     }
         
-        /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static CategoriaEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
-        {
-            CategoriaEntity categoria = new CategoriaEntity();
+   //     /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static CategoriaEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
+   //     {
+   //         CategoriaEntity categoria = new CategoriaEntity();
             
-			categoria.Id = Id;
+			//categoria.Id = Id;
             
             
-            SqlCommand mCommand = new SqlCommand();
-            SqlDataReader reader = null;
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText = "Categoria_LoadByPK";
+   //         SqlCommand mCommand = new SqlCommand();
+   //         SqlDataReader reader = null;
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText = "Categoria_LoadByPK";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@Id", categoria.Id);
+			//	mCommand.Parameters.AddWithValue("@Id", categoria.Id);
                 
  
-                #endregion 
+   //             #endregion 
                 
-                if (connection.State != ConnectionState.Open) connection.Open();
+   //             if (connection.State != ConnectionState.Open) connection.Open();
 
-                reader = mCommand.ExecuteReader();
+   //             reader = mCommand.ExecuteReader();
 
-                if(!reader.HasRows) return null;
+   //             if(!reader.HasRows) return null;
                 
-	            while (reader.Read())
-	            {
-					#region << Deep Load >>
-                    if (deepLoadLevel == 1)
-		     		{
-						categoria.IdLineaAsLinea = LineaDataAccess.ConvertToLineaEntity(reader, "IdLinea");
+	  //          while (reader.Read())
+	  //          {
+			//		#region << Deep Load >>
+   //                 if (deepLoadLevel == 1)
+		 //    		{
+			//			categoria.IdLineaAsLinea = LineaDataAccess.ConvertToLineaEntity(reader, "IdLinea");
 
-                    }
-	                #endregion
+   //                 }
+	  //              #endregion
 	                
-	                #region << Load the BusinessEntity Object >>
+	  //              #region << Load the BusinessEntity Object >>
 					
-					categoria.Id = Convert.ToInt32(reader["Id"]);
-					categoria.IdEmpresa = Convert.ToInt32(reader["IdEmpresa"]);
-					categoria.IdLinea = Convert.ToInt32(reader["IdLinea"]);
-					categoria.Categoria = Convert.ToString(reader["Categoria"]);
-					categoria.IpIngreso = Convert.ToString(reader["IpIngreso"]);
-					categoria.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
-					categoria.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
-					if (reader["IpModificacion"] != DBNull.Value)
-					{
-						categoria.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
-					}
-					if (reader["UsuarioModificacion"] != DBNull.Value)
-					{
-						categoria.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
-					}
-					if (reader["FechaModificacion"] != DBNull.Value)
-					{
-						categoria.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
-					}
-					categoria.IdEstado = Convert.ToInt16(reader["IdEstado"]);
+			//		categoria.Id = Convert.ToInt32(reader["Id"]);
+			//		categoria.IdEmpresa = Convert.ToInt32(reader["IdEmpresa"]);
+			//		categoria.IdLinea = Convert.ToInt32(reader["IdLinea"]);
+			//		categoria.Categoria = Convert.ToString(reader["Categoria"]);
+			//		categoria.IpIngreso = Convert.ToString(reader["IpIngreso"]);
+			//		categoria.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
+			//		categoria.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
+			//		if (reader["IpModificacion"] != DBNull.Value)
+			//		{
+			//			categoria.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
+			//		}
+			//		if (reader["UsuarioModificacion"] != DBNull.Value)
+			//		{
+			//			categoria.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
+			//		}
+			//		if (reader["FechaModificacion"] != DBNull.Value)
+			//		{
+			//			categoria.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
+			//		}
+			//		categoria.IdEstado = Convert.ToInt16(reader["IdEstado"]);
 
-	                #endregion
-	            }
+	  //              #endregion
+	  //          }
 
-                categoria.SetLoadedState();
-                return categoria;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (reader != null) reader.Close();
-                mCommand.Dispose();
-            }
-        }
+   //             categoria.SetLoadedState();
+   //             return categoria;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             if (reader != null) reader.Close();
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
         #endregion
         
@@ -216,147 +216,147 @@ namespace ER.DA
         
         #region << Mappers >>
         
-        public static CategoriaEntity ConvertToCategoriaEntity (SqlDataReader reader,string fkColumnName)
-        {
-            CategoriaEntity categoria = new CategoriaEntity();
+    //    public static CategoriaEntity ConvertToCategoriaEntity (SqlDataReader reader,string fkColumnName)
+    //    {
+    //        CategoriaEntity categoria = new CategoriaEntity();
             
-            try
-            {
-                bool hasData=false;
-                string columName;
+    //        try
+    //        {
+    //            bool hasData=false;
+    //            string columName;
                 
-                #region << Load the BusinessEntity Object >>
+    //            #region << Load the BusinessEntity Object >>
                 
-				try
-				{
-					columName = String.Format("Id_CategoriaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						categoria.Id = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdEmpresa_CategoriaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						categoria.IdEmpresa = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdLinea_CategoriaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						categoria.IdLinea = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Categoria_CategoriaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						categoria.Categoria = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpIngreso_CategoriaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						categoria.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioIngreso_CategoriaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						categoria.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaIngreso_CategoriaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						categoria.FechaIngreso = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpModificacion_CategoriaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						categoria.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioModificacion_CategoriaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						categoria.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaModificacion_CategoriaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						categoria.FechaModificacion = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdEstado_CategoriaFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						categoria.IdEstado = Convert.ToInt16(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
+				//try
+				//{
+				//	columName = String.Format("Id_CategoriaFrom{0}", fkColumnName);
+				//	if (reader[columName] != DBNull.Value)
+				//	{
+				//		categoria.Id = Convert.ToInt32(reader[columName]);
+				//		hasData = true;
+				//	}
+				//}
+				//catch{}
+				//try
+				//{
+				//	columName = String.Format("IdEmpresa_CategoriaFrom{0}", fkColumnName);
+				//	if (reader[columName] != DBNull.Value)
+				//	{
+				//		categoria.IdEmpresa = Convert.ToInt32(reader[columName]);
+				//		hasData = true;
+				//	}
+				//}
+				//catch{}
+				//try
+				//{
+				//	columName = String.Format("IdLinea_CategoriaFrom{0}", fkColumnName);
+				//	if (reader[columName] != DBNull.Value)
+				//	{
+				//		categoria.IdLinea = Convert.ToInt32(reader[columName]);
+				//		hasData = true;
+				//	}
+				//}
+				//catch{}
+				//try
+				//{
+				//	columName = String.Format("Categoria_CategoriaFrom{0}", fkColumnName);
+				//	if (reader[columName] != DBNull.Value)
+				//	{
+				//		categoria.Categoria = Convert.ToString(reader[columName]).ToUpper();
+				//		hasData = true;
+				//	}
+				//}
+				//catch{}
+				//try
+				//{
+				//	columName = String.Format("IpIngreso_CategoriaFrom{0}", fkColumnName);
+				//	if (reader[columName] != DBNull.Value)
+				//	{
+				//		categoria.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
+				//		hasData = true;
+				//	}
+				//}
+				//catch{}
+				//try
+				//{
+				//	columName = String.Format("UsuarioIngreso_CategoriaFrom{0}", fkColumnName);
+				//	if (reader[columName] != DBNull.Value)
+				//	{
+				//		categoria.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
+				//		hasData = true;
+				//	}
+				//}
+				//catch{}
+				//try
+				//{
+				//	columName = String.Format("FechaIngreso_CategoriaFrom{0}", fkColumnName);
+				//	if (reader[columName] != DBNull.Value)
+				//	{
+				//		categoria.FechaIngreso = Convert.ToDateTime(reader[columName]);
+				//		hasData = true;
+				//	}
+				//}
+				//catch{}
+				//try
+				//{
+				//	columName = String.Format("IpModificacion_CategoriaFrom{0}", fkColumnName);
+				//	if (reader[columName] != DBNull.Value)
+				//	{
+				//		categoria.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
+				//		hasData = true;
+				//	}
+				//}
+				//catch{}
+				//try
+				//{
+				//	columName = String.Format("UsuarioModificacion_CategoriaFrom{0}", fkColumnName);
+				//	if (reader[columName] != DBNull.Value)
+				//	{
+				//		categoria.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
+				//		hasData = true;
+				//	}
+				//}
+				//catch{}
+				//try
+				//{
+				//	columName = String.Format("FechaModificacion_CategoriaFrom{0}", fkColumnName);
+				//	if (reader[columName] != DBNull.Value)
+				//	{
+				//		categoria.FechaModificacion = Convert.ToDateTime(reader[columName]);
+				//		hasData = true;
+				//	}
+				//}
+				//catch{}
+				//try
+				//{
+				//	columName = String.Format("IdEstado_CategoriaFrom{0}", fkColumnName);
+				//	if (reader[columName] != DBNull.Value)
+				//	{
+				//		categoria.IdEstado = Convert.ToInt16(reader[columName]);
+				//		hasData = true;
+				//	}
+				//}
+				//catch{}
 
                 
-                #endregion
+    //            #endregion
                 
-                categoria.SetLoadedState();
-                if(hasData)
-                {
-                	return categoria;
-                }
-                else return null;
-            }
-            catch (Exception exc)
-            {
-                return null;
-            }
-            finally
-            {
+    //            categoria.SetLoadedState();
+    //            if(hasData)
+    //            {
+    //            	return categoria;
+    //            }
+    //            else return null;
+    //        }
+    //        catch (Exception exc)
+    //        {
+    //            return null;
+    //        }
+    //        finally
+    //        {
                 
-            }
-        }
+    //        }
+    //    }
         
         #endregion
         

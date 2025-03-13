@@ -24,503 +24,503 @@ namespace ER.DA
 {
     public partial class CobroDebitoDataAccess
     {
-    
-   
-        #region << Default Methods >>
-
-        /// <summary>
-        /// Create a new entity type of CobroDebito
-        /// </summary>
-        public static CobroDebitoEntity Insert(CobroDebitoEntity cobroDebito, SqlConnection connection, SqlTransaction transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText = "CobroDebito_Insert";
-
-                #region << Add the params >>
-
-                mCommand.Parameters.AddWithValue("@IdEmpresa", cobroDebito.IdEmpresa);
-                mCommand.Parameters.AddWithValue("@IdCliente", cobroDebito.IdCliente);
-                mCommand.Parameters.AddWithValue("@Fecha", cobroDebito.Fecha);
-				mCommand.Parameters.AddWithValue("@Detalle", cobroDebito.Detalle.ToUpper());
-				mCommand.Parameters.AddWithValue("@IpIngreso", cobroDebito.IpIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", cobroDebito.UsuarioIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@FechaIngreso", cobroDebito.FechaIngreso);
-				if(!String.IsNullOrEmpty(cobroDebito.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", cobroDebito.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
-
-				if(!String.IsNullOrEmpty(cobroDebito.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", cobroDebito.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
-
-				if(cobroDebito.FechaModificacion != null && cobroDebito.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", cobroDebito.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
-				}
-
-				mCommand.Parameters.AddWithValue("@IdEstado", cobroDebito.IdEstado);
-
-				// Add the primary keys columns
-				mCommand.Parameters.Add("@Id", SqlDbType.VarChar, 50);
-				mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
 
 
-                #endregion
-                
-                // Insert CobroDebito
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+		#region << Default Methods >>
 
-				cobroDebito.Id = Convert.ToString(mCommand.Parameters["@Id"].Value);
+		/// <summary>
+		/// Create a new entity type of CobroDebito
+		/// </summary>
+		//     public static CobroDebitoEntity Insert(CobroDebitoEntity cobroDebito, SqlConnection connection, SqlTransaction transaction)
+		//     {
+		//         SqlCommand mCommand = new SqlCommand();
+		//         try
+		//         {
+		//             mCommand.Connection = connection;
+		//             mCommand.CommandType = CommandType.StoredProcedure;
+		//             mCommand.Transaction = transaction;
+		//             mCommand.CommandText = "CobroDebito_Insert";
 
+		//             #region << Add the params >>
 
-                return cobroDebito;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+		//             mCommand.Parameters.AddWithValue("@IdEmpresa", cobroDebito.IdEmpresa);
+		//             mCommand.Parameters.AddWithValue("@IdCliente", cobroDebito.IdCliente);
+		//             mCommand.Parameters.AddWithValue("@Fecha", cobroDebito.Fecha);
+		//	mCommand.Parameters.AddWithValue("@Detalle", cobroDebito.Detalle.ToUpper());
+		//	mCommand.Parameters.AddWithValue("@IpIngreso", cobroDebito.IpIngreso.ToUpper());
+		//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", cobroDebito.UsuarioIngreso.ToUpper());
+		//	mCommand.Parameters.AddWithValue("@FechaIngreso", cobroDebito.FechaIngreso);
+		//	if(!String.IsNullOrEmpty(cobroDebito.IpModificacion))
+		//	{
+		//		mCommand.Parameters.AddWithValue("@IpModificacion", cobroDebito.IpModificacion.ToUpper());
+		//	}
+		//	else
+		//	{
+		//		mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+		//	}
 
-        /// <summary>
-        /// Update a entity
-        /// </summary>
-        public static void Update(CobroDebitoEntity cobroDebito, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "CobroDebito_Update";
+		//	if(!String.IsNullOrEmpty(cobroDebito.UsuarioModificacion))
+		//	{
+		//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", cobroDebito.UsuarioModificacion.ToUpper());
+		//	}
+		//	else
+		//	{
+		//		mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+		//	}
 
-                 #region << Add the params >>
+		//	if(cobroDebito.FechaModificacion != null && cobroDebito.FechaModificacion != DateTime.MinValue)
+		//	{
+		//		mCommand.Parameters.AddWithValue("@FechaModificacion", cobroDebito.FechaModificacion);
+		//	}
+		//	else
+		//	{
+		//		mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
+		//	}
 
-				mCommand.Parameters.AddWithValue("@Id", cobroDebito.Id);
-				mCommand.Parameters.AddWithValue("@IdEmpresa", cobroDebito.IdEmpresa);
-                mCommand.Parameters.AddWithValue("@IdCliente", cobroDebito.IdCliente);
-				mCommand.Parameters.AddWithValue("@Fecha", cobroDebito.Fecha);
-				mCommand.Parameters.AddWithValue("@Detalle", cobroDebito.Detalle);
-				mCommand.Parameters.AddWithValue("@IpIngreso", cobroDebito.IpIngreso);
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", cobroDebito.UsuarioIngreso);
-				mCommand.Parameters.AddWithValue("@FechaIngreso", cobroDebito.FechaIngreso);
+		//	mCommand.Parameters.AddWithValue("@IdEstado", cobroDebito.IdEstado);
 
-				if (!String.IsNullOrEmpty(cobroDebito.IdCierreCaja))
-				{
-					mCommand.Parameters.AddWithValue("@IdCierreCaja", cobroDebito.IdCierreCaja);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IdCierreCaja", DBNull.Value);
-				}
-
-				if (!String.IsNullOrEmpty(cobroDebito.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", cobroDebito.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
-
-				if(!String.IsNullOrEmpty(cobroDebito.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", cobroDebito.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
-
-				if(cobroDebito.FechaModificacion != null && cobroDebito.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", cobroDebito.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
-				}
-
-				mCommand.Parameters.AddWithValue("@IdEstado", cobroDebito.IdEstado);
-                
-   
-                #endregion
-                
-                // Update cobroDebito
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+		//	// Add the primary keys columns
+		//	mCommand.Parameters.Add("@Id", SqlDbType.VarChar, 50);
+		//	mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+		//             #endregion
 
-         /// <summary>
-        /// Delete a entity
-        /// </summary>
-        public static void Delete(CobroDebitoEntity cobroDebito, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "CobroDebito_Delete";
-				mCommand.Parameters.AddWithValue("@Id", cobroDebito.Id);
-				mCommand.Parameters.AddWithValue("@FechaModificacion", cobroDebito.FechaModificacion);
-				mCommand.Parameters.AddWithValue("@UsuarioModificacion", cobroDebito.UsuarioModificacion.ToUpper());
-				mCommand.Parameters.AddWithValue("@IpModificacion", cobroDebito.IpModificacion.ToUpper());
+		//             // Insert CobroDebito
+		//             if (connection.State != ConnectionState.Open) connection.Open();
+		//             mCommand.ExecuteNonQuery();
 
-                
-                // Update cobroDebito
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+		//	cobroDebito.Id = Convert.ToString(mCommand.Parameters["@Id"].Value);
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
-        
-        
-         
-         
-         /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static CobroDebitoEntity LoadByPK(string Id, SqlConnection connection, SqlTransaction  transaction)
-        {
-        	return LoadByPK(Id,connection,transaction,1);
-        }
-        
-        /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static CobroDebitoEntity LoadByPK(string Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
-        {
-            CobroDebitoEntity cobroDebito = new CobroDebitoEntity();
-            
-			cobroDebito.Id = Id;
-            
-            
-            SqlCommand mCommand = new SqlCommand();
-            SqlDataReader reader = null;
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText = "CobroDebito_LoadByPK";
+		//             return cobroDebito;
+		//         }
+		//         catch (Exception exc)
+		//         {
+		//             throw exc;
+		//         }
+		//         finally
+		//         {
+		//             mCommand.Dispose();
+		//         }
+		//     }
 
-                #region << Add the params >>
+		//     /// <summary>
+		//     /// Update a entity
+		//     /// </summary>
+		//     public static void Update(CobroDebitoEntity cobroDebito, SqlConnection connection, SqlTransaction  transaction)
+		//     {
+		//         SqlCommand mCommand = new SqlCommand();
+		//         try
+		//         {
+		//             mCommand.Connection = connection;
+		//             mCommand.CommandType = CommandType.StoredProcedure;
+		//             mCommand.Transaction = transaction;;
+		//             mCommand.CommandText = "CobroDebito_Update";
 
-				mCommand.Parameters.AddWithValue("@Id", cobroDebito.Id);
-                
- 
-                #endregion 
-                
-                if (connection.State != ConnectionState.Open) connection.Open();
+		//              #region << Add the params >>
 
-                reader = mCommand.ExecuteReader();
+		//	mCommand.Parameters.AddWithValue("@Id", cobroDebito.Id);
+		//	mCommand.Parameters.AddWithValue("@IdEmpresa", cobroDebito.IdEmpresa);
+		//             mCommand.Parameters.AddWithValue("@IdCliente", cobroDebito.IdCliente);
+		//	mCommand.Parameters.AddWithValue("@Fecha", cobroDebito.Fecha);
+		//	mCommand.Parameters.AddWithValue("@Detalle", cobroDebito.Detalle);
+		//	mCommand.Parameters.AddWithValue("@IpIngreso", cobroDebito.IpIngreso);
+		//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", cobroDebito.UsuarioIngreso);
+		//	mCommand.Parameters.AddWithValue("@FechaIngreso", cobroDebito.FechaIngreso);
 
-                if(!reader.HasRows) return null;
-                
-	            while (reader.Read())
-	            {
-					#region << Deep Load >>
-                    if (deepLoadLevel == 1)
-		     		{
-                        cobroDebito.IdClienteAsEntidad = EntidadDataAccess.ConvertToEntidadEntity(reader, "IdCliente");
-                    }
-	                #endregion
-	                
-	                #region << Load the BusinessEntity Object >>
-					
-					cobroDebito.Id = Convert.ToString(reader["Id"]);
-					cobroDebito.IdEmpresa = Convert.ToInt32(reader["IdEmpresa"]);
-                    cobroDebito.IdCliente = Convert.ToInt32(reader["IdCliente"]);
-                    cobroDebito.Fecha = Convert.ToDateTime(reader["Fecha"]);
-					cobroDebito.Detalle = Convert.ToString(reader["Detalle"]);
-					cobroDebito.IpIngreso = Convert.ToString(reader["IpIngreso"]);
-					cobroDebito.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
-					cobroDebito.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
-					if (reader["IpModificacion"] != DBNull.Value)
-					{
-						cobroDebito.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
-					}
-					if (reader["IdCierreCaja"] != DBNull.Value)
-					{
-						cobroDebito.IdCierreCaja = Convert.ToString(reader["IdCierreCaja"]).ToUpper();
-					}
-					if (reader["UsuarioModificacion"] != DBNull.Value)
-					{
-						cobroDebito.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
-					}
-					if (reader["FechaModificacion"] != DBNull.Value)
-					{
-						cobroDebito.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
-					}
-					cobroDebito.IdEstado = Convert.ToInt16(reader["IdEstado"]);
+		//	if (!String.IsNullOrEmpty(cobroDebito.IdCierreCaja))
+		//	{
+		//		mCommand.Parameters.AddWithValue("@IdCierreCaja", cobroDebito.IdCierreCaja);
+		//	}
+		//	else
+		//	{
+		//		mCommand.Parameters.AddWithValue("@IdCierreCaja", DBNull.Value);
+		//	}
 
-	                #endregion
-	            }
+		//	if (!String.IsNullOrEmpty(cobroDebito.IpModificacion))
+		//	{
+		//		mCommand.Parameters.AddWithValue("@IpModificacion", cobroDebito.IpModificacion.ToUpper());
+		//	}
+		//	else
+		//	{
+		//		mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+		//	}
 
-                cobroDebito.SetLoadedState();
-                return cobroDebito;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (reader != null) reader.Close();
-                mCommand.Dispose();
-            }
-        }
+		//	if(!String.IsNullOrEmpty(cobroDebito.UsuarioModificacion))
+		//	{
+		//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", cobroDebito.UsuarioModificacion.ToUpper());
+		//	}
+		//	else
+		//	{
+		//		mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+		//	}
 
-        /// <summary>
-        /// Delete a entity
-        /// </summary>
-        public static CobroDebitoEntity Reverse(CobroDebitoEntity cobroDebito, SqlConnection connection, SqlTransaction transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction; ;
-                mCommand.CommandText = "CobroDebito_Reverse";
-                mCommand.Parameters.AddWithValue("@IdCobroDebito", cobroDebito.Id);
-                mCommand.Parameters.AddWithValue("@IdEmpresa", cobroDebito.IdEmpresa);
-                mCommand.Parameters.AddWithValue("@Fecha", cobroDebito.FechaIngreso);
-                mCommand.Parameters.AddWithValue("@IpIngreso", cobroDebito.IpIngreso.ToUpper());
-                mCommand.Parameters.AddWithValue("@UsuarioIngreso", cobroDebito.UsuarioIngreso.ToUpper());
-                mCommand.Parameters.AddWithValue("@FechaIngreso", cobroDebito.FechaIngreso);
+		//	if(cobroDebito.FechaModificacion != null && cobroDebito.FechaModificacion != DateTime.MinValue)
+		//	{
+		//		mCommand.Parameters.AddWithValue("@FechaModificacion", cobroDebito.FechaModificacion);
+		//	}
+		//	else
+		//	{
+		//		mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
+		//	}
 
-                // Add the primary keys columns
-                mCommand.Parameters.Add("@Id", SqlDbType.VarChar, 50);
-                mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
+		//	mCommand.Parameters.AddWithValue("@IdEstado", cobroDebito.IdEstado);
 
-                // Update cobroDebito
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
 
-                cobroDebito.Id = Convert.ToString(mCommand.Parameters["@Id"].Value);
+		//             #endregion
 
-                return cobroDebito;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+		//             // Update cobroDebito
+		//             if (connection.State != ConnectionState.Open) connection.Open();
+		//             mCommand.ExecuteNonQuery();
 
-        #endregion
+
+		//         }
+		//         catch (Exception exc)
+		//         {
+		//             throw exc;
+		//         }
+		//         finally
+		//         {
+		//             mCommand.Dispose();
+		//         }
+		//     }
+
+		//      /// <summary>
+		//     /// Delete a entity
+		//     /// </summary>
+		//     public static void Delete(CobroDebitoEntity cobroDebito, SqlConnection connection, SqlTransaction  transaction)
+		//     {
+		//         SqlCommand mCommand = new SqlCommand();
+		//         try
+		//         {
+		//             mCommand.Connection = connection;
+		//             mCommand.CommandType = CommandType.StoredProcedure;
+		//             mCommand.Transaction = transaction;;
+		//             mCommand.CommandText = "CobroDebito_Delete";
+		//	mCommand.Parameters.AddWithValue("@Id", cobroDebito.Id);
+		//	mCommand.Parameters.AddWithValue("@FechaModificacion", cobroDebito.FechaModificacion);
+		//	mCommand.Parameters.AddWithValue("@UsuarioModificacion", cobroDebito.UsuarioModificacion.ToUpper());
+		//	mCommand.Parameters.AddWithValue("@IpModificacion", cobroDebito.IpModificacion.ToUpper());
+
+
+		//             // Update cobroDebito
+		//             if (connection.State != ConnectionState.Open) connection.Open();
+		//             mCommand.ExecuteNonQuery();
+
+
+		//         }
+		//         catch (Exception exc)
+		//         {
+		//             throw exc;
+		//         }
+		//         finally
+		//         {
+		//             mCommand.Dispose();
+		//         }
+		//     }
 
 
 
 
-        #region << Mappers >>
+		//      /// <summary>
+		//     /// Load a entity by your Primary Key
+		//     /// </summary>
+		//     public static CobroDebitoEntity LoadByPK(string Id, SqlConnection connection, SqlTransaction  transaction)
+		//     {
+		//     	return LoadByPK(Id,connection,transaction,1);
+		//     }
 
-        public static CobroDebitoEntity ConvertToCobroDebitoEntity (SqlDataReader reader,string fkColumnName)
-        {
-            CobroDebitoEntity cobroDebito = new CobroDebitoEntity();
-            
-            try
-            {
-                bool hasData=false;
-                string columName;
-                
-                #region << Load the BusinessEntity Object >>
-                
-				try
-				{
-					columName = String.Format("Id_CobroDebitoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cobroDebito.Id = Convert.ToString(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdEmpresa_CobroDebitoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cobroDebito.IdEmpresa = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-                try
-                {
-                    columName = String.Format("IdCliente_CobroDebitoFrom{0}", fkColumnName);
-                    if (reader[columName] != DBNull.Value)
-                    {
-                        cobroDebito.IdCliente = Convert.ToInt32(reader[columName]);
-                        hasData = true;
-                    }
-                }
-                catch { }
-                try
-				{
-					columName = String.Format("Fecha_CobroDebitoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cobroDebito.Fecha = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Detalle_CobroDebitoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cobroDebito.Detalle = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpIngreso_CobroDebitoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cobroDebito.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioIngreso_CobroDebitoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cobroDebito.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaIngreso_CobroDebitoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cobroDebito.FechaIngreso = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpModificacion_CobroDebitoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cobroDebito.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioModificacion_CobroDebitoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cobroDebito.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaModificacion_CobroDebitoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cobroDebito.FechaModificacion = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdEstado_CobroDebitoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cobroDebito.IdEstado = Convert.ToInt16(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
+		//     /// <summary>
+		//     /// Load a entity by your Primary Key
+		//     /// </summary>
+		//     public static CobroDebitoEntity LoadByPK(string Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
+		//     {
+		//         CobroDebitoEntity cobroDebito = new CobroDebitoEntity();
 
-                
-                #endregion
-                
-                cobroDebito.SetLoadedState();
-                if(hasData)
-                {
-                	return cobroDebito;
-                }
-                else return null;
-            }
-            catch (Exception exc)
-            {
-                return null;
-            }
-            finally
-            {
-                
-            }
-        }
-        
-        #endregion
-        
-   
-    }
+		//cobroDebito.Id = Id;
+
+
+		//         SqlCommand mCommand = new SqlCommand();
+		//         SqlDataReader reader = null;
+		//         try
+		//         {
+		//             mCommand.Connection = connection;
+		//             mCommand.CommandType = CommandType.StoredProcedure;
+		//             mCommand.Transaction = transaction;
+		//             mCommand.CommandText = "CobroDebito_LoadByPK";
+
+		//             #region << Add the params >>
+
+		//	mCommand.Parameters.AddWithValue("@Id", cobroDebito.Id);
+
+
+		//             #endregion 
+
+		//             if (connection.State != ConnectionState.Open) connection.Open();
+
+		//             reader = mCommand.ExecuteReader();
+
+		//             if(!reader.HasRows) return null;
+
+		//          while (reader.Read())
+		//          {
+		//		#region << Deep Load >>
+		//                 if (deepLoadLevel == 1)
+		//    		{
+		//                     cobroDebito.IdClienteAsEntidad = EntidadDataAccess.ConvertToEntidadEntity(reader, "IdCliente");
+		//                 }
+		//              #endregion
+
+		//              #region << Load the BusinessEntity Object >>
+
+		//		cobroDebito.Id = Convert.ToString(reader["Id"]);
+		//		cobroDebito.IdEmpresa = Convert.ToInt32(reader["IdEmpresa"]);
+		//                 cobroDebito.IdCliente = Convert.ToInt32(reader["IdCliente"]);
+		//                 cobroDebito.Fecha = Convert.ToDateTime(reader["Fecha"]);
+		//		cobroDebito.Detalle = Convert.ToString(reader["Detalle"]);
+		//		cobroDebito.IpIngreso = Convert.ToString(reader["IpIngreso"]);
+		//		cobroDebito.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
+		//		cobroDebito.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
+		//		if (reader["IpModificacion"] != DBNull.Value)
+		//		{
+		//			cobroDebito.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
+		//		}
+		//		if (reader["IdCierreCaja"] != DBNull.Value)
+		//		{
+		//			cobroDebito.IdCierreCaja = Convert.ToString(reader["IdCierreCaja"]).ToUpper();
+		//		}
+		//		if (reader["UsuarioModificacion"] != DBNull.Value)
+		//		{
+		//			cobroDebito.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
+		//		}
+		//		if (reader["FechaModificacion"] != DBNull.Value)
+		//		{
+		//			cobroDebito.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
+		//		}
+		//		cobroDebito.IdEstado = Convert.ToInt16(reader["IdEstado"]);
+
+		//              #endregion
+		//          }
+
+		//             cobroDebito.SetLoadedState();
+		//             return cobroDebito;
+		//         }
+		//         catch (Exception exc)
+		//         {
+		//             throw exc;
+		//         }
+		//         finally
+		//         {
+		//             if (reader != null) reader.Close();
+		//             mCommand.Dispose();
+		//         }
+		//     }
+
+		//     /// <summary>
+		//     /// Delete a entity
+		//     /// </summary>
+		//     public static CobroDebitoEntity Reverse(CobroDebitoEntity cobroDebito, SqlConnection connection, SqlTransaction transaction)
+		//     {
+		//         SqlCommand mCommand = new SqlCommand();
+		//         try
+		//         {
+		//             mCommand.Connection = connection;
+		//             mCommand.CommandType = CommandType.StoredProcedure;
+		//             mCommand.Transaction = transaction; ;
+		//             mCommand.CommandText = "CobroDebito_Reverse";
+		//             mCommand.Parameters.AddWithValue("@IdCobroDebito", cobroDebito.Id);
+		//             mCommand.Parameters.AddWithValue("@IdEmpresa", cobroDebito.IdEmpresa);
+		//             mCommand.Parameters.AddWithValue("@Fecha", cobroDebito.FechaIngreso);
+		//             mCommand.Parameters.AddWithValue("@IpIngreso", cobroDebito.IpIngreso.ToUpper());
+		//             mCommand.Parameters.AddWithValue("@UsuarioIngreso", cobroDebito.UsuarioIngreso.ToUpper());
+		//             mCommand.Parameters.AddWithValue("@FechaIngreso", cobroDebito.FechaIngreso);
+
+		//             // Add the primary keys columns
+		//             mCommand.Parameters.Add("@Id", SqlDbType.VarChar, 50);
+		//             mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
+
+		//             // Update cobroDebito
+		//             if (connection.State != ConnectionState.Open) connection.Open();
+		//             mCommand.ExecuteNonQuery();
+
+		//             cobroDebito.Id = Convert.ToString(mCommand.Parameters["@Id"].Value);
+
+		//             return cobroDebito;
+		//         }
+		//         catch (Exception exc)
+		//         {
+		//             throw exc;
+		//         }
+		//         finally
+		//         {
+		//             mCommand.Dispose();
+		//         }
+		//     }
+
+		//     #endregion
+
+
+
+
+		//     #region << Mappers >>
+
+		//     public static CobroDebitoEntity ConvertToCobroDebitoEntity (SqlDataReader reader,string fkColumnName)
+		//     {
+		//         CobroDebitoEntity cobroDebito = new CobroDebitoEntity();
+
+		//         try
+		//         {
+		//             bool hasData=false;
+		//             string columName;
+
+		//             #region << Load the BusinessEntity Object >>
+
+		//	try
+		//	{
+		//		columName = String.Format("Id_CobroDebitoFrom{0}", fkColumnName);
+		//		if (reader[columName] != DBNull.Value)
+		//		{
+		//			cobroDebito.Id = Convert.ToString(reader[columName]);
+		//			hasData = true;
+		//		}
+		//	}
+		//	catch{}
+		//	try
+		//	{
+		//		columName = String.Format("IdEmpresa_CobroDebitoFrom{0}", fkColumnName);
+		//		if (reader[columName] != DBNull.Value)
+		//		{
+		//			cobroDebito.IdEmpresa = Convert.ToInt32(reader[columName]);
+		//			hasData = true;
+		//		}
+		//	}
+		//	catch{}
+		//             try
+		//             {
+		//                 columName = String.Format("IdCliente_CobroDebitoFrom{0}", fkColumnName);
+		//                 if (reader[columName] != DBNull.Value)
+		//                 {
+		//                     cobroDebito.IdCliente = Convert.ToInt32(reader[columName]);
+		//                     hasData = true;
+		//                 }
+		//             }
+		//             catch { }
+		//             try
+		//	{
+		//		columName = String.Format("Fecha_CobroDebitoFrom{0}", fkColumnName);
+		//		if (reader[columName] != DBNull.Value)
+		//		{
+		//			cobroDebito.Fecha = Convert.ToDateTime(reader[columName]);
+		//			hasData = true;
+		//		}
+		//	}
+		//	catch{}
+		//	try
+		//	{
+		//		columName = String.Format("Detalle_CobroDebitoFrom{0}", fkColumnName);
+		//		if (reader[columName] != DBNull.Value)
+		//		{
+		//			cobroDebito.Detalle = Convert.ToString(reader[columName]).ToUpper();
+		//			hasData = true;
+		//		}
+		//	}
+		//	catch{}
+		//	try
+		//	{
+		//		columName = String.Format("IpIngreso_CobroDebitoFrom{0}", fkColumnName);
+		//		if (reader[columName] != DBNull.Value)
+		//		{
+		//			cobroDebito.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
+		//			hasData = true;
+		//		}
+		//	}
+		//	catch{}
+		//	try
+		//	{
+		//		columName = String.Format("UsuarioIngreso_CobroDebitoFrom{0}", fkColumnName);
+		//		if (reader[columName] != DBNull.Value)
+		//		{
+		//			cobroDebito.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
+		//			hasData = true;
+		//		}
+		//	}
+		//	catch{}
+		//	try
+		//	{
+		//		columName = String.Format("FechaIngreso_CobroDebitoFrom{0}", fkColumnName);
+		//		if (reader[columName] != DBNull.Value)
+		//		{
+		//			cobroDebito.FechaIngreso = Convert.ToDateTime(reader[columName]);
+		//			hasData = true;
+		//		}
+		//	}
+		//	catch{}
+		//	try
+		//	{
+		//		columName = String.Format("IpModificacion_CobroDebitoFrom{0}", fkColumnName);
+		//		if (reader[columName] != DBNull.Value)
+		//		{
+		//			cobroDebito.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
+		//			hasData = true;
+		//		}
+		//	}
+		//	catch{}
+		//	try
+		//	{
+		//		columName = String.Format("UsuarioModificacion_CobroDebitoFrom{0}", fkColumnName);
+		//		if (reader[columName] != DBNull.Value)
+		//		{
+		//			cobroDebito.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
+		//			hasData = true;
+		//		}
+		//	}
+		//	catch{}
+		//	try
+		//	{
+		//		columName = String.Format("FechaModificacion_CobroDebitoFrom{0}", fkColumnName);
+		//		if (reader[columName] != DBNull.Value)
+		//		{
+		//			cobroDebito.FechaModificacion = Convert.ToDateTime(reader[columName]);
+		//			hasData = true;
+		//		}
+		//	}
+		//	catch{}
+		//	try
+		//	{
+		//		columName = String.Format("IdEstado_CobroDebitoFrom{0}", fkColumnName);
+		//		if (reader[columName] != DBNull.Value)
+		//		{
+		//			cobroDebito.IdEstado = Convert.ToInt16(reader[columName]);
+		//			hasData = true;
+		//		}
+		//	}
+		//	catch{}
+
+
+		//             #endregion
+
+		//             cobroDebito.SetLoadedState();
+		//             if(hasData)
+		//             {
+		//             	return cobroDebito;
+		//             }
+		//             else return null;
+		//         }
+		//         catch (Exception exc)
+		//         {
+		//             return null;
+		//         }
+		//         finally
+		//         {
+
+		//         }
+		//     }
+
+		#endregion
+
+
+	}
 }
 
 

@@ -26,489 +26,489 @@ namespace ER.DA
     {
     
    
-        #region << Default Methods >>
+   //     #region << Default Methods >>
 
-        /// <summary>
-        /// Create a new entity type of CuentaPorPagar
-        /// </summary>
-        public static CuentaPorPagarEntity Insert(CuentaPorPagarEntity cuentaPorPagar, SqlConnection connection, SqlTransaction transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText =  "CuentaPorPagar_Insert";
+   //     /// <summary>
+   //     /// Create a new entity type of CuentaPorPagar
+   //     /// </summary>
+   //     public static CuentaPorPagarEntity Insert(CuentaPorPagarEntity cuentaPorPagar, SqlConnection connection, SqlTransaction transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText =  "CuentaPorPagar_Insert";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
                  
-				mCommand.Parameters.AddWithValue("@IdEntrada", cuentaPorPagar.IdEntrada.ToUpper());
-				mCommand.Parameters.AddWithValue("@Numero", cuentaPorPagar.Numero);
-				mCommand.Parameters.AddWithValue("@Periodo", cuentaPorPagar.Periodo);
-				mCommand.Parameters.AddWithValue("@Fecha", cuentaPorPagar.Fecha);
-				mCommand.Parameters.AddWithValue("@Valor", cuentaPorPagar.Valor);
-				if(cuentaPorPagar.Saldo != 0)
-				{
-					mCommand.Parameters.AddWithValue("@Saldo", cuentaPorPagar.Saldo);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@Saldo",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@IdEntrada", cuentaPorPagar.IdEntrada.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@Numero", cuentaPorPagar.Numero);
+			//	mCommand.Parameters.AddWithValue("@Periodo", cuentaPorPagar.Periodo);
+			//	mCommand.Parameters.AddWithValue("@Fecha", cuentaPorPagar.Fecha);
+			//	mCommand.Parameters.AddWithValue("@Valor", cuentaPorPagar.Valor);
+			//	if(cuentaPorPagar.Saldo != 0)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Saldo", cuentaPorPagar.Saldo);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Saldo",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IpIngreso", cuentaPorPagar.IpIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", cuentaPorPagar.UsuarioIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@FechaIngreso", cuentaPorPagar.FechaIngreso);
-				if(!String.IsNullOrEmpty(cuentaPorPagar.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", cuentaPorPagar.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@IpIngreso", cuentaPorPagar.IpIngreso.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", cuentaPorPagar.UsuarioIngreso.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@FechaIngreso", cuentaPorPagar.FechaIngreso);
+			//	if(!String.IsNullOrEmpty(cuentaPorPagar.IpModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion", cuentaPorPagar.IpModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(cuentaPorPagar.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", cuentaPorPagar.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(cuentaPorPagar.UsuarioModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", cuentaPorPagar.UsuarioModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+			//	}
 
-				if(cuentaPorPagar.FechaModificacion != null && cuentaPorPagar.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", cuentaPorPagar.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
-				}
+			//	if(cuentaPorPagar.FechaModificacion != null && cuentaPorPagar.FechaModificacion != DateTime.MinValue)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion", cuentaPorPagar.FechaModificacion);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IdEstado", cuentaPorPagar.IdEstado);
+			//	mCommand.Parameters.AddWithValue("@IdEstado", cuentaPorPagar.IdEstado);
 
-				// Add the primary keys columns
-				mCommand.Parameters.Add("@Id", SqlDbType.Int);
-				mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
+			//	// Add the primary keys columns
+			//	mCommand.Parameters.Add("@Id", SqlDbType.Int);
+			//	mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
 
 
-                #endregion
+   //             #endregion
                 
-                // Insert CuentaPorPagar
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Insert CuentaPorPagar
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
-				cuentaPorPagar.Id = Convert.ToInt32(mCommand.Parameters["@Id"].Value);
+			//	cuentaPorPagar.Id = Convert.ToInt32(mCommand.Parameters["@Id"].Value);
 
 
-                return cuentaPorPagar;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //             return cuentaPorPagar;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
 
-        /// <summary>
-        /// Update a entity
-        /// </summary>
-        public static void Update(CuentaPorPagarEntity cuentaPorPagar, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "CuentaPorPagar_Update";
+   //     /// <summary>
+   //     /// Update a entity
+   //     /// </summary>
+   //     public static void Update(CuentaPorPagarEntity cuentaPorPagar, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;;
+   //             mCommand.CommandText = "CuentaPorPagar_Update";
 
-                 #region << Add the params >>
+   //              #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@Id", cuentaPorPagar.Id);
-				mCommand.Parameters.AddWithValue("@IdEntrada", cuentaPorPagar.IdEntrada);
-				mCommand.Parameters.AddWithValue("@Numero", cuentaPorPagar.Numero);
-				mCommand.Parameters.AddWithValue("@Periodo", cuentaPorPagar.Periodo);
-				mCommand.Parameters.AddWithValue("@Fecha", cuentaPorPagar.Fecha);
-				mCommand.Parameters.AddWithValue("@Valor", cuentaPorPagar.Valor);
-				if(cuentaPorPagar.Saldo != 0)
-				{
-					mCommand.Parameters.AddWithValue("@Saldo", cuentaPorPagar.Saldo);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@Saldo",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@Id", cuentaPorPagar.Id);
+			//	mCommand.Parameters.AddWithValue("@IdEntrada", cuentaPorPagar.IdEntrada);
+			//	mCommand.Parameters.AddWithValue("@Numero", cuentaPorPagar.Numero);
+			//	mCommand.Parameters.AddWithValue("@Periodo", cuentaPorPagar.Periodo);
+			//	mCommand.Parameters.AddWithValue("@Fecha", cuentaPorPagar.Fecha);
+			//	mCommand.Parameters.AddWithValue("@Valor", cuentaPorPagar.Valor);
+			//	if(cuentaPorPagar.Saldo != 0)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Saldo", cuentaPorPagar.Saldo);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Saldo",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IpIngreso", cuentaPorPagar.IpIngreso);
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", cuentaPorPagar.UsuarioIngreso);
-				mCommand.Parameters.AddWithValue("@FechaIngreso", cuentaPorPagar.FechaIngreso);
-				if(!String.IsNullOrEmpty(cuentaPorPagar.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", cuentaPorPagar.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@IpIngreso", cuentaPorPagar.IpIngreso);
+			//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", cuentaPorPagar.UsuarioIngreso);
+			//	mCommand.Parameters.AddWithValue("@FechaIngreso", cuentaPorPagar.FechaIngreso);
+			//	if(!String.IsNullOrEmpty(cuentaPorPagar.IpModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion", cuentaPorPagar.IpModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(cuentaPorPagar.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", cuentaPorPagar.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(cuentaPorPagar.UsuarioModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", cuentaPorPagar.UsuarioModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+			//	}
 
-				if(cuentaPorPagar.FechaModificacion != null && cuentaPorPagar.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", cuentaPorPagar.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
-				}
+			//	if(cuentaPorPagar.FechaModificacion != null && cuentaPorPagar.FechaModificacion != DateTime.MinValue)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion", cuentaPorPagar.FechaModificacion);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IdEstado", cuentaPorPagar.IdEstado);
+			//	mCommand.Parameters.AddWithValue("@IdEstado", cuentaPorPagar.IdEstado);
                 
    
-                #endregion
+   //             #endregion
                 
-                // Update cuentaPorPagar
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Update cuentaPorPagar
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
 
-         /// <summary>
-        /// Delete a entity
-        /// </summary>
-        public static void Delete(CuentaPorPagarEntity cuentaPorPagar, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "CuentaPorPagar_Delete";
-				mCommand.Parameters.AddWithValue("@Id", cuentaPorPagar.Id);
-				mCommand.Parameters.AddWithValue("@FechaModificacion", cuentaPorPagar.FechaModificacion);
-				mCommand.Parameters.AddWithValue("@UsuarioModificacion", cuentaPorPagar.UsuarioModificacion.ToUpper());
-				mCommand.Parameters.AddWithValue("@IpModificacion", cuentaPorPagar.IpModificacion.ToUpper());
+   //      /// <summary>
+   //     /// Delete a entity
+   //     /// </summary>
+   //     public static void Delete(CuentaPorPagarEntity cuentaPorPagar, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;;
+   //             mCommand.CommandText = "CuentaPorPagar_Delete";
+			//	mCommand.Parameters.AddWithValue("@Id", cuentaPorPagar.Id);
+			//	mCommand.Parameters.AddWithValue("@FechaModificacion", cuentaPorPagar.FechaModificacion);
+			//	mCommand.Parameters.AddWithValue("@UsuarioModificacion", cuentaPorPagar.UsuarioModificacion.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@IpModificacion", cuentaPorPagar.IpModificacion.ToUpper());
 
                 
-                // Update cuentaPorPagar
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Update cuentaPorPagar
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
         
          
          
-         /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static CuentaPorPagarEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction)
-        {
-        	return LoadByPK(Id,connection,transaction,1);
-        }
+   //      /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static CuentaPorPagarEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //     	return LoadByPK(Id,connection,transaction,1);
+   //     }
         
-        /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static CuentaPorPagarEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
-        {
-            CuentaPorPagarEntity cuentaPorPagar = new CuentaPorPagarEntity();
+   //     /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static CuentaPorPagarEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
+   //     {
+   //         CuentaPorPagarEntity cuentaPorPagar = new CuentaPorPagarEntity();
             
-			cuentaPorPagar.Id = Id;
+			//cuentaPorPagar.Id = Id;
             
             
-            SqlCommand mCommand = new SqlCommand();
-            SqlDataReader reader = null;
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText = "CuentaPorPagar_LoadByPK";
+   //         SqlCommand mCommand = new SqlCommand();
+   //         SqlDataReader reader = null;
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText = "CuentaPorPagar_LoadByPK";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@Id", cuentaPorPagar.Id);
+			//	mCommand.Parameters.AddWithValue("@Id", cuentaPorPagar.Id);
                 
  
-                #endregion 
+   //             #endregion 
                 
-                if (connection.State != ConnectionState.Open) connection.Open();
+   //             if (connection.State != ConnectionState.Open) connection.Open();
 
-                reader = mCommand.ExecuteReader();
+   //             reader = mCommand.ExecuteReader();
 
-                if(!reader.HasRows) return null;
+   //             if(!reader.HasRows) return null;
                 
-	            while (reader.Read())
-	            {
-					#region << Deep Load >>
-                    if (deepLoadLevel == 1)
-		     		{
-						cuentaPorPagar.IdEntradaAsEntrada = EntradaDataAccess.ConvertToEntradaEntity(reader, "IdEntrada");
+	  //          while (reader.Read())
+	  //          {
+			//		#region << Deep Load >>
+   //                 if (deepLoadLevel == 1)
+		 //    		{
+			//			cuentaPorPagar.IdEntradaAsEntrada = EntradaDataAccess.ConvertToEntradaEntity(reader, "IdEntrada");
 
-                    }
-	                #endregion
+   //                 }
+	  //              #endregion
 	                
-	                #region << Load the BusinessEntity Object >>
+	  //              #region << Load the BusinessEntity Object >>
 					
-					cuentaPorPagar.Id = Convert.ToInt32(reader["Id"]);
-					cuentaPorPagar.IdEntrada = Convert.ToString(reader["IdEntrada"]);
-					cuentaPorPagar.Numero = Convert.ToInt32(reader["Numero"]);
-					cuentaPorPagar.Periodo = Convert.ToDateTime(reader["Periodo"]);
-					cuentaPorPagar.Fecha = Convert.ToDateTime(reader["Fecha"]);
-					cuentaPorPagar.Valor = (decimal) reader["Valor"];
-					if (reader["Saldo"] != DBNull.Value)
-					{
-						cuentaPorPagar.Saldo = (decimal) reader["Saldo"];
-					}
-					cuentaPorPagar.IpIngreso = Convert.ToString(reader["IpIngreso"]);
-					cuentaPorPagar.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
-					cuentaPorPagar.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
-					if (reader["IpModificacion"] != DBNull.Value)
-					{
-						cuentaPorPagar.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
-					}
-					if (reader["UsuarioModificacion"] != DBNull.Value)
-					{
-						cuentaPorPagar.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
-					}
-					if (reader["FechaModificacion"] != DBNull.Value)
-					{
-						cuentaPorPagar.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
-					}
-					cuentaPorPagar.IdEstado = Convert.ToInt16(reader["IdEstado"]);
+			//		cuentaPorPagar.Id = Convert.ToInt32(reader["Id"]);
+			//		cuentaPorPagar.IdEntrada = Convert.ToString(reader["IdEntrada"]);
+			//		cuentaPorPagar.Numero = Convert.ToInt32(reader["Numero"]);
+			//		cuentaPorPagar.Periodo = Convert.ToDateTime(reader["Periodo"]);
+			//		cuentaPorPagar.Fecha = Convert.ToDateTime(reader["Fecha"]);
+			//		cuentaPorPagar.Valor = (decimal) reader["Valor"];
+			//		if (reader["Saldo"] != DBNull.Value)
+			//		{
+			//			cuentaPorPagar.Saldo = (decimal) reader["Saldo"];
+			//		}
+			//		cuentaPorPagar.IpIngreso = Convert.ToString(reader["IpIngreso"]);
+			//		cuentaPorPagar.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
+			//		cuentaPorPagar.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
+			//		if (reader["IpModificacion"] != DBNull.Value)
+			//		{
+			//			cuentaPorPagar.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
+			//		}
+			//		if (reader["UsuarioModificacion"] != DBNull.Value)
+			//		{
+			//			cuentaPorPagar.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
+			//		}
+			//		if (reader["FechaModificacion"] != DBNull.Value)
+			//		{
+			//			cuentaPorPagar.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
+			//		}
+			//		cuentaPorPagar.IdEstado = Convert.ToInt16(reader["IdEstado"]);
 
-	                #endregion
-	            }
+	  //              #endregion
+	  //          }
 
-                cuentaPorPagar.SetLoadedState();
-                return cuentaPorPagar;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (reader != null) reader.Close();
-                mCommand.Dispose();
-            }
-        }
+   //             cuentaPorPagar.SetLoadedState();
+   //             return cuentaPorPagar;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             if (reader != null) reader.Close();
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
-        #endregion
-        
-        
+   //     #endregion
         
         
-        #region << Mappers >>
         
-        public static CuentaPorPagarEntity ConvertToCuentaPorPagarEntity (SqlDataReader reader,string fkColumnName)
-        {
-            CuentaPorPagarEntity cuentaPorPagar = new CuentaPorPagarEntity();
+        
+   //     #region << Mappers >>
+        
+   //     public static CuentaPorPagarEntity ConvertToCuentaPorPagarEntity (SqlDataReader reader,string fkColumnName)
+   //     {
+   //         CuentaPorPagarEntity cuentaPorPagar = new CuentaPorPagarEntity();
             
-            try
-            {
-                bool hasData=false;
-                string columName;
+   //         try
+   //         {
+   //             bool hasData=false;
+   //             string columName;
                 
-                #region << Load the BusinessEntity Object >>
+   //             #region << Load the BusinessEntity Object >>
                 
-				try
-				{
-					columName = String.Format("Id_CuentaPorPagarFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cuentaPorPagar.Id = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdEntrada_CuentaPorPagarFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cuentaPorPagar.IdEntrada = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Numero_CuentaPorPagarFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cuentaPorPagar.Numero = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Periodo_CuentaPorPagarFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cuentaPorPagar.Periodo = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Fecha_CuentaPorPagarFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cuentaPorPagar.Fecha = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Valor_CuentaPorPagarFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cuentaPorPagar.Valor = (decimal) reader[columName];
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Saldo_CuentaPorPagarFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cuentaPorPagar.Saldo = (decimal) reader[columName];
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpIngreso_CuentaPorPagarFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cuentaPorPagar.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioIngreso_CuentaPorPagarFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cuentaPorPagar.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaIngreso_CuentaPorPagarFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cuentaPorPagar.FechaIngreso = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpModificacion_CuentaPorPagarFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cuentaPorPagar.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioModificacion_CuentaPorPagarFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cuentaPorPagar.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaModificacion_CuentaPorPagarFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cuentaPorPagar.FechaModificacion = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdEstado_CuentaPorPagarFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						cuentaPorPagar.IdEstado = Convert.ToInt16(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Id_CuentaPorPagarFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			cuentaPorPagar.Id = Convert.ToInt32(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdEntrada_CuentaPorPagarFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			cuentaPorPagar.IdEntrada = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Numero_CuentaPorPagarFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			cuentaPorPagar.Numero = Convert.ToInt32(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Periodo_CuentaPorPagarFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			cuentaPorPagar.Periodo = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Fecha_CuentaPorPagarFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			cuentaPorPagar.Fecha = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Valor_CuentaPorPagarFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			cuentaPorPagar.Valor = (decimal) reader[columName];
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Saldo_CuentaPorPagarFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			cuentaPorPagar.Saldo = (decimal) reader[columName];
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IpIngreso_CuentaPorPagarFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			cuentaPorPagar.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("UsuarioIngreso_CuentaPorPagarFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			cuentaPorPagar.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("FechaIngreso_CuentaPorPagarFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			cuentaPorPagar.FechaIngreso = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IpModificacion_CuentaPorPagarFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			cuentaPorPagar.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("UsuarioModificacion_CuentaPorPagarFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			cuentaPorPagar.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("FechaModificacion_CuentaPorPagarFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			cuentaPorPagar.FechaModificacion = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdEstado_CuentaPorPagarFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			cuentaPorPagar.IdEstado = Convert.ToInt16(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
 
                 
-                #endregion
+   //             #endregion
                 
-                cuentaPorPagar.SetLoadedState();
-                if(hasData)
-                {
-                	return cuentaPorPagar;
-                }
-                else return null;
-            }
-            catch (Exception exc)
-            {
-                return null;
-            }
-            finally
-            {
+   //             cuentaPorPagar.SetLoadedState();
+   //             if(hasData)
+   //             {
+   //             	return cuentaPorPagar;
+   //             }
+   //             else return null;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             return null;
+   //         }
+   //         finally
+   //         {
                 
-            }
-        }
+   //         }
+   //     }
         
-        #endregion
+   //     #endregion
         
    
     }

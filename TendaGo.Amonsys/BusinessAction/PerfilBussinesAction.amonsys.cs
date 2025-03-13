@@ -32,134 +32,134 @@ namespace ER.BA
     public partial class PerfilBussinesAction
     {
          
-       #region Implementation
+//       #region Implementation
         
-       public static PerfilEntity Save(PerfilEntity perfil )
-       {   
-            return Save(perfil,null, null);
-       }
+//       public static PerfilEntity Save(PerfilEntity perfil )
+//       {   
+//            return Save(perfil,null, null);
+//       }
        
-       public static PerfilEntity Save(PerfilEntity perfil , SqlConnection connection, SqlTransaction transaction)
-       {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true; 
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//       public static PerfilEntity Save(PerfilEntity perfil , SqlConnection connection, SqlTransaction transaction)
+//       {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true; 
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+///*
+
+//*/
+//                    switch (perfil.CurrentState)
+//                    {
+//                        case EntityStatesEnum.Deleted:
+//                            PerfilDataAccess.Delete(perfil, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.Updated:
+//                            PerfilDataAccess.Update(perfil, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.New:
+//                            perfil = PerfilDataAccess.Insert(perfil, connection, transaction);
+//                            break;
+//                        default:
+//                            break;
+//                    }
+                    
+                    
+
+////                } 
+               
+//               //End of Transaction
+//               if (isBAParent && transaction != null)
+//               {
+//					transaction.Commit();
+//					perfil.SetState(EntityStatesEnum.SavedSuccessfully);
+//               }
+               
+//               return perfil;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
 //                {
-/*
-
-*/
-                    switch (perfil.CurrentState)
-                    {
-                        case EntityStatesEnum.Deleted:
-                            PerfilDataAccess.Delete(perfil, connection, transaction);
-                            break;
-                        case EntityStatesEnum.Updated:
-                            PerfilDataAccess.Update(perfil, connection, transaction);
-                            break;
-                        case EntityStatesEnum.New:
-                            perfil = PerfilDataAccess.Insert(perfil, connection, transaction);
-                            break;
-                        default:
-                            break;
-                    }
+//                    transaction.Rollback();
+//                    if ( perfil != null)  perfil.RollBackState();
                     
-                    
-
-//                } 
-               
-               //End of Transaction
-               if (isBAParent && transaction != null)
-               {
-					transaction.Commit();
-					perfil.SetState(EntityStatesEnum.SavedSuccessfully);
-               }
-               
-               return perfil;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( perfil != null)  perfil.RollBackState();
-                    
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
   
          
          
          
-        public static PerfilEntity LoadByPK(short Id)
-        {
-            return LoadByPK(Id , null, null, 1);
-        }
-        public static PerfilEntity LoadByPK(short Id ,int deepLoadLevel)
-        {
-            return LoadByPK(Id , null, null, deepLoadLevel);
-        }
+//        public static PerfilEntity LoadByPK(short Id)
+//        {
+//            return LoadByPK(Id , null, null, 1);
+//        }
+//        public static PerfilEntity LoadByPK(short Id ,int deepLoadLevel)
+//        {
+//            return LoadByPK(Id , null, null, deepLoadLevel);
+//        }
         
-        public static PerfilEntity LoadByPK(short Id, SqlConnection connection,SqlTransaction  transaction)
-        {
-            return LoadByPK(Id , connection, transaction, 1);
-        }
+//        public static PerfilEntity LoadByPK(short Id, SqlConnection connection,SqlTransaction  transaction)
+//        {
+//            return LoadByPK(Id , connection, transaction, 1);
+//        }
         
-        public static PerfilEntity LoadByPK(short Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static PerfilEntity LoadByPK(short Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
             
-            try
-            {
+//            try
+//            {
 
                 
-				PerfilEntity perfil = PerfilDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
-				if(perfil!=null) 
-                {
-					if (deepLoadLevel > 1)
-	                {
+//				PerfilEntity perfil = PerfilDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
+//				if(perfil!=null) 
+//                {
+//					if (deepLoadLevel > 1)
+//	                {
 	
-	                }
+//	                }
 	                   
-						perfil.SetLoadedState();
-				}
+//						perfil.SetLoadedState();
+//				}
 
-				return perfil;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//				return perfil;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
          
-        #endregion Implementation
+//        #endregion Implementation
           
      }
 }

@@ -32,134 +32,134 @@ namespace ER.BA
     public partial class DivisionBussinesAction
     {
          
-       #region Implementation
+//       #region Implementation
         
-       public static DivisionEntity Save(DivisionEntity division )
-       {   
-            return Save(division,null, null);
-       }
+//       public static DivisionEntity Save(DivisionEntity division )
+//       {   
+//            return Save(division,null, null);
+//       }
        
-       public static DivisionEntity Save(DivisionEntity division , SqlConnection connection, SqlTransaction transaction)
-       {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true; 
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//       public static DivisionEntity Save(DivisionEntity division , SqlConnection connection, SqlTransaction transaction)
+//       {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true; 
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+///*
+
+//*/
+//                    switch (division.CurrentState)
+//                    {
+//                        case EntityStatesEnum.Deleted:
+//                            DivisionDataAccess.Delete(division, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.Updated:
+//                            DivisionDataAccess.Update(division, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.New:
+//                            division = DivisionDataAccess.Insert(division, connection, transaction);
+//                            break;
+//                        default:
+//                            break;
+//                    }
+                    
+                    
+
+////                } 
+               
+//               //End of Transaction
+//               if (isBAParent && transaction != null)
+//               {
+//					transaction.Commit();
+//					division.SetState(EntityStatesEnum.SavedSuccessfully);
+//               }
+               
+//               return division;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
 //                {
-/*
-
-*/
-                    switch (division.CurrentState)
-                    {
-                        case EntityStatesEnum.Deleted:
-                            DivisionDataAccess.Delete(division, connection, transaction);
-                            break;
-                        case EntityStatesEnum.Updated:
-                            DivisionDataAccess.Update(division, connection, transaction);
-                            break;
-                        case EntityStatesEnum.New:
-                            division = DivisionDataAccess.Insert(division, connection, transaction);
-                            break;
-                        default:
-                            break;
-                    }
+//                    transaction.Rollback();
+//                    if ( division != null)  division.RollBackState();
                     
-                    
-
-//                } 
-               
-               //End of Transaction
-               if (isBAParent && transaction != null)
-               {
-					transaction.Commit();
-					division.SetState(EntityStatesEnum.SavedSuccessfully);
-               }
-               
-               return division;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( division != null)  division.RollBackState();
-                    
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
   
          
          
          
-        public static DivisionEntity LoadByPK(int Id)
-        {
-            return LoadByPK(Id , null, null, 1);
-        }
-        public static DivisionEntity LoadByPK(int Id ,int deepLoadLevel)
-        {
-            return LoadByPK(Id , null, null, deepLoadLevel);
-        }
+//        public static DivisionEntity LoadByPK(int Id)
+//        {
+//            return LoadByPK(Id , null, null, 1);
+//        }
+//        public static DivisionEntity LoadByPK(int Id ,int deepLoadLevel)
+//        {
+//            return LoadByPK(Id , null, null, deepLoadLevel);
+//        }
         
-        public static DivisionEntity LoadByPK(int Id, SqlConnection connection,SqlTransaction  transaction)
-        {
-            return LoadByPK(Id , connection, transaction, 1);
-        }
+//        public static DivisionEntity LoadByPK(int Id, SqlConnection connection,SqlTransaction  transaction)
+//        {
+//            return LoadByPK(Id , connection, transaction, 1);
+//        }
         
-        public static DivisionEntity LoadByPK(int Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static DivisionEntity LoadByPK(int Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
             
-            try
-            {
+//            try
+//            {
 
                 
-				DivisionEntity division = DivisionDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
-				if(division!=null) 
-                {
-					if (deepLoadLevel > 1)
-	                {
+//				DivisionEntity division = DivisionDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
+//				if(division!=null) 
+//                {
+//					if (deepLoadLevel > 1)
+//	                {
 	
-	                }
+//	                }
 	                   
-						division.SetLoadedState();
-				}
+//						division.SetLoadedState();
+//				}
 
-				return division;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//				return division;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
          
-        #endregion Implementation
+//        #endregion Implementation
           
      }
 }

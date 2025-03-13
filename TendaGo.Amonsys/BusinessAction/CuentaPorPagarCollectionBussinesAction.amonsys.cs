@@ -35,184 +35,184 @@ namespace ER.BA
     
   
     
-        #region << Custom Stored Procedures >>
+//        #region << Custom Stored Procedures >>
         
         
-        #endregion
+//        #endregion
         
-        #region Implementation
+//        #region Implementation
         
-        public static CuentaPorPagarEntityCollection Save(CuentaPorPagarEntityCollection cuentaPorPagarCollection )
-        {
-            return Save(cuentaPorPagarCollection, null, null);
-        }
+//        public static CuentaPorPagarEntityCollection Save(CuentaPorPagarEntityCollection cuentaPorPagarCollection )
+//        {
+//            return Save(cuentaPorPagarCollection, null, null);
+//        }
         
-        public static CuentaPorPagarEntityCollection Save(CuentaPorPagarEntityCollection cuentaPorPagarCollection , SqlConnection connection, SqlTransaction transaction)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//        public static CuentaPorPagarEntityCollection Save(CuentaPorPagarEntityCollection cuentaPorPagarCollection , SqlConnection connection, SqlTransaction transaction)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-                    foreach (CuentaPorPagarEntity cuentaPorPagar in cuentaPorPagarCollection)
-                    {
-                        CuentaPorPagarBussinesAction.Save(cuentaPorPagar , connection, transaction);
-                    }
+//                    foreach (CuentaPorPagarEntity cuentaPorPagar in cuentaPorPagarCollection)
+//                    {
+//                        CuentaPorPagarBussinesAction.Save(cuentaPorPagar , connection, transaction);
+//                    }
                     
-                    if (isBAParent && transaction != null) 
-                    {
-                    	transaction.Commit();
-                    	cuentaPorPagarCollection.SetState(EntityStatesEnum.SavedSuccessfully);
-                    }
+//                    if (isBAParent && transaction != null) 
+//                    {
+//                    	transaction.Commit();
+//                    	cuentaPorPagarCollection.SetState(EntityStatesEnum.SavedSuccessfully);
+//                    }
 
-                    return cuentaPorPagarCollection;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( cuentaPorPagarCollection != null)  cuentaPorPagarCollection.RollBackState();
+//                    return cuentaPorPagarCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
+//                {
+//                    transaction.Rollback();
+//                    if ( cuentaPorPagarCollection != null)  cuentaPorPagarCollection.RollBackState();
                     
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
-        #region << Find by All >>
+//        #region << Find by All >>
         
-        public static CuentaPorPagarEntityCollection FindByAll(CuentaPorPagarFindParameterEntity findParameter )
-        {
-        	return FindByAll(findParameter,null,null,1);
-        }
+//        public static CuentaPorPagarEntityCollection FindByAll(CuentaPorPagarFindParameterEntity findParameter )
+//        {
+//        	return FindByAll(findParameter,null,null,1);
+//        }
         
-        public static CuentaPorPagarEntityCollection FindByAll(CuentaPorPagarFindParameterEntity findParameter ,int deepLoadLevel)
-        {
-        	return FindByAll(findParameter,null,null,deepLoadLevel);
-        }
+//        public static CuentaPorPagarEntityCollection FindByAll(CuentaPorPagarFindParameterEntity findParameter ,int deepLoadLevel)
+//        {
+//        	return FindByAll(findParameter,null,null,deepLoadLevel);
+//        }
         
-        public static CuentaPorPagarEntityCollection FindByAll(CuentaPorPagarFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction)
-        {
-        	return FindByAll(findParameter,connection,transaction,1);
-        }
+//        public static CuentaPorPagarEntityCollection FindByAll(CuentaPorPagarFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction)
+//        {
+//        	return FindByAll(findParameter,connection,transaction,1);
+//        }
         
-        public static CuentaPorPagarEntityCollection FindByAll(CuentaPorPagarFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static CuentaPorPagarEntityCollection FindByAll(CuentaPorPagarFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
 
-			CuentaPorPagarEntityCollection cuentaPorPagarCollection = null; 
+//			CuentaPorPagarEntityCollection cuentaPorPagarCollection = null; 
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
-//                {
-                   cuentaPorPagarCollection  = CuentaPorPagarDataAccessCollection.FindByAll(findParameter , connection, transaction, deepLoadLevel);
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+//                   cuentaPorPagarCollection  = CuentaPorPagarDataAccessCollection.FindByAll(findParameter , connection, transaction, deepLoadLevel);
                    
-				if (cuentaPorPagarCollection!=null && deepLoadLevel > 1)
-                {
-                	foreach (CuentaPorPagarEntity cuentaPorPagar in cuentaPorPagarCollection)
-                    {
-						cuentaPorPagar.IdEntradaAsEntrada = EntradaBussinesAction.LoadByPK(cuentaPorPagar.IdEntrada, connection, transaction, deepLoadLevel - 1);
+//				if (cuentaPorPagarCollection!=null && deepLoadLevel > 1)
+//                {
+//                	foreach (CuentaPorPagarEntity cuentaPorPagar in cuentaPorPagarCollection)
+//                    {
+//						cuentaPorPagar.IdEntradaAsEntrada = EntradaBussinesAction.LoadByPK(cuentaPorPagar.IdEntrada, connection, transaction, deepLoadLevel - 1);
 
-                    }
+//                    }
 
-                }
+//                }
 
                    
-                   cuentaPorPagarCollection.SetState(EntityStatesEnum.Loaded);
-//                    transactionScope.Complete();
-//
-//                }  //End of Transaction
+//                   cuentaPorPagarCollection.SetState(EntityStatesEnum.Loaded);
+////                    transactionScope.Complete();
+////
+////                }  //End of Transaction
 
-                return cuentaPorPagarCollection;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                return cuentaPorPagarCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
-        #endregion
+//        #endregion
         
-        #region << Find by All Paged >>
+//        #region << Find by All Paged >>
         
-        public static CuentaPorPagarEntityCollection FindByAllPaged(CuentaPorPagarFindParameterEntity findParameter, int pageNumber, int pageSize ,string orderBy)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize,orderBy, null,null,1);
-        }
+//        public static CuentaPorPagarEntityCollection FindByAllPaged(CuentaPorPagarFindParameterEntity findParameter, int pageNumber, int pageSize ,string orderBy)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize,orderBy, null,null,1);
+//        }
         
-        public static CuentaPorPagarEntityCollection FindByAllPaged(CuentaPorPagarFindParameterEntity findParameter , int pageNumber, int pageSize,string orderBy, int deepLoadLevel)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, null,null,deepLoadLevel);
-        }
+//        public static CuentaPorPagarEntityCollection FindByAllPaged(CuentaPorPagarFindParameterEntity findParameter , int pageNumber, int pageSize,string orderBy, int deepLoadLevel)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, null,null,deepLoadLevel);
+//        }
         
-        public static CuentaPorPagarEntityCollection FindByAllPaged(CuentaPorPagarFindParameterEntity findParameter , int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, connection,transaction,1);
-        }
+//        public static CuentaPorPagarEntityCollection FindByAllPaged(CuentaPorPagarFindParameterEntity findParameter , int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, connection,transaction,1);
+//        }
         
-        public static CuentaPorPagarEntityCollection FindByAllPaged(CuentaPorPagarFindParameterEntity findParameter ,int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static CuentaPorPagarEntityCollection FindByAllPaged(CuentaPorPagarFindParameterEntity findParameter ,int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
 
-			CuentaPorPagarEntityCollection cuentaPorPagarCollection = null; 
+//			CuentaPorPagarEntityCollection cuentaPorPagarCollection = null; 
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
-//                {
-                   cuentaPorPagarCollection  = CuentaPorPagarDataAccessCollection.FindByAllPaged(findParameter , pageNumber, pageSize, orderBy, connection, transaction, deepLoadLevel);
-                   cuentaPorPagarCollection.SetState(EntityStatesEnum.Loaded);
-//                    transactionScope.Complete();
-//
-//                }  //End of Transaction
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+//                   cuentaPorPagarCollection  = CuentaPorPagarDataAccessCollection.FindByAllPaged(findParameter , pageNumber, pageSize, orderBy, connection, transaction, deepLoadLevel);
+//                   cuentaPorPagarCollection.SetState(EntityStatesEnum.Loaded);
+////                    transactionScope.Complete();
+////
+////                }  //End of Transaction
 
-                return cuentaPorPagarCollection;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                return cuentaPorPagarCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
-        #endregion
+//        #endregion
 
       
-        #endregion Implementation
+//        #endregion Implementation
         
           
      }

@@ -26,619 +26,619 @@ namespace ER.DA
     {
     
    
-        #region << Default Methods >>
+   //     #region << Default Methods >>
 
-        /// <summary>
-        /// Create a new entity type of Stock
-        /// </summary>
-        public static StockEntity Insert(StockEntity stock, SqlConnection connection, SqlTransaction transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText =  "Stock_Insert";
+   //     /// <summary>
+   //     /// Create a new entity type of Stock
+   //     /// </summary>
+   //     public static StockEntity Insert(StockEntity stock, SqlConnection connection, SqlTransaction transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText =  "Stock_Insert";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
                  
-				mCommand.Parameters.AddWithValue("@IdEmpresa", stock.IdEmpresa);
-				if(!String.IsNullOrEmpty(stock.Tipo))
-				{
-					mCommand.Parameters.AddWithValue("@Tipo", stock.Tipo.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@Tipo",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@IdEmpresa", stock.IdEmpresa);
+			//	if(!String.IsNullOrEmpty(stock.Tipo))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Tipo", stock.Tipo.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Tipo",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(stock.IdSalidaEntrada))
-				{
-					mCommand.Parameters.AddWithValue("@IdSalidaEntrada", stock.IdSalidaEntrada.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IdSalidaEntrada",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(stock.IdSalidaEntrada))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IdSalidaEntrada", stock.IdSalidaEntrada.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IdSalidaEntrada",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(stock.IdDetalle))
-				{
-					mCommand.Parameters.AddWithValue("@IdDetalle", stock.IdDetalle.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IdDetalle",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(stock.IdDetalle))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IdDetalle", stock.IdDetalle.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IdDetalle",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IdProducto", stock.IdProducto);
-				mCommand.Parameters.AddWithValue("@IdLocal", stock.IdLocal);
-				mCommand.Parameters.AddWithValue("@Fecha", stock.Fecha);
-				mCommand.Parameters.AddWithValue("@Cantidad", stock.Cantidad);
-				mCommand.Parameters.AddWithValue("@ValorUnitario", stock.ValorUnitario);
-				if(stock.ValorTotal != 0)
-				{
-					mCommand.Parameters.AddWithValue("@ValorTotal", stock.ValorTotal);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@ValorTotal",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@IdProducto", stock.IdProducto);
+			//	mCommand.Parameters.AddWithValue("@IdLocal", stock.IdLocal);
+			//	mCommand.Parameters.AddWithValue("@Fecha", stock.Fecha);
+			//	mCommand.Parameters.AddWithValue("@Cantidad", stock.Cantidad);
+			//	mCommand.Parameters.AddWithValue("@ValorUnitario", stock.ValorUnitario);
+			//	if(stock.ValorTotal != 0)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@ValorTotal", stock.ValorTotal);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@ValorTotal",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IdTipoUnidad", stock.IdTipoUnidad);
-				if(stock.CantidadTipoUnidad != 0)
-				{
-					mCommand.Parameters.AddWithValue("@CantidadTipoUnidad", stock.CantidadTipoUnidad);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@CantidadTipoUnidad",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@IdTipoUnidad", stock.IdTipoUnidad);
+			//	if(stock.CantidadTipoUnidad != 0)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@CantidadTipoUnidad", stock.CantidadTipoUnidad);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@CantidadTipoUnidad",DBNull.Value);
+			//	}
 
-				if(stock.StockInventario != 0)
-				{
-					mCommand.Parameters.AddWithValue("@StockInventario", stock.StockInventario);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@StockInventario",DBNull.Value);
-				}
+			//	if(stock.StockInventario != 0)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@StockInventario", stock.StockInventario);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@StockInventario",DBNull.Value);
+			//	}
 
-				if(stock.CostoPromedioPonderado != 0)
-				{
-					mCommand.Parameters.AddWithValue("@CostoPromedioPonderado", stock.CostoPromedioPonderado);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@CostoPromedioPonderado",DBNull.Value);
-				}
+			//	if(stock.CostoPromedioPonderado != 0)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@CostoPromedioPonderado", stock.CostoPromedioPonderado);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@CostoPromedioPonderado",DBNull.Value);
+			//	}
 
-				if(stock.SaldoInventario != 0)
-				{
-					mCommand.Parameters.AddWithValue("@SaldoInventario", stock.SaldoInventario);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@SaldoInventario",DBNull.Value);
-				}
+			//	if(stock.SaldoInventario != 0)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@SaldoInventario", stock.SaldoInventario);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@SaldoInventario",DBNull.Value);
+			//	}
 
-				if(stock.IdEstado != 0)
-				{
-					mCommand.Parameters.AddWithValue("@IdEstado", stock.IdEstado);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IdEstado",DBNull.Value);
-				}
-
-
-				// Add the primary keys columns
-				mCommand.Parameters.Add("@Id", SqlDbType.VarChar, 50);
-				mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
+			//	if(stock.IdEstado != 0)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IdEstado", stock.IdEstado);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IdEstado",DBNull.Value);
+			//	}
 
 
-                #endregion
+			//	// Add the primary keys columns
+			//	mCommand.Parameters.Add("@Id", SqlDbType.VarChar, 50);
+			//	mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
+
+
+   //             #endregion
                 
-                // Insert Stock
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Insert Stock
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
-				stock.Id = Convert.ToString(mCommand.Parameters["@Id"].Value);
+			//	stock.Id = Convert.ToString(mCommand.Parameters["@Id"].Value);
 
 
-                return stock;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //             return stock;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
 
-        /// <summary>
-        /// Update a entity
-        /// </summary>
-        public static void Update(StockEntity stock, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "Stock_Update";
+   //     /// <summary>
+   //     /// Update a entity
+   //     /// </summary>
+   //     public static void Update(StockEntity stock, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;;
+   //             mCommand.CommandText = "Stock_Update";
 
-                 #region << Add the params >>
+   //              #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@Id", stock.Id);
-				mCommand.Parameters.AddWithValue("@IdEmpresa", stock.IdEmpresa);
-				if(!String.IsNullOrEmpty(stock.Tipo))
-				{
-					mCommand.Parameters.AddWithValue("@Tipo", stock.Tipo.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@Tipo",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@Id", stock.Id);
+			//	mCommand.Parameters.AddWithValue("@IdEmpresa", stock.IdEmpresa);
+			//	if(!String.IsNullOrEmpty(stock.Tipo))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Tipo", stock.Tipo.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@Tipo",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(stock.IdSalidaEntrada))
-				{
-					mCommand.Parameters.AddWithValue("@IdSalidaEntrada", stock.IdSalidaEntrada.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IdSalidaEntrada",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(stock.IdSalidaEntrada))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IdSalidaEntrada", stock.IdSalidaEntrada.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IdSalidaEntrada",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(stock.IdDetalle))
-				{
-					mCommand.Parameters.AddWithValue("@IdDetalle", stock.IdDetalle.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IdDetalle",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(stock.IdDetalle))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IdDetalle", stock.IdDetalle.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IdDetalle",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IdProducto", stock.IdProducto);
-				mCommand.Parameters.AddWithValue("@IdLocal", stock.IdLocal);
-				mCommand.Parameters.AddWithValue("@Fecha", stock.Fecha);
-				mCommand.Parameters.AddWithValue("@Cantidad", stock.Cantidad);
-				mCommand.Parameters.AddWithValue("@ValorUnitario", stock.ValorUnitario);
-				if(stock.ValorTotal != 0)
-				{
-					mCommand.Parameters.AddWithValue("@ValorTotal", stock.ValorTotal);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@ValorTotal",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@IdProducto", stock.IdProducto);
+			//	mCommand.Parameters.AddWithValue("@IdLocal", stock.IdLocal);
+			//	mCommand.Parameters.AddWithValue("@Fecha", stock.Fecha);
+			//	mCommand.Parameters.AddWithValue("@Cantidad", stock.Cantidad);
+			//	mCommand.Parameters.AddWithValue("@ValorUnitario", stock.ValorUnitario);
+			//	if(stock.ValorTotal != 0)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@ValorTotal", stock.ValorTotal);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@ValorTotal",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IdTipoUnidad", stock.IdTipoUnidad);
-				if(stock.CantidadTipoUnidad != 0)
-				{
-					mCommand.Parameters.AddWithValue("@CantidadTipoUnidad", stock.CantidadTipoUnidad);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@CantidadTipoUnidad",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@IdTipoUnidad", stock.IdTipoUnidad);
+			//	if(stock.CantidadTipoUnidad != 0)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@CantidadTipoUnidad", stock.CantidadTipoUnidad);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@CantidadTipoUnidad",DBNull.Value);
+			//	}
 
-				if(stock.StockInventario != 0)
-				{
-					mCommand.Parameters.AddWithValue("@StockInventario", stock.StockInventario);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@StockInventario",DBNull.Value);
-				}
+			//	if(stock.StockInventario != 0)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@StockInventario", stock.StockInventario);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@StockInventario",DBNull.Value);
+			//	}
 
-				if(stock.CostoPromedioPonderado != 0)
-				{
-					mCommand.Parameters.AddWithValue("@CostoPromedioPonderado", stock.CostoPromedioPonderado);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@CostoPromedioPonderado",DBNull.Value);
-				}
+			//	if(stock.CostoPromedioPonderado != 0)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@CostoPromedioPonderado", stock.CostoPromedioPonderado);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@CostoPromedioPonderado",DBNull.Value);
+			//	}
 
-				if(stock.SaldoInventario != 0)
-				{
-					mCommand.Parameters.AddWithValue("@SaldoInventario", stock.SaldoInventario);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@SaldoInventario",DBNull.Value);
-				}
+			//	if(stock.SaldoInventario != 0)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@SaldoInventario", stock.SaldoInventario);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@SaldoInventario",DBNull.Value);
+			//	}
 
-				if(stock.IdEstado != 0)
-				{
-					mCommand.Parameters.AddWithValue("@IdEstado", stock.IdEstado);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IdEstado",DBNull.Value);
-				}
+			//	if(stock.IdEstado != 0)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IdEstado", stock.IdEstado);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IdEstado",DBNull.Value);
+			//	}
 
                 
    
-                #endregion
+   //             #endregion
                 
-                // Update stock
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Update stock
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
 
-         /// <summary>
-        /// Delete a entity
-        /// </summary>
-        public static void Delete(StockEntity stock, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "Stock_Delete";
-				mCommand.Parameters.AddWithValue("@Id", stock.Id.ToUpper());
+   //      /// <summary>
+   //     /// Delete a entity
+   //     /// </summary>
+   //     public static void Delete(StockEntity stock, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;;
+   //             mCommand.CommandText = "Stock_Delete";
+			//	mCommand.Parameters.AddWithValue("@Id", stock.Id.ToUpper());
 
                 
-                // Update stock
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Update stock
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
         
          
          
-         /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static StockEntity LoadByPK(string Id, SqlConnection connection, SqlTransaction  transaction)
-        {
-        	return LoadByPK(Id,connection,transaction,1);
-        }
+   //      /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static StockEntity LoadByPK(string Id, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //     	return LoadByPK(Id,connection,transaction,1);
+   //     }
         
-        /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static StockEntity LoadByPK(string Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
-        {
-            StockEntity stock = new StockEntity();
+   //     /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static StockEntity LoadByPK(string Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
+   //     {
+   //         StockEntity stock = new StockEntity();
             
-			stock.Id = Id.ToUpper();
+			//stock.Id = Id.ToUpper();
             
             
-            SqlCommand mCommand = new SqlCommand();
-            SqlDataReader reader = null;
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText = "Stock_LoadByPK";
+   //         SqlCommand mCommand = new SqlCommand();
+   //         SqlDataReader reader = null;
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText = "Stock_LoadByPK";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@Id", stock.Id.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@Id", stock.Id.ToUpper());
                 
  
-                #endregion 
+   //             #endregion 
                 
-                if (connection.State != ConnectionState.Open) connection.Open();
+   //             if (connection.State != ConnectionState.Open) connection.Open();
 
-                reader = mCommand.ExecuteReader();
+   //             reader = mCommand.ExecuteReader();
 
-                if(!reader.HasRows) return null;
+   //             if(!reader.HasRows) return null;
                 
-	            while (reader.Read())
-	            {
-					#region << Deep Load >>
-                    if (deepLoadLevel == 1)
-		     		{
+	  //          while (reader.Read())
+	  //          {
+			//		#region << Deep Load >>
+   //                 if (deepLoadLevel == 1)
+		 //    		{
 
-                    }
-	                #endregion
+   //                 }
+	  //              #endregion
 	                
-	                #region << Load the BusinessEntity Object >>
+	  //              #region << Load the BusinessEntity Object >>
 					
-					stock.Id = Convert.ToString(reader["Id"]);
-					stock.IdEmpresa = Convert.ToInt32(reader["IdEmpresa"]);
-					if (reader["Tipo"] != DBNull.Value)
-					{
-						stock.Tipo = Convert.ToString(reader["Tipo"]).ToUpper();
-					}
-					if (reader["IdSalidaEntrada"] != DBNull.Value)
-					{
-						stock.IdSalidaEntrada = Convert.ToString(reader["IdSalidaEntrada"]).ToUpper();
-					}
-					if (reader["IdDetalle"] != DBNull.Value)
-					{
-						stock.IdDetalle = Convert.ToString(reader["IdDetalle"]).ToUpper();
-					}
-					stock.IdProducto = Convert.ToInt32(reader["IdProducto"]);
-					stock.IdLocal = Convert.ToInt32(reader["IdLocal"]);
-					stock.Fecha = Convert.ToDateTime(reader["Fecha"]);
-					stock.Cantidad = (decimal) reader["Cantidad"];
-					stock.ValorUnitario = (decimal) reader["ValorUnitario"];
-					if (reader["ValorTotal"] != DBNull.Value)
-					{
-						stock.ValorTotal = (decimal) reader["ValorTotal"];
-					}
-					stock.IdTipoUnidad = Convert.ToInt32(reader["IdTipoUnidad"]);
-					if (reader["CantidadTipoUnidad"] != DBNull.Value)
-					{
-						stock.CantidadTipoUnidad = (decimal) reader["CantidadTipoUnidad"];
-					}
-					if (reader["StockInventario"] != DBNull.Value)
-					{
-						stock.StockInventario = (decimal) reader["StockInventario"];
-					}
-					if (reader["CostoPromedioPonderado"] != DBNull.Value)
-					{
-						stock.CostoPromedioPonderado = (decimal) reader["CostoPromedioPonderado"];
-					}
-					if (reader["SaldoInventario"] != DBNull.Value)
-					{
-						stock.SaldoInventario = (decimal) reader["SaldoInventario"];
-					}
-					if (reader["IdEstado"] != DBNull.Value)
-					{
-						stock.IdEstado = Convert.ToInt16(reader["IdEstado"]);
-					}
+			//		stock.Id = Convert.ToString(reader["Id"]);
+			//		stock.IdEmpresa = Convert.ToInt32(reader["IdEmpresa"]);
+			//		if (reader["Tipo"] != DBNull.Value)
+			//		{
+			//			stock.Tipo = Convert.ToString(reader["Tipo"]).ToUpper();
+			//		}
+			//		if (reader["IdSalidaEntrada"] != DBNull.Value)
+			//		{
+			//			stock.IdSalidaEntrada = Convert.ToString(reader["IdSalidaEntrada"]).ToUpper();
+			//		}
+			//		if (reader["IdDetalle"] != DBNull.Value)
+			//		{
+			//			stock.IdDetalle = Convert.ToString(reader["IdDetalle"]).ToUpper();
+			//		}
+			//		stock.IdProducto = Convert.ToInt32(reader["IdProducto"]);
+			//		stock.IdLocal = Convert.ToInt32(reader["IdLocal"]);
+			//		stock.Fecha = Convert.ToDateTime(reader["Fecha"]);
+			//		stock.Cantidad = (decimal) reader["Cantidad"];
+			//		stock.ValorUnitario = (decimal) reader["ValorUnitario"];
+			//		if (reader["ValorTotal"] != DBNull.Value)
+			//		{
+			//			stock.ValorTotal = (decimal) reader["ValorTotal"];
+			//		}
+			//		stock.IdTipoUnidad = Convert.ToInt32(reader["IdTipoUnidad"]);
+			//		if (reader["CantidadTipoUnidad"] != DBNull.Value)
+			//		{
+			//			stock.CantidadTipoUnidad = (decimal) reader["CantidadTipoUnidad"];
+			//		}
+			//		if (reader["StockInventario"] != DBNull.Value)
+			//		{
+			//			stock.StockInventario = (decimal) reader["StockInventario"];
+			//		}
+			//		if (reader["CostoPromedioPonderado"] != DBNull.Value)
+			//		{
+			//			stock.CostoPromedioPonderado = (decimal) reader["CostoPromedioPonderado"];
+			//		}
+			//		if (reader["SaldoInventario"] != DBNull.Value)
+			//		{
+			//			stock.SaldoInventario = (decimal) reader["SaldoInventario"];
+			//		}
+			//		if (reader["IdEstado"] != DBNull.Value)
+			//		{
+			//			stock.IdEstado = Convert.ToInt16(reader["IdEstado"]);
+			//		}
 
-	                #endregion
-	            }
+	  //              #endregion
+	  //          }
 
-                stock.SetLoadedState();
-                return stock;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (reader != null) reader.Close();
-                mCommand.Dispose();
-            }
-        }
+   //             stock.SetLoadedState();
+   //             return stock;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             if (reader != null) reader.Close();
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
-        #endregion
-        
-        
+   //     #endregion
         
         
-        #region << Mappers >>
         
-        public static StockEntity ConvertToStockEntity (SqlDataReader reader,string fkColumnName)
-        {
-            StockEntity stock = new StockEntity();
+        
+   //     #region << Mappers >>
+        
+   //     public static StockEntity ConvertToStockEntity (SqlDataReader reader,string fkColumnName)
+   //     {
+   //         StockEntity stock = new StockEntity();
             
-            try
-            {
-                bool hasData=false;
-                string columName;
+   //         try
+   //         {
+   //             bool hasData=false;
+   //             string columName;
                 
-                #region << Load the BusinessEntity Object >>
+   //             #region << Load the BusinessEntity Object >>
                 
-				try
-				{
-					columName = String.Format("Id_StockFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						stock.Id = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdEmpresa_StockFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						stock.IdEmpresa = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Tipo_StockFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						stock.Tipo = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdSalidaEntrada_StockFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						stock.IdSalidaEntrada = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdDetalle_StockFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						stock.IdDetalle = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdProducto_StockFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						stock.IdProducto = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdLocal_StockFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						stock.IdLocal = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Fecha_StockFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						stock.Fecha = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Cantidad_StockFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						stock.Cantidad = (decimal) reader[columName];
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("ValorUnitario_StockFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						stock.ValorUnitario = (decimal) reader[columName];
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("ValorTotal_StockFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						stock.ValorTotal = (decimal) reader[columName];
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdTipoUnidad_StockFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						stock.IdTipoUnidad = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("CantidadTipoUnidad_StockFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						stock.CantidadTipoUnidad = (decimal) reader[columName];
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("StockInventario_StockFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						stock.StockInventario = (decimal) reader[columName];
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("CostoPromedioPonderado_StockFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						stock.CostoPromedioPonderado = (decimal) reader[columName];
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("SaldoInventario_StockFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						stock.SaldoInventario = (decimal) reader[columName];
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdEstado_StockFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						stock.IdEstado = Convert.ToInt16(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Id_StockFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			stock.Id = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdEmpresa_StockFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			stock.IdEmpresa = Convert.ToInt32(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Tipo_StockFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			stock.Tipo = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdSalidaEntrada_StockFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			stock.IdSalidaEntrada = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdDetalle_StockFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			stock.IdDetalle = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdProducto_StockFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			stock.IdProducto = Convert.ToInt32(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdLocal_StockFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			stock.IdLocal = Convert.ToInt32(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Fecha_StockFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			stock.Fecha = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Cantidad_StockFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			stock.Cantidad = (decimal) reader[columName];
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("ValorUnitario_StockFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			stock.ValorUnitario = (decimal) reader[columName];
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("ValorTotal_StockFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			stock.ValorTotal = (decimal) reader[columName];
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdTipoUnidad_StockFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			stock.IdTipoUnidad = Convert.ToInt32(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("CantidadTipoUnidad_StockFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			stock.CantidadTipoUnidad = (decimal) reader[columName];
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("StockInventario_StockFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			stock.StockInventario = (decimal) reader[columName];
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("CostoPromedioPonderado_StockFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			stock.CostoPromedioPonderado = (decimal) reader[columName];
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("SaldoInventario_StockFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			stock.SaldoInventario = (decimal) reader[columName];
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdEstado_StockFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			stock.IdEstado = Convert.ToInt16(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
 
                 
-                #endregion
+   //             #endregion
                 
-                stock.SetLoadedState();
-                if(hasData)
-                {
-                	return stock;
-                }
-                else return null;
-            }
-            catch (Exception exc)
-            {
-                return null;
-            }
-            finally
-            {
+   //             stock.SetLoadedState();
+   //             if(hasData)
+   //             {
+   //             	return stock;
+   //             }
+   //             else return null;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             return null;
+   //         }
+   //         finally
+   //         {
                 
-            }
-        }
+   //         }
+   //     }
         
-        #endregion
+   //     #endregion
         
    
     }

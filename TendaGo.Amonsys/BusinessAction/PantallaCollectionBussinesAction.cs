@@ -28,32 +28,32 @@ namespace ER.BA
 {
     public partial class PantallaCollectionBussinesAction
     {
-        public static PantallaEntityCollection ObtenerPantallasPorPerfil(string usuario)
-        {
-            return ObtenerPantallasPorPerfil(usuario, null, null);
-        }
+        //public static PantallaEntityCollection ObtenerPantallasPorPerfil(string usuario)
+        //{
+        //    return ObtenerPantallasPorPerfil(usuario, null, null);
+        //}
 
-        public static PantallaEntityCollection ObtenerPantallasPorPerfil(string usuario, SqlConnection connection, SqlTransaction transaction)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-            }
-            try
-            {
-                return PantallaDataAccessCollection.ObtenerPantallasPorPerfil(usuario, connection, transaction);
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+        //public static PantallaEntityCollection ObtenerPantallasPorPerfil(string usuario, SqlConnection connection, SqlTransaction transaction)
+        //{
+        //    bool isBAParent = false;
+        //    if (connection == null)
+        //    {
+        //        isBAParent = true;
+        //        connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+        //    }
+        //    try
+        //    {
+        //        return PantallaDataAccessCollection.ObtenerPantallasPorPerfil(usuario, connection, transaction);
+        //    }
+        //    catch (Exception exc)
+        //    {
+        //        throw exc;
+        //    }
+        //    finally
+        //    {
+        //        if (isBAParent) connection.Close();
+        //    }
+        //}
 
     }
 }

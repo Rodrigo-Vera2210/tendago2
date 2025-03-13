@@ -35,182 +35,182 @@ namespace ER.BA
     
   
     
-        #region << Custom Stored Procedures >>
+//        #region << Custom Stored Procedures >>
         
         
-        #endregion
+//        #endregion
         
-        #region Implementation
+//        #region Implementation
         
-        public static PantallaXPerfilEntityCollection Save(PantallaXPerfilEntityCollection pantallaXPerfilCollection )
-        {
-            return Save(pantallaXPerfilCollection, null, null);
-        }
+//        public static PantallaXPerfilEntityCollection Save(PantallaXPerfilEntityCollection pantallaXPerfilCollection )
+//        {
+//            return Save(pantallaXPerfilCollection, null, null);
+//        }
         
-        public static PantallaXPerfilEntityCollection Save(PantallaXPerfilEntityCollection pantallaXPerfilCollection , SqlConnection connection, SqlTransaction transaction)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//        public static PantallaXPerfilEntityCollection Save(PantallaXPerfilEntityCollection pantallaXPerfilCollection , SqlConnection connection, SqlTransaction transaction)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-                    foreach (PantallaXPerfilEntity pantallaXPerfil in pantallaXPerfilCollection)
-                    {
-                        PantallaXPerfilBussinesAction.Save(pantallaXPerfil , connection, transaction);
-                    }
+//                    foreach (PantallaXPerfilEntity pantallaXPerfil in pantallaXPerfilCollection)
+//                    {
+//                        PantallaXPerfilBussinesAction.Save(pantallaXPerfil , connection, transaction);
+//                    }
                     
-                    if (isBAParent && transaction != null) 
-                    {
-                    	transaction.Commit();
-                    	pantallaXPerfilCollection.SetState(EntityStatesEnum.SavedSuccessfully);
-                    }
+//                    if (isBAParent && transaction != null) 
+//                    {
+//                    	transaction.Commit();
+//                    	pantallaXPerfilCollection.SetState(EntityStatesEnum.SavedSuccessfully);
+//                    }
 
-                    return pantallaXPerfilCollection;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( pantallaXPerfilCollection != null)  pantallaXPerfilCollection.RollBackState();
-                    
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
-
-        #region << Find by All >>
-        
-        public static PantallaXPerfilEntityCollection FindByAll(PantallaXPerfilFindParameterEntity findParameter )
-        {
-        	return FindByAll(findParameter,null,null,1);
-        }
-        
-        public static PantallaXPerfilEntityCollection FindByAll(PantallaXPerfilFindParameterEntity findParameter ,int deepLoadLevel)
-        {
-        	return FindByAll(findParameter,null,null,deepLoadLevel);
-        }
-        
-        public static PantallaXPerfilEntityCollection FindByAll(PantallaXPerfilFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction)
-        {
-        	return FindByAll(findParameter,connection,transaction,1);
-        }
-        
-        public static PantallaXPerfilEntityCollection FindByAll(PantallaXPerfilFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-
-            }
-
-			PantallaXPerfilEntityCollection pantallaXPerfilCollection = null;
-
-            try
-            {
-
-                //                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
-                //                {
-                pantallaXPerfilCollection = PantallaXPerfilDataAccessCollection.FindByAll(findParameter, connection, transaction, deepLoadLevel);
-
-                if (pantallaXPerfilCollection != null && deepLoadLevel > 1)
-                {
-                    foreach (PantallaXPerfilEntity pantallaXPerfil in pantallaXPerfilCollection)
-                    {
-                        pantallaXPerfil.IdPerfilAsPerfil = PerfilBussinesAction.LoadByPK(pantallaXPerfil.IdPerfil, connection, transaction, deepLoadLevel - 1);
-                        pantallaXPerfil.IdPantallaAsPantalla = PantallaBussinesAction.LoadByPK(pantallaXPerfil.IdPantalla, connection, transaction, deepLoadLevel - 1);
-                    }
-                }
-                 
-                pantallaXPerfilCollection.SetState(EntityStatesEnum.Loaded);
-                //                    transactionScope.Complete();
-                //
-                //                }  //End of Transaction
-
-                return pantallaXPerfilCollection;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
-        
-        #endregion
-        
-        #region << Find by All Paged >>
-        
-        public static PantallaXPerfilEntityCollection FindByAllPaged(PantallaXPerfilFindParameterEntity findParameter, int pageNumber, int pageSize ,string orderBy)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize,orderBy, null,null,1);
-        }
-        
-        public static PantallaXPerfilEntityCollection FindByAllPaged(PantallaXPerfilFindParameterEntity findParameter , int pageNumber, int pageSize,string orderBy, int deepLoadLevel)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, null,null,deepLoadLevel);
-        }
-        
-        public static PantallaXPerfilEntityCollection FindByAllPaged(PantallaXPerfilFindParameterEntity findParameter , int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, connection,transaction,1);
-        }
-        
-        public static PantallaXPerfilEntityCollection FindByAllPaged(PantallaXPerfilFindParameterEntity findParameter ,int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-
-            }
-
-			PantallaXPerfilEntityCollection pantallaXPerfilCollection = null; 
-
-            try
-            {
-
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+//                    return pantallaXPerfilCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
 //                {
-                   pantallaXPerfilCollection  = PantallaXPerfilDataAccessCollection.FindByAllPaged(findParameter , pageNumber, pageSize, orderBy, connection, transaction, deepLoadLevel);
-                   pantallaXPerfilCollection.SetState(EntityStatesEnum.Loaded);
-//                    transactionScope.Complete();
-//
-//                }  //End of Transaction
+//                    transaction.Rollback();
+//                    if ( pantallaXPerfilCollection != null)  pantallaXPerfilCollection.RollBackState();
+                    
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
-                return pantallaXPerfilCollection;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//        #region << Find by All >>
         
-        #endregion
+//        public static PantallaXPerfilEntityCollection FindByAll(PantallaXPerfilFindParameterEntity findParameter )
+//        {
+//        	return FindByAll(findParameter,null,null,1);
+//        }
+        
+//        public static PantallaXPerfilEntityCollection FindByAll(PantallaXPerfilFindParameterEntity findParameter ,int deepLoadLevel)
+//        {
+//        	return FindByAll(findParameter,null,null,deepLoadLevel);
+//        }
+        
+//        public static PantallaXPerfilEntityCollection FindByAll(PantallaXPerfilFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction)
+//        {
+//        	return FindByAll(findParameter,connection,transaction,1);
+//        }
+        
+//        public static PantallaXPerfilEntityCollection FindByAll(PantallaXPerfilFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+
+//            }
+
+//			PantallaXPerfilEntityCollection pantallaXPerfilCollection = null;
+
+//            try
+//            {
+
+//                //                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+//                //                {
+//                pantallaXPerfilCollection = PantallaXPerfilDataAccessCollection.FindByAll(findParameter, connection, transaction, deepLoadLevel);
+
+//                if (pantallaXPerfilCollection != null && deepLoadLevel > 1)
+//                {
+//                    foreach (PantallaXPerfilEntity pantallaXPerfil in pantallaXPerfilCollection)
+//                    {
+//                        pantallaXPerfil.IdPerfilAsPerfil = PerfilBussinesAction.LoadByPK(pantallaXPerfil.IdPerfil, connection, transaction, deepLoadLevel - 1);
+//                        pantallaXPerfil.IdPantallaAsPantalla = PantallaBussinesAction.LoadByPK(pantallaXPerfil.IdPantalla, connection, transaction, deepLoadLevel - 1);
+//                    }
+//                }
+                 
+//                pantallaXPerfilCollection.SetState(EntityStatesEnum.Loaded);
+//                //                    transactionScope.Complete();
+//                //
+//                //                }  //End of Transaction
+
+//                return pantallaXPerfilCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
+        
+//        #endregion
+        
+//        #region << Find by All Paged >>
+        
+//        public static PantallaXPerfilEntityCollection FindByAllPaged(PantallaXPerfilFindParameterEntity findParameter, int pageNumber, int pageSize ,string orderBy)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize,orderBy, null,null,1);
+//        }
+        
+//        public static PantallaXPerfilEntityCollection FindByAllPaged(PantallaXPerfilFindParameterEntity findParameter , int pageNumber, int pageSize,string orderBy, int deepLoadLevel)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, null,null,deepLoadLevel);
+//        }
+        
+//        public static PantallaXPerfilEntityCollection FindByAllPaged(PantallaXPerfilFindParameterEntity findParameter , int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, connection,transaction,1);
+//        }
+        
+//        public static PantallaXPerfilEntityCollection FindByAllPaged(PantallaXPerfilFindParameterEntity findParameter ,int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+
+//            }
+
+//			PantallaXPerfilEntityCollection pantallaXPerfilCollection = null; 
+
+//            try
+//            {
+
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+//                   pantallaXPerfilCollection  = PantallaXPerfilDataAccessCollection.FindByAllPaged(findParameter , pageNumber, pageSize, orderBy, connection, transaction, deepLoadLevel);
+//                   pantallaXPerfilCollection.SetState(EntityStatesEnum.Loaded);
+////                    transactionScope.Complete();
+////
+////                }  //End of Transaction
+
+//                return pantallaXPerfilCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
+        
+//        #endregion
 
       
-        #endregion Implementation
+//        #endregion Implementation
         
           
      }

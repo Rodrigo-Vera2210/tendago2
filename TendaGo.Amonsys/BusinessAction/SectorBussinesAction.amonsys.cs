@@ -32,134 +32,134 @@ namespace ER.BA
     public partial class SectorBussinesAction
     {
          
-       #region Implementation
+//       #region Implementation
         
-       public static SectorEntity Save(SectorEntity sector )
-       {   
-            return Save(sector,null, null);
-       }
+//       public static SectorEntity Save(SectorEntity sector )
+//       {   
+//            return Save(sector,null, null);
+//       }
        
-       public static SectorEntity Save(SectorEntity sector , SqlConnection connection, SqlTransaction transaction)
-       {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true; 
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//       public static SectorEntity Save(SectorEntity sector , SqlConnection connection, SqlTransaction transaction)
+//       {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true; 
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+///*
+
+//*/
+//                    switch (sector.CurrentState)
+//                    {
+//                        case EntityStatesEnum.Deleted:
+//                            SectorDataAccess.Delete(sector, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.Updated:
+//                            SectorDataAccess.Update(sector, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.New:
+//                            sector = SectorDataAccess.Insert(sector, connection, transaction);
+//                            break;
+//                        default:
+//                            break;
+//                    }
+                    
+                    
+
+////                } 
+               
+//               //End of Transaction
+//               if (isBAParent && transaction != null)
+//               {
+//					transaction.Commit();
+//					sector.SetState(EntityStatesEnum.SavedSuccessfully);
+//               }
+               
+//               return sector;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
 //                {
-/*
-
-*/
-                    switch (sector.CurrentState)
-                    {
-                        case EntityStatesEnum.Deleted:
-                            SectorDataAccess.Delete(sector, connection, transaction);
-                            break;
-                        case EntityStatesEnum.Updated:
-                            SectorDataAccess.Update(sector, connection, transaction);
-                            break;
-                        case EntityStatesEnum.New:
-                            sector = SectorDataAccess.Insert(sector, connection, transaction);
-                            break;
-                        default:
-                            break;
-                    }
+//                    transaction.Rollback();
+//                    if ( sector != null)  sector.RollBackState();
                     
-                    
-
-//                } 
-               
-               //End of Transaction
-               if (isBAParent && transaction != null)
-               {
-					transaction.Commit();
-					sector.SetState(EntityStatesEnum.SavedSuccessfully);
-               }
-               
-               return sector;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( sector != null)  sector.RollBackState();
-                    
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
   
          
          
          
-        public static SectorEntity LoadByPK(int Id)
-        {
-            return LoadByPK(Id , null, null, 1);
-        }
-        public static SectorEntity LoadByPK(int Id ,int deepLoadLevel)
-        {
-            return LoadByPK(Id , null, null, deepLoadLevel);
-        }
+//        public static SectorEntity LoadByPK(int Id)
+//        {
+//            return LoadByPK(Id , null, null, 1);
+//        }
+//        public static SectorEntity LoadByPK(int Id ,int deepLoadLevel)
+//        {
+//            return LoadByPK(Id , null, null, deepLoadLevel);
+//        }
         
-        public static SectorEntity LoadByPK(int Id, SqlConnection connection,SqlTransaction  transaction)
-        {
-            return LoadByPK(Id , connection, transaction, 1);
-        }
+//        public static SectorEntity LoadByPK(int Id, SqlConnection connection,SqlTransaction  transaction)
+//        {
+//            return LoadByPK(Id , connection, transaction, 1);
+//        }
         
-        public static SectorEntity LoadByPK(int Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static SectorEntity LoadByPK(int Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
             
-            try
-            {
+//            try
+//            {
 
                 
-				SectorEntity sector = SectorDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
-				if(sector!=null) 
-                {
-					if (deepLoadLevel > 1)
-	                {
+//				SectorEntity sector = SectorDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
+//				if(sector!=null) 
+//                {
+//					if (deepLoadLevel > 1)
+//	                {
 	
-	                }
+//	                }
 	                   
-						sector.SetLoadedState();
-				}
+//						sector.SetLoadedState();
+//				}
 
-				return sector;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//				return sector;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
          
-        #endregion Implementation
+//        #endregion Implementation
           
      }
 }

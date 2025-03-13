@@ -32,134 +32,134 @@ namespace ER.BA
     public partial class UnidadMedidaBussinesAction
     {
          
-       #region Implementation
+//       #region Implementation
         
-       public static UnidadMedidaEntity Save(UnidadMedidaEntity unidadMedida )
-       {   
-            return Save(unidadMedida,null, null);
-       }
+//       public static UnidadMedidaEntity Save(UnidadMedidaEntity unidadMedida )
+//       {   
+//            return Save(unidadMedida,null, null);
+//       }
        
-       public static UnidadMedidaEntity Save(UnidadMedidaEntity unidadMedida , SqlConnection connection, SqlTransaction transaction)
-       {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true; 
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//       public static UnidadMedidaEntity Save(UnidadMedidaEntity unidadMedida , SqlConnection connection, SqlTransaction transaction)
+//       {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true; 
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+///*
+
+//*/
+//                    switch (unidadMedida.CurrentState)
+//                    {
+//                        case EntityStatesEnum.Deleted:
+//                            UnidadMedidaDataAccess.Delete(unidadMedida, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.Updated:
+//                            UnidadMedidaDataAccess.Update(unidadMedida, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.New:
+//                            unidadMedida = UnidadMedidaDataAccess.Insert(unidadMedida, connection, transaction);
+//                            break;
+//                        default:
+//                            break;
+//                    }
+                    
+                    
+
+////                } 
+               
+//               //End of Transaction
+//               if (isBAParent && transaction != null)
+//               {
+//					transaction.Commit();
+//					unidadMedida.SetState(EntityStatesEnum.SavedSuccessfully);
+//               }
+               
+//               return unidadMedida;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
 //                {
-/*
-
-*/
-                    switch (unidadMedida.CurrentState)
-                    {
-                        case EntityStatesEnum.Deleted:
-                            UnidadMedidaDataAccess.Delete(unidadMedida, connection, transaction);
-                            break;
-                        case EntityStatesEnum.Updated:
-                            UnidadMedidaDataAccess.Update(unidadMedida, connection, transaction);
-                            break;
-                        case EntityStatesEnum.New:
-                            unidadMedida = UnidadMedidaDataAccess.Insert(unidadMedida, connection, transaction);
-                            break;
-                        default:
-                            break;
-                    }
+//                    transaction.Rollback();
+//                    if ( unidadMedida != null)  unidadMedida.RollBackState();
                     
-                    
-
-//                } 
-               
-               //End of Transaction
-               if (isBAParent && transaction != null)
-               {
-					transaction.Commit();
-					unidadMedida.SetState(EntityStatesEnum.SavedSuccessfully);
-               }
-               
-               return unidadMedida;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( unidadMedida != null)  unidadMedida.RollBackState();
-                    
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
   
          
          
          
-        public static UnidadMedidaEntity LoadByPK(int Id)
-        {
-            return LoadByPK(Id , null, null, 1);
-        }
-        public static UnidadMedidaEntity LoadByPK(int Id ,int deepLoadLevel)
-        {
-            return LoadByPK(Id , null, null, deepLoadLevel);
-        }
+//        public static UnidadMedidaEntity LoadByPK(int Id)
+//        {
+//            return LoadByPK(Id , null, null, 1);
+//        }
+//        public static UnidadMedidaEntity LoadByPK(int Id ,int deepLoadLevel)
+//        {
+//            return LoadByPK(Id , null, null, deepLoadLevel);
+//        }
         
-        public static UnidadMedidaEntity LoadByPK(int Id, SqlConnection connection,SqlTransaction  transaction)
-        {
-            return LoadByPK(Id , connection, transaction, 1);
-        }
+//        public static UnidadMedidaEntity LoadByPK(int Id, SqlConnection connection,SqlTransaction  transaction)
+//        {
+//            return LoadByPK(Id , connection, transaction, 1);
+//        }
         
-        public static UnidadMedidaEntity LoadByPK(int Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static UnidadMedidaEntity LoadByPK(int Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
             
-            try
-            {
+//            try
+//            {
 
                 
-				UnidadMedidaEntity unidadMedida = UnidadMedidaDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
-				if(unidadMedida!=null) 
-                {
-					if (deepLoadLevel > 1)
-	                {
+//				UnidadMedidaEntity unidadMedida = UnidadMedidaDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
+//				if(unidadMedida!=null) 
+//                {
+//					if (deepLoadLevel > 1)
+//	                {
 	
-	                }
+//	                }
 	                   
-						unidadMedida.SetLoadedState();
-				}
+//						unidadMedida.SetLoadedState();
+//				}
 
-				return unidadMedida;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//				return unidadMedida;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
          
-        #endregion Implementation
+//        #endregion Implementation
           
      }
 }

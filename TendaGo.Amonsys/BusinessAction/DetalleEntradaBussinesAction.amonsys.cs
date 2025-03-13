@@ -32,179 +32,179 @@ namespace ER.BA
     public partial class DetalleEntradaBussinesAction
     {
 
-        #region Implementation
+        //#region Implementation
 
-        public static DetalleEntradaEntity Save(DetalleEntradaEntity detalleEntrada)
-        {
-            return Save(detalleEntrada, null, null);
-        }
+        //public static DetalleEntradaEntity Save(DetalleEntradaEntity detalleEntrada)
+        //{
+        //    return Save(detalleEntrada, null, null);
+        //}
 
-        public static DetalleEntradaEntity Save(DetalleEntradaEntity detalleEntrada, SqlConnection connection, SqlTransaction transaction)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+        //public static DetalleEntradaEntity Save(DetalleEntradaEntity detalleEntrada, SqlConnection connection, SqlTransaction transaction)
+        //{
+        //    bool isBAParent = false;
+        //    if (connection == null)
+        //    {
+        //        isBAParent = true;
+        //        connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+        //        connection.Open();
+        //        transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+        //    }
 
-            try
-            {
+        //    try
+        //    {
 
-                #region Generacion del registro kardex
-                StockEntity kardex = new StockEntity();
-                kardex.IdEmpresa = detalleEntrada.IdEmpresa;
-                kardex.IdSalidaEntrada = detalleEntrada.IdEntrada;
-                kardex.IdProducto = detalleEntrada.IdProducto;
-                kardex.IdLocal = detalleEntrada.IdLocal;
-                kardex.IdEstado = 1;
-                kardex.ValorUnitario = detalleEntrada.CostoVenta;
-                kardex.IdTipoUnidad = detalleEntrada.IdTipoUnidad;
-                kardex.Cantidad = detalleEntrada.Cantidad;
-                #endregion
+        //        #region Generacion del registro kardex
+        //        StockEntity kardex = new StockEntity();
+        //        kardex.IdEmpresa = detalleEntrada.IdEmpresa;
+        //        kardex.IdSalidaEntrada = detalleEntrada.IdEntrada;
+        //        kardex.IdProducto = detalleEntrada.IdProducto;
+        //        kardex.IdLocal = detalleEntrada.IdLocal;
+        //        kardex.IdEstado = 1;
+        //        kardex.ValorUnitario = detalleEntrada.CostoVenta;
+        //        kardex.IdTipoUnidad = detalleEntrada.IdTipoUnidad;
+        //        kardex.Cantidad = detalleEntrada.Cantidad;
+        //        #endregion
 
-                switch (detalleEntrada.CurrentState)
-                {
-                    case EntityStatesEnum.Deleted:
-                        DetalleEntradaDataAccess.Delete(detalleEntrada, connection, transaction);
-                        //DEVOLUCION AL PROVEEDOR 
-                        kardex.Tipo = "DC";
-                        kardex.IdDetalle = detalleEntrada.Id;
-                        //kardex.ValorUnitario = 0;
-                        StockDataAccess.Kardex(kardex, connection, transaction);
-                        break;
-                    case EntityStatesEnum.Updated:
-                        DetalleEntradaEntity detalleanterior = DetalleEntradaBussinesAction.LoadByPK(detalleEntrada.Id, connection, transaction);
-                        DetalleEntradaDataAccess.Update(detalleEntrada, connection, transaction);
-                        if (detalleEntrada.IdTipoUnidad == detalleanterior.IdTipoUnidad)
-                        {
-                            if (detalleanterior.Cantidad != detalleEntrada.Cantidad)
-                            {
-                                //si la cantidad actual es mayor a la guardada entonces debo añadir esos items al inventario                         
-                                if (detalleanterior.Cantidad < detalleEntrada.Cantidad)
-                                {
-                                    kardex.Tipo = "E";
-                                    kardex.IdDetalle = detalleEntrada.Id;
-                                    kardex.Cantidad = detalleEntrada.Cantidad - detalleanterior.Cantidad;
-                                }
-                                else if (detalleanterior.Cantidad > detalleEntrada.Cantidad)
-                                {
-                                    //DEVOLUCION AL PROVEEDOR SI LA CANTIDAD ACTUAL ES MENOR
-                                    kardex.Tipo = "DC";
-                                    kardex.IdDetalle = detalleEntrada.Id;
-                                    kardex.Cantidad = detalleanterior.Cantidad - detalleEntrada.Cantidad;
-                                    kardex.ValorUnitario = 0;
-                                }
+        //        switch (detalleEntrada.CurrentState)
+        //        {
+        //            case EntityStatesEnum.Deleted:
+        //                DetalleEntradaDataAccess.Delete(detalleEntrada, connection, transaction);
+        //                //DEVOLUCION AL PROVEEDOR 
+        //                kardex.Tipo = "DC";
+        //                kardex.IdDetalle = detalleEntrada.Id;
+        //                //kardex.ValorUnitario = 0;
+        //                StockDataAccess.Kardex(kardex, connection, transaction);
+        //                break;
+        //            case EntityStatesEnum.Updated:
+        //                DetalleEntradaEntity detalleanterior = DetalleEntradaBussinesAction.LoadByPK(detalleEntrada.Id, connection, transaction);
+        //                DetalleEntradaDataAccess.Update(detalleEntrada, connection, transaction);
+        //                if (detalleEntrada.IdTipoUnidad == detalleanterior.IdTipoUnidad)
+        //                {
+        //                    if (detalleanterior.Cantidad != detalleEntrada.Cantidad)
+        //                    {
+        //                        //si la cantidad actual es mayor a la guardada entonces debo añadir esos items al inventario                         
+        //                        if (detalleanterior.Cantidad < detalleEntrada.Cantidad)
+        //                        {
+        //                            kardex.Tipo = "E";
+        //                            kardex.IdDetalle = detalleEntrada.Id;
+        //                            kardex.Cantidad = detalleEntrada.Cantidad - detalleanterior.Cantidad;
+        //                        }
+        //                        else if (detalleanterior.Cantidad > detalleEntrada.Cantidad)
+        //                        {
+        //                            //DEVOLUCION AL PROVEEDOR SI LA CANTIDAD ACTUAL ES MENOR
+        //                            kardex.Tipo = "DC";
+        //                            kardex.IdDetalle = detalleEntrada.Id;
+        //                            kardex.Cantidad = detalleanterior.Cantidad - detalleEntrada.Cantidad;
+        //                            kardex.ValorUnitario = 0;
+        //                        }
 
-                                StockDataAccess.Kardex(kardex, connection, transaction);
-                            }
-                        }
-                        else
-                        {
-                            throw new System.ArgumentException("No se pueden actualizar los saldos porque cambio el tipo de unidad", "Inventario");
-                        }
-                        break;
-                    case EntityStatesEnum.New:
-                        detalleEntrada = DetalleEntradaDataAccess.Insert(detalleEntrada, connection, transaction);
-                        //registro la entrada completa la primera vez
-                        kardex.Tipo = "E";
-                        kardex.IdDetalle = detalleEntrada.Id;
-                        StockDataAccess.Kardex(kardex, connection, transaction);
-                        break;
-                    default:
-                        break;
-                }
-
-
-
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Commit();
-                    detalleEntrada.SetState(EntityStatesEnum.SavedSuccessfully);
-                }
-
-                return detalleEntrada;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if (detalleEntrada != null) detalleEntrada.RollBackState();
-
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+        //                        StockDataAccess.Kardex(kardex, connection, transaction);
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    throw new System.ArgumentException("No se pueden actualizar los saldos porque cambio el tipo de unidad", "Inventario");
+        //                }
+        //                break;
+        //            case EntityStatesEnum.New:
+        //                detalleEntrada = DetalleEntradaDataAccess.Insert(detalleEntrada, connection, transaction);
+        //                //registro la entrada completa la primera vez
+        //                kardex.Tipo = "E";
+        //                kardex.IdDetalle = detalleEntrada.Id;
+        //                StockDataAccess.Kardex(kardex, connection, transaction);
+        //                break;
+        //            default:
+        //                break;
+        //        }
 
 
 
+        //        if (isBAParent && transaction != null)
+        //        {
+        //            transaction.Commit();
+        //            detalleEntrada.SetState(EntityStatesEnum.SavedSuccessfully);
+        //        }
+
+        //        return detalleEntrada;
+        //    }
+        //    catch (Exception exc)
+        //    {
+        //        if (isBAParent && transaction != null)
+        //        {
+        //            transaction.Rollback();
+        //            if (detalleEntrada != null) detalleEntrada.RollBackState();
+
+        //        }
+        //        throw exc;
+        //    }
+        //    finally
+        //    {
+        //        if (isBAParent) connection.Close();
+        //    }
+        //}
 
 
-        public static DetalleEntradaEntity LoadByPK(string Id)
-        {
-            return LoadByPK(Id, null, null, 1);
-        }
-        public static DetalleEntradaEntity LoadByPK(string Id, int deepLoadLevel)
-        {
-            return LoadByPK(Id, null, null, deepLoadLevel);
-        }
-
-        public static DetalleEntradaEntity LoadByPK(string Id, SqlConnection connection, SqlTransaction transaction)
-        {
-            return LoadByPK(Id, connection, transaction, 1);
-        }
-
-        public static DetalleEntradaEntity LoadByPK(string Id, SqlConnection connection, SqlTransaction transaction, int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-
-            }
-
-            try
-            {
 
 
-                DetalleEntradaEntity detalleEntrada = DetalleEntradaDataAccess.LoadByPK(Id, connection, transaction, deepLoadLevel);
-                if (detalleEntrada != null)
-                {
-                    if (deepLoadLevel > 1)
-                    {
-                        detalleEntrada.IdEntradaAsEntrada = EntradaBussinesAction.LoadByPK(detalleEntrada.IdEntrada, connection, transaction, deepLoadLevel - 1);
-                        detalleEntrada.IdProductoAsProducto = ProductoBussinesAction.LoadByPK(detalleEntrada.IdProducto, connection, transaction, deepLoadLevel - 1);
-                        detalleEntrada.IdProveedorAsEntidad = EntidadBussinesAction.LoadByPK(detalleEntrada.IdProveedor, connection, transaction, deepLoadLevel - 1);
-                        detalleEntrada.IdLocalAsLocalBodega = LocalBodegaBussinesAction.LoadByPK(detalleEntrada.IdLocal, connection, transaction, deepLoadLevel - 1);
 
-                    }
+        //public static DetalleEntradaEntity LoadByPK(string Id)
+        //{
+        //    return LoadByPK(Id, null, null, 1);
+        //}
+        //public static DetalleEntradaEntity LoadByPK(string Id, int deepLoadLevel)
+        //{
+        //    return LoadByPK(Id, null, null, deepLoadLevel);
+        //}
 
-                    detalleEntrada.SetLoadedState();
-                }
+        //public static DetalleEntradaEntity LoadByPK(string Id, SqlConnection connection, SqlTransaction transaction)
+        //{
+        //    return LoadByPK(Id, connection, transaction, 1);
+        //}
 
-                return detalleEntrada;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+        //public static DetalleEntradaEntity LoadByPK(string Id, SqlConnection connection, SqlTransaction transaction, int deepLoadLevel)
+        //{
+        //    bool isBAParent = false;
+        //    if (connection == null)
+        //    {
+        //        isBAParent = true;
+        //        connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+
+        //    }
+
+        //    try
+        //    {
 
 
-        #endregion Implementation
+        //        DetalleEntradaEntity detalleEntrada = DetalleEntradaDataAccess.LoadByPK(Id, connection, transaction, deepLoadLevel);
+        //        if (detalleEntrada != null)
+        //        {
+        //            if (deepLoadLevel > 1)
+        //            {
+        //                detalleEntrada.IdEntradaAsEntrada = EntradaBussinesAction.LoadByPK(detalleEntrada.IdEntrada, connection, transaction, deepLoadLevel - 1);
+        //                detalleEntrada.IdProductoAsProducto = ProductoBussinesAction.LoadByPK(detalleEntrada.IdProducto, connection, transaction, deepLoadLevel - 1);
+        //                detalleEntrada.IdProveedorAsEntidad = EntidadBussinesAction.LoadByPK(detalleEntrada.IdProveedor, connection, transaction, deepLoadLevel - 1);
+        //                detalleEntrada.IdLocalAsLocalBodega = LocalBodegaBussinesAction.LoadByPK(detalleEntrada.IdLocal, connection, transaction, deepLoadLevel - 1);
+
+        //            }
+
+        //            detalleEntrada.SetLoadedState();
+        //        }
+
+        //        return detalleEntrada;
+        //    }
+        //    catch (Exception exc)
+        //    {
+        //        throw exc;
+        //    }
+        //    finally
+        //    {
+        //        if (isBAParent) connection.Close();
+        //    }
+        //}
+
+
+        //#endregion Implementation
 
     }
 }

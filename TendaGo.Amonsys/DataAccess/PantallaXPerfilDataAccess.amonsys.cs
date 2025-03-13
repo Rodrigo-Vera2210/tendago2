@@ -26,497 +26,497 @@ namespace ER.DA
     {
     
    
-        #region << Default Methods >>
+   //     #region << Default Methods >>
 
-        /// <summary>
-        /// Create a new entity type of PantallaXPerfil
-        /// </summary>
-        public static PantallaXPerfilEntity Insert(PantallaXPerfilEntity pantallaXPerfil, SqlConnection connection, SqlTransaction transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText =  "PantallaXPerfil_Insert";
+   //     /// <summary>
+   //     /// Create a new entity type of PantallaXPerfil
+   //     /// </summary>
+   //     public static PantallaXPerfilEntity Insert(PantallaXPerfilEntity pantallaXPerfil, SqlConnection connection, SqlTransaction transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText =  "PantallaXPerfil_Insert";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
                  
-				mCommand.Parameters.AddWithValue("@IdPerfil", pantallaXPerfil.IdPerfil);
-				mCommand.Parameters.AddWithValue("@IdPantalla", pantallaXPerfil.IdPantalla);
-				mCommand.Parameters.AddWithValue("@Guardar", pantallaXPerfil.Guardar);
-				mCommand.Parameters.AddWithValue("@Modificar", pantallaXPerfil.Modificar);
-				mCommand.Parameters.AddWithValue("@Eliminar", pantallaXPerfil.Eliminar);
-				mCommand.Parameters.AddWithValue("@Consultar", pantallaXPerfil.Consultar);
-				mCommand.Parameters.AddWithValue("@VistaPreliminar", pantallaXPerfil.VistaPreliminar);
-				mCommand.Parameters.AddWithValue("@Imprimir", pantallaXPerfil.Imprimir);
-				mCommand.Parameters.AddWithValue("@IpIngreso", pantallaXPerfil.IpIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", pantallaXPerfil.UsuarioIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@FechaIngreso", pantallaXPerfil.FechaIngreso);
-				if(!String.IsNullOrEmpty(pantallaXPerfil.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", pantallaXPerfil.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@IdPerfil", pantallaXPerfil.IdPerfil);
+			//	mCommand.Parameters.AddWithValue("@IdPantalla", pantallaXPerfil.IdPantalla);
+			//	mCommand.Parameters.AddWithValue("@Guardar", pantallaXPerfil.Guardar);
+			//	mCommand.Parameters.AddWithValue("@Modificar", pantallaXPerfil.Modificar);
+			//	mCommand.Parameters.AddWithValue("@Eliminar", pantallaXPerfil.Eliminar);
+			//	mCommand.Parameters.AddWithValue("@Consultar", pantallaXPerfil.Consultar);
+			//	mCommand.Parameters.AddWithValue("@VistaPreliminar", pantallaXPerfil.VistaPreliminar);
+			//	mCommand.Parameters.AddWithValue("@Imprimir", pantallaXPerfil.Imprimir);
+			//	mCommand.Parameters.AddWithValue("@IpIngreso", pantallaXPerfil.IpIngreso.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", pantallaXPerfil.UsuarioIngreso.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@FechaIngreso", pantallaXPerfil.FechaIngreso);
+			//	if(!String.IsNullOrEmpty(pantallaXPerfil.IpModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion", pantallaXPerfil.IpModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(pantallaXPerfil.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", pantallaXPerfil.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(pantallaXPerfil.UsuarioModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", pantallaXPerfil.UsuarioModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+			//	}
 
-				if(pantallaXPerfil.FechaModificacion != null && pantallaXPerfil.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", pantallaXPerfil.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
-				}
+			//	if(pantallaXPerfil.FechaModificacion != null && pantallaXPerfil.FechaModificacion != DateTime.MinValue)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion", pantallaXPerfil.FechaModificacion);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IdEstado", pantallaXPerfil.IdEstado);
+			//	mCommand.Parameters.AddWithValue("@IdEstado", pantallaXPerfil.IdEstado);
 
-				// Add the primary keys columns
-				mCommand.Parameters.Add("@Id", SqlDbType.SmallInt);
-				mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
+			//	// Add the primary keys columns
+			//	mCommand.Parameters.Add("@Id", SqlDbType.SmallInt);
+			//	mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
 
 
-                #endregion
+   //             #endregion
                 
-                // Insert PantallaXPerfil
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Insert PantallaXPerfil
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
-				pantallaXPerfil.Id = Convert.ToInt16(mCommand.Parameters["@Id"].Value);
+			//	pantallaXPerfil.Id = Convert.ToInt16(mCommand.Parameters["@Id"].Value);
 
 
-                return pantallaXPerfil;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //             return pantallaXPerfil;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
 
-        /// <summary>
-        /// Update a entity
-        /// </summary>
-        public static void Update(PantallaXPerfilEntity pantallaXPerfil, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "PantallaXPerfil_Update";
+   //     /// <summary>
+   //     /// Update a entity
+   //     /// </summary>
+   //     public static void Update(PantallaXPerfilEntity pantallaXPerfil, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;;
+   //             mCommand.CommandText = "PantallaXPerfil_Update";
 
-                 #region << Add the params >>
+   //              #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@Id", pantallaXPerfil.Id);
-				mCommand.Parameters.AddWithValue("@IdPerfil", pantallaXPerfil.IdPerfil);
-				mCommand.Parameters.AddWithValue("@IdPantalla", pantallaXPerfil.IdPantalla);
-				mCommand.Parameters.AddWithValue("@Guardar", pantallaXPerfil.Guardar);
-				mCommand.Parameters.AddWithValue("@Modificar", pantallaXPerfil.Modificar);
-				mCommand.Parameters.AddWithValue("@Eliminar", pantallaXPerfil.Eliminar);
-				mCommand.Parameters.AddWithValue("@Consultar", pantallaXPerfil.Consultar);
-				mCommand.Parameters.AddWithValue("@VistaPreliminar", pantallaXPerfil.VistaPreliminar);
-				mCommand.Parameters.AddWithValue("@Imprimir", pantallaXPerfil.Imprimir);
-				mCommand.Parameters.AddWithValue("@IpIngreso", pantallaXPerfil.IpIngreso);
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", pantallaXPerfil.UsuarioIngreso);
-				mCommand.Parameters.AddWithValue("@FechaIngreso", pantallaXPerfil.FechaIngreso);
-				if(!String.IsNullOrEmpty(pantallaXPerfil.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", pantallaXPerfil.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@Id", pantallaXPerfil.Id);
+			//	mCommand.Parameters.AddWithValue("@IdPerfil", pantallaXPerfil.IdPerfil);
+			//	mCommand.Parameters.AddWithValue("@IdPantalla", pantallaXPerfil.IdPantalla);
+			//	mCommand.Parameters.AddWithValue("@Guardar", pantallaXPerfil.Guardar);
+			//	mCommand.Parameters.AddWithValue("@Modificar", pantallaXPerfil.Modificar);
+			//	mCommand.Parameters.AddWithValue("@Eliminar", pantallaXPerfil.Eliminar);
+			//	mCommand.Parameters.AddWithValue("@Consultar", pantallaXPerfil.Consultar);
+			//	mCommand.Parameters.AddWithValue("@VistaPreliminar", pantallaXPerfil.VistaPreliminar);
+			//	mCommand.Parameters.AddWithValue("@Imprimir", pantallaXPerfil.Imprimir);
+			//	mCommand.Parameters.AddWithValue("@IpIngreso", pantallaXPerfil.IpIngreso);
+			//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", pantallaXPerfil.UsuarioIngreso);
+			//	mCommand.Parameters.AddWithValue("@FechaIngreso", pantallaXPerfil.FechaIngreso);
+			//	if(!String.IsNullOrEmpty(pantallaXPerfil.IpModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion", pantallaXPerfil.IpModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(pantallaXPerfil.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", pantallaXPerfil.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(pantallaXPerfil.UsuarioModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", pantallaXPerfil.UsuarioModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+			//	}
 
-				if(pantallaXPerfil.FechaModificacion != null && pantallaXPerfil.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", pantallaXPerfil.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
-				}
+			//	if(pantallaXPerfil.FechaModificacion != null && pantallaXPerfil.FechaModificacion != DateTime.MinValue)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion", pantallaXPerfil.FechaModificacion);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IdEstado", pantallaXPerfil.IdEstado);
+			//	mCommand.Parameters.AddWithValue("@IdEstado", pantallaXPerfil.IdEstado);
                 
    
-                #endregion
+   //             #endregion
                 
-                // Update pantallaXPerfil
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Update pantallaXPerfil
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
 
-         /// <summary>
-        /// Delete a entity
-        /// </summary>
-        public static void Delete(PantallaXPerfilEntity pantallaXPerfil, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "PantallaXPerfil_Delete";
-				mCommand.Parameters.AddWithValue("@Id", pantallaXPerfil.Id);
-				mCommand.Parameters.AddWithValue("@FechaModificacion", pantallaXPerfil.FechaModificacion);
-				mCommand.Parameters.AddWithValue("@UsuarioModificacion", pantallaXPerfil.UsuarioModificacion.ToUpper());
-				mCommand.Parameters.AddWithValue("@IpModificacion", pantallaXPerfil.IpModificacion.ToUpper());
+   //      /// <summary>
+   //     /// Delete a entity
+   //     /// </summary>
+   //     public static void Delete(PantallaXPerfilEntity pantallaXPerfil, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;;
+   //             mCommand.CommandText = "PantallaXPerfil_Delete";
+			//	mCommand.Parameters.AddWithValue("@Id", pantallaXPerfil.Id);
+			//	mCommand.Parameters.AddWithValue("@FechaModificacion", pantallaXPerfil.FechaModificacion);
+			//	mCommand.Parameters.AddWithValue("@UsuarioModificacion", pantallaXPerfil.UsuarioModificacion.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@IpModificacion", pantallaXPerfil.IpModificacion.ToUpper());
 
                 
-                // Update pantallaXPerfil
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Update pantallaXPerfil
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
         
          
          
-         /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static PantallaXPerfilEntity LoadByPK(short Id, SqlConnection connection, SqlTransaction  transaction)
-        {
-        	return LoadByPK(Id,connection,transaction,1);
-        }
+   //      /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static PantallaXPerfilEntity LoadByPK(short Id, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //     	return LoadByPK(Id,connection,transaction,1);
+   //     }
         
-        /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static PantallaXPerfilEntity LoadByPK(short Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
-        {
-            PantallaXPerfilEntity pantallaXPerfil = new PantallaXPerfilEntity();
+   //     /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static PantallaXPerfilEntity LoadByPK(short Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
+   //     {
+   //         PantallaXPerfilEntity pantallaXPerfil = new PantallaXPerfilEntity();
             
-			pantallaXPerfil.Id = Id;
+			//pantallaXPerfil.Id = Id;
             
             
-            SqlCommand mCommand = new SqlCommand();
-            SqlDataReader reader = null;
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText = "PantallaXPerfil_LoadByPK";
+   //         SqlCommand mCommand = new SqlCommand();
+   //         SqlDataReader reader = null;
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText = "PantallaXPerfil_LoadByPK";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@Id", pantallaXPerfil.Id);
+			//	mCommand.Parameters.AddWithValue("@Id", pantallaXPerfil.Id);
                 
  
-                #endregion 
+   //             #endregion 
                 
-                if (connection.State != ConnectionState.Open) connection.Open();
+   //             if (connection.State != ConnectionState.Open) connection.Open();
 
-                reader = mCommand.ExecuteReader();
+   //             reader = mCommand.ExecuteReader();
 
-                if(!reader.HasRows) return null;
+   //             if(!reader.HasRows) return null;
                 
-	            while (reader.Read())
-	            {
-					#region << Deep Load >>
-                    if (deepLoadLevel == 1)
-		     		{
-						pantallaXPerfil.IdPerfilAsPerfil = PerfilDataAccess.ConvertToPerfilEntity(reader, "IdPerfil");
-						pantallaXPerfil.IdPantallaAsPantalla = PantallaDataAccess.ConvertToPantallaEntity(reader, "IdPantalla");
+	  //          while (reader.Read())
+	  //          {
+			//		#region << Deep Load >>
+   //                 if (deepLoadLevel == 1)
+		 //    		{
+			//			pantallaXPerfil.IdPerfilAsPerfil = PerfilDataAccess.ConvertToPerfilEntity(reader, "IdPerfil");
+			//			pantallaXPerfil.IdPantallaAsPantalla = PantallaDataAccess.ConvertToPantallaEntity(reader, "IdPantalla");
 
-                    }
-	                #endregion
+   //                 }
+	  //              #endregion
 	                
-	                #region << Load the BusinessEntity Object >>
+	  //              #region << Load the BusinessEntity Object >>
 					
-					pantallaXPerfil.Id = Convert.ToInt16(reader["Id"]);
-					pantallaXPerfil.IdPerfil = Convert.ToInt16(reader["IdPerfil"]);
-					pantallaXPerfil.IdPantalla = Convert.ToInt16(reader["IdPantalla"]);
-					pantallaXPerfil.Guardar = Convert.ToBoolean(reader["Guardar"]);
-					pantallaXPerfil.Modificar = Convert.ToBoolean(reader["Modificar"]);
-					pantallaXPerfil.Eliminar = Convert.ToBoolean(reader["Eliminar"]);
-					pantallaXPerfil.Consultar = Convert.ToBoolean(reader["Consultar"]);
-					pantallaXPerfil.VistaPreliminar = Convert.ToBoolean(reader["VistaPreliminar"]);
-					pantallaXPerfil.Imprimir = Convert.ToBoolean(reader["Imprimir"]);
-					pantallaXPerfil.IpIngreso = Convert.ToString(reader["IpIngreso"]);
-					pantallaXPerfil.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
-					pantallaXPerfil.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
-					if (reader["IpModificacion"] != DBNull.Value)
-					{
-						pantallaXPerfil.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
-					}
-					if (reader["UsuarioModificacion"] != DBNull.Value)
-					{
-						pantallaXPerfil.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
-					}
-					if (reader["FechaModificacion"] != DBNull.Value)
-					{
-						pantallaXPerfil.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
-					}
-					pantallaXPerfil.IdEstado = Convert.ToInt16(reader["IdEstado"]);
+			//		pantallaXPerfil.Id = Convert.ToInt16(reader["Id"]);
+			//		pantallaXPerfil.IdPerfil = Convert.ToInt16(reader["IdPerfil"]);
+			//		pantallaXPerfil.IdPantalla = Convert.ToInt16(reader["IdPantalla"]);
+			//		pantallaXPerfil.Guardar = Convert.ToBoolean(reader["Guardar"]);
+			//		pantallaXPerfil.Modificar = Convert.ToBoolean(reader["Modificar"]);
+			//		pantallaXPerfil.Eliminar = Convert.ToBoolean(reader["Eliminar"]);
+			//		pantallaXPerfil.Consultar = Convert.ToBoolean(reader["Consultar"]);
+			//		pantallaXPerfil.VistaPreliminar = Convert.ToBoolean(reader["VistaPreliminar"]);
+			//		pantallaXPerfil.Imprimir = Convert.ToBoolean(reader["Imprimir"]);
+			//		pantallaXPerfil.IpIngreso = Convert.ToString(reader["IpIngreso"]);
+			//		pantallaXPerfil.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
+			//		pantallaXPerfil.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
+			//		if (reader["IpModificacion"] != DBNull.Value)
+			//		{
+			//			pantallaXPerfil.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
+			//		}
+			//		if (reader["UsuarioModificacion"] != DBNull.Value)
+			//		{
+			//			pantallaXPerfil.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
+			//		}
+			//		if (reader["FechaModificacion"] != DBNull.Value)
+			//		{
+			//			pantallaXPerfil.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
+			//		}
+			//		pantallaXPerfil.IdEstado = Convert.ToInt16(reader["IdEstado"]);
 
-	                #endregion
-	            }
+	  //              #endregion
+	  //          }
 
-                pantallaXPerfil.SetLoadedState();
-                return pantallaXPerfil;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (reader != null) reader.Close();
-                mCommand.Dispose();
-            }
-        }
+   //             pantallaXPerfil.SetLoadedState();
+   //             return pantallaXPerfil;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             if (reader != null) reader.Close();
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
-        #endregion
-        
-        
+   //     #endregion
         
         
-        #region << Mappers >>
         
-        public static PantallaXPerfilEntity ConvertToPantallaXPerfilEntity (SqlDataReader reader,string fkColumnName)
-        {
-            PantallaXPerfilEntity pantallaXPerfil = new PantallaXPerfilEntity();
+        
+   //     #region << Mappers >>
+        
+   //     public static PantallaXPerfilEntity ConvertToPantallaXPerfilEntity (SqlDataReader reader,string fkColumnName)
+   //     {
+   //         PantallaXPerfilEntity pantallaXPerfil = new PantallaXPerfilEntity();
             
-            try
-            {
-                bool hasData=false;
-                string columName;
+   //         try
+   //         {
+   //             bool hasData=false;
+   //             string columName;
                 
-                #region << Load the BusinessEntity Object >>
+   //             #region << Load the BusinessEntity Object >>
                 
-				try
-				{
-					columName = String.Format("Id_PantallaXPerfilFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pantallaXPerfil.Id = Convert.ToInt16(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdPerfil_PantallaXPerfilFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pantallaXPerfil.IdPerfil = Convert.ToInt16(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdPantalla_PantallaXPerfilFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pantallaXPerfil.IdPantalla = Convert.ToInt16(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Guardar_PantallaXPerfilFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pantallaXPerfil.Guardar = Convert.ToBoolean(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Modificar_PantallaXPerfilFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pantallaXPerfil.Modificar = Convert.ToBoolean(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Eliminar_PantallaXPerfilFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pantallaXPerfil.Eliminar = Convert.ToBoolean(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Consultar_PantallaXPerfilFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pantallaXPerfil.Consultar = Convert.ToBoolean(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("VistaPreliminar_PantallaXPerfilFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pantallaXPerfil.VistaPreliminar = Convert.ToBoolean(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Imprimir_PantallaXPerfilFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pantallaXPerfil.Imprimir = Convert.ToBoolean(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpIngreso_PantallaXPerfilFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pantallaXPerfil.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioIngreso_PantallaXPerfilFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pantallaXPerfil.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaIngreso_PantallaXPerfilFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pantallaXPerfil.FechaIngreso = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpModificacion_PantallaXPerfilFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pantallaXPerfil.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioModificacion_PantallaXPerfilFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pantallaXPerfil.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaModificacion_PantallaXPerfilFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pantallaXPerfil.FechaModificacion = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdEstado_PantallaXPerfilFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						pantallaXPerfil.IdEstado = Convert.ToInt16(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Id_PantallaXPerfilFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pantallaXPerfil.Id = Convert.ToInt16(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdPerfil_PantallaXPerfilFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pantallaXPerfil.IdPerfil = Convert.ToInt16(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdPantalla_PantallaXPerfilFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pantallaXPerfil.IdPantalla = Convert.ToInt16(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Guardar_PantallaXPerfilFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pantallaXPerfil.Guardar = Convert.ToBoolean(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Modificar_PantallaXPerfilFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pantallaXPerfil.Modificar = Convert.ToBoolean(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Eliminar_PantallaXPerfilFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pantallaXPerfil.Eliminar = Convert.ToBoolean(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Consultar_PantallaXPerfilFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pantallaXPerfil.Consultar = Convert.ToBoolean(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("VistaPreliminar_PantallaXPerfilFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pantallaXPerfil.VistaPreliminar = Convert.ToBoolean(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Imprimir_PantallaXPerfilFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pantallaXPerfil.Imprimir = Convert.ToBoolean(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IpIngreso_PantallaXPerfilFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pantallaXPerfil.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("UsuarioIngreso_PantallaXPerfilFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pantallaXPerfil.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("FechaIngreso_PantallaXPerfilFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pantallaXPerfil.FechaIngreso = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IpModificacion_PantallaXPerfilFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pantallaXPerfil.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("UsuarioModificacion_PantallaXPerfilFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pantallaXPerfil.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("FechaModificacion_PantallaXPerfilFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pantallaXPerfil.FechaModificacion = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdEstado_PantallaXPerfilFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			pantallaXPerfil.IdEstado = Convert.ToInt16(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
 
                 
-                #endregion
+   //             #endregion
                 
-                pantallaXPerfil.SetLoadedState();
-                if(hasData)
-                {
-                	return pantallaXPerfil;
-                }
-                else return null;
-            }
-            catch (Exception exc)
-            {
-                return null;
-            }
-            finally
-            {
+   //             pantallaXPerfil.SetLoadedState();
+   //             if(hasData)
+   //             {
+   //             	return pantallaXPerfil;
+   //             }
+   //             else return null;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             return null;
+   //         }
+   //         finally
+   //         {
                 
-            }
-        }
+   //         }
+   //     }
         
-        #endregion
+   //     #endregion
         
    
     }

@@ -26,404 +26,404 @@ namespace ER.DA
     {
     
    
-        #region << Default Methods >>
+   //     #region << Default Methods >>
 
-        /// <summary>
-        /// Create a new entity type of TipoDocumento
-        /// </summary>
-        public static TipoDocumentoEntity Insert(TipoDocumentoEntity tipoDocumento, SqlConnection connection, SqlTransaction transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText =  "TipoDocumento_Insert";
+   //     /// <summary>
+   //     /// Create a new entity type of TipoDocumento
+   //     /// </summary>
+   //     public static TipoDocumentoEntity Insert(TipoDocumentoEntity tipoDocumento, SqlConnection connection, SqlTransaction transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText =  "TipoDocumento_Insert";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
                  
-				mCommand.Parameters.AddWithValue("@TipoDocumento", tipoDocumento.TipoDocumento.ToUpper());
-				mCommand.Parameters.AddWithValue("@IpIngreso", tipoDocumento.IpIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", tipoDocumento.UsuarioIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@FechaIngreso", tipoDocumento.FechaIngreso);
-				if(!String.IsNullOrEmpty(tipoDocumento.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", tipoDocumento.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@TipoDocumento", tipoDocumento.TipoDocumento.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@IpIngreso", tipoDocumento.IpIngreso.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", tipoDocumento.UsuarioIngreso.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@FechaIngreso", tipoDocumento.FechaIngreso);
+			//	if(!String.IsNullOrEmpty(tipoDocumento.IpModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion", tipoDocumento.IpModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(tipoDocumento.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", tipoDocumento.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(tipoDocumento.UsuarioModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", tipoDocumento.UsuarioModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+			//	}
 
-				if(tipoDocumento.FechaModificacion != null && tipoDocumento.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", tipoDocumento.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
-				}
+			//	if(tipoDocumento.FechaModificacion != null && tipoDocumento.FechaModificacion != DateTime.MinValue)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion", tipoDocumento.FechaModificacion);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IdEstado", tipoDocumento.IdEstado);
+			//	mCommand.Parameters.AddWithValue("@IdEstado", tipoDocumento.IdEstado);
 
-				// Add the primary keys columns
-				mCommand.Parameters.Add("@Id", SqlDbType.VarChar, 2);
-				mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
+			//	// Add the primary keys columns
+			//	mCommand.Parameters.Add("@Id", SqlDbType.VarChar, 2);
+			//	mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
 
 
-                #endregion
+   //             #endregion
                 
-                // Insert TipoDocumento
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Insert TipoDocumento
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
-				tipoDocumento.Id = Convert.ToString(mCommand.Parameters["@Id"].Value);
+			//	tipoDocumento.Id = Convert.ToString(mCommand.Parameters["@Id"].Value);
 
 
-                return tipoDocumento;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //             return tipoDocumento;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
 
-        /// <summary>
-        /// Update a entity
-        /// </summary>
-        public static void Update(TipoDocumentoEntity tipoDocumento, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "TipoDocumento_Update";
+   //     /// <summary>
+   //     /// Update a entity
+   //     /// </summary>
+   //     public static void Update(TipoDocumentoEntity tipoDocumento, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;;
+   //             mCommand.CommandText = "TipoDocumento_Update";
 
-                 #region << Add the params >>
+   //              #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@Id", tipoDocumento.Id);
-				mCommand.Parameters.AddWithValue("@TipoDocumento", tipoDocumento.TipoDocumento);
-				mCommand.Parameters.AddWithValue("@IpIngreso", tipoDocumento.IpIngreso);
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", tipoDocumento.UsuarioIngreso);
-				mCommand.Parameters.AddWithValue("@FechaIngreso", tipoDocumento.FechaIngreso);
-				if(!String.IsNullOrEmpty(tipoDocumento.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", tipoDocumento.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@Id", tipoDocumento.Id);
+			//	mCommand.Parameters.AddWithValue("@TipoDocumento", tipoDocumento.TipoDocumento);
+			//	mCommand.Parameters.AddWithValue("@IpIngreso", tipoDocumento.IpIngreso);
+			//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", tipoDocumento.UsuarioIngreso);
+			//	mCommand.Parameters.AddWithValue("@FechaIngreso", tipoDocumento.FechaIngreso);
+			//	if(!String.IsNullOrEmpty(tipoDocumento.IpModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion", tipoDocumento.IpModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(tipoDocumento.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", tipoDocumento.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(tipoDocumento.UsuarioModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", tipoDocumento.UsuarioModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+			//	}
 
-				if(tipoDocumento.FechaModificacion != null && tipoDocumento.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", tipoDocumento.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
-				}
+			//	if(tipoDocumento.FechaModificacion != null && tipoDocumento.FechaModificacion != DateTime.MinValue)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion", tipoDocumento.FechaModificacion);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IdEstado", tipoDocumento.IdEstado);
+			//	mCommand.Parameters.AddWithValue("@IdEstado", tipoDocumento.IdEstado);
                 
    
-                #endregion
+   //             #endregion
                 
-                // Update tipoDocumento
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Update tipoDocumento
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
 
-         /// <summary>
-        /// Delete a entity
-        /// </summary>
-        public static void Delete(TipoDocumentoEntity tipoDocumento, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "TipoDocumento_Delete";
-				mCommand.Parameters.AddWithValue("@Id", tipoDocumento.Id.ToUpper());
-				mCommand.Parameters.AddWithValue("@Fecha_Modificacion", tipoDocumento.FechaModificacion);
-				mCommand.Parameters.AddWithValue("@Usuario_Modificacion", tipoDocumento.UsuarioModificacion.ToUpper());
-				mCommand.Parameters.AddWithValue("@Ip_Modificacion", tipoDocumento.IpModificacion.ToUpper());
+   //      /// <summary>
+   //     /// Delete a entity
+   //     /// </summary>
+   //     public static void Delete(TipoDocumentoEntity tipoDocumento, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;;
+   //             mCommand.CommandText = "TipoDocumento_Delete";
+			//	mCommand.Parameters.AddWithValue("@Id", tipoDocumento.Id.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@Fecha_Modificacion", tipoDocumento.FechaModificacion);
+			//	mCommand.Parameters.AddWithValue("@Usuario_Modificacion", tipoDocumento.UsuarioModificacion.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@Ip_Modificacion", tipoDocumento.IpModificacion.ToUpper());
 
                 
-                // Update tipoDocumento
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Update tipoDocumento
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
         
          
          
-         /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static TipoDocumentoEntity LoadByPK(string Id, SqlConnection connection, SqlTransaction  transaction)
-        {
-        	return LoadByPK(Id,connection,transaction,1);
-        }
+   //      /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static TipoDocumentoEntity LoadByPK(string Id, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //     	return LoadByPK(Id,connection,transaction,1);
+   //     }
         
-        /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static TipoDocumentoEntity LoadByPK(string Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
-        {
-            TipoDocumentoEntity tipoDocumento = new TipoDocumentoEntity();
+   //     /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static TipoDocumentoEntity LoadByPK(string Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
+   //     {
+   //         TipoDocumentoEntity tipoDocumento = new TipoDocumentoEntity();
             
-			tipoDocumento.Id = Id.ToUpper();
+			//tipoDocumento.Id = Id.ToUpper();
             
             
-            SqlCommand mCommand = new SqlCommand();
-            SqlDataReader reader = null;
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText = "TipoDocumento_LoadByPK";
+   //         SqlCommand mCommand = new SqlCommand();
+   //         SqlDataReader reader = null;
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText = "TipoDocumento_LoadByPK";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@Id", tipoDocumento.Id.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@Id", tipoDocumento.Id.ToUpper());
                 
  
-                #endregion 
+   //             #endregion 
                 
-                if (connection.State != ConnectionState.Open) connection.Open();
+   //             if (connection.State != ConnectionState.Open) connection.Open();
 
-                reader = mCommand.ExecuteReader();
+   //             reader = mCommand.ExecuteReader();
 
-                if(!reader.HasRows) return null;
+   //             if(!reader.HasRows) return null;
                 
-	            while (reader.Read())
-	            {
-					#region << Deep Load >>
-                    if (deepLoadLevel == 1)
-		     		{
+	  //          while (reader.Read())
+	  //          {
+			//		#region << Deep Load >>
+   //                 if (deepLoadLevel == 1)
+		 //    		{
 
-                    }
-	                #endregion
+   //                 }
+	  //              #endregion
 	                
-	                #region << Load the BusinessEntity Object >>
+	  //              #region << Load the BusinessEntity Object >>
 					
-					tipoDocumento.Id = Convert.ToString(reader["Id"]);
-					tipoDocumento.TipoDocumento = Convert.ToString(reader["TipoDocumento"]);
-					tipoDocumento.IpIngreso = Convert.ToString(reader["IpIngreso"]);
-					tipoDocumento.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
-					tipoDocumento.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
-					if (reader["IpModificacion"] != DBNull.Value)
-					{
-						tipoDocumento.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
-					}
-					if (reader["UsuarioModificacion"] != DBNull.Value)
-					{
-						tipoDocumento.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
-					}
-					if (reader["FechaModificacion"] != DBNull.Value)
-					{
-						tipoDocumento.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
-					}
-					tipoDocumento.IdEstado = Convert.ToInt16(reader["IdEstado"]);
+			//		tipoDocumento.Id = Convert.ToString(reader["Id"]);
+			//		tipoDocumento.TipoDocumento = Convert.ToString(reader["TipoDocumento"]);
+			//		tipoDocumento.IpIngreso = Convert.ToString(reader["IpIngreso"]);
+			//		tipoDocumento.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
+			//		tipoDocumento.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
+			//		if (reader["IpModificacion"] != DBNull.Value)
+			//		{
+			//			tipoDocumento.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
+			//		}
+			//		if (reader["UsuarioModificacion"] != DBNull.Value)
+			//		{
+			//			tipoDocumento.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
+			//		}
+			//		if (reader["FechaModificacion"] != DBNull.Value)
+			//		{
+			//			tipoDocumento.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
+			//		}
+			//		tipoDocumento.IdEstado = Convert.ToInt16(reader["IdEstado"]);
 
-	                #endregion
-	            }
+	  //              #endregion
+	  //          }
 
-                tipoDocumento.SetLoadedState();
-                return tipoDocumento;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (reader != null) reader.Close();
-                mCommand.Dispose();
-            }
-        }
+   //             tipoDocumento.SetLoadedState();
+   //             return tipoDocumento;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             if (reader != null) reader.Close();
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
-        #endregion
-        
-        
+   //     #endregion
         
         
-        #region << Mappers >>
         
-        public static TipoDocumentoEntity ConvertToTipoDocumentoEntity (SqlDataReader reader,string fkColumnName)
-        {
-            TipoDocumentoEntity tipoDocumento = new TipoDocumentoEntity();
+        
+   //     #region << Mappers >>
+        
+   //     public static TipoDocumentoEntity ConvertToTipoDocumentoEntity (SqlDataReader reader,string fkColumnName)
+   //     {
+   //         TipoDocumentoEntity tipoDocumento = new TipoDocumentoEntity();
             
-            try
-            {
-                bool hasData=false;
-                string columName;
+   //         try
+   //         {
+   //             bool hasData=false;
+   //             string columName;
                 
-                #region << Load the BusinessEntity Object >>
+   //             #region << Load the BusinessEntity Object >>
                 
-				try
-				{
-					columName = String.Format("Id_TipoDocumentoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						tipoDocumento.Id = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("TipoDocumento_TipoDocumentoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						tipoDocumento.TipoDocumento = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpIngreso_TipoDocumentoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						tipoDocumento.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioIngreso_TipoDocumentoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						tipoDocumento.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaIngreso_TipoDocumentoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						tipoDocumento.FechaIngreso = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpModificacion_TipoDocumentoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						tipoDocumento.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioModificacion_TipoDocumentoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						tipoDocumento.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaModificacion_TipoDocumentoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						tipoDocumento.FechaModificacion = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdEstado_TipoDocumentoFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						tipoDocumento.IdEstado = Convert.ToInt16(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Id_TipoDocumentoFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			tipoDocumento.Id = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("TipoDocumento_TipoDocumentoFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			tipoDocumento.TipoDocumento = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IpIngreso_TipoDocumentoFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			tipoDocumento.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("UsuarioIngreso_TipoDocumentoFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			tipoDocumento.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("FechaIngreso_TipoDocumentoFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			tipoDocumento.FechaIngreso = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IpModificacion_TipoDocumentoFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			tipoDocumento.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("UsuarioModificacion_TipoDocumentoFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			tipoDocumento.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("FechaModificacion_TipoDocumentoFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			tipoDocumento.FechaModificacion = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdEstado_TipoDocumentoFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			tipoDocumento.IdEstado = Convert.ToInt16(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
 
                 
-                #endregion
+   //             #endregion
                 
-                tipoDocumento.SetLoadedState();
-                if(hasData)
-                {
-                	return tipoDocumento;
-                }
-                else return null;
-            }
-            catch (Exception exc)
-            {
-                return null;
-            }
-            finally
-            {
+   //             tipoDocumento.SetLoadedState();
+   //             if(hasData)
+   //             {
+   //             	return tipoDocumento;
+   //             }
+   //             else return null;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             return null;
+   //         }
+   //         finally
+   //         {
                 
-            }
-        }
+   //         }
+   //     }
         
-        #endregion
+   //     #endregion
         
    
     }

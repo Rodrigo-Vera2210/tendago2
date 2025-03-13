@@ -35,183 +35,183 @@ namespace ER.BA
     
   
     
-        #region << Custom Stored Procedures >>
+//        #region << Custom Stored Procedures >>
         
         
-        #endregion
+//        #endregion
         
-        #region Implementation
+//        #region Implementation
         
-        public static DetalleMedioCobroEntityCollection Save(DetalleMedioCobroEntityCollection detalleMedioCobroCollection )
-        {
-            return Save(detalleMedioCobroCollection, null, null);
-        }
+//        public static DetalleMedioCobroEntityCollection Save(DetalleMedioCobroEntityCollection detalleMedioCobroCollection )
+//        {
+//            return Save(detalleMedioCobroCollection, null, null);
+//        }
         
-        public static DetalleMedioCobroEntityCollection Save(DetalleMedioCobroEntityCollection detalleMedioCobroCollection , SqlConnection connection, SqlTransaction transaction)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//        public static DetalleMedioCobroEntityCollection Save(DetalleMedioCobroEntityCollection detalleMedioCobroCollection , SqlConnection connection, SqlTransaction transaction)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-                    foreach (DetalleMedioCobroEntity detalleMedioCobro in detalleMedioCobroCollection)
-                    {
-                        DetalleMedioCobroBussinesAction.Save(detalleMedioCobro , connection, transaction);
-                    }
+//                    foreach (DetalleMedioCobroEntity detalleMedioCobro in detalleMedioCobroCollection)
+//                    {
+//                        DetalleMedioCobroBussinesAction.Save(detalleMedioCobro , connection, transaction);
+//                    }
                     
-                    if (isBAParent && transaction != null) 
-                    {
-                    	transaction.Commit();
-                    	detalleMedioCobroCollection.SetState(EntityStatesEnum.SavedSuccessfully);
-                    }
+//                    if (isBAParent && transaction != null) 
+//                    {
+//                    	transaction.Commit();
+//                    	detalleMedioCobroCollection.SetState(EntityStatesEnum.SavedSuccessfully);
+//                    }
 
-                    return detalleMedioCobroCollection;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( detalleMedioCobroCollection != null)  detalleMedioCobroCollection.RollBackState();
+//                    return detalleMedioCobroCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
+//                {
+//                    transaction.Rollback();
+//                    if ( detalleMedioCobroCollection != null)  detalleMedioCobroCollection.RollBackState();
                     
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
-        #region << Find by All >>
+//        #region << Find by All >>
         
-        public static DetalleMedioCobroEntityCollection FindByAll(DetalleMedioCobroFindParameterEntity findParameter )
-        {
-        	return FindByAll(findParameter,null,null,1);
-        }
+//        public static DetalleMedioCobroEntityCollection FindByAll(DetalleMedioCobroFindParameterEntity findParameter )
+//        {
+//        	return FindByAll(findParameter,null,null,1);
+//        }
         
-        public static DetalleMedioCobroEntityCollection FindByAll(DetalleMedioCobroFindParameterEntity findParameter ,int deepLoadLevel)
-        {
-        	return FindByAll(findParameter,null,null,deepLoadLevel);
-        }
+//        public static DetalleMedioCobroEntityCollection FindByAll(DetalleMedioCobroFindParameterEntity findParameter ,int deepLoadLevel)
+//        {
+//        	return FindByAll(findParameter,null,null,deepLoadLevel);
+//        }
         
-        public static DetalleMedioCobroEntityCollection FindByAll(DetalleMedioCobroFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction)
-        {
-        	return FindByAll(findParameter,connection,transaction,1);
-        }
+//        public static DetalleMedioCobroEntityCollection FindByAll(DetalleMedioCobroFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction)
+//        {
+//        	return FindByAll(findParameter,connection,transaction,1);
+//        }
         
-        public static DetalleMedioCobroEntityCollection FindByAll(DetalleMedioCobroFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static DetalleMedioCobroEntityCollection FindByAll(DetalleMedioCobroFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
 
-			DetalleMedioCobroEntityCollection detalleMedioCobroCollection = null; 
+//			DetalleMedioCobroEntityCollection detalleMedioCobroCollection = null; 
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
-//                {
-                   detalleMedioCobroCollection  = DetalleMedioCobroDataAccessCollection.FindByAll(findParameter , connection, transaction, deepLoadLevel);
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+//                   detalleMedioCobroCollection  = DetalleMedioCobroDataAccessCollection.FindByAll(findParameter , connection, transaction, deepLoadLevel);
                    
-				if (detalleMedioCobroCollection!=null && deepLoadLevel > 1)
-                {
-                	foreach (DetalleMedioCobroEntity detalleMedioCobro in detalleMedioCobroCollection)
-                    {
-						detalleMedioCobro.IdCobroDebitoAsCobroDebito = CobroDebitoBussinesAction.LoadByPK(detalleMedioCobro.IdCobroDebito, connection, transaction, deepLoadLevel - 1);
-                    }
+//				if (detalleMedioCobroCollection!=null && deepLoadLevel > 1)
+//                {
+//                	foreach (DetalleMedioCobroEntity detalleMedioCobro in detalleMedioCobroCollection)
+//                    {
+//						detalleMedioCobro.IdCobroDebitoAsCobroDebito = CobroDebitoBussinesAction.LoadByPK(detalleMedioCobro.IdCobroDebito, connection, transaction, deepLoadLevel - 1);
+//                    }
 
-                }
+//                }
 
                    
-                   detalleMedioCobroCollection.SetState(EntityStatesEnum.Loaded);
-//                    transactionScope.Complete();
-//
-//                }  //End of Transaction
+//                   detalleMedioCobroCollection.SetState(EntityStatesEnum.Loaded);
+////                    transactionScope.Complete();
+////
+////                }  //End of Transaction
 
-                return detalleMedioCobroCollection;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                return detalleMedioCobroCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
-        #endregion
+//        #endregion
         
-        #region << Find by All Paged >>
+//        #region << Find by All Paged >>
         
-        public static DetalleMedioCobroEntityCollection FindByAllPaged(DetalleMedioCobroFindParameterEntity findParameter, int pageNumber, int pageSize ,string orderBy)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize,orderBy, null,null,1);
-        }
+//        public static DetalleMedioCobroEntityCollection FindByAllPaged(DetalleMedioCobroFindParameterEntity findParameter, int pageNumber, int pageSize ,string orderBy)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize,orderBy, null,null,1);
+//        }
         
-        public static DetalleMedioCobroEntityCollection FindByAllPaged(DetalleMedioCobroFindParameterEntity findParameter , int pageNumber, int pageSize,string orderBy, int deepLoadLevel)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, null,null,deepLoadLevel);
-        }
+//        public static DetalleMedioCobroEntityCollection FindByAllPaged(DetalleMedioCobroFindParameterEntity findParameter , int pageNumber, int pageSize,string orderBy, int deepLoadLevel)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, null,null,deepLoadLevel);
+//        }
         
-        public static DetalleMedioCobroEntityCollection FindByAllPaged(DetalleMedioCobroFindParameterEntity findParameter , int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, connection,transaction,1);
-        }
+//        public static DetalleMedioCobroEntityCollection FindByAllPaged(DetalleMedioCobroFindParameterEntity findParameter , int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, connection,transaction,1);
+//        }
         
-        public static DetalleMedioCobroEntityCollection FindByAllPaged(DetalleMedioCobroFindParameterEntity findParameter ,int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static DetalleMedioCobroEntityCollection FindByAllPaged(DetalleMedioCobroFindParameterEntity findParameter ,int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
 
-			DetalleMedioCobroEntityCollection detalleMedioCobroCollection = null; 
+//			DetalleMedioCobroEntityCollection detalleMedioCobroCollection = null; 
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
-//                {
-                   detalleMedioCobroCollection  = DetalleMedioCobroDataAccessCollection.FindByAllPaged(findParameter , pageNumber, pageSize, orderBy, connection, transaction, deepLoadLevel);
-                   detalleMedioCobroCollection.SetState(EntityStatesEnum.Loaded);
-//                    transactionScope.Complete();
-//
-//                }  //End of Transaction
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+//                   detalleMedioCobroCollection  = DetalleMedioCobroDataAccessCollection.FindByAllPaged(findParameter , pageNumber, pageSize, orderBy, connection, transaction, deepLoadLevel);
+//                   detalleMedioCobroCollection.SetState(EntityStatesEnum.Loaded);
+////                    transactionScope.Complete();
+////
+////                }  //End of Transaction
 
-                return detalleMedioCobroCollection;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                return detalleMedioCobroCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
-        #endregion
+//        #endregion
 
       
-        #endregion Implementation
+//        #endregion Implementation
         
           
      }

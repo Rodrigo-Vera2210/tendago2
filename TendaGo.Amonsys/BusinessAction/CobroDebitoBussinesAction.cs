@@ -32,56 +32,56 @@ namespace ER.BA
         /// </summary>
         /// <param name="cobroDebito">el detalle se debe especificar en DetalleCobroFromIdCobroDebito </param>
         /// <returns></returns>
-        public static CobroDebitoEntity Guardar(CobroDebitoEntity cobroDebito)
-        {
-            return Guardar(cobroDebito, null, null);
-        }
-        /// <summary>
-        /// Guarda cobro con su detalle 
-        /// </summary>
-        /// <param name="cobroDebito">el detalle se debe especificar en DetalleCobroFromIdCobroDebito</param>
-        /// <param name="connection"></param>
-        /// <param name="transaction"></param>
-        /// <returns></returns>
-        public static CobroDebitoEntity Guardar(CobroDebitoEntity cobroDebito, SqlConnection connection, SqlTransaction transaction)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+        //public static CobroDebitoEntity Guardar(CobroDebitoEntity cobroDebito)
+        //{
+        //    return Guardar(cobroDebito, null, null);
+        //}
+        ///// <summary>
+        ///// Guarda cobro con su detalle 
+        ///// </summary>
+        ///// <param name="cobroDebito">el detalle se debe especificar en DetalleCobroFromIdCobroDebito</param>
+        ///// <param name="connection"></param>
+        ///// <param name="transaction"></param>
+        ///// <returns></returns>
+        //public static CobroDebitoEntity Guardar(CobroDebitoEntity cobroDebito, SqlConnection connection, SqlTransaction transaction)
+        //{
+        //    bool isBAParent = false;
+        //    if (connection == null)
+        //    {
+        //        isBAParent = true;
+        //        connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+        //        connection.Open();
+        //        transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+        //    }
 
-            try
-            {
-                cobroDebito = Save(cobroDebito, connection, transaction);
+        //    try
+        //    {
+        //        cobroDebito = Save(cobroDebito, connection, transaction);
 
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Commit();
-                    cobroDebito.SetState(EntityStatesEnum.SavedSuccessfully);
-                }
+        //        if (isBAParent && transaction != null)
+        //        {
+        //            transaction.Commit();
+        //            cobroDebito.SetState(EntityStatesEnum.SavedSuccessfully);
+        //        }
 
-                return cobroDebito;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if (cobroDebito != null) cobroDebito.RollBackState();
+        //        return cobroDebito;
+        //    }
+        //    catch (Exception exc)
+        //    {
+        //        if (isBAParent && transaction != null)
+        //        {
+        //            transaction.Rollback();
+        //            if (cobroDebito != null) cobroDebito.RollBackState();
 
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+        //        }
+        //        throw exc;
+        //    }
+        //    finally
+        //    {
+        //        if (isBAParent) connection.Close();
+        //    }
+        //}
 
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System.Configuration;
 using System.Web.Http;
-using System.Web.Http.Cors;
 
 namespace TendaGo.Api
 {

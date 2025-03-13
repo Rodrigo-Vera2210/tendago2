@@ -33,257 +33,257 @@ namespace ER.BA
     public partial class SalidaBussinesAction
     {
          
-       #region Implementation
+//       #region Implementation
         
-       public static SalidaEntity Save(SalidaEntity salida )
-       {   
-            return Save(salida,null, null);
-       }
+//       public static SalidaEntity Save(SalidaEntity salida )
+//       {   
+//            return Save(salida,null, null);
+//       }
        
-       public static SalidaEntity Save(SalidaEntity salida , SqlConnection connection, SqlTransaction transaction)
-       {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true; 
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//       public static SalidaEntity Save(SalidaEntity salida , SqlConnection connection, SqlTransaction transaction)
+//       {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true; 
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+///*
+//					if( salida.IdLocalAsLocalBodega != null && salida.IdLocalAsLocalBodega.CanSave )
+//					{
+//						salida.IdLocal = LocalBodegaBussinesAction.Save(salida.IdLocalAsLocalBodega , connection,transaction).Id;
+//					}
+
+//					if( salida.IdClienteAsEntidad != null && salida.IdClienteAsEntidad.CanSave )
+//					{
+//						salida.IdCliente = EntidadBussinesAction.Save(salida.IdClienteAsEntidad , connection,transaction).Id;
+//					}
+
+
+//*/
+//                    switch (salida.CurrentState)
+//                    {
+//                        case EntityStatesEnum.Deleted:
+//                            SalidaDataAccess.Delete(salida, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.Updated:
+//                            SalidaDataAccess.Update(salida, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.New:
+//                            salida = SalidaDataAccess.Insert(salida, connection, transaction);
+//                            break;
+//                        default:
+//                            break;
+//                    }
+
+
+//                #region Detalle de Salida
+
+//                var isNew = string.IsNullOrEmpty(salida.Id);
+//                if (salida.DetalleSalidaFromIdSalida != null)
 //                {
-/*
-					if( salida.IdLocalAsLocalBodega != null && salida.IdLocalAsLocalBodega.CanSave )
-					{
-						salida.IdLocal = LocalBodegaBussinesAction.Save(salida.IdLocalAsLocalBodega , connection,transaction).Id;
-					}
+//                    if (isNew)
+//                    {
+//                        // Elimino los elementos sin cantidad cuando la orden es nueva
+//                        salida.DetalleSalidaFromIdSalida.RemoveAll(x => x.Cantidad == 0);
+//                    }
 
-					if( salida.IdClienteAsEntidad != null && salida.IdClienteAsEntidad.CanSave )
-					{
-						salida.IdCliente = EntidadBussinesAction.Save(salida.IdClienteAsEntidad , connection,transaction).Id;
-					}
+//                    foreach (DetalleSalidaEntity item in salida.DetalleSalidaFromIdSalida)
+//                    {
+//                        item.Periodo = salida.Periodo;
+//                        item.Fecha = salida.Fecha;
+//                        item.IdEmpresa = salida.IdEmpresa;
+//                        item.TipoTransaccion = salida.TipoTransaccion;
+//                        item.IdProveedor = salida.IdCliente;
+//                        item.IdLocal = salida.IdLocal;
+//                        item.IdSalida = salida.Id;
+//                        item.IdEstado = salida.IdEstado;
 
+//                        // Si la salida se anula los detalles deben actualizarse a 0
+//                        if (salida.CurrentState == EntityStatesEnum.Deleted)
+//                        {
+//                            item.SetDeletedState();
+//                        }
 
-*/
-                    switch (salida.CurrentState)
-                    {
-                        case EntityStatesEnum.Deleted:
-                            SalidaDataAccess.Delete(salida, connection, transaction);
-                            break;
-                        case EntityStatesEnum.Updated:
-                            SalidaDataAccess.Update(salida, connection, transaction);
-                            break;
-                        case EntityStatesEnum.New:
-                            salida = SalidaDataAccess.Insert(salida, connection, transaction);
-                            break;
-                        default:
-                            break;
-                    }
+//                        if (item.CurrentState == EntityStatesEnum.New)
+//                        {
 
-
-                #region Detalle de Salida
-
-                var isNew = string.IsNullOrEmpty(salida.Id);
-                if (salida.DetalleSalidaFromIdSalida != null)
-                {
-                    if (isNew)
-                    {
-                        // Elimino los elementos sin cantidad cuando la orden es nueva
-                        salida.DetalleSalidaFromIdSalida.RemoveAll(x => x.Cantidad == 0);
-                    }
-
-                    foreach (DetalleSalidaEntity item in salida.DetalleSalidaFromIdSalida)
-                    {
-                        item.Periodo = salida.Periodo;
-                        item.Fecha = salida.Fecha;
-                        item.IdEmpresa = salida.IdEmpresa;
-                        item.TipoTransaccion = salida.TipoTransaccion;
-                        item.IdProveedor = salida.IdCliente;
-                        item.IdLocal = salida.IdLocal;
-                        item.IdSalida = salida.Id;
-                        item.IdEstado = salida.IdEstado;
-
-                        // Si la salida se anula los detalles deben actualizarse a 0
-                        if (salida.CurrentState == EntityStatesEnum.Deleted)
-                        {
-                            item.SetDeletedState();
-                        }
-
-                        if (item.CurrentState == EntityStatesEnum.New)
-                        {
-
-                            item.IpIngreso = salida.IpModificacion ?? salida.IpIngreso; ;
-                            item.UsuarioIngreso = salida.UsuarioModificacion ?? salida.UsuarioIngreso;
-                            item.FechaIngreso = salida.FechaModificacion ?? salida.FechaIngreso;
-                        }
-                        else
-                        {
-                            item.IpModificacion = salida.IpModificacion ?? salida.IpIngreso;
-                            item.UsuarioModificacion = salida.UsuarioModificacion ?? salida.UsuarioIngreso;
-                            item.FechaModificacion = salida.FechaModificacion ?? salida.FechaIngreso;
-                        }
+//                            item.IpIngreso = salida.IpModificacion ?? salida.IpIngreso; ;
+//                            item.UsuarioIngreso = salida.UsuarioModificacion ?? salida.UsuarioIngreso;
+//                            item.FechaIngreso = salida.FechaModificacion ?? salida.FechaIngreso;
+//                        }
+//                        else
+//                        {
+//                            item.IpModificacion = salida.IpModificacion ?? salida.IpIngreso;
+//                            item.UsuarioModificacion = salida.UsuarioModificacion ?? salida.UsuarioIngreso;
+//                            item.FechaModificacion = salida.FechaModificacion ?? salida.FechaIngreso;
+//                        }
 
                        
-                        #region serie
-                        if (item.SerieSalidaFromIdSalida != null && item.SerieSalidaFromIdSalida.Count() > 0)
-                        {
-                            foreach (var serie in item.SerieSalidaFromIdSalida)
-                            {
+//                        #region serie
+//                        if (item.SerieSalidaFromIdSalida != null && item.SerieSalidaFromIdSalida.Count() > 0)
+//                        {
+//                            foreach (var serie in item.SerieSalidaFromIdSalida)
+//                            {
 
-                                serie.IdDetalleSalida = item.Id;
-                                serie.IdProducto = item.IdProducto;
-                                serie.IdEstado = 1;
-                                serie.IdEmpresa = salida.IdEmpresa;
+//                                serie.IdDetalleSalida = item.Id;
+//                                serie.IdProducto = item.IdProducto;
+//                                serie.IdEstado = 1;
+//                                serie.IdEmpresa = salida.IdEmpresa;
 
-                                if (item.CurrentState == EntityStatesEnum.New)
-                                {
-                                    serie.IpIngreso = salida.IpModificacion ?? salida.IpIngreso; ;
-                                    serie.UsuarioIngreso = salida.UsuarioModificacion ?? salida.UsuarioIngreso;
-                                    serie.FechaIngreso = salida.FechaModificacion ?? salida.FechaIngreso;
-                                }
-                                else
-                                {
-                                    serie.IpModificacion = salida.IpModificacion ?? salida.IpIngreso;
-                                    serie.UsuarioModificacion = salida.UsuarioModificacion ?? salida.UsuarioIngreso;
-                                    serie.FechaModificacion = salida.FechaModificacion ?? salida.FechaIngreso;
-                                }
+//                                if (item.CurrentState == EntityStatesEnum.New)
+//                                {
+//                                    serie.IpIngreso = salida.IpModificacion ?? salida.IpIngreso; ;
+//                                    serie.UsuarioIngreso = salida.UsuarioModificacion ?? salida.UsuarioIngreso;
+//                                    serie.FechaIngreso = salida.FechaModificacion ?? salida.FechaIngreso;
+//                                }
+//                                else
+//                                {
+//                                    serie.IpModificacion = salida.IpModificacion ?? salida.IpIngreso;
+//                                    serie.UsuarioModificacion = salida.UsuarioModificacion ?? salida.UsuarioIngreso;
+//                                    serie.FechaModificacion = salida.FechaModificacion ?? salida.FechaIngreso;
+//                                }
 
-                                SerieSalidaBussinesAction.Save(serie, connection, transaction);
-                            }
-                        }
-                        #endregion
-                    }
+//                                SerieSalidaBussinesAction.Save(serie, connection, transaction);
+//                            }
+//                        }
+//                        #endregion
+//                    }
 
-                    DetalleSalidaCollectionBussinesAction.Save(salida.DetalleSalidaFromIdSalida, connection, transaction);
-                }
-                #endregion
+//                    DetalleSalidaCollectionBussinesAction.Save(salida.DetalleSalidaFromIdSalida, connection, transaction);
+//                }
+//                #endregion
 
-                //End of Transaction
-                if (isBAParent && transaction != null)
-               {
-					transaction.Commit();
-					salida.SetState(EntityStatesEnum.SavedSuccessfully);
-               }
+//                //End of Transaction
+//                if (isBAParent && transaction != null)
+//               {
+//					transaction.Commit();
+//					salida.SetState(EntityStatesEnum.SavedSuccessfully);
+//               }
                
-               return salida;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( salida != null)  salida.RollBackState();
+//               return salida;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
+//                {
+//                    transaction.Rollback();
+//                    if ( salida != null)  salida.RollBackState();
                     
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
 
-        public static SalidaEntity Change(SalidaEntity salida, SqlConnection connection, SqlTransaction transaction)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//        public static SalidaEntity Change(SalidaEntity salida, SqlConnection connection, SqlTransaction transaction)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
-                salida = SalidaDataAccess.Change(salida, connection, transaction);
+//            try
+//            {
+//                salida = SalidaDataAccess.Change(salida, connection, transaction);
 
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Commit();
-                    salida.SetState(EntityStatesEnum.SavedSuccessfully);
-                }
+//                if (isBAParent && transaction != null)
+//                {
+//                    transaction.Commit();
+//                    salida.SetState(EntityStatesEnum.SavedSuccessfully);
+//                }
 
-                return salida;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if (salida != null) salida.RollBackState();
+//                return salida;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
+//                {
+//                    transaction.Rollback();
+//                    if (salida != null) salida.RollBackState();
 
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
 
-        public static SalidaEntity LoadByPK(string Id)
-        {
-            return LoadByPK(Id , null, null, 1);
-        }
-        public static SalidaEntity LoadByPK(string Id ,int deepLoadLevel)
-        {
-            return LoadByPK(Id , null, null, deepLoadLevel);
-        }
+//        public static SalidaEntity LoadByPK(string Id)
+//        {
+//            return LoadByPK(Id , null, null, 1);
+//        }
+//        public static SalidaEntity LoadByPK(string Id ,int deepLoadLevel)
+//        {
+//            return LoadByPK(Id , null, null, deepLoadLevel);
+//        }
         
-        public static SalidaEntity LoadByPK(string Id, SqlConnection connection,SqlTransaction  transaction)
-        {
-            return LoadByPK(Id , connection, transaction, 1);
-        }
+//        public static SalidaEntity LoadByPK(string Id, SqlConnection connection,SqlTransaction  transaction)
+//        {
+//            return LoadByPK(Id , connection, transaction, 1);
+//        }
         
-        public static SalidaEntity LoadByPK(string Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static SalidaEntity LoadByPK(string Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
             
-            try
-            { 
-				SalidaEntity salida = SalidaDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
+//            try
+//            { 
+//				SalidaEntity salida = SalidaDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
 
-				if(salida!=null) 
-                {
-					if (deepLoadLevel > 1)
-	                {
-							salida.IdLocalAsLocalBodega = LocalBodegaBussinesAction.LoadByPK(salida.IdLocal, connection , transaction , deepLoadLevel - 1);
-						salida.IdClienteAsEntidad = EntidadBussinesAction.LoadByPK(salida.IdCliente, connection , transaction , deepLoadLevel - 1);
+//				if(salida!=null) 
+//                {
+//					if (deepLoadLevel > 1)
+//	                {
+//							salida.IdLocalAsLocalBodega = LocalBodegaBussinesAction.LoadByPK(salida.IdLocal, connection , transaction , deepLoadLevel - 1);
+//						salida.IdClienteAsEntidad = EntidadBussinesAction.LoadByPK(salida.IdCliente, connection , transaction , deepLoadLevel - 1);
 
-	                }
+//	                }
 	                   
-						salida.SetLoadedState();
-				}
+//						salida.SetLoadedState();
+//				}
 
-				return salida;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//				return salida;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
          
-        #endregion Implementation
+//        #endregion Implementation
           
      }
 }

@@ -35,210 +35,210 @@ namespace ER.BA
     
   
     
-        #region << Custom Stored Procedures >>
+//        #region << Custom Stored Procedures >>
         
-		public static void CostoPromedioPonderado(string Id,string Tipo,int IdEmpresa,int IdProducto,int IdLocal,string IdSalidaEntrada,string IdDetalle,decimal Cantidad,decimal ValorUnitario,int IdTipoUnidad,short IdEstado)
-		{
-			CostoPromedioPonderado(Id,Tipo,IdEmpresa,IdProducto,IdLocal,IdSalidaEntrada,IdDetalle,Cantidad,ValorUnitario,IdTipoUnidad,IdEstado, null, null);
-		}
+//		public static void CostoPromedioPonderado(string Id,string Tipo,int IdEmpresa,int IdProducto,int IdLocal,string IdSalidaEntrada,string IdDetalle,decimal Cantidad,decimal ValorUnitario,int IdTipoUnidad,short IdEstado)
+//		{
+//			CostoPromedioPonderado(Id,Tipo,IdEmpresa,IdProducto,IdLocal,IdSalidaEntrada,IdDetalle,Cantidad,ValorUnitario,IdTipoUnidad,IdEstado, null, null);
+//		}
 
-		public static void CostoPromedioPonderado(string Id,string Tipo,int IdEmpresa,int IdProducto,int IdLocal,string IdSalidaEntrada,string IdDetalle,decimal Cantidad,decimal ValorUnitario,int IdTipoUnidad,short IdEstado, SqlConnection connection, SqlTransaction transaction)
-		{
-			bool isBAParent = false;
-			if (connection == null)
-			{
-				isBAParent = true;
-				connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-			}
-			try
-			{
-			StockDataAccessCollection.CostoPromedioPonderado(Id,Tipo,IdEmpresa,IdProducto,IdLocal,IdSalidaEntrada,IdDetalle,Cantidad,ValorUnitario,IdTipoUnidad,IdEstado, connection, transaction);
-			}
-			catch (Exception exc)
-			{
-				throw exc;
-			}
-			finally
-			{
-				if (isBAParent) connection.Close();
-			}
-		}
+//		public static void CostoPromedioPonderado(string Id,string Tipo,int IdEmpresa,int IdProducto,int IdLocal,string IdSalidaEntrada,string IdDetalle,decimal Cantidad,decimal ValorUnitario,int IdTipoUnidad,short IdEstado, SqlConnection connection, SqlTransaction transaction)
+//		{
+//			bool isBAParent = false;
+//			if (connection == null)
+//			{
+//				isBAParent = true;
+//				connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//			}
+//			try
+//			{
+//			StockDataAccessCollection.CostoPromedioPonderado(Id,Tipo,IdEmpresa,IdProducto,IdLocal,IdSalidaEntrada,IdDetalle,Cantidad,ValorUnitario,IdTipoUnidad,IdEstado, connection, transaction);
+//			}
+//			catch (Exception exc)
+//			{
+//				throw exc;
+//			}
+//			finally
+//			{
+//				if (isBAParent) connection.Close();
+//			}
+//		}
 
         
-        #endregion
+//        #endregion
         
-        #region Implementation
+//        #region Implementation
         
-        public static StockEntityCollection Save(StockEntityCollection stockCollection )
-        {
-            return Save(stockCollection, null, null);
-        }
+//        public static StockEntityCollection Save(StockEntityCollection stockCollection )
+//        {
+//            return Save(stockCollection, null, null);
+//        }
         
-        public static StockEntityCollection Save(StockEntityCollection stockCollection , SqlConnection connection, SqlTransaction transaction)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//        public static StockEntityCollection Save(StockEntityCollection stockCollection , SqlConnection connection, SqlTransaction transaction)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-                    foreach (StockEntity stock in stockCollection)
-                    {
-                        StockBussinesAction.Save(stock , connection, transaction);
-                    }
+//                    foreach (StockEntity stock in stockCollection)
+//                    {
+//                        StockBussinesAction.Save(stock , connection, transaction);
+//                    }
                     
-                    if (isBAParent && transaction != null) 
-                    {
-                    	transaction.Commit();
-                    	stockCollection.SetState(EntityStatesEnum.SavedSuccessfully);
-                    }
+//                    if (isBAParent && transaction != null) 
+//                    {
+//                    	transaction.Commit();
+//                    	stockCollection.SetState(EntityStatesEnum.SavedSuccessfully);
+//                    }
 
-                    return stockCollection;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( stockCollection != null)  stockCollection.RollBackState();
+//                    return stockCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
+//                {
+//                    transaction.Rollback();
+//                    if ( stockCollection != null)  stockCollection.RollBackState();
                     
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
-        #region << Find by All >>
+//        #region << Find by All >>
         
-        public static StockEntityCollection FindByAll(StockFindParameterEntity findParameter )
-        {
-        	return FindByAll(findParameter,null,null,1);
-        }
+//        public static StockEntityCollection FindByAll(StockFindParameterEntity findParameter )
+//        {
+//        	return FindByAll(findParameter,null,null,1);
+//        }
         
-        public static StockEntityCollection FindByAll(StockFindParameterEntity findParameter ,int deepLoadLevel)
-        {
-        	return FindByAll(findParameter,null,null,deepLoadLevel);
-        }
+//        public static StockEntityCollection FindByAll(StockFindParameterEntity findParameter ,int deepLoadLevel)
+//        {
+//        	return FindByAll(findParameter,null,null,deepLoadLevel);
+//        }
         
-        public static StockEntityCollection FindByAll(StockFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction)
-        {
-        	return FindByAll(findParameter,connection,transaction,1);
-        }
+//        public static StockEntityCollection FindByAll(StockFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction)
+//        {
+//        	return FindByAll(findParameter,connection,transaction,1);
+//        }
         
-        public static StockEntityCollection FindByAll(StockFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static StockEntityCollection FindByAll(StockFindParameterEntity findParameter , SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
 
-			StockEntityCollection stockCollection = null; 
+//			StockEntityCollection stockCollection = null; 
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
-//                {
-                   stockCollection  = StockDataAccessCollection.FindByAll(findParameter , connection, transaction, deepLoadLevel);
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+//                   stockCollection  = StockDataAccessCollection.FindByAll(findParameter , connection, transaction, deepLoadLevel);
                    
-				if (stockCollection!=null && deepLoadLevel > 1)
-                {
-                	foreach (StockEntity stock in stockCollection)
-                    {
+//				if (stockCollection!=null && deepLoadLevel > 1)
+//                {
+//                	foreach (StockEntity stock in stockCollection)
+//                    {
 
-                    }
+//                    }
 
-                }
+//                }
 
                    
-                   stockCollection.SetState(EntityStatesEnum.Loaded);
-//                    transactionScope.Complete();
-//
-//                }  //End of Transaction
+//                   stockCollection.SetState(EntityStatesEnum.Loaded);
+////                    transactionScope.Complete();
+////
+////                }  //End of Transaction
 
-                return stockCollection;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                return stockCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
-        #endregion
+//        #endregion
         
-        #region << Find by All Paged >>
+//        #region << Find by All Paged >>
         
-        public static StockEntityCollection FindByAllPaged(StockFindParameterEntity findParameter, int pageNumber, int pageSize ,string orderBy)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize,orderBy, null,null,1);
-        }
+//        public static StockEntityCollection FindByAllPaged(StockFindParameterEntity findParameter, int pageNumber, int pageSize ,string orderBy)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize,orderBy, null,null,1);
+//        }
         
-        public static StockEntityCollection FindByAllPaged(StockFindParameterEntity findParameter , int pageNumber, int pageSize,string orderBy, int deepLoadLevel)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, null,null,deepLoadLevel);
-        }
+//        public static StockEntityCollection FindByAllPaged(StockFindParameterEntity findParameter , int pageNumber, int pageSize,string orderBy, int deepLoadLevel)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, null,null,deepLoadLevel);
+//        }
         
-        public static StockEntityCollection FindByAllPaged(StockFindParameterEntity findParameter , int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction)
-        {
-        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, connection,transaction,1);
-        }
+//        public static StockEntityCollection FindByAllPaged(StockFindParameterEntity findParameter , int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction)
+//        {
+//        	return FindByAllPaged(findParameter, pageNumber, pageSize, orderBy, connection,transaction,1);
+//        }
         
-        public static StockEntityCollection FindByAllPaged(StockFindParameterEntity findParameter ,int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static StockEntityCollection FindByAllPaged(StockFindParameterEntity findParameter ,int pageNumber, int pageSize, string orderBy, SqlConnection connection,  SqlTransaction transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
 
-			StockEntityCollection stockCollection = null; 
+//			StockEntityCollection stockCollection = null; 
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
-//                {
-                   stockCollection  = StockDataAccessCollection.FindByAllPaged(findParameter , pageNumber, pageSize, orderBy, connection, transaction, deepLoadLevel);
-                   stockCollection.SetState(EntityStatesEnum.Loaded);
-//                    transactionScope.Complete();
-//
-//                }  //End of Transaction
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+//                   stockCollection  = StockDataAccessCollection.FindByAllPaged(findParameter , pageNumber, pageSize, orderBy, connection, transaction, deepLoadLevel);
+//                   stockCollection.SetState(EntityStatesEnum.Loaded);
+////                    transactionScope.Complete();
+////
+////                }  //End of Transaction
 
-                return stockCollection;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                return stockCollection;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
-        #endregion
+//        #endregion
 
       
-        #endregion Implementation
+//        #endregion Implementation
         
           
      }

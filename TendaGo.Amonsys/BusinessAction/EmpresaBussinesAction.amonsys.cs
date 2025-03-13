@@ -32,134 +32,134 @@ namespace ER.BA
     public partial class EmpresaBussinesAction
     {
          
-       #region Implementation
+//       #region Implementation
         
-       public static EmpresaEntity Save(EmpresaEntity empresa )
-       {   
-            return Save(empresa,null, null);
-       }
+//       public static EmpresaEntity Save(EmpresaEntity empresa )
+//       {   
+//            return Save(empresa,null, null);
+//       }
        
-       public static EmpresaEntity Save(EmpresaEntity empresa , SqlConnection connection, SqlTransaction transaction)
-       {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true; 
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
-                connection.Open();
-                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
+//       public static EmpresaEntity Save(EmpresaEntity empresa , SqlConnection connection, SqlTransaction transaction)
+//       {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true; 
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//                connection.Open();
+//                transaction = connection.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
 
-            }
+//            }
 
-            try
-            {
+//            try
+//            {
 
-//                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                using (TransactionScope transactionScope = new TransactionScope(TransactionScopeOption.Required))
+////                {
+///*
+
+//*/
+//                    switch (empresa.CurrentState)
+//                    {
+//                        case EntityStatesEnum.Deleted:
+//                            EmpresaDataAccess.Delete(empresa, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.Updated:
+//                            EmpresaDataAccess.Update(empresa, connection, transaction);
+//                            break;
+//                        case EntityStatesEnum.New:
+//                            empresa = EmpresaDataAccess.Insert(empresa, connection, transaction);
+//                            break;
+//                        default:
+//                            break;
+//                    }
+                    
+                    
+
+////                } 
+               
+//               //End of Transaction
+//               if (isBAParent && transaction != null)
+//               {
+//					transaction.Commit();
+//					empresa.SetState(EntityStatesEnum.SavedSuccessfully);
+//               }
+               
+//               return empresa;
+//            }
+//            catch (Exception exc)
+//            {
+//                if (isBAParent && transaction != null)
 //                {
-/*
-
-*/
-                    switch (empresa.CurrentState)
-                    {
-                        case EntityStatesEnum.Deleted:
-                            EmpresaDataAccess.Delete(empresa, connection, transaction);
-                            break;
-                        case EntityStatesEnum.Updated:
-                            EmpresaDataAccess.Update(empresa, connection, transaction);
-                            break;
-                        case EntityStatesEnum.New:
-                            empresa = EmpresaDataAccess.Insert(empresa, connection, transaction);
-                            break;
-                        default:
-                            break;
-                    }
+//                    transaction.Rollback();
+//                    if ( empresa != null)  empresa.RollBackState();
                     
-                    
-
-//                } 
-               
-               //End of Transaction
-               if (isBAParent && transaction != null)
-               {
-					transaction.Commit();
-					empresa.SetState(EntityStatesEnum.SavedSuccessfully);
-               }
-               
-               return empresa;
-            }
-            catch (Exception exc)
-            {
-                if (isBAParent && transaction != null)
-                {
-                    transaction.Rollback();
-                    if ( empresa != null)  empresa.RollBackState();
-                    
-                }
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//                }
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
 
   
          
          
          
-        public static EmpresaEntity LoadByPK(int Id)
-        {
-            return LoadByPK(Id , null, null, 1);
-        }
-        public static EmpresaEntity LoadByPK(int Id ,int deepLoadLevel)
-        {
-            return LoadByPK(Id , null, null, deepLoadLevel);
-        }
+//        public static EmpresaEntity LoadByPK(int Id)
+//        {
+//            return LoadByPK(Id , null, null, 1);
+//        }
+//        public static EmpresaEntity LoadByPK(int Id ,int deepLoadLevel)
+//        {
+//            return LoadByPK(Id , null, null, deepLoadLevel);
+//        }
         
-        public static EmpresaEntity LoadByPK(int Id, SqlConnection connection,SqlTransaction  transaction)
-        {
-            return LoadByPK(Id , connection, transaction, 1);
-        }
+//        public static EmpresaEntity LoadByPK(int Id, SqlConnection connection,SqlTransaction  transaction)
+//        {
+//            return LoadByPK(Id , connection, transaction, 1);
+//        }
         
-        public static EmpresaEntity LoadByPK(int Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
-        {
-            bool isBAParent = false;
-            if (connection == null)
-            {
-                isBAParent = true;
-                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
+//        public static EmpresaEntity LoadByPK(int Id , SqlConnection connection,SqlTransaction  transaction,int deepLoadLevel)
+//        {
+//            bool isBAParent = false;
+//            if (connection == null)
+//            {
+//                isBAParent = true;
+//                connection = new SqlConnection(ConfigurationManager.AppSettings["TendaGo"]);
 
-            }
+//            }
             
-            try
-            {
+//            try
+//            {
 
                 
-				EmpresaEntity empresa = EmpresaDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
-				if(empresa!=null) 
-                {
-					if (deepLoadLevel > 1)
-	                {
+//				EmpresaEntity empresa = EmpresaDataAccess.LoadByPK(Id , connection, transaction, deepLoadLevel);
+//				if(empresa!=null) 
+//                {
+//					if (deepLoadLevel > 1)
+//	                {
 	
-	                }
+//	                }
 	                   
-						empresa.SetLoadedState();
-				}
+//						empresa.SetLoadedState();
+//				}
 
-				return empresa;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (isBAParent) connection.Close();
-            }
-        }
+//				return empresa;
+//            }
+//            catch (Exception exc)
+//            {
+//                throw exc;
+//            }
+//            finally
+//            {
+//                if (isBAParent) connection.Close();
+//            }
+//        }
         
          
-        #endregion Implementation
+//        #endregion Implementation
           
      }
 }

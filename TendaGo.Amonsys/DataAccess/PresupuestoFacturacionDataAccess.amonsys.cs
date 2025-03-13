@@ -26,458 +26,458 @@ namespace ER.DA
     {
     
    
-        #region << Default Methods >>
+   //     #region << Default Methods >>
 
-        /// <summary>
-        /// Create a new entity type of PresupuestoFacturacion
-        /// </summary>
-        public static PresupuestoFacturacionEntity Insert(PresupuestoFacturacionEntity presupuestoFacturacion, SqlConnection connection, SqlTransaction transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText =  "PresupuestoFacturacion_Insert";
+   //     /// <summary>
+   //     /// Create a new entity type of PresupuestoFacturacion
+   //     /// </summary>
+   //     public static PresupuestoFacturacionEntity Insert(PresupuestoFacturacionEntity presupuestoFacturacion, SqlConnection connection, SqlTransaction transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText =  "PresupuestoFacturacion_Insert";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
                  
-				mCommand.Parameters.AddWithValue("@IdEmpresa", presupuestoFacturacion.IdEmpresa);
-				mCommand.Parameters.AddWithValue("@Ruc", presupuestoFacturacion.Ruc.ToUpper());
-				mCommand.Parameters.AddWithValue("@Mes", presupuestoFacturacion.Mes.ToUpper());
-				mCommand.Parameters.AddWithValue("@Fecha", presupuestoFacturacion.Fecha.ToUpper());
-				mCommand.Parameters.AddWithValue("@Presupuesto", presupuestoFacturacion.Presupuesto);
-				mCommand.Parameters.AddWithValue("@IpIngreso", presupuestoFacturacion.IpIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", presupuestoFacturacion.UsuarioIngreso.ToUpper());
-				mCommand.Parameters.AddWithValue("@FechaIngreso", presupuestoFacturacion.FechaIngreso);
-				if(!String.IsNullOrEmpty(presupuestoFacturacion.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", presupuestoFacturacion.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@IdEmpresa", presupuestoFacturacion.IdEmpresa);
+			//	mCommand.Parameters.AddWithValue("@Ruc", presupuestoFacturacion.Ruc.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@Mes", presupuestoFacturacion.Mes.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@Fecha", presupuestoFacturacion.Fecha.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@Presupuesto", presupuestoFacturacion.Presupuesto);
+			//	mCommand.Parameters.AddWithValue("@IpIngreso", presupuestoFacturacion.IpIngreso.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", presupuestoFacturacion.UsuarioIngreso.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@FechaIngreso", presupuestoFacturacion.FechaIngreso);
+			//	if(!String.IsNullOrEmpty(presupuestoFacturacion.IpModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion", presupuestoFacturacion.IpModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(presupuestoFacturacion.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", presupuestoFacturacion.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(presupuestoFacturacion.UsuarioModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", presupuestoFacturacion.UsuarioModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+			//	}
 
-				if(presupuestoFacturacion.FechaModificacion != null && presupuestoFacturacion.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", presupuestoFacturacion.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
-				}
+			//	if(presupuestoFacturacion.FechaModificacion != null && presupuestoFacturacion.FechaModificacion != DateTime.MinValue)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion", presupuestoFacturacion.FechaModificacion);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IdEstado", presupuestoFacturacion.IdEstado);
+			//	mCommand.Parameters.AddWithValue("@IdEstado", presupuestoFacturacion.IdEstado);
 
-				// Add the primary keys columns
-				mCommand.Parameters.Add("@Id", SqlDbType.Int);
-				mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
+			//	// Add the primary keys columns
+			//	mCommand.Parameters.Add("@Id", SqlDbType.Int);
+			//	mCommand.Parameters["@Id"].Direction = ParameterDirection.Output;
 
 
-                #endregion
+   //             #endregion
                 
-                // Insert PresupuestoFacturacion
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Insert PresupuestoFacturacion
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
-				presupuestoFacturacion.Id = Convert.ToInt32(mCommand.Parameters["@Id"].Value);
+			//	presupuestoFacturacion.Id = Convert.ToInt32(mCommand.Parameters["@Id"].Value);
 
 
-                return presupuestoFacturacion;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //             return presupuestoFacturacion;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
 
-        /// <summary>
-        /// Update a entity
-        /// </summary>
-        public static void Update(PresupuestoFacturacionEntity presupuestoFacturacion, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "PresupuestoFacturacion_Update";
+   //     /// <summary>
+   //     /// Update a entity
+   //     /// </summary>
+   //     public static void Update(PresupuestoFacturacionEntity presupuestoFacturacion, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;;
+   //             mCommand.CommandText = "PresupuestoFacturacion_Update";
 
-                 #region << Add the params >>
+   //              #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@Id", presupuestoFacturacion.Id);
-				mCommand.Parameters.AddWithValue("@IdEmpresa", presupuestoFacturacion.IdEmpresa);
-				mCommand.Parameters.AddWithValue("@Ruc", presupuestoFacturacion.Ruc);
-				mCommand.Parameters.AddWithValue("@Mes", presupuestoFacturacion.Mes);
-				mCommand.Parameters.AddWithValue("@Fecha", presupuestoFacturacion.Fecha);
-				mCommand.Parameters.AddWithValue("@Presupuesto", presupuestoFacturacion.Presupuesto);
-				mCommand.Parameters.AddWithValue("@IpIngreso", presupuestoFacturacion.IpIngreso);
-				mCommand.Parameters.AddWithValue("@UsuarioIngreso", presupuestoFacturacion.UsuarioIngreso);
-				mCommand.Parameters.AddWithValue("@FechaIngreso", presupuestoFacturacion.FechaIngreso);
-				if(!String.IsNullOrEmpty(presupuestoFacturacion.IpModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion", presupuestoFacturacion.IpModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
-				}
+			//	mCommand.Parameters.AddWithValue("@Id", presupuestoFacturacion.Id);
+			//	mCommand.Parameters.AddWithValue("@IdEmpresa", presupuestoFacturacion.IdEmpresa);
+			//	mCommand.Parameters.AddWithValue("@Ruc", presupuestoFacturacion.Ruc);
+			//	mCommand.Parameters.AddWithValue("@Mes", presupuestoFacturacion.Mes);
+			//	mCommand.Parameters.AddWithValue("@Fecha", presupuestoFacturacion.Fecha);
+			//	mCommand.Parameters.AddWithValue("@Presupuesto", presupuestoFacturacion.Presupuesto);
+			//	mCommand.Parameters.AddWithValue("@IpIngreso", presupuestoFacturacion.IpIngreso);
+			//	mCommand.Parameters.AddWithValue("@UsuarioIngreso", presupuestoFacturacion.UsuarioIngreso);
+			//	mCommand.Parameters.AddWithValue("@FechaIngreso", presupuestoFacturacion.FechaIngreso);
+			//	if(!String.IsNullOrEmpty(presupuestoFacturacion.IpModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion", presupuestoFacturacion.IpModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@IpModificacion",DBNull.Value);
+			//	}
 
-				if(!String.IsNullOrEmpty(presupuestoFacturacion.UsuarioModificacion))
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion", presupuestoFacturacion.UsuarioModificacion.ToUpper());
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
-				}
+			//	if(!String.IsNullOrEmpty(presupuestoFacturacion.UsuarioModificacion))
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion", presupuestoFacturacion.UsuarioModificacion.ToUpper());
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("@UsuarioModificacion",DBNull.Value);
+			//	}
 
-				if(presupuestoFacturacion.FechaModificacion != null && presupuestoFacturacion.FechaModificacion != DateTime.MinValue)
-				{
-					mCommand.Parameters.AddWithValue("@FechaModificacion", presupuestoFacturacion.FechaModificacion);
-				}
-				else
-				{
-					mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
-				}
+			//	if(presupuestoFacturacion.FechaModificacion != null && presupuestoFacturacion.FechaModificacion != DateTime.MinValue)
+			//	{
+			//		mCommand.Parameters.AddWithValue("@FechaModificacion", presupuestoFacturacion.FechaModificacion);
+			//	}
+			//	else
+			//	{
+			//		mCommand.Parameters.AddWithValue("FechaModificacion",DBNull.Value);
+			//	}
 
-				mCommand.Parameters.AddWithValue("@IdEstado", presupuestoFacturacion.IdEstado);
+			//	mCommand.Parameters.AddWithValue("@IdEstado", presupuestoFacturacion.IdEstado);
                 
    
-                #endregion
+   //             #endregion
                 
-                // Update presupuestoFacturacion
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Update presupuestoFacturacion
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
 
-         /// <summary>
-        /// Delete a entity
-        /// </summary>
-        public static void Delete(PresupuestoFacturacionEntity presupuestoFacturacion, SqlConnection connection, SqlTransaction  transaction)
-        {
-            SqlCommand mCommand = new SqlCommand();
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;;
-                mCommand.CommandText = "PresupuestoFacturacion_Delete";
-				mCommand.Parameters.AddWithValue("@Id", presupuestoFacturacion.Id);
-				mCommand.Parameters.AddWithValue("@FechaModificacion", presupuestoFacturacion.FechaModificacion);
-				mCommand.Parameters.AddWithValue("@UsuarioModificacion", presupuestoFacturacion.UsuarioModificacion.ToUpper());
-				mCommand.Parameters.AddWithValue("@IpModificacion", presupuestoFacturacion.IpModificacion.ToUpper());
+   //      /// <summary>
+   //     /// Delete a entity
+   //     /// </summary>
+   //     public static void Delete(PresupuestoFacturacionEntity presupuestoFacturacion, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //         SqlCommand mCommand = new SqlCommand();
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;;
+   //             mCommand.CommandText = "PresupuestoFacturacion_Delete";
+			//	mCommand.Parameters.AddWithValue("@Id", presupuestoFacturacion.Id);
+			//	mCommand.Parameters.AddWithValue("@FechaModificacion", presupuestoFacturacion.FechaModificacion);
+			//	mCommand.Parameters.AddWithValue("@UsuarioModificacion", presupuestoFacturacion.UsuarioModificacion.ToUpper());
+			//	mCommand.Parameters.AddWithValue("@IpModificacion", presupuestoFacturacion.IpModificacion.ToUpper());
 
                 
-                // Update presupuestoFacturacion
-                if (connection.State != ConnectionState.Open) connection.Open();
-                mCommand.ExecuteNonQuery();
+   //             // Update presupuestoFacturacion
+   //             if (connection.State != ConnectionState.Open) connection.Open();
+   //             mCommand.ExecuteNonQuery();
 
 
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                mCommand.Dispose();
-            }
-        }
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
         
          
          
-         /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static PresupuestoFacturacionEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction)
-        {
-        	return LoadByPK(Id,connection,transaction,1);
-        }
+   //      /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static PresupuestoFacturacionEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction)
+   //     {
+   //     	return LoadByPK(Id,connection,transaction,1);
+   //     }
         
-        /// <summary>
-        /// Load a entity by your Primary Key
-        /// </summary>
-        public static PresupuestoFacturacionEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
-        {
-            PresupuestoFacturacionEntity presupuestoFacturacion = new PresupuestoFacturacionEntity();
+   //     /// <summary>
+   //     /// Load a entity by your Primary Key
+   //     /// </summary>
+   //     public static PresupuestoFacturacionEntity LoadByPK(int Id, SqlConnection connection, SqlTransaction  transaction, int deepLoadLevel)
+   //     {
+   //         PresupuestoFacturacionEntity presupuestoFacturacion = new PresupuestoFacturacionEntity();
             
-			presupuestoFacturacion.Id = Id;
+			//presupuestoFacturacion.Id = Id;
             
             
-            SqlCommand mCommand = new SqlCommand();
-            SqlDataReader reader = null;
-            try
-            {
-                mCommand.Connection = connection;
-                mCommand.CommandType = CommandType.StoredProcedure;
-                mCommand.Transaction = transaction;
-                mCommand.CommandText = "PresupuestoFacturacion_LoadByPK";
+   //         SqlCommand mCommand = new SqlCommand();
+   //         SqlDataReader reader = null;
+   //         try
+   //         {
+   //             mCommand.Connection = connection;
+   //             mCommand.CommandType = CommandType.StoredProcedure;
+   //             mCommand.Transaction = transaction;
+   //             mCommand.CommandText = "PresupuestoFacturacion_LoadByPK";
 
-                #region << Add the params >>
+   //             #region << Add the params >>
 
-				mCommand.Parameters.AddWithValue("@Id", presupuestoFacturacion.Id);
+			//	mCommand.Parameters.AddWithValue("@Id", presupuestoFacturacion.Id);
                 
  
-                #endregion 
+   //             #endregion 
                 
-                if (connection.State != ConnectionState.Open) connection.Open();
+   //             if (connection.State != ConnectionState.Open) connection.Open();
 
-                reader = mCommand.ExecuteReader();
+   //             reader = mCommand.ExecuteReader();
 
-                if(!reader.HasRows) return null;
+   //             if(!reader.HasRows) return null;
                 
-	            while (reader.Read())
-	            {
-					#region << Deep Load >>
-                    if (deepLoadLevel == 1)
-		     		{
-						presupuestoFacturacion.IdEmpresaAsEmpresa = EmpresaDataAccess.ConvertToEmpresaEntity(reader, "IdEmpresa");
-						presupuestoFacturacion.RucAsRuc = RucDataAccess.ConvertToRucEntity(reader, "Ruc");
+	  //          while (reader.Read())
+	  //          {
+			//		#region << Deep Load >>
+   //                 if (deepLoadLevel == 1)
+		 //    		{
+			//			presupuestoFacturacion.IdEmpresaAsEmpresa = EmpresaDataAccess.ConvertToEmpresaEntity(reader, "IdEmpresa");
+			//			presupuestoFacturacion.RucAsRuc = RucDataAccess.ConvertToRucEntity(reader, "Ruc");
 
-                    }
-	                #endregion
+   //                 }
+	  //              #endregion
 	                
-	                #region << Load the BusinessEntity Object >>
+	  //              #region << Load the BusinessEntity Object >>
 					
-					presupuestoFacturacion.Id = Convert.ToInt32(reader["Id"]);
-					presupuestoFacturacion.IdEmpresa = Convert.ToInt32(reader["IdEmpresa"]);
-					presupuestoFacturacion.Ruc = Convert.ToString(reader["Ruc"]);
-					presupuestoFacturacion.Mes = Convert.ToString(reader["Mes"]);
-					presupuestoFacturacion.Fecha = Convert.ToString(reader["Fecha"]);
-					presupuestoFacturacion.Presupuesto = (decimal) reader["Presupuesto"];
-					presupuestoFacturacion.IpIngreso = Convert.ToString(reader["IpIngreso"]);
-					presupuestoFacturacion.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
-					presupuestoFacturacion.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
-					if (reader["IpModificacion"] != DBNull.Value)
-					{
-						presupuestoFacturacion.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
-					}
-					if (reader["UsuarioModificacion"] != DBNull.Value)
-					{
-						presupuestoFacturacion.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
-					}
-					if (reader["FechaModificacion"] != DBNull.Value)
-					{
-						presupuestoFacturacion.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
-					}
-					presupuestoFacturacion.IdEstado = Convert.ToInt16(reader["IdEstado"]);
+			//		presupuestoFacturacion.Id = Convert.ToInt32(reader["Id"]);
+			//		presupuestoFacturacion.IdEmpresa = Convert.ToInt32(reader["IdEmpresa"]);
+			//		presupuestoFacturacion.Ruc = Convert.ToString(reader["Ruc"]);
+			//		presupuestoFacturacion.Mes = Convert.ToString(reader["Mes"]);
+			//		presupuestoFacturacion.Fecha = Convert.ToString(reader["Fecha"]);
+			//		presupuestoFacturacion.Presupuesto = (decimal) reader["Presupuesto"];
+			//		presupuestoFacturacion.IpIngreso = Convert.ToString(reader["IpIngreso"]);
+			//		presupuestoFacturacion.UsuarioIngreso = Convert.ToString(reader["UsuarioIngreso"]);
+			//		presupuestoFacturacion.FechaIngreso = Convert.ToDateTime(reader["FechaIngreso"]);
+			//		if (reader["IpModificacion"] != DBNull.Value)
+			//		{
+			//			presupuestoFacturacion.IpModificacion = Convert.ToString(reader["IpModificacion"]).ToUpper();
+			//		}
+			//		if (reader["UsuarioModificacion"] != DBNull.Value)
+			//		{
+			//			presupuestoFacturacion.UsuarioModificacion = Convert.ToString(reader["UsuarioModificacion"]).ToUpper();
+			//		}
+			//		if (reader["FechaModificacion"] != DBNull.Value)
+			//		{
+			//			presupuestoFacturacion.FechaModificacion = Convert.ToDateTime(reader["FechaModificacion"]);
+			//		}
+			//		presupuestoFacturacion.IdEstado = Convert.ToInt16(reader["IdEstado"]);
 
-	                #endregion
-	            }
+	  //              #endregion
+	  //          }
 
-                presupuestoFacturacion.SetLoadedState();
-                return presupuestoFacturacion;
-            }
-            catch (Exception exc)
-            {
-                throw exc;
-            }
-            finally
-            {
-                if (reader != null) reader.Close();
-                mCommand.Dispose();
-            }
-        }
+   //             presupuestoFacturacion.SetLoadedState();
+   //             return presupuestoFacturacion;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             throw exc;
+   //         }
+   //         finally
+   //         {
+   //             if (reader != null) reader.Close();
+   //             mCommand.Dispose();
+   //         }
+   //     }
         
-        #endregion
-        
-        
+   //     #endregion
         
         
-        #region << Mappers >>
         
-        public static PresupuestoFacturacionEntity ConvertToPresupuestoFacturacionEntity (SqlDataReader reader,string fkColumnName)
-        {
-            PresupuestoFacturacionEntity presupuestoFacturacion = new PresupuestoFacturacionEntity();
+        
+   //     #region << Mappers >>
+        
+   //     public static PresupuestoFacturacionEntity ConvertToPresupuestoFacturacionEntity (SqlDataReader reader,string fkColumnName)
+   //     {
+   //         PresupuestoFacturacionEntity presupuestoFacturacion = new PresupuestoFacturacionEntity();
             
-            try
-            {
-                bool hasData=false;
-                string columName;
+   //         try
+   //         {
+   //             bool hasData=false;
+   //             string columName;
                 
-                #region << Load the BusinessEntity Object >>
+   //             #region << Load the BusinessEntity Object >>
                 
-				try
-				{
-					columName = String.Format("Id_PresupuestoFacturacionFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						presupuestoFacturacion.Id = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdEmpresa_PresupuestoFacturacionFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						presupuestoFacturacion.IdEmpresa = Convert.ToInt32(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Ruc_PresupuestoFacturacionFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						presupuestoFacturacion.Ruc = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Mes_PresupuestoFacturacionFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						presupuestoFacturacion.Mes = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Fecha_PresupuestoFacturacionFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						presupuestoFacturacion.Fecha = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("Presupuesto_PresupuestoFacturacionFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						presupuestoFacturacion.Presupuesto = (decimal) reader[columName];
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpIngreso_PresupuestoFacturacionFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						presupuestoFacturacion.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioIngreso_PresupuestoFacturacionFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						presupuestoFacturacion.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaIngreso_PresupuestoFacturacionFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						presupuestoFacturacion.FechaIngreso = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IpModificacion_PresupuestoFacturacionFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						presupuestoFacturacion.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("UsuarioModificacion_PresupuestoFacturacionFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						presupuestoFacturacion.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("FechaModificacion_PresupuestoFacturacionFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						presupuestoFacturacion.FechaModificacion = Convert.ToDateTime(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
-				try
-				{
-					columName = String.Format("IdEstado_PresupuestoFacturacionFrom{0}", fkColumnName);
-					if (reader[columName] != DBNull.Value)
-					{
-						presupuestoFacturacion.IdEstado = Convert.ToInt16(reader[columName]);
-						hasData = true;
-					}
-				}
-				catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Id_PresupuestoFacturacionFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			presupuestoFacturacion.Id = Convert.ToInt32(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdEmpresa_PresupuestoFacturacionFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			presupuestoFacturacion.IdEmpresa = Convert.ToInt32(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Ruc_PresupuestoFacturacionFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			presupuestoFacturacion.Ruc = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Mes_PresupuestoFacturacionFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			presupuestoFacturacion.Mes = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Fecha_PresupuestoFacturacionFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			presupuestoFacturacion.Fecha = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("Presupuesto_PresupuestoFacturacionFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			presupuestoFacturacion.Presupuesto = (decimal) reader[columName];
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IpIngreso_PresupuestoFacturacionFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			presupuestoFacturacion.IpIngreso = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("UsuarioIngreso_PresupuestoFacturacionFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			presupuestoFacturacion.UsuarioIngreso = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("FechaIngreso_PresupuestoFacturacionFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			presupuestoFacturacion.FechaIngreso = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IpModificacion_PresupuestoFacturacionFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			presupuestoFacturacion.IpModificacion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("UsuarioModificacion_PresupuestoFacturacionFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			presupuestoFacturacion.UsuarioModificacion = Convert.ToString(reader[columName]).ToUpper();
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("FechaModificacion_PresupuestoFacturacionFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			presupuestoFacturacion.FechaModificacion = Convert.ToDateTime(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
+			//	try
+			//	{
+			//		columName = String.Format("IdEstado_PresupuestoFacturacionFrom{0}", fkColumnName);
+			//		if (reader[columName] != DBNull.Value)
+			//		{
+			//			presupuestoFacturacion.IdEstado = Convert.ToInt16(reader[columName]);
+			//			hasData = true;
+			//		}
+			//	}
+			//	catch{}
 
                 
-                #endregion
+   //             #endregion
                 
-                presupuestoFacturacion.SetLoadedState();
-                if(hasData)
-                {
-                	return presupuestoFacturacion;
-                }
-                else return null;
-            }
-            catch (Exception exc)
-            {
-                return null;
-            }
-            finally
-            {
+   //             presupuestoFacturacion.SetLoadedState();
+   //             if(hasData)
+   //             {
+   //             	return presupuestoFacturacion;
+   //             }
+   //             else return null;
+   //         }
+   //         catch (Exception exc)
+   //         {
+   //             return null;
+   //         }
+   //         finally
+   //         {
                 
-            }
-        }
+   //         }
+   //     }
         
-        #endregion
+   //     #endregion
         
    
     }
