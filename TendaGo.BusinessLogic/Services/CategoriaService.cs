@@ -14,6 +14,7 @@ using System.Web.Http;
 using TendaGo.Common;
 using TendaGo.Domain.Services;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using TendaGo.Domain.Models;
 
 namespace TendaGo.BusinessLogic.Services
 {
@@ -77,12 +78,16 @@ namespace TendaGo.BusinessLogic.Services
             }
         }
 
-        public async Task<CategoriaEntity> GetCategoriaEntity(int id)
+        public async Task<CategoriaDTO> GetCategoriaEntity(int id, UsuarioDTO usuario)
         {
             try
             {
-                var cat = _mapper.Map<CategoriaEntity>(await _procedures.Categoria_LoadByPKAsync(id));
-                if (cat == null) throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NotFound) { Content = new StringContent("Categoría no existe El registro solicitado no existe") });
+                var result = await _procedures.Categoria_LoadByPKAsync(id);
+
+                var cat = _mapper.Map<CategoriaDTO>(result.FirstOrDefault());
+
+                if (cat == null || cat.IdEmpresa != usuario.IdEmpresa) throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NotFound) { Content = new StringContent("Categoría no existe El registro solicitado no existe") });
+                
                 return cat;
             }
             catch (Exception)

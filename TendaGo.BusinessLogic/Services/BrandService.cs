@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using ER.BE;
+using ER.DA.Models;
 using ER.DA.Repositories;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +10,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Results;
 using TendaGo.Common;
 using TendaGo.Domain.Services;
 
@@ -24,84 +27,181 @@ namespace TendaGo.BusinessLogic.Services
             _mapper = mapper;
         }
 
-        public Task<BrandDto> GetBrandEntity(int id)
+        public async Task<List<BrandDto>> GetBrands(MarcaFindParameterEntity findParameter)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var brands = await _procedimientos.Marca_FindByAllAsync(findParameter.Id, findParameter.IdEmpresa, findParameter.Marca, findParameter.IpIngreso, findParameter.UsuarioIngreso, findParameter.FechaIngreso, findParameter.IpModificacion, findParameter.UsuarioModificacion, findParameter.FechaModificacion, findParameter.IdEstado);
+                var brandsDtoList = _mapper.Map<List<BrandDto>>(brands);
+                return brandsDtoList;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
         }
 
-        public Task<List<BrandDto>> GetBrands(MarcaFindParameterEntity findParameter)
+        public async Task<BrandDto> PostBrand(BrandDto brand, int idEmpresa)
         {
-            throw new NotImplementedException();
+            try
+            {
+                MarcaEntity marcaEntity;
+                if (brand.Id != 0)
+                {
+                    var result = _procedimientos.Marca_LoadByPKAsync(brand.Id);
+                    marcaEntity = _mapper.Map<MarcaEntity>(result);
+                    marcaEntity.Marca = brand.Marca;
+                    marcaEntity.IdEstado = brand.IdEstado;
+                    if (marcaEntity.CurrentState.Equals(EntityStatesEnum.Updated))
+                    {
+                        marcaEntity.UsuarioModificacion = brand.UsuarioModificacion;
+                        marcaEntity.FechaModificacion = DateTime.Now;
+                        marcaEntity.IpModificacion = brand.IpModificacion;
+                    }
+                }
+                else
+                {
+                    marcaEntity = _mapper.Map<MarcaEntity>(brand);
+                    //var usuarioentity = brand.Id != 0 ? GetAuthenticatedUserByToken(brand.UsuarioModificacion) : GetAuthenticatedUserByToken(brand.UsuarioIngreso);
+                    marcaEntity.IdEmpresa = idEmpresa;
+                    marcaEntity.FechaIngreso = DateTime.Now;
+                }
+                marcaEntity = await Save(marcaEntity);
+
+                var response = _mapper.Map<BrandDto>(marcaEntity);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                string UserError = "Ocurrio un error general, reintente";
+                if (ex.Message.Contains("UQ_Marca"))
+                {
+                    UserError = "No puede ingresar una Linea duplicada";
+                }
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.BadRequest) { Content = new StringContent($"{ex.Message}") });
+            }
         }
 
-        public Task<BrandDto> PostBrand(BrandDto brand)
+        public async Task<MarcaEntity> GetBrandEntity(int id, int idEmpresa)
         {
-            throw new NotImplementedException();
+            var result = await _procedimientos.Marca_LoadByPKAsync(id);
+
+            var brand = _mapper.Map<MarcaEntity>(result.FirstOrDefault());
+
+            if (brand == null || brand.IdEmpresa != idEmpresa)
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NotFound) { Content = new StringContent("Marca no existe La marca solicitada no existe") });
+
+            return brand;
         }
 
-        //public async Task<List<BrandDto>> GetBrands(MarcaFindParameterEntity findParameter)
-        //{
-        //    try
-        //    {
-        //        var brands = await _procedimientos.Marca_FindByAllAsync(findParameter.Id, findParameter.IdEmpresa, findParameter.Marca, findParameter.IpIngreso, findParameter.UsuarioIngreso, findParameter.FechaIngreso, findParameter.IpModificacion, findParameter.UsuarioModificacion, findParameter.FechaModificacion, findParameter.IdEstado);
-        //        var brandsDtoList = _mapper.Map<List<BrandDto>>(brands);
-        //        return brandsDtoList;
-        //    }
-        //    catch (Exception ex)
-        //    {
+        private async Task<MarcaEntity> Save(MarcaEntity marca)
+        {
+            try
+            {
+                switch (marca.CurrentState)
+                {
+                    case EntityStatesEnum.Deleted:
+                        await Delete(marca);
+                        break;
+                    case EntityStatesEnum.Updated:
+                        await Update(marca);
+                        break;
+                    case EntityStatesEnum.New:
+                        marca = await Insert(marca);
+                        break;
+                    default:
+                        break;
 
-        //        throw;
-        //    }
+                }
 
-        //}
+                return marca;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
 
-        //public Task<BrandDto> PostBrand(BrandDto brand)
-        //{
-        //    try
-        //    {
-        //        MarcaEntity marcaEntity;
-        //        if (brand.Id != 0)
-        //        {
-        //            marcaEntity = MarcaBussinesAction.LoadByPK(brand.Id);
-        //            marcaEntity.Marca = brand.Marca;
-        //            marcaEntity.IdEstado = brand.IdEstado;
-        //            if (marcaEntity.CurrentState.Equals(EntityStatesEnum.Updated))
-        //            {
-        //                marcaEntity.UsuarioModificacion = brand.UsuarioModificacion;
-        //                marcaEntity.FechaModificacion = DateTime.Now;
-        //                marcaEntity.IpModificacion = brand.IpModificacion;
-        //            }
-        //        }
-        //        else
-        //        {
-        //            marcaEntity = brand.ToMarcaEntity();
-        //            //var usuarioentity = brand.Id != 0 ? GetAuthenticatedUserByToken(brand.UsuarioModificacion) : GetAuthenticatedUserByToken(brand.UsuarioIngreso);
-        //            marcaEntity.IdEmpresa = CurrentUser.IdEmpresa;
-        //            marcaEntity.FechaIngreso = DateTime.Now;
-        //        }
-        //        marcaEntity = MarcaBussinesAction.Save(marcaEntity);
-        //        return marcaEntity.ToBrandDto();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        string UserError = "Ocurrio un error general, reintente";
-        //        if (ex.GetMessage().Contains("UQ_Marca"))
-        //        {
-        //            UserError = "No puede ingresar una Linea duplicada";
-        //        }
-        //        throw new HttpResponseException(Request.BuildHttpErrorResponse(HttpStatusCode.BadRequest, $"{ex.GetAllMessages()}", UserError));
-        //    }
-        //}
+        public async Task<MarcaEntity> Insert(MarcaEntity marca)
+        {
+            try
+            {
+                OutputParameter<int?> idMarca = new();
 
-        //public Task<MarcaEntity> GetBrandEntity(int id)
-        //{
-        //    var brand = MarcaBussinesAction.LoadByPK(id);
+                var result = await _procedimientos.Marca_InsertAsync(
+                        marca.Id,
+                        marca.Marca,
+                        marca.IpIngreso,
+                        marca.UsuarioIngreso,
+                        marca.FechaIngreso,
+                        marca.IpModificacion,
+                        marca.UsuarioModificacion,
+                        marca.FechaModificacion,
+                        marca.IdEstado,
+                        idMarca
+                    );
 
-        //    if (brand == null || brand.IdEmpresa != CurrentUser.IdEmpresa)
-        //        throw new HttpResponseException(Request.BuildHttpErrorResponse(HttpStatusCode.NotFound, "Marca no existe", "La marca solicitada no existe"));
+                return await GetBrandEntity((int)idMarca.Value, marca.IdEmpresa);
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+        }
 
-        //    return brand;
-        //}
+        public async Task Update(MarcaEntity marca)
+        {
+            try
+            {
+                OutputParameter<int> idMarca = new();
 
+
+                var result = await _procedimientos.Marca_UpdateAsync(
+                                                marca.Id,
+                                                marca.IdEmpresa,
+                                                marca.Marca,
+                                                marca.IpIngreso,
+                                                marca.UsuarioIngreso,
+                                                marca.FechaIngreso,
+                                                marca.IpModificacion,
+                                                marca.UsuarioModificacion,
+                                                marca.FechaModificacion,
+                                                marca.IdEstado,
+                                                idMarca
+                                            );
+
+
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+        }
+
+        /// <summary>
+        /// Delete a entity
+        /// </summary>
+        public async Task Delete(MarcaEntity marca)
+        {
+            try
+            {
+                var result = await _procedimientos.Marca_DeleteAsync(
+                                                    marca.Id,
+                                                    marca.FechaModificacion,
+                                                    marca.UsuarioModificacion,
+                                                    marca.IpModificacion
+                                                   );
+
+
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+        }
     }
+    
 }

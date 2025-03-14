@@ -20,6 +20,7 @@ using ER.DA.Repositories;
 using AutoMapper;
 using TendaGo.BusinessLogic.Mapping;
 using NPOI.SS.Formula.Functions;
+using Microsoft.AspNetCore.Authentication;
 
 namespace TendaGo.Api
 {
@@ -29,14 +30,21 @@ namespace TendaGo.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddControllers();
-
+            builder.Services.AddHttpContextAccessor();
 
             builder.Services.AddDbContext<TendaGOContext>(options =>
-                options.UseSqlServer("Data Source=thanos.binasystem.com,5000;Initial Catalog=TendaGO;User Id=TendaGO;Password=Vqm5R4vCPVAFm;", sql => sql.EnableRetryOnFailure())
+                options.UseSqlServer("Data Source=thanos.binasystem.com,5000;Initial Catalog=TendaGO;User Id=TendaGO;Password=Vqm5R4vCPVAFm;Encrypt=True;TrustServerCertificate=True;", sql => sql.EnableRetryOnFailure())
             );
             
             ConfigureMapper(builder);
+
+            builder.Services.AddAuthentication(
+                options =>
+                {
+                    options.DefaultScheme = "AppToken";
+                    options.DefaultChallengeScheme = "AppToken";
+                }
+            ).AddScheme<AuthenticationSchemeOptions, AppTokenAuthenticationHandler>("AppToken", null);
 
             builder.Services.AddScoped<TendaGOContext>();
             builder.Services.AddScoped<DbContext, TendaGOContext>();
@@ -44,10 +52,43 @@ namespace TendaGo.Api
             builder.Services.AddScoped<ITendaGOContextProcedures, TendaGOContextProcedures>();
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+            builder.Services.AddScoped<ICategoriaService, CategoriaService>();
+            builder.Services.AddScoped<IBrandService, BrandService>();
+            builder.Services.AddScoped<IMarcaService, MarcaService>();
+            builder.Services.AddScoped<TokenAuthorizeAttribute>();
+            builder.Services.AddScoped<TokenAuthorizationFilter>();
             // Configura otros servicios según sea necesario
-            
+            builder.Services.AddControllers(options =>
+            {
+                options.Filters.AddService<TokenAuthorizationFilter>(); // Usamos AddService para añadir el filtro
+            });
+            builder.Services.AddEndpointsApiExplorer();
+
             builder.Services.AddSwaggerGen(options =>
             {
+                options.AddSecurityDefinition("app_token", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                {
+                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                    Name = "app_token",
+                    Description = "Token de autenticación",
+                });
+
+                options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+                {
+                    {
+                        new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                        {
+                            Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                            {
+                                Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                                Id = "app_token"
+                            }
+                        },
+                        new string[] { }
+                    }
+                });
+
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "TendaGo.Api",
@@ -76,7 +117,7 @@ namespace TendaGo.Api
 
             // Configuración de middleware
             app.UseRouting();
-            app.UseAuthentication();
+            //;
             app.UseAuthorization();
 
             // Rutas de los controladores

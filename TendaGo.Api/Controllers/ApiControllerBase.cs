@@ -1,10 +1,13 @@
 ﻿using ER.BA;
 using ER.BE;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using TendaGo.Domain.Models;
 using TendaGo.Domain.Services;
 
 namespace TendaGo.Api.Controllers
@@ -12,7 +15,9 @@ namespace TendaGo.Api.Controllers
     /// <summary>
     /// Api controller base
     /// </summary>
-    public class ApiControllerBase : ApiController
+    [ApiController]
+    [Microsoft.AspNetCore.Mvc.Route("[controller]/")]
+    public class ApiControllerBase : ControllerBase
     {
         private readonly IUsuarioService _usuarioService;
 
@@ -21,39 +26,34 @@ namespace TendaGo.Api.Controllers
             _usuarioService = usuarioService;
         }
 
-        /// <summary>
-        /// Usuario Actual
-        /// </summary>
-        protected async Task<UsuarioEntity> CurrentUser () { return await GetAuthenticatedUser(); }
+        protected UsuarioDTO CurrentUser => GetAuthenticatedUser(); 
 
-
-        /// <summary>
-        /// Valida al usuario autenticado
-        /// </summary>
-        /// <returns></returns>
-        private async Task<UsuarioEntity> GetAuthenticatedUser()
+        private UsuarioDTO GetAuthenticatedUser()
         {
-            IEnumerable<string> header = null;
 
-            if (Request.Headers.TryGetValues("app_token", out header))
+            if (Request.Headers.TryGetValue("app_token", out var tokenValues))
             {
-                var token = header.FirstOrDefault();
+                var token = tokenValues.FirstOrDefault();
 
                 if (!string.IsNullOrEmpty(token))
                 {
-                    if (string.IsNullOrEmpty(token))
-                        throw new HttpResponseException(Request.BuildHttpErrorResponse(HttpStatusCode.BadRequest, "El token de inicio de sesion no es válido"));
+                    if (!string.IsNullOrEmpty(token))
+                    {
+                        var usuarioEntity = _usuarioService.LoadByToken(token).Result;
 
-                    var usuarioEntity = await _usuarioService.LoadByToken(token);
+                        if (usuarioEntity != null)
+                            return usuarioEntity;
 
-                    if (usuarioEntity != null)
-                        return usuarioEntity;
-
-                    throw new HttpResponseException(Request.BuildHttpErrorResponse(HttpStatusCode.BadRequest, "El usuario solicitado no existe o el token no es válido"));
+                        throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.BadRequest) { Content = new StringContent("El usuario solicitado no existe o el token no es válido") });
+                    }
                 }
             }
+            throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.Unauthorized) { Content = new StringContent("Acceso no Autorizado") });
+        }
 
-            throw new HttpResponseException(Request.BuildHttpErrorResponse(HttpStatusCode.Unauthorized, "Acceso no Autorizado"));
+        private ObjectResult UnauthorizedResponse(string message)
+        {
+            return StatusCode((int)HttpStatusCode.Unauthorized, new { error = message });
         }
 
         protected void Log(string source, params object[] messages)

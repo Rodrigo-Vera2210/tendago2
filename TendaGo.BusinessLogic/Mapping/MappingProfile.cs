@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TendaGo.Common;
+using TendaGo.Domain.Models;
 
 namespace TendaGo.BusinessLogic.Mapping
 {
@@ -18,7 +20,17 @@ namespace TendaGo.BusinessLogic.Mapping
 
         private void MapTendaGo()
         {
-            //CreateMap<Custom_Usuario_LoadByTokenResult,UsuarioEntity>().ReverseMap();
+            CreateMap<Custom_Usuario_LoadByTokenResult,UsuarioDTO>().ReverseMap();
+
+            #region Brand
+            CreateMap<MarcaEntity, BrandDto>().ReverseMap();
+            CreateMap<BrandDto, MarcaEntity>().ReverseMap();
+            #endregion
+
+            #region Categoria
+            CreateMap<Categoria_LoadByPKResult, CategoriaDTO>();
+
+            #endregion
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TendaGo.Domain.Models;
 using TendaGo.Domain.Services;
 
 namespace TendaGo.BusinessLogic.Services
@@ -40,7 +41,7 @@ namespace TendaGo.BusinessLogic.Services
             }
         }
 
-        public async Task<UsuarioEntity> LoadByToken(string token)
+        public async Task<UsuarioDTO> LoadByToken(string token)
         {
             try
             {
@@ -48,7 +49,7 @@ namespace TendaGo.BusinessLogic.Services
                 
                 var usuario = await _procedimientos.Custom_Usuario_LoadByTokenAsync(token,idUsuario);
 
-                var result = _mapper.Map<UsuarioEntity>(usuario);
+                var result = _mapper.Map<UsuarioDTO>(usuario.FirstOrDefault());
 
                 return result;
             }
