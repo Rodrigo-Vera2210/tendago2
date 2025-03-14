@@ -1,17 +1,14 @@
-﻿using ER.BA;
-using ER.BE;
+﻿using ER.BE;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
-using System.Threading;
-using System.Web.Http.Controllers;
 using TendaGo.Common;
 using TendaGo.Domain.Services;
 
@@ -28,59 +25,69 @@ namespace TendaGo.Api
             _usuario = usuario;
         }
 
-        public override async void OnAuthorization(HttpActionContext actionContext)
+        public void OnAuthorization(AuthorizationFilterContext actionContext)
         {
             if (!IsAnonymous(actionContext) && !IsApiKey(actionContext))
             {
-                IEnumerable<string> header = null;
-
-                if (actionContext.Request.Headers.TryGetValues("app_token", out header))
+                try
                 {
-                    var token = header.FirstOrDefault();
+                     var header = actionContext.HttpContext.Request.Headers["app_token"];
 
-                    if (!string.IsNullOrEmpty(token))
+                    if (!string.IsNullOrEmpty(header))
                     {
-                        if (_httpContextAccessor.HttpContext.User.Identity.IsAuthenticated && token == _httpContextAccessor.HttpContext.User.GetToken())
-                        {
-                            return; // OK
-                        }
+                        var token = header.FirstOrDefault();
 
-                        var user = await _usuario.LoadByToken(token);
+                        if (!string.IsNullOrEmpty(token))
+                        {
+                            if (_httpContextAccessor.HttpContext.User.Identity.IsAuthenticated && token == _httpContextAccessor.HttpContext.User.GetToken())
+                            {
+                                return; // OK
+                            }
 
-                        if (user?.IdEstado == 1)
-                        {
-                            _httpContextAccessor.HttpContext.User = (ClaimsPrincipal)(Thread.CurrentPrincipal = user.ToPrincipal("token"));
-                            return; // OK;
-                        }
-                        else
-                        {
-                            actionContext.Response = actionContext.Request.BuildHttpErrorResponse(HttpStatusCode.Forbidden, "Acceso no permitido");
+                            var user =  _usuario.LoadByToken(token).Result;
+
+                            if (user?.IdEstado == 1)
+                            {
+                                _httpContextAccessor.HttpContext.User = new ClaimsPrincipal(user.ToPrincipal("token"));
+                                return; // OK;
+                            }
+                            else
+                            {
+                                actionContext.Result = new Microsoft.AspNetCore.Mvc.ForbidResult("Acceso no authorizado");
+                            }
                         }
                     }
+
+                    actionContext.Result = new Microsoft.AspNetCore.Mvc.UnauthorizedResult();
                 }
-
-                actionContext.Response = actionContext.Request.BuildHttpErrorResponse(HttpStatusCode.Unauthorized, "Acceso no autorizado");
+                catch (Exception ex)
+                {
+                    actionContext.Result = new Microsoft.AspNetCore.Mvc.UnauthorizedResult();
+                }
+               
             }
+
+            actionContext.Result = new Microsoft.AspNetCore.Mvc.UnauthorizedResult();
         }
 
-        private bool IsAnonymous(HttpActionContext actionContext)
+        private bool IsAnonymous(AuthorizationFilterContext actionContext)
         {
-            var attributes = actionContext.ActionDescriptor.GetCustomAttributes<AllowAnonymousAttribute>(true);
-            return attributes != null && attributes.Count > 0;
+            var attributes = actionContext.Filters.OfType<AllowAnonymousAttribute>();
+            return attributes.Any();
         }
 
-        private bool IsApiKey(HttpActionContext actionContext)
+        private bool IsApiKey(AuthorizationFilterContext actionContext)
         {
-            var attributes = actionContext.ActionDescriptor.GetCustomAttributes<ApiKeyAuthorizeAttribute>(true);
-            return attributes != null && attributes.Count > 0;
+            var attributes = actionContext.Filters.OfType<ApiKeyAuthorizeAttribute>();
+            return attributes.Any();
         }
     }
 
-    public class ApiKeyAuthorizeAttribute : AuthorizeAttribute
+    public class ApiKeyAuthorizeAttribute : AuthorizeAttribute, IAuthorizationFilter
     {
-        public override void OnAuthorization(HttpActionContext actionContext)
+        public void OnAuthorization(AuthorizationFilterContext context)
         {
-            var token = actionContext.Request?.Headers?.Authorization?.Parameter ?? actionContext.Request?.Headers?.Authorization?.Scheme;
+            var token = context.HttpContext.Request.Headers["Authorization"].FirstOrDefault();
 
             if (token != null)
             {
@@ -92,15 +99,14 @@ namespace TendaGo.Api
                 }
             }
 
-            actionContext.Response = actionContext.Request.BuildHttpErrorResponse(HttpStatusCode.Unauthorized, "No Autorizado");
-
+            context.Result = new Microsoft.AspNetCore.Mvc.UnauthorizedResult();
         }
 
         private static readonly List<ApplicationDto> authorized_apps =
             new List<ApplicationDto>
             {
-                new ApplicationDto{ ApiKey="776125dc-4ab3-4f4a-877c-6e65baea8370", AppName= "Go Web" },
-                new ApplicationDto{ ApiKey="23633afd-a0b3-4a88-b7a0-9ce1a5e4a00a", AppName= "Go Mobile" },
+            new ApplicationDto{ ApiKey="776125dc-4ab3-4f4a-877c-6e65baea8370", AppName= "Go Web" },
+            new ApplicationDto{ ApiKey="23633afd-a0b3-4a88-b7a0-9ce1a5e4a00a", AppName= "Go Mobile" },
             };
     }
 

@@ -18,7 +18,7 @@ namespace TendaGo.BusinessLogic.Mapping
 
         private void MapTendaGo()
         {
-            CreateMap<Custom_Usuario_LoadByTokenResult,UsuarioEntity>().ReverseMap();
+            //CreateMap<Custom_Usuario_LoadByTokenResult,UsuarioEntity>().ReverseMap();
         }
     }
 }

@@ -12,6 +12,6 @@ namespace TendaGo.Domain.Services
     {
         Task<List<BrandDto>> GetBrands(MarcaFindParameterEntity findParameter);
         Task<BrandDto> PostBrand(BrandDto brand);
-        Task<MarcaEntity> GetBrandEntity(int id);
+        Task<BrandDto> GetBrandEntity(int id);
     }
 }

@@ -10,7 +10,6 @@ using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
-using System.Web.Hosting;
 using System.Web.Http;
 
 namespace TendaGo
@@ -73,7 +72,9 @@ namespace TendaGo
                 }
 
 
-                var path = $"{HostingEnvironment.MapPath("/logs")}";
+                //var path = $"{HostingEnvironment.MapPath("/logs")}";
+                var path = "";
+
                 if (!Directory.Exists(path))
                 {
                     Directory.CreateDirectory(path);
@@ -124,13 +125,13 @@ namespace TendaGo
         /// </summary>
         /// <param name="username">username del inicio de sesion</param>
         /// <returns>Retorna el objeto Usuario</returns>
-        public static UsuarioEntity GetAuthUser(string username)
-        {
-            if (string.IsNullOrEmpty(username))
-                throw new Exception("El username no es válido");
-            var usuarioEntity = UsuarioBussinesAction.LoadByPK(username);
-            return usuarioEntity;
-        }
+        //public static UsuarioEntity GetAuthUser(string username)
+        //{
+        //    if (string.IsNullOrEmpty(username))
+        //        throw new Exception("El username no es válido");
+        //    var usuarioEntity = UsuarioBussinesAction.LoadByPK(username);
+        //    return usuarioEntity;
+        //}
 
         #region Validacion Cedula o ruc
         public static bool ValidarDigitos(string numero)

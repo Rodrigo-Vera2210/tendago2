@@ -1,8 +1,8 @@
-﻿using System.Web.Http;
+﻿//using System.Web.Http;
 
-namespace TendaGo.Api.Controllers
-{
-    public class sriController : ApiController
-    {
-    }
-}
+//namespace TendaGo.Api.Controllers
+//{
+//    public class sriController : ApiController
+//    {
+//    }
+//}

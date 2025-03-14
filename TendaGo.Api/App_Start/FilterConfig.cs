@@ -1,4 +1,6 @@
-﻿namespace TendaGo.Api
+﻿using System.Web.Mvc;
+
+namespace TendaGo.Api
 {
     public class FilterConfig
     {

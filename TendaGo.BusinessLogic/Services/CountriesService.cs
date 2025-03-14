@@ -15,11 +15,11 @@ namespace TendaGo.BusinessLogic.Services
         /// Decuelve la lista de paises 
         /// </summary>
         /// <returns></returns>
-        public List<CountryDto> GetCountries()
-        {
-            var brands = PaisCollectionBussinesAction.FindByAll(new PaisFindParameterEntity());
-            var brandsDtoList = brands.Select(br => br.ToCountryDto()).ToList();
-            return brandsDtoList;
-        }
+        //public List<CountryDto> GetCountries()
+        //{
+        //    var brands = PaisCollectionBussinesAction.FindByAll(new PaisFindParameterEntity());
+        //    var brandsDtoList = brands.Select(br => br.ToCountryDto()).ToList();
+        //    return brandsDtoList;
+        //}
     }
 }

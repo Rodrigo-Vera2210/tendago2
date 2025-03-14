@@ -106,7 +106,7 @@ namespace TendaGo.Api.Reporting
                 Enconding = encoding,
                 Extension = fileNameExt,
                 Streams = streams,
-                Warnings = warnings
+                //Warnings = warnings
             };
 
             return result;

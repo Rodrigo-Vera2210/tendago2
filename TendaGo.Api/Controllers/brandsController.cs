@@ -1,5 +1,6 @@
 ﻿using ER.BA;
 using ER.BE;
+using NPOI.OpenXmlFormats.Dml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,69 +12,69 @@ using TendaGo.Domain.Services;
 
 namespace TendaGo.Api.Controllers
 {
-    [TokenAuthorize]
-    public class brandsController : ApiControllerBase
-    {
-        private readonly IMarcaService _marcaService;
-        private readonly IBrandService _brandService;
+    //[TokenAuthorize]
+    //public class BrandsController : ApiControllerBase
+    //{
+    //    private readonly IMarcaService _marcaService;
+    //    private readonly IBrandService _brandService;
 
-        public brandsController(IMarcaService marcaService, IBrandService brandService)
-        {
-            _marcaService = marcaService;
-            _brandService = brandService;
-        }
+    //    public BrandsController(IMarcaService marcaService, IBrandService brandService)
+    //    {
+    //        _marcaService = marcaService;
+    //        _brandService = brandService;
+    //    }
 
-        [HttpGet]
-        public async Task<List<BrandDto>> GetBrands()
-        {
-            try
-            {
-                var brands = await _brandService.GetBrands(new MarcaFindParameterEntity { IdEmpresa = CurrentUser.IdEmpresa });
-                return brands;
-            }
-            catch (Exception)
-            {
+    //    [HttpGet]
+    //    public async Task<List<BrandDto>> GetBrands()
+    //    {
+    //        try
+    //        {
+    //            var brands = await _brandService.GetBrands(new MarcaFindParameterEntity { IdEmpresa = 1 });
+    //            return brands;
+    //        }
+    //        catch (Exception)
+    //        {
 
-                throw;
-            }
+    //            throw;
+    //        }
             
-        }
+    //    }
 
-        [HttpPost]
-        public async Task<BrandDto> PostBrand(BrandDto brand)
-        {
-            try
-            {
-                var brands = await _brandService.PostBrand(brand);
+    //    [HttpPost]
+    //    public async Task<BrandDto> PostBrand(BrandDto brand)
+    //    {
+    //        try
+    //        {
+    //            var brands = await _brandService.PostBrand(brand);
 
-                return brands;
-            }
-            catch (Exception)
-            {
+    //            return brands;
+    //        }
+    //        catch (Exception)
+    //        {
 
-                throw;
-            }
+    //            throw;
+    //        }
 
-        }
+    //    }
 
-        [Route("brands/{id}")]
-        public async Task<BrandDto> GetBrand(int id)
-        {
-            try
-            {
-                var brand = await _brandService.GetBrandEntity(id);
+    //    [Route("brands/{id}")]
+    //    public async Task<BrandDto> GetBrand(int id)
+    //    {
+    //        try
+    //        {
+    //            var brand = await _brandService.GetBrandEntity(id);
 
-                return brand;
-            }
-            catch (HttpResponseException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new HttpResponseException(Request.BuildHttpErrorResponse(HttpStatusCode.BadRequest, $"{ex.GetAllMessages()}", "Ocurrio un error general, reintente"));
-            }
-        }
+    //            return brand;
+    //        }
+    //        catch (HttpResponseException)
+    //        {
+    //            throw;
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            throw new HttpResponseException(Request.BuildHttpErrorResponse(HttpStatusCode.BadRequest, $"{ex.GetAllMessages()}", "Ocurrio un error general, reintente"));
+    //        }
+    //    }
 
-    }
+    //}
 }
