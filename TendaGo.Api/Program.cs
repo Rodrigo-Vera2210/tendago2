@@ -52,8 +52,10 @@ namespace TendaGo.Api
             builder.Services.AddScoped<ITendaGOContextProcedures, TendaGOContextProcedures>();
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddScoped<IUsuarioService, UsuarioService>();
-            builder.Services.AddScoped<ICategoriaService, CategoriaService>();
             builder.Services.AddScoped<IBrandService, BrandService>();
+            builder.Services.AddScoped<ICatalogsService, CatalogsService>();
+            builder.Services.AddScoped<ICategoriaService, CategoriaService>();
+            builder.Services.AddScoped<ICountriesService, CountriesService>();
             builder.Services.AddScoped<IMarcaService, MarcaService>();
             builder.Services.AddScoped<TokenAuthorizeAttribute>();
             builder.Services.AddScoped<TokenAuthorizationFilter>();

@@ -85,11 +85,11 @@ namespace TendaGo.BusinessLogic.Services
             }
         }
 
-        public async Task<MarcaEntity> GetBrandEntity(int id, int idEmpresa)
+        public async Task<BrandDto> GetBrandEntity(int id, int idEmpresa)
         {
             var result = await _procedimientos.Marca_LoadByPKAsync(id);
 
-            var brand = _mapper.Map<MarcaEntity>(result.FirstOrDefault());
+            var brand = _mapper.Map<BrandDto>(result.FirstOrDefault());
 
             if (brand == null || brand.IdEmpresa != idEmpresa)
                 throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NotFound) { Content = new StringContent("Marca no existe La marca solicitada no existe") });
@@ -144,7 +144,11 @@ namespace TendaGo.BusinessLogic.Services
                         idMarca
                     );
 
-                return await GetBrandEntity((int)idMarca.Value, marca.IdEmpresa);
+                var marcaE = await GetBrandEntity((int)idMarca.Value, marca.IdEmpresa);
+
+                var response = _mapper.Map<MarcaEntity>( marcaE );
+
+                return response;
             }
             catch (Exception exc)
             {

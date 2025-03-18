@@ -1,69 +1,88 @@
-﻿//using ER.BA;
-//using ER.BE;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Web.Http;
-//using TendaGo.Common;
+﻿using ER.BA;
+using ER.BE;
+using ER.DA.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using TendaGo.BusinessLogic.Services;
+using TendaGo.Common;
+using TendaGo.Domain.Services;
 
-//namespace TendaGo.Api.Controllers
-//{
-//    /// <summary>
-//    /// 
-//    /// </summary>
-//    public class catalogsController : ApiController
-//    {
+namespace TendaGo.Api.Controllers
+{
+    public class catalogsController : ApiControllerBase
+    {
+        private readonly ICatalogsService _catalogsService;
 
-//        /// <summary>
-//        /// Monedas
-//        /// </summary>
-//        /// <returns></returns>
-//        [HttpGet, Route("catalogs/currencies")]
-//        public List<CurrencyDto> GetCurrencies()
-//        {
-//            var monedas = MonedaCollectionBussinesAction.FindByAll(new MonedaFindParameterEntity());
-//            var currencies = monedas.Select(mo => mo.GlobalMapperConverter<MonedaEntity, CurrencyDto>()).ToList();
-//            return currencies;
-//        }
+        public catalogsController(ICatalogsService catalogsService, IUsuarioService usuarioService) : base(usuarioService)
+        {
+            _catalogsService = catalogsService;
+        }
 
-//        /// <summary>
-//        /// Moneda
-//        /// </summary>
-//        /// <returns></returns>
-//        [HttpGet, Route("catalogs/currencie/{idMoneda}")]
-//        public CurrencyDto GetCurrencie(short idMoneda)
-//        {
-//            var moneda = MonedaBussinesAction.LoadByPK(idMoneda);
-//            var currencie = moneda.GlobalMapperConverter<MonedaEntity, CurrencyDto>();
-//            return currencie;
-//        }
+        [HttpGet, Route("currencies")]
+        public async Task<List<CurrencyDto>> GetCurrencies()
+        {
+            try
+            {
+                var monedas = await _catalogsService.GetCurrencies();
 
-//        /// <summary>
-//        /// Sector
-//        /// </summary>
-//        /// <returns></returns>
-//        [HttpGet, Route("catalogs/sectors")]
-//        public List<SectorDto> GetSector()
-//        {
-//            SectorFindParameterEntity sf = new SectorFindParameterEntity();
-//            sf.IdEstado = 1;
-//            var sectores = SectorCollectionBussinesAction.FindByAll(sf);
-//            var sectorDto = sectores.Select(mo => mo.GlobalMapperConverter<SectorEntity, SectorDto>()).ToList();
-//            return sectorDto;
-//        }
+                return monedas;
+            }
+            catch (System.Exception)
+            {
 
-//        /// <summary>
-//        /// Tipos de Identificacion
-//        /// </summary>
-//        /// <returns></returns>
-//        [HttpGet, Route("catalogs/identification-types")]
-//        public List<IdentificationTypesDto> GetIdentificationTypes()
-//        {
-//            return new List<IdentificationTypesDto>
-//            {
-//                new IdentificationTypesDto{ Codigo="R", TipoIdentificacion="RUC"},
-//                new IdentificationTypesDto{ Codigo="C", TipoIdentificacion="Cedula"},
-//                new IdentificationTypesDto{ Codigo="P", TipoIdentificacion="Pasaporte"},
-//            };
-//        }
-//    }
-//}
+                throw;
+            }
+        }
+
+        [HttpGet, Route("currencie/{idMoneda}")]
+        public async Task<CurrencyDto> GetCurrencie(short idMoneda)
+        {
+            try
+            {
+                var currencie = await _catalogsService.GetCurrencie(idMoneda);
+
+                return currencie;
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+            
+        }
+
+        [HttpGet, Route("sectors")]
+        public async Task<List<SectorDto>> GetSector()
+        {
+            try
+            {
+                var sectorDto = await _catalogsService.GetSector();
+                return sectorDto;
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+            
+        }
+
+        [HttpGet, Route("identification-types")]
+        public List<IdentificationTypesDto> GetIdentificationTypes()
+        {
+            try
+            {
+                var result = _catalogsService.GetIdentificationTypes();
+
+                return result;
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+        }
+    }
+}

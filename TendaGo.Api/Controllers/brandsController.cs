@@ -1,15 +1,11 @@
-﻿using ER.BA;
-using ER.BE;
-using Microsoft.AspNetCore.Http;
+﻿using ER.BE;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using TendaGo.BusinessLogic.Services;
 using TendaGo.Common;
-using TendaGo.Domain.Models;
 using TendaGo.Domain.Services;
 
 namespace TendaGo.Api.Controllers
@@ -47,7 +43,7 @@ namespace TendaGo.Api.Controllers
         {
             try
             {
-                var brands = await _brandService.PostBrand(brand);
+                var brands = await _brandService.PostBrand(brand, CurrentUser.IdEmpresa);
 
                 return brands;
             }
@@ -64,7 +60,7 @@ namespace TendaGo.Api.Controllers
         {
             try
             {
-                var brand = await _brandService.GetBrandEntity(id);
+                var brand = await _brandService.GetBrandEntity(id, CurrentUser.IdEmpresa);
 
                 return brand;
             }
