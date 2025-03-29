@@ -56,7 +56,9 @@ namespace TendaGo.Api
             builder.Services.AddScoped<ICatalogsService, CatalogsService>();
             builder.Services.AddScoped<ICategoriaService, CategoriaService>();
             builder.Services.AddScoped<ICountriesService, CountriesService>();
+            builder.Services.AddScoped<IDivisionService, DivisionService>();
             builder.Services.AddScoped<IMarcaService, MarcaService>();
+            builder.Services.AddScoped<ILineService, LineService>();
             builder.Services.AddScoped<TokenAuthorizeAttribute>();
             builder.Services.AddScoped<TokenAuthorizationFilter>();
             // Configura otros servicios según sea necesario

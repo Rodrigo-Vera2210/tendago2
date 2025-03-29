@@ -2,6 +2,7 @@
 using ER.BA;
 using ER.BE;
 using ER.DA.Repositories;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,28 @@ namespace TendaGo.BusinessLogic.Services
             _mapper = mapper;
         }
 
-        private async Task<DivisionEntity> GetDivisionEntity(int id, int idEmpresa)
+        public async Task<DivisionDto> GetDivisionDto(int id, int idEmpresa)
+        {
+            try
+            {
+                var procedimiento = await _procedimientos.Division_LoadByPKAsync(id);
+
+                var division = _mapper.Map<DivisionDto>(procedimiento);
+
+                if (division == null || division.IdEmpresa != idEmpresa)
+                    throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NotFound) { Content = new StringContent("División no existe, La división solicitada no existe") });
+                return division;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+
+
+        public async Task<DivisionEntity> GetDivisionEntity(int id, int idEmpresa)
         {
             try
             {
@@ -34,7 +56,7 @@ namespace TendaGo.BusinessLogic.Services
                 var division = _mapper.Map<DivisionEntity>(procedimiento);
 
                 if (division == null || division.IdEmpresa != idEmpresa)
-                    throw new HttpResponseException(Request.BuildHttpErrorResponse(HttpStatusCode.NotFound, "División no existe", "La división solicitada no existe"));
+                    throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.NotFound) { Content = new StringContent("División no existe, La división solicitada no existe") });
                 return division;
             }
             catch (Exception)
@@ -45,12 +67,12 @@ namespace TendaGo.BusinessLogic.Services
             
         }
 
-        public List<DivisionDto> GetAllDivisions(int idEmpresa)
+        public async Task<List<DivisionDto>> GetAllDivisions(int idEmpresa)
         {
             try
             {
                 var parameters = new DivisionFindParameterEntity { IdEmpresa = idEmpresa };
-                var divisions = _procedimientos.Division_FindByAllAsync(
+                var divisions = await _procedimientos.Division_FindByAllAsync(
                                                     parameters.Id,
                                                     parameters.IdEmpresa,
                                                     parameters.Division,
@@ -72,12 +94,13 @@ namespace TendaGo.BusinessLogic.Services
             }
             
         }
-        public List<DivisionDto> GetDivisions(int idEmpresa)
+        
+        public async Task<List<DivisionDto>> GetDivisions(int idEmpresa)
         {
             try
             {
                 var parameters = new DivisionFindParameterEntity { IdEmpresa = idEmpresa };
-                var divisions = _procedimientos.Division_FindByAllAsync(
+                var divisions = await _procedimientos.Division_FindByAllAsync(
                                                     parameters.Id,
                                                     parameters.IdEmpresa,
                                                     parameters.Division,
@@ -100,14 +123,17 @@ namespace TendaGo.BusinessLogic.Services
             
         }
 
-        public DivisionDto PostDivision(DivisionDto division)
+        public async Task<DivisionDto> PostDivision(DivisionDto division, int idEmpresa)
         {
             try
             {
                 DivisionEntity divisionEntity;
                 if (division.Id > 0)
                 {
-                    divisionEntity = DivisionBussinesAction.LoadByPK(division.Id);
+                    var consulta = await _procedimientos.Division_LoadByPKAsync(division.Id);
+
+                    divisionEntity = _mapper.Map<DivisionEntity>(consulta.FirstOrDefault());
+
                     divisionEntity.Division = division.Division;
                     divisionEntity.IdEstado = division.IdEstado;
                     if (divisionEntity.CurrentState.Equals(EntityStatesEnum.Updated))
@@ -119,33 +145,35 @@ namespace TendaGo.BusinessLogic.Services
                 }
                 else
                 {
-                    divisionEntity = division.ToDivisionEntity();
+                    divisionEntity = _mapper.Map<DivisionEntity>(division);
                     divisionEntity.FechaIngreso = DateTime.Today;
-                    divisionEntity.IdEmpresa = CurrentUser.IdEmpresa;
+                    divisionEntity.IdEmpresa = idEmpresa;
                 }
-                divisionEntity = DivisionBussinesAction.Save(divisionEntity);
-                return divisionEntity.ToDivisionDto();
+
+                divisionEntity = await Save(divisionEntity);
+                return _mapper.Map<DivisionDto>(divisionEntity);
             }
             catch (Exception ex)
             {
                 string UserError = "Ocurrio un error general, reintente";
-                if (ex.GetMessage().Contains("UQ_Division"))
+                if (ex.Message.Contains("UQ_Division"))
                 {
                     UserError = "No puede ingresar una division duplicada";
                 }
-                throw new HttpResponseException(Request.BuildHttpErrorResponse(HttpStatusCode.BadRequest, $"{ex.GetAllMessages()}", UserError));
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.BadRequest) { Content = new StringContent(ex.Message + UserError) });
             }
         }
-        public void DeleteDivision(DivisionDto division)
+        
+        public async Task DeleteDivision(DivisionDto division, int idEmpresa)
         {
             try
             {
-                var divisionEntity = GetDivisionEntity(division.Id);
+                var divisionEntity = await GetDivisionEntity(division.Id,idEmpresa);
                 divisionEntity.UsuarioModificacion = division.UsuarioModificacion;
                 divisionEntity.IpModificacion = division.IpModificacion;
                 divisionEntity.FechaModificacion = DateTime.Today;
                 divisionEntity.SetDeletedState();
-                DivisionBussinesAction.Save(divisionEntity);
+                await Save(divisionEntity);
             }
             catch (HttpResponseException)
             {
@@ -153,50 +181,183 @@ namespace TendaGo.BusinessLogic.Services
             }
             catch (Exception ex)
             {
-                throw new HttpResponseException(Request.BuildHttpErrorResponse(HttpStatusCode.BadRequest, $"{ex.GetAllMessages()}", "Ocurrio un error general, reintente"));
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.BadRequest) { Content = new StringContent(ex.Message + "Ocurrio un error general, reintente") });
             }
         }
-        public List<LineDto> GetAllLines(string id)
+        
+        public async Task<List<LineDto>> GetAllLines(string id, int idEmpresa)
         {
             try
             {
+                int idConverted;
+                bool isValidId = int.TryParse(id, out idConverted);
+                if (!isValidId)
+                    throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.BadRequest) { Content = new StringContent("El parametro id, es invalido" + "Ocurrio un error general, reintente") });
 
+                var findParameter = new LineaFindParameterEntity { IdDivision = idConverted, IdEmpresa = idEmpresa, IdEstado = 1 };
+                var lines = await _procedimientos.Linea_FindByAllAsync(
+                                                    findParameter.Id,
+                                                    findParameter.IdEmpresa,
+                                                    findParameter.IdDivision,
+                                                    findParameter.Linea,
+                                                    findParameter.IpIngreso,
+                                                    findParameter.UsuarioIngreso,
+                                                    findParameter.FechaIngreso,
+                                                    findParameter.IpModificacion,
+                                                    findParameter.UsuarioModificacion,
+                                                    findParameter.FechaModificacion,
+                                                    findParameter.IdEstado
+                                                 );
+                var linesDtoList = _mapper.Map<List<LineDto>>(lines);
+                return linesDtoList;
             }
             catch (Exception)
             {
 
                 throw;
             }
-            int idConverted;
-            bool isValidId = int.TryParse(id, out idConverted);
-            if (!isValidId)
-                throw new HttpResponseException(Request.BuildHttpErrorResponse(HttpStatusCode.BadRequest, "El parametro id, es invalido", "Id invalido"));
-
-            var findParameter = new LineaFindParameterEntity { IdDivision = idConverted, IdEmpresa = CurrentUser.IdEmpresa, IdEstado = 1 };
-            var lines = LineaCollectionBussinesAction.FindByAll(findParameter);
-            var linesDtoList = lines.Select(ln => ln.ToLineDto()).ToList();
-            return linesDtoList;
+            
         }
-        public List<LineDto> GetLines(string id)
+        
+        public async Task<List<LineDto>> GetLines(string id, int idEmpresa)
         {
             try
             {
+                int idConverted;
+                bool isValidId = int.TryParse(id, out idConverted);
+                if (!isValidId)
+                    throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.BadRequest) { Content = new StringContent("El parametro id, es invalido" + "Ocurrio un error general, reintente") });
 
+                var findParameter = new LineaFindParameterEntity { IdDivision = idConverted, IdEmpresa = idEmpresa, IdEstado = 1 };
+                var lines = await _procedimientos.Linea_FindByAllAsync(
+                                                    findParameter.Id,
+                                                    findParameter.IdEmpresa,
+                                                    findParameter.IdDivision,
+                                                    findParameter.Linea,
+                                                    findParameter.IpIngreso,
+                                                    findParameter.UsuarioIngreso,
+                                                    findParameter.FechaIngreso,
+                                                    findParameter.IpModificacion,
+                                                    findParameter.UsuarioModificacion,
+                                                    findParameter.FechaModificacion,
+                                                    findParameter.IdEstado
+                                                 );
+                var linesDtoList = _mapper.Map<List<LineDto>>(lines);
+                return linesDtoList;
             }
             catch (Exception)
             {
 
                 throw;
             }
-            int idConverted;
-            bool isValidId = int.TryParse(id, out idConverted);
-            if (!isValidId)
-                throw new HttpResponseException(Request.BuildHttpErrorResponse(HttpStatusCode.BadRequest, "El parametro id, es invalido", "Id invalido"));
+            
+        }
 
-            var findParameter = new LineaFindParameterEntity { IdDivision = idConverted, IdEmpresa = CurrentUser.IdEmpresa };
-            var lines = LineaCollectionBussinesAction.FindByAll(findParameter);
-            var linesDtoList = lines.Select(ln => ln.ToLineDto()).ToList();
-            return linesDtoList;
+        public async Task<DivisionEntity> Save(DivisionEntity division)
+        {
+
+            try
+            {
+                switch (division.CurrentState)
+                {
+                    case EntityStatesEnum.Deleted:
+                        await Delete(division);
+                        break;
+                    case EntityStatesEnum.Updated:
+                        await Update(division);
+                        break;
+                    case EntityStatesEnum.New:
+                        division = await Insert(division);
+                        break;
+                    default:
+                        break;
+                }
+
+                return division;
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+        }
+
+        private async Task<DivisionEntity> Insert(DivisionEntity division)
+        {
+            try
+            {
+                OutputParameter<int?> idDivision = new();
+
+                var result = await _procedimientos.Division_InsertAsync(
+                        division.IdEmpresa,
+                        division.Division,
+                        division.IpIngreso,
+                        division.UsuarioIngreso,
+                        division.FechaIngreso,
+                        division.IpModificacion,
+                        division.UsuarioModificacion,
+                        division.FechaModificacion,
+                        division.IdEstado,
+                        idDivision
+                    );
+
+                var divisionE = await GetDivisionEntity((int)idDivision.Value, division.IdEmpresa);
+
+                var response = _mapper.Map<DivisionEntity>(divisionE);
+
+                return response;
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+        }
+
+        private async Task Update(DivisionEntity division)
+        {
+            try
+            {
+                OutputParameter<int> idDivision = new();
+
+
+                var result = await _procedimientos.Division_UpdateAsync(
+                                                division.Id,
+                                                division.IdEmpresa,
+                                                division.Division,
+                                                division.IpIngreso,
+                                                division.UsuarioIngreso,
+                                                division.FechaIngreso,
+                                                division.IpModificacion,
+                                                division.UsuarioModificacion,
+                                                division.FechaModificacion,
+                                                division.IdEstado,
+                                                idDivision
+                                            );
+
+
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+        }
+
+        private async Task Delete(DivisionEntity division)
+        {
+            try
+            {
+                var result = await _procedimientos.Division_DeleteAsync(
+                                                    division.Id,
+                                                    division.FechaModificacion,
+                                                    division.UsuarioModificacion,
+                                                    division.IpModificacion
+                                                   );
+
+
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
         }
 
     }

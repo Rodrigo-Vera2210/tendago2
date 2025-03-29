@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TendaGo.Domain.Services
 {
-    internal interface IUnidadMedidaService
+    public interface IUnidadMedidaService
     {
     }
 }

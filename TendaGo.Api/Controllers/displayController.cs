@@ -18,7 +18,7 @@ namespace TendaGo.Api.Controllers
         }
 
         [HttpGet, Route("")]
-        List<DisplayDto> GetDisplays()
+        public List<DisplayDto> GetDisplays()
         {
             try
             {

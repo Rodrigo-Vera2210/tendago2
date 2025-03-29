@@ -6,132 +6,111 @@ using System.Linq;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using TendaGo.Common;
+using TendaGo.Domain.Services;
+using TendaGo.BusinessLogic.Services;
+using System.Threading.Tasks;
 
 namespace TendaGo.Api.Controllers
 {
     [TokenAuthorize]
     public class divisionsController : ApiControllerBase
     {
-        [HttpGet, Route("divisions/all")]
-        public List<DivisionDto> GetAllDivisions()
+        private readonly IDivisionService _divisionService;
+
+        public divisionsController(IDivisionService divisionService,IUsuarioService usuarioService):base(usuarioService)
         {
-            var divisions = DivisionCollectionBussinesAction.FindByAll(new DivisionFindParameterEntity { IdEmpresa = CurrentUser.IdEmpresa });
-            var divisionsDtoList = divisions.Select(dv => dv.ToDivisionDto()).ToList();
-            return divisionsDtoList;
+            _divisionService = divisionService;
         }
 
-        [HttpGet, Route("divisions")]
-        public List<DivisionDto> GetDivisions()
-        {
-            var divisions = DivisionCollectionBussinesAction.FindByAll(new DivisionFindParameterEntity { IdEmpresa = CurrentUser.IdEmpresa });
-            var divisionsDtoList = divisions.Select(dv => dv.ToDivisionDto()).ToList();
-            return divisionsDtoList;
-        }
-
-        [HttpGet, Route("divisions/{id}")]
-        public DivisionDto GetDivision(string id)
+        [HttpGet, Route("all")]
+        public async Task<List<DivisionDto>> GetAllDivisions()
         {
             try
             {
-                var division = GetDivisionEntity(id);
-                return division.ToDivisionDto();
+                var divisions = await _divisionService.GetAllDivisions(CurrentUser.IdEmpresa);
+
+                return divisions;
             }
-            catch (HttpResponseException)
+            catch (System.Web.Http.HttpResponseException) { throw; }
+        }
+
+        [HttpGet, Route("")]
+        public async Task<List<DivisionDto>> GetDivisions()
+        {
+            try
+            {
+                var divisions = await _divisionService.GetDivisions(CurrentUser.IdEmpresa);
+
+                return divisions;
+            }
+            catch (System.Web.Http.HttpResponseException) { throw; }
+        }
+
+        [HttpGet, Route("{id}")]
+        public async Task<DivisionDto> GetDivision(string id)
+        {
+            try
+            {
+                var division = await _divisionService.GetDivisionDto(int.Parse(id), CurrentUser.IdEmpresa);
+                
+                return division;
+            }
+            catch (Exception ex)
             {
                 throw;
             }
-            catch (Exception ex)
-            {
-                throw new HttpResponseException(Request.BuildHttpErrorResponse(HttpStatusCode.BadRequest, $"{ex.GetAllMessages()}", "Ocurrio un error general, reintente"));
-            }
         }
 
-        [HttpPost, Route("divisions")]
-        public DivisionDto PostDivision(DivisionDto division)
+        [HttpPost, Route("")]
+        public async Task<DivisionDto> PostDivision(DivisionDto division)
         {
             try
             {
-                DivisionEntity divisionEntity;
-                if (division.Id > 0)
-                {
-                    divisionEntity = DivisionBussinesAction.LoadByPK(division.Id);
-                    divisionEntity.Division = division.Division;
-                    divisionEntity.IdEstado = division.IdEstado;
-                    if (divisionEntity.CurrentState.Equals(EntityStatesEnum.Updated))
-                    {
-                        divisionEntity.IpModificacion = division.IpModificacion;
-                        divisionEntity.UsuarioModificacion = division.UsuarioModificacion;
-                        divisionEntity.FechaModificacion = DateTime.Today;
-                    }
-                }
-                else
-                {
-                    divisionEntity = division.ToDivisionEntity();
-                    divisionEntity.FechaIngreso = DateTime.Today;
-                    divisionEntity.IdEmpresa = CurrentUser.IdEmpresa;
-                }
-                divisionEntity = DivisionBussinesAction.Save(divisionEntity);
-                return divisionEntity.ToDivisionDto();
+                var divisionR = await _divisionService.PostDivision(division, CurrentUser.IdEmpresa);
+
+                return divisionR;
             }
             catch (Exception ex)
-            {
-                string UserError = "Ocurrio un error general, reintente";
-                if (ex.GetMessage().Contains("UQ_Division"))
-                {
-                    UserError = "No puede ingresar una division duplicada";
-                }
-                throw new HttpResponseException(Request.BuildHttpErrorResponse(HttpStatusCode.BadRequest, $"{ex.GetAllMessages()}", UserError));
-            }
-        }
-
-        [HttpDelete, Route("divisions")]
-        public void DeleteDivision(DivisionDto division)
-        {
-            try
-            {
-                var divisionEntity = GetDivisionEntity(division.Id);
-                divisionEntity.UsuarioModificacion = division.UsuarioModificacion;
-                divisionEntity.IpModificacion = division.IpModificacion;
-                divisionEntity.FechaModificacion = DateTime.Today;
-                divisionEntity.SetDeletedState();
-                DivisionBussinesAction.Save(divisionEntity);
-            }
-            catch (HttpResponseException)
             {
                 throw;
             }
+        }
+
+        [HttpDelete, Route("")]
+        public async Task DeleteDivision(DivisionDto division)
+        {
+            try
+            {
+                await _divisionService.DeleteDivision(division,CurrentUser.IdEmpresa);
+            }
             catch (Exception ex)
             {
-                throw new HttpResponseException(Request.BuildHttpErrorResponse(HttpStatusCode.BadRequest, $"{ex.GetAllMessages()}", "Ocurrio un error general, reintente"));
+                throw;
             }
         }
 
-        [HttpGet, Route("divisions/{id}/lines/all")]
-        public List<LineDto> GetAllLines(string id)
+        [HttpGet, Route("{id}/lines/all")]
+        public async Task<List<LineDto>> GetAllLines(string id)
         {
-            int idConverted;
-            bool isValidId = int.TryParse(id, out idConverted);
-            if (!isValidId)
-                throw new HttpResponseException(Request.BuildHttpErrorResponse(HttpStatusCode.BadRequest, "El parametro id, es invalido", "Id invalido"));
+            try
+            {
+                var divisions = await _divisionService.GetAllLines(id,CurrentUser.IdEmpresa);
 
-            var findParameter = new LineaFindParameterEntity { IdDivision = idConverted, IdEmpresa = CurrentUser.IdEmpresa, IdEstado = 1 };
-            var lines = LineaCollectionBussinesAction.FindByAll(findParameter);
-            var linesDtoList = lines.Select(ln => ln.ToLineDto()).ToList();
-            return linesDtoList;
+                return divisions;
+            }
+            catch (System.Web.Http.HttpResponseException) { throw; }
         }
 
-        [HttpGet, Route("divisions/{id}/lines")]
-        public List<LineDto> GetLines(string id)
+        [HttpGet, Route("{id}/lines")]
+        public async Task<List<LineDto>> GetLines(string id)
         {
-            int idConverted;
-            bool isValidId = int.TryParse(id, out idConverted);
-            if (!isValidId)
-                throw new HttpResponseException(Request.BuildHttpErrorResponse(HttpStatusCode.BadRequest, "El parametro id, es invalido", "Id invalido"));
+            try
+            {
+                var divisions = await _divisionService.GetLines(id,CurrentUser.IdEmpresa);
 
-            var findParameter = new LineaFindParameterEntity { IdDivision = idConverted, IdEmpresa = CurrentUser.IdEmpresa };
-            var lines = LineaCollectionBussinesAction.FindByAll(findParameter);
-            var linesDtoList = lines.Select(ln => ln.ToLineDto()).ToList();
-            return linesDtoList;
+                return divisions;
+            }
+            catch (System.Web.Http.HttpResponseException) { throw; }
         }
 
     }
